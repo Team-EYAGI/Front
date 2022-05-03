@@ -13,6 +13,7 @@ const BookDetail = () => {
   const bookId = params.bookId
   // console.log("북아이디",bookId)
 
+  const is_login = localStorage.getItem("is_login");
   const detail = useSelector((state) => state.book.detail_book);
 
   console.log("상세" ,detail)
@@ -49,7 +50,16 @@ const BookDetail = () => {
               <button id="hi" onClick={() => {
                 history.push(`/audioWrite/${bookId}`)
               }}>내 오디오 등록하기</button>
-              <button>내 서재에 담기</button>
+              <button
+                onClick={()=> {
+                  if(!is_login) {
+                    window.alert("로그인 후 이용 가능합니다!");
+                    return;
+                  } else {
+                    window.alert("내 서재에 담겼습니다!");
+                  }
+                }}
+              >내 서재에 담기</button>
             </div>
           </ContentSt>
         </BookInfoSt>

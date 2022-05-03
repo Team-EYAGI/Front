@@ -46,7 +46,9 @@ function App() {
         <Route path="/mypage" exact component={MyPage}/>
         <Route path="/mypage/:category" exact component={MyPage}/>
         <Route path="/request" exact component={Request}/>
+        <Route path="/requestWrite" exact component={RequestWrite}/>
         <Route path="/requestWrite/:bookId" exact component={RequestWrite}/>
+        <Route path="/requestWrite/:bookId/:bookRequestId" exact component={RequestWrite}/>
         <Route path="/search" exact component={Search}/>
       </ConnectedRouter>
     </React.Fragment>

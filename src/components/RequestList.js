@@ -1,14 +1,29 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 // 리덕스 관련
 import { history } from "../redux/configureStore";
+import { actionCreators as requestActions } from "../redux/modules/audio";
 
 
 const RequestList = (props) => {
+  const dispatch = useDispatch();
 
+  const bookId = props.item.bookId
+  const email = localStorage.getItem("email");
+  const userEmail = props.item.userEmail;
+
+  const bookRequestId = props.item.bookRequestId
+  
   const [clickRequest, setClickRequest] = useState(false);
+
+  const deleteRequest = () => {
+    // 리뷰를 삭제할 때 commentId를 찾아 삭제할 예정
+    dispatch(requestActions.deleteRequestAC(bookRequestId))
+    history.replace(`/request`)
+  }
 
   return (
     <React.Fragment>
@@ -66,24 +81,29 @@ const RequestList = (props) => {
           </DetailWrap>
 
         {/* 쿠키에 저장된 userId와 user의 값 비교 */}
-          <div style={{display: "flex", flexDirection: "row", justifyContent: "right", alignItems: "right"}}>
-          <ButtonWrap>
-            <EditButton
-              // onClick={() => {
-              //   history.push(`/reviewWrite/${itemId}/${commentId}`)
-              // }}
-            >
-              수정
-            </EditButton>
-          </ButtonWrap>
-          <ButtonWrap>
-            <DeleteButton
-              // onClick={deleteReview}
-            >
-              삭제
-            </DeleteButton>
-          </ButtonWrap>
-        </div>
+        {email == userEmail ? 
+        <div style={{display: "flex", flexDirection: "row", justifyContent: "right", alignItems: "right"}}>
+        <ButtonWrap>
+          <EditButton
+            onClick={() => {
+              history.push(`/requestWrite/${bookId}/${bookRequestId}`)
+            }}
+          >
+            수정
+          </EditButton>
+        </ButtonWrap>
+        <ButtonWrap>
+          <DeleteButton
+            onClick={deleteRequest}
+          >
+            삭제
+          </DeleteButton>
+        </ButtonWrap>
+      </div>
+      :
+      null
+      }
+        
     
          {/* <HelpWrap>
             <HelpButton
