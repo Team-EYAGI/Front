@@ -11,14 +11,18 @@ const RequestWrite = (props) => {
   const params = useParams();
   // console.log(params)
   const bookId = params.bookId
-  // console.log("북아이디",bookId)
+  const bookRequestId = params.bookRequestId
+  // console.log("북아이디",bookRequestId)
 
   // 리덕스에 저장된 책 상세페이지 정보 불러오기
   const detail = useSelector((state) => state.book.detail_book);
+  // console.log(detail)
+
+  const is_edit = bookRequestId ? true : false; 
 
   // 오디오북 Post 요청을 보내기 위해 필요한 정보 (제목, 이유)
   const title = `"${detail.title}" 오디오북을 요청합니다.`
-  const [contents, setContents] = React.useState("")
+  const [contents, setContents] = React.useState(is_edit ? "요청 이유를 수정해주세요" : "");
 
   React.useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));
@@ -43,23 +47,39 @@ const RequestWrite = (props) => {
               <p>"{detail.title}" 오디오북을 요청합니다.</p>
               <span>{detail.author}</span>
               <textarea
+                defaultValue={contents}
                 maxLength='30'
                 type='text'
-                placeholder='요청 코멘트를 30자 내로 입력해주세요. ex) 오디오북으로 듣고 싶어요!'
+                placeholder='요청 코멘트를 30자 내로 입력해주세요. ex) 오디오북으로 듣고 싶어요!, 잔잔한 목소리로 듣고 싶어요!' 
                 onChange={(e) => {
                   setContents(e.target.value)
                 }}
               />
             </div>
+            
+            {is_edit ?
+              <div>
+              <button
+                id='uploadBtn'
+                onClick={() => {
+                  dispatch(requestActions.editRequestAC(bookRequestId, title, contents));
+                  history.push('/request')
+                }}
+              >수정하기</button>
+            </div>
+            :
             <div>
               <button
                 id='uploadBtn'
                 onClick={() => {
-                  dispatch(requestActions.addRequestAC(title, contents));
+                  dispatch(requestActions.addRequestAC(bookId, title, contents));
                   history.push('/request')
                 }}
               >등록하기</button>
             </div>
+            }
+
+
           </ContentSt>
         </BookInfoSt>
       </Wrap>

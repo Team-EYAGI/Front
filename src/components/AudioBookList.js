@@ -8,6 +8,9 @@ const AudioBookList = (props) => {
   // console.log("오디오디테일", props)
   const bookId = props.detail.bookId
   console.log(bookId)
+
+  const is_login = localStorage.getItem("is_login");
+
   return (
     <React.Fragment>
       <Wrap>
@@ -16,7 +19,15 @@ const AudioBookList = (props) => {
         </span>
         <AudioCardSt1>
           <p>아직 오디오북 목록이 없네요! 오디오북을 요청해볼까요?</p>
-          <button onClick={() => {history.push(`/requestWrite/${bookId}`)}}>오디오북 요청하러가기</button>
+          <button
+            onClick={() => {
+              if(!is_login) {
+                window.alert("로그인 후 이용 가능합니다!");
+                return;
+              } else {
+                history.push(`/requestWrite/${bookId}`)
+              }
+            }}>오디오북 요청하러가기</button>
         </AudioCardSt1>
         <AudioCardSt>
           <ImgSt/>

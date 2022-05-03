@@ -17,7 +17,7 @@ const getUser = createAction(GET_USER, () => ({}));
 
 // initialState
 const initialState = {
-  user: [],
+  user : [],
   is_login: false,
 };
 
@@ -64,17 +64,6 @@ const loginDB = (email, password) => {
   };
 };
 
-// const loginCheckDB = () => {
-//   return function (dispatch, getState, { history }) {
-//     const username = localStorage.getItem("username");
-//     const tokenCheck = document.cookie;
-//     if (tokenCheck) {
-//       dispatch(login({ username: username }));
-//     } else {
-//       dispatch(logOut());
-//     }
-//   };
-// };
 
 // const loginCheckDB = () => {
 //   return function (dispatch, getState, { history }) {
@@ -120,7 +109,7 @@ export default handleActions(
   {
     [LOGIN]: (state, action) =>
       produce(state, (draft) => {
-        // setCookie("is_login", "success");
+        localStorage.setItem("is_login", "success");
         draft.user = action.payload.user;
         draft.is_login = true;
 
