@@ -11,15 +11,15 @@ const Main = () => {
 
   React.useEffect(() => {
     dispatch(getActions.getMainAC());
+    dispatch(getActions.getMainCategoryAC());
   }, []);
 
   const main = useSelector((state) => state.book.main);
+  const mainCategory = useSelector((state) => state.book.main_category);
 
-  const bestBook = main.BestBook;
-  const selfBook = main.self;
+  console.log(main)
+  console.log(mainCategory)
 
-  console.log("추천도서", bestBook)
-  console.log("자기계발", selfBook)
 
   return (
     <React.Fragment>
@@ -27,10 +27,10 @@ const Main = () => {
         <MainAdBanner/>
       </SliderWrap>
       <Wrap>
-        <MainBookList bestBook={bestBook}/>
+        <MainBookList main={main}/>
       </Wrap>
       <Wrap>
-        <MainCategoryBookList selfBook={selfBook}/>
+        <MainCategoryBookList mainCategory={mainCategory}/>
       </Wrap>
     </React.Fragment>
   )
