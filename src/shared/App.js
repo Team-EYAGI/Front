@@ -21,6 +21,7 @@ import RequestWrite from '../pages/RequestWrite';
 import Search from '../pages/Search';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import AudioModal from "../pages/AudioModal";
 
 function App() {
   return (
@@ -31,15 +32,13 @@ function App() {
         <Route path="/login" exact component={LogIn}/>
         <Route path="/signup" exact component={SignUp}/>
         <Route path="/audioPlay" exact component={AudioPlay}/>
-        <Route path="/audioPlay/:bookId" exact component={AudioPlay}/>
+        <Route path="/audioPlay/:bookId/:audioBookId" exact component={AudioPlay}/>
         <Route path="/audioWrite" exact component={AudioWrite}/>
-        <Route path="/audioWrite/:bookId" exact component={AudioWrite}/>
+        <Route path="/audioWrite/:category/:bookId" exact component={AudioWrite}/>
         <Route path="/book/" exact component={Book}/>
         <Route path="/book/:category" exact component={Book}/>
-        <Route
-          path="/bookDetail/:category/:bookId"
-          exact="exact"
-          component={BookDetail}/>
+        <Route path="/bookDetail/:category/:bookId" exact component={BookDetail}/>
+        <Route path="/audioModal/:bookId/:audiobookId" exact component={AudioModal}/>
         <Route path="/funding" exact component={Funding}/>
         <Route path="/fundingDetail" exact component={FundingDetail}/>
         <Route path="/fundingWrite" exact component={FundingWrite}/>

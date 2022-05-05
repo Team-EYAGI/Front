@@ -8,12 +8,12 @@ import { history } from '../redux/configureStore';
 const Request = () => {
   const dispatch = useDispatch();
 
+  const requestList = useSelector((state) => state.audio.request_list);
+  
   React.useEffect(() => {
     dispatch(requestActions.getRequestAC());
-  }, []);
+  }, [dispatch]);
 
-  const requestList = useSelector((state) => state.audio.request_list);
-  console.log(requestList)
 
   return (
     <React.Fragment>

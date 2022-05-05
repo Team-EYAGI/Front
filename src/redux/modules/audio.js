@@ -10,6 +10,7 @@ const EDIT_REQUEST = "EDIT_REQUEST";
 const DELETE_REQUEST = "DELETE_REQUEST";
 
 const ADD_AUDIO = "ADD_AUDIO";
+const GET_AUDIO = "GET_AUDIO";
 
 // 초기값
 const initialState = {
@@ -25,6 +26,8 @@ const editRequest = createAction(EDIT_REQUEST, (bookRequestId, request_list) => 
 const deleteRequest = createAction(DELETE_REQUEST, (bookRequestId) => ({bookRequestId}));
 
 const addAudio = createAction(ADD_AUDIO, (audio_list) => ({audio_list}));
+const getAudio = createAction(GET_AUDIO, (audio_list) => ({audio_list}));
+
 
 // 미들웨어
 
@@ -59,7 +62,7 @@ const addRequestAC = (bookId, title, contents) => {
     )
     .then((res) => {
       console.log("성공", res)
-      dispatch(addRequest(res.data))
+      history.replace(`/request`)
     })
     .catch(error => {
       console.log("error", error)
@@ -79,7 +82,8 @@ const editRequestAC = (bookRequestId, title, contents) => {
     )
     .then((res) => {
       console.log("수정완료!", res)
-      dispatch(editRequest(res.data))
+      // dispatch(editRequest(res.data))
+      history.replace(`/request`)
     })
     .catch(error => {
       console.log("error", error)
@@ -106,32 +110,53 @@ const deleteRequestAC = (bookRequestId) => {
 
 const addAudioAC = (payload) => {
   console.log(payload)
-  // let myToken = getCookie("Authorization")
+  let Token = getToken("Authorization");
+  let bookId = payload.bookId
+  let category = payload.category
   return function (dispatch, getState, {history}) {
     // formData 형식으로 이미지 전송
     const formData = new FormData();
-    formData.append("image", payload.file)
-    formData.append("comment",
+    formData.append("audio", payload.file)
+    formData.append("contents",
       new Blob([JSON.stringify(payload.information)], {
       type: "application/json",
     })
     )
 
     // console.log(formData)
-    axios.post(process.env.REACT_APP_BASE_URL + `book/detail/newaudio/{bookId}`, 
+    axios.post(process.env.REACT_APP_BASE_URL + `/book/detail/newAudio/${bookId}`, 
       formData,
     {headers:{ 
       "Content-Type": "multipart/form-data",
-      // 'Authorization' : `Bearer ${myToken}`
+      'Authorization' : `${Token}`
     }}
     )
     .then((res) => {
       console.log("오디오 등록 완료", res)
       // dispatch(uploadImg({userId, title, comment}))
-      // history.replace(`/detail/${payload.itemId}`)
+      history.replace(`/bookdetail/${category}/${bookId}`);
     })
     .catch(error => {
       console.log("서버에러", error)
+    })
+  }
+}
+
+const getAudioAC = (audioBookId) => {
+  let Token = getToken("Authorization");
+  // console.log(Token)
+  return function (dispatch, getState, {history}) {
+    axios.get(process.env.REACT_APP_BASE_URL + `/audio/detail/${audioBookId}`,
+    {headers: { 'Authorization' : `${Token}`}}
+    ,
+    )
+    .then((res) => {
+      console.log("오디오 상세 리스트", res)
+      dispatch(getAudio(res.data))
+
+    })
+    .catch(error => {
+      console.log("error", error)
     })
   }
 }
@@ -144,19 +169,23 @@ export default handleActions(
     produce(state, (draft) => {
       draft.request_list = action.payload.request_list;
     }),
-    [ADD_REQUEST]: (state, action) =>
-    produce(state, (draft) => {
-      draft.request_add = action.payload.request_add;
-    }),
-    [EDIT_REQUEST]: (state, action) =>
-    produce(state, (draft) => {
-      draft.request_add = action.payload.request_list;
-    }),
+    // [ADD_REQUEST]: (state, action) =>
+    // produce(state, (draft) => {
+    //   draft.request_add = action.payload.request_add;
+    // }),
+    // [EDIT_REQUEST]: (state, action) =>
+    // produce(state, (draft) => {
+    //   draft.request_add = action.payload.request_list;
+    // }),
     [DELETE_REQUEST]: (state, action) =>
       produce(state, (draft) => {
         console.log(action.payload)
         console.log(action.payload.bookRequestId)
         draft.request_list = draft.request_list.filter((p) =>  p.bookRequestId !== action.payload.bookRequestId);
+      }),
+    [GET_AUDIO]: (state, action) =>
+      produce(state, (draft) => {
+        draft.audio_list = action.payload.audio_list;
       }),
   },
   initialState
@@ -170,11 +199,13 @@ const actionCreators = {
   editRequest,
   deleteRequest,
   addAudio,
+  getAudio,
   getRequestAC,
   addRequestAC,
   editRequestAC,
   deleteRequestAC,
   addAudioAC,
+  getAudioAC,
 };
 
 export { actionCreators };

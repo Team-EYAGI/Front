@@ -5,7 +5,7 @@ import 'react-h5-audio-player/lib/styles.css';
 import {BsFillPlayFill} from 'react-icons/bs';
 import AudioReview from '../components/AudioReview';
 import { useDispatch, useSelector } from 'react-redux';
-import { actionCreators as getActions } from "../redux/modules/book";
+import { actionCreators as getActions } from "../redux/modules/audio";
 
 
 import music1 from '../music/미리듣기 (online-audio-converter.com).wav';
@@ -14,51 +14,45 @@ import { useParams } from 'react-router-dom';
 
 const AudioPlay = (props) => {
   const params = useParams();
+  // console.log(params)
   const bookId = params.bookId
+  const audioBookId = params.audioBookId
 
   const dispatch = useDispatch();
-  // dispatch(getActions.getBookDetailAC(84));
 
-  // const detail = useSelector((state) => state.book.detail_book);
-  // console.log("받은 데이타", detail) 
+  const audioDetail = useSelector((state) => state.audio.audio_list);
+  console.log("받은 데이타", audioDetail) 
+
+  const playList = audioDetail.audioFileDtoList
+  console.log(playList)
 
   // const [hello, setHello] = React.useState(detail.bookImg);
   // console.log("데이터 담기나?", hello)
 
-  const song = [music1, "https://image8292.s3.ap-northeast-2.amazonaws.com/audioPreview/6fcceb46-8243-4abb-8b0e-ac76544db800.wav", 'https://image8292.s3.ap-northeast-2.amazonaws.com/audio/aa9a17e7-21f2-49ca-83c8-b25afda16a23.wav']
+  const song = [music1, "https://image8292.s3.ap-northeast-2.amazonaws.com/audio/13238855-f56f-4885-96aa-2c923eca85ff.wav", "https://image8292.s3.ap-northeast-2.amazonaws.com/audio/608889b2-b7db-4f9b-85aa-00bf20f91e53.wav"]
   // 막혀 있는 부분
   const [music, setMusic] = React.useState(song);
-  const [play, setPlay] = React.useState(song[0]);
-  console.log("음악", music)
+  const [play, setPlay] = React.useState("");
+  // console.log("음악", play)
 
   React.useEffect(() => {
-    dispatch(getActions.getBookDetailAC(bookId));
+    dispatch(getActions.getAudioAC(audioBookId));
   }, []);
 
   // 오디오 플레이어에 접근하기 위한 훅
   const playBtnClick = useRef();
 
-  // const play = () => {
-  //   // console.log(music)
-    
-  //   // 오디오 플레이어에 접근해서 어떻게 실행을 시켜줘야하는지 고민 필요...
-  //   // src부분을 어떻게 갈아끼워야할까...?
-  //   // console.log(playBtnClick.current.audio.current.src)
-  // }
-  
-  // console.log(playBtnClick)
-
     return (
     <React.Fragment>
       <HeaderSt>
-          책 제목 > 오디오 듣기
+          {audioDetail.title} > 오디오 듣기
       </HeaderSt>
       <Wrap>
         <Player>
           <PlayerImg>
             <Img>
               <img style={{ width: "100%", height: "100%"}}
-                src='http://image.kyobobook.co.kr/images/book/large/232/l9788901232232.jpg'
+                src={audioDetail.bookImg}
               />
             </Img>
             <AudioPlayer
@@ -74,13 +68,12 @@ const AudioPlay = (props) => {
               // other props here
             />
           </PlayerImg>
-          <h3>책 제목입니다.</h3>
-          <h4>저자 : 저자 이름</h4>
+          <h3>{audioDetail.title}</h3>
+          <h4>저자 : {audioDetail.author}</h4>
           {/* <h5>크리에이터 : 크리에이터 이름</h5> */}
-          <h3>크리에이터</h3>
+          <h3>{audioDetail.sellerName}</h3>
           <div id='creator'>
-            <button>1</button>
-            <button>2</button>
+            {audioDetail.audioInfo}
           </div>
         </Player>
         <ListBox>
@@ -91,12 +84,12 @@ const AudioPlay = (props) => {
           <div id='listbox'>
 
           {/* 플레이리스트 목록 map */}
-          {song && song.map((item, idx) => (
+          {playList && playList.map((item, idx) => (
             <div key={idx} id='list'>
               <h4>{idx + 1}</h4>
-              <h3>{item}</h3>
+              <h3>{item.s3FileName}</h3>
               <PlayerSt onClick={() => {
-                setPlay(`${item}`)
+                setPlay(`${item.s3FileName}`)
                 console.log("paly상태", play)}}>
                 <BsFillPlayFill id='playbtn'/>
               </PlayerSt>
@@ -267,6 +260,23 @@ const ListBox = styled.div`
     width: 708px;
     height: 780px;
 
+    overflow-y: scroll;
+    ::-webkit-scrollbar {
+    /* 세로 스크롤 넓이 */
+    width: 8px;
+
+    /* 가로 스크롤 높이 */
+    height: 8px;
+
+    border-radius: 6px;
+    background: black;
+    /* background: rgba(255, 255, 255, 0.4); */
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 6px;
+    }
+
     padding: 44px 0px;
 
     border: 1px solid gray;
@@ -290,6 +300,9 @@ const ListBox = styled.div`
       }
     }
   }
+
+  #listbox::-webkit-scrollbar { width: 10px; }
+
 `
 
 const PlayerSt = styled.div`

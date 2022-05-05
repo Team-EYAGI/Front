@@ -39,18 +39,19 @@ const loginDB = (email, password) => {
         setToken(token);
 
         const DecodedToken = jwtDecode(token);
-        console.log(DecodedToken);
-        console.log(DecodedToken.sub);
+        // console.log(DecodedToken);
+        // console.log(DecodedToken.sub);
 
         localStorage.setItem("email", email);
-        localStorage.setItem("username", DecodedToken.sub);
+        localStorage.setItem("username", DecodedToken.USER_NIK);
+        localStorage.setItem("seller", DecodedToken.USER_ROLE);
 
         dispatch(
           login({
             is_login: true,
 
             email: email,
-            username: DecodedToken.sub,
+            username: DecodedToken.USER_NIK,
             //위치불확실 콘솔찍어서 확인
           })
         );

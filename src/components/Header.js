@@ -46,9 +46,9 @@ const Header = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid position="relative" margin="auto" bg="lightgray" is_center width="1920px">
+      <Grid position="relative" margin="auto" bg="lightgray" is_center width="100%">
         <BottomSt>
-          <Grid width="1000px" is_left margin= "0px 20px">
+          <Grid width="100%" is_left margin= "0px 20px">
             {/* <BsList size="25px" style={{ margin: "5px 20px 0px 20px" }} /> */}
             <li onClick={() => {history.push(`/book/자기계발`);}}>카테고리별 도서</li>
             <li onClick={() => {history.push('/funding')}}>오디오 펀딩</li>
@@ -74,10 +74,6 @@ const Header = (props) => {
         </Grid>
         <Grid position="relative" width="200px" margin="0px" padding="0px">
           <Grid is_center>
-            {/* <Text
-              size="20px"
-              onClick={() => {history.push('/signup')}}
-              >회원가입</Text> */}
             <Text 
               size="20px"
               margin="0px 10px 0px 0px"
@@ -87,7 +83,7 @@ const Header = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid position="relative" margin="auto" bg="lightgray" is_center width="1920px">
+      <Grid position="relative" margin="auto" bg="lightgray" is_center width="100%">
         <BottomSt>
           <Grid width="1000px" is_left margin= "0px 20px">
             {/* <BsList size="25px" style={{ margin: "5px 20px 0px 20px" }} /> */}
@@ -116,6 +112,7 @@ const BottomSt = styled.ul`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* background-color: yellow; */
 
   padding: 0px;
   padding-bottom: 2px;
