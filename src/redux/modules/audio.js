@@ -38,8 +38,8 @@ const getAudio = createAction(GET_AUDIO, (audio_list) => ({ audio_list }));
 
 const getReview = createAction(GET_REVIEW, (review_list) => ({ review_list }));
 const addReview = createAction(ADD_REVIEW, (review_add) => ({ review_add }));
-const editReview = createAction(EDIT_REVIEW, (newCommentId, review_list) => ({ newCommentId, review_list }));
-const deleteReview = createAction(DELETE_REVIEW, (newCommentId) => ({ newCommentId }));
+const editReview = createAction(EDIT_REVIEW, (commentId, review_list) => ({ commentId, review_list }));
+const deleteReview = createAction(DELETE_REVIEW, (commentId) => ({ commentId }));
 
 
 // 미들웨어
@@ -65,7 +65,8 @@ const getRequestAC = () => {
 
 // 오디오북 요청 추가
 const addRequestAC = (bookId, title, contents) => {
-  console.log(bookId)
+  // console.log(bookId)
+
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     axios.post(process.env.REACT_APP_BASE_URL + `/book/${bookId}/request/new`, {
@@ -144,7 +145,7 @@ const addAudioAC = (payload) => {
     for (let key of formData.keys()) { console.log(key); }
     // FormData의 value 확인
     for (let value of formData.values()) { console.log(value); }
-    
+
     axios.post(process.env.REACT_APP_BASE_URL + `/book/detail/newAudio/${bookId}`,
       formData,
       {
@@ -229,44 +230,47 @@ const addReviewAC = (category, bookId, audioBookId, title, content) => {
 }
 
 // 오디오북 후기 수정
-// const editReviewAC = () => {
-//   console.log("수정하기준비", bookRequestId)
-//   let Token = getToken("Authorization");
-//   return function (dispatch, getState, {history}) {
-//     axios.put(process.env.REACT_APP_BASE_URL + `/book/request/edit/${bookRequestId}`, {
-//       title: title,
-//       contents: contents,
-//     },
-//     {headers: { 'Authorization' : `${Token}`}}
-//     )
-//     .then((res) => {
-//       console.log("수정완료!", res)
-//       // dispatch(editRequest(res.data))
-//       history.replace(`/request`)
-//     })
-//     .catch(error => {
-//       console.log("error", error)
-//     })
-//   }
-// }
+const editReviewAC = (category, bookId, audioBookId, title, content, commentId) => {
+  console.log("수정하기준비", commentId)
+  console.log(category)
+  console.log(bookId)
+  console.log(audioBookId)
+  console.log(commentId)
+  let Token = getToken("Authorization");
+  return function (dispatch, getState, { history }) {
+    axios.put(process.env.REACT_APP_BASE_URL + `/audio/detail/comment/edit/${commentId}`, {
+      title: title,
+      content: content,
+    },
+      { headers: { 'Authorization': `${Token}` } }
+    )
+      .then((res) => {
+        console.log("성공", res)
+        history.replace(`/audioPlay/${category}/${bookId}/${audioBookId}`)
+      })
+      .catch(error => {
+        console.log("error", error)
+      })
+  }
+}
 
-// // 오디오북 후기 삭제
-// const deleteReviewAC = () => {
-//   console.log("삭제준비완료", bookRequestId)
-//   let Token = getToken("Authorization");
-//   return function (dispatch, getState, {history}) {
-//     axios.delete(process.env.REACT_APP_BASE_URL + `/book/request/remove/${bookRequestId}`, 
-//     {headers: { 'Authorization' : `${Token}`}},
-//     )
-//     .then((res) => {
-//       console.log("삭제완료", res)
-//       dispatch(deleteRequest(bookRequestId))
-//     })
-//     .catch(error => {
-//       console.log("error", error)
-//     })
-//   }
-// }
+// 오디오북 후기 삭제
+const deleteReviewAC = (commentId) => {
+  console.log("삭제준비완료", commentId)
+  let Token = getToken("Authorization");
+  return function (dispatch, getState, { history }) {
+    axios.delete(process.env.REACT_APP_BASE_URL + `/audio/detail/comment/remove/${commentId}`,
+      { headers: { 'Authorization': `${Token}` } },
+    )
+      .then((res) => {
+        console.log("삭제완료", res)
+        dispatch(deleteReview(commentId))
+      })
+      .catch(error => {
+        console.log("error", error)
+      })
+  }
+}
 
 
 // 리듀서
@@ -299,6 +303,10 @@ export default handleActions(
       produce(state, (draft) => {
         draft.review_list = action.payload.review_list;
       }),
+    [DELETE_REVIEW]: (state, action) =>
+      produce(state, (draft) => {
+        draft.review_list = draft.review_list.filter((p) => p.commentId !== action.payload.commentId);
+      }),
   },
   initialState
 );
@@ -324,8 +332,8 @@ const actionCreators = {
   getAudioAC,
   getReviewAC,
   addReviewAC,
-  // editReviewAC,
-  // deleteReviewAC,
+  editReviewAC,
+  deleteReviewAC,
 };
 
 export { actionCreators };

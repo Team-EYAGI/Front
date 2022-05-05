@@ -7,6 +7,8 @@ import { connectRouter } from "connected-react-router";
 import User from "./modules/user";
 import Book from "./modules/book";
 import Audio from "./modules/audio";
+import Search from "./modules/search";
+import Fund from "./modules/fund";
 
 // history를 페이지에서 편하게 사용할 수 있도록 준비
 export const history = createBrowserHistory();
@@ -15,6 +17,8 @@ const rootReducer = combineReducers({
   user: User,
   book: Book,
   audio : Audio,
+  search : Search,
+  fund : Fund,
   router: connectRouter(history),
 });
 

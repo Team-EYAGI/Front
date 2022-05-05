@@ -9,7 +9,7 @@ import { actionCreators as getActions } from "../redux/modules/book";
 const BookDetail = () => {
   const dispatch = useDispatch();
   const params = useParams();
-  console.log(params)
+  // console.log(params)
   const bookId = params.bookId
   const category = params.category
   // console.log("북아이디",bookId)
@@ -19,9 +19,9 @@ const BookDetail = () => {
   const seller = localStorage.getItem("seller");
   
   const detail = useSelector((state) => state.book.detail_book);
-  console.log("책 상세", detail)
-  console.log("책 상세", detail.audioPreDtoList)
-  console.log("제목", detail.title)
+  // console.log("책 상세", detail)
+  // console.log("책 상세", detail.audioPreDtoList)
+  // console.log("제목", detail.title)
 
   React.useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));

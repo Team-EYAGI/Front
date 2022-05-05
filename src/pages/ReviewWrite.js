@@ -5,28 +5,38 @@ import AudioPlayer from "react-h5-audio-player";
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as getActions } from "../redux/modules/book";
-import { actionCreators as addActions } from "../redux/modules/audio";
-
+import { actionCreators as reviewActions } from "../redux/modules/audio";
+import { useBeforeunload } from "react-beforeunload";
 
 
 const ReviewWirte = (props) => {
 
   const dispatch = useDispatch();
 
+  // 새로고침 경고 알럿
+  useBeforeunload((event) => event.preventDefault());
+
   const params = useParams();
   console.log(params)
   const category = params.category;
   const bookId = params.bookId;
   const audioBookId = params.audioBookId;
-  const newCommentId = params.newCommentId;
+  const commentId = params.commentId;
+  console.log(commentId)
 
+  const audioReview = useSelector((state) => state.audio.review_list);
+  console.log(audioReview)
+
+  const is_edit = commentId ? true : false;
+
+  let _review = is_edit ? audioReview.find((p) => p.commentId == commentId) : null;
+  console.log(_review)
+  
   // 로그인한 사용자인지 확인
   const is_login = localStorage.getItem("is_login");
 
-  const is_edit = newCommentId ? true : false;
-
-  const [title, setTitle] = React.useState(is_edit ? "요청 이유를 수정해주세요" : "");
-  const [content, setContent] = React.useState(is_edit ? "요청 이유를 수정해주세요" : "");
+  const [title, setTitle] = React.useState(_review ? _review.title : "");
+  const [content, setContent] = React.useState(_review ? _review.content : "");
 
   return (
     <ModalBack>
@@ -39,6 +49,7 @@ const ReviewWirte = (props) => {
         <div>
           <input
             type="text"
+            defaultValue={title}
             placeholder="제목"
             onChange={(e) => {
               setTitle(e.target.value)
@@ -46,6 +57,7 @@ const ReviewWirte = (props) => {
           />
           <input
             type="text"
+            defaultValue={content}
             placeholder="내용"
             onChange={(e) => {
               setContent(e.target.value)
@@ -53,15 +65,31 @@ const ReviewWirte = (props) => {
           />
         </div>
         <div>
-          <button
-            onClick={() => {
-              dispatch(addActions.addReviewAC(
-                category,
-                bookId,
-                audioBookId,
-                title,
-                content));
-            }}>후기 등록</button>
+          {is_edit ?
+            <button
+              onClick={() => {
+                dispatch(reviewActions.editReviewAC(
+                  category,
+                  bookId,
+                  audioBookId,
+                  title,
+                  content,
+                  commentId,
+                  ));
+              }}>후기 수정</button>
+            :
+            <button
+              onClick={() => {
+                dispatch(reviewActions.addReviewAC(
+                  category,
+                  bookId,
+                  audioBookId,
+                  title,
+                  content,
+                  ));
+              }}>후기 등록</button>
+          }
+
         </div>
       </ModalBox>
     </ModalBack>
