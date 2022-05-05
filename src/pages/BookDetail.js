@@ -17,7 +17,7 @@ const BookDetail = () => {
   // 로그인 확인과 셀러인지 아닌지를 확인하기 위함
   const is_login = localStorage.getItem("is_login");
   const seller = localStorage.getItem("seller");
-  
+
   const detail = useSelector((state) => state.book.detail_book);
   // console.log("책 상세", detail)
   // console.log("책 상세", detail.audioPreDtoList)
@@ -33,13 +33,13 @@ const BookDetail = () => {
         <HeaderSt>
           <p>{detail.title}</p>
           <span>{detail.author}</span>
-          
+
         </HeaderSt>
         <BookInfoSt>
           <ImgSt>
             <div id='img_wrap'>
               <div id='img'>
-                <img src={detail.bookImg}/>
+                <img src={detail.bookImg} />
               </div>
             </div>
           </ImgSt>
@@ -51,17 +51,27 @@ const BookDetail = () => {
             <div>
               {seller === "ROLE_SELLER" ?
                 <>
-                  <button id="hello">펀딩 등록하기</button>
-                  <button id="hi" onClick={() => {
-                    history.push(`/audioWrite/${category}/${bookId}`)
-                  }}>내 오디오 등록하기</button>
+                  <button
+                    id="hello"
+                    onClick={() => {
+                      history.push(`/fundingWrite/${bookId}`)
+                    }}>
+                    펀딩 등록하기
+                  </button>
+                  <button
+                    id="hi"
+                    onClick={() => {
+                      history.push(`/audioWrite/${category}/${bookId}`)
+                    }}>
+                    내 오디오 등록하기
+                  </button>
                 </>
                 :
-                null            
+                null
               }
               <button
-                onClick={()=> {
-                  if(!is_login) {
+                onClick={() => {
+                  if (!is_login) {
                     window.alert("로그인 후 이용 가능합니다!");
                     return;
                   } else {
@@ -83,7 +93,7 @@ const BookDetail = () => {
           </div>
         </BookSumSt>
         <AudioSt>
-          <AudioBookList detail={detail}/>
+          <AudioBookList detail={detail} />
         </AudioSt>
       </Wrap>
     </React.Fragment>

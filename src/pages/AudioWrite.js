@@ -2,7 +2,6 @@ import React, { useRef } from 'react'
 import styled from 'styled-components';
 import { actionCreators as addActions } from "../redux/modules/audio";
 import { actionCreators as getActions } from "../redux/modules/book";
-import music2 from '../music/listen.mp3'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
