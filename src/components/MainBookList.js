@@ -15,8 +15,8 @@ import "swiper/css/pagination";
 import "../styles/slide.css";
 
 const BookList = (props) => {
-  console.log("메인 프롭스", props.bestBook)
-  const bookList = props.bestBook
+  console.log("메인 프롭스", props.main)
+  const bookList = props.main
 
   return (
     <React.Fragment>
