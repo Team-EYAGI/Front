@@ -1,22 +1,27 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import axios from "axios";
+import { getToken } from "../../shared/Token";
 
 // action
 const GET_FUND = "GET_FUND";
+const ADD_FUND = "ADD_REQUEST";
 
 // 초기값
 const initialState = {
-  fund : [],
+  fund_list : [],
+  fund_add : [],
 };
 
 // action creater
-const getFund = createAction(GET_FUND, (key) => ({key}));
+const getFunding = createAction(GET_FUND, (fund_list) => ({fund_list}));
+const addFunding = createAction(ADD_FUND, (fund_add) => ({fund_add}));
 
-// --------------------middleware---------------------------
+
+// 미들웨어
 
 // 펀딩페이지 가져오기
-const getFunding = () => {
+const getFundingAC = () => {
   return function (dispatch, getState, {history}) {
     axios.get(process.env.REACT_APP_BASE_URL + `/fund`, {
 
@@ -25,7 +30,7 @@ const getFunding = () => {
     )
     .then((res) => {
       console.log("펀딩리스트", res)
-      dispatch(getFund(res.data))
+      dispatch(getFunding(res.data))
 
     })
     .catch(error => {
@@ -34,12 +39,58 @@ const getFunding = () => {
   }
 }
 
-//---------------reducer---------------
+
+// 오디오북 파일 추가
+const addFundingAC = (payload) => {
+  console.log(payload)
+  let Token = getToken("Authorization");
+  let bookId = payload.bookId
+  return function (dispatch, getState, { history }) {
+    // formData 형식으로 이미지 전송
+    const formData = new FormData();
+    formData.append("file", payload.file)
+    formData.append("information",
+      new Blob([JSON.stringify(payload.information)], {
+        type: "application/json",
+      })
+    )
+
+    // FormData의 key 확인
+    for (let key of formData.keys()) { console.log(key); }
+    // FormData의 value 확인
+    for (let value of formData.values()) { console.log(value); }
+
+    axios.post(process.env.REACT_APP_BASE_URL + `/fund/new/${bookId}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          'Authorization': `${Token}`
+        }
+      }
+    )
+      .then((res) => {
+        console.log("펀딩 등록 완료", res)
+        // dispatch(uploadImg({userId, title, comment}))
+        history.replace(`/funding`);
+      })
+      .catch(error => {
+        console.log("서버에러", error)
+      })
+  }
+}
+
+
+//리듀서
 export default handleActions(
   {
     [GET_FUND]: (state, action) =>
     produce(state, (draft) => {
-      draft.fund = action.payload.fund;
+      draft.fund_list = action.payload.fund_list;
+    }),
+    [ADD_FUND]: (state, action) =>
+    produce(state, (draft) => {
+      draft.fund_add = action.payload.fund_add;
     }),
   },
   initialState
@@ -48,7 +99,8 @@ export default handleActions(
 
 const actionCreators = {
 // export 할 것들
-  getFund,
+getFundingAC,
+addFundingAC,
 };
 
 export { actionCreators };
