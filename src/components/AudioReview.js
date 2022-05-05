@@ -1,87 +1,75 @@
 import React from 'react';
 import styled from 'styled-components';
+import { history } from '../redux/configureStore';
+import { Text } from '../elements/Index';
 import { BsFillPlayFill } from "react-icons/bs";
+import { useParams } from 'react-router-dom';
 
 const AudioReview = (props) => {
+
+  console.log("오디오 리뷰 아이디 받아야함", props.item)
+
+  const params = useParams();
+  // console.log(params)
+  const bookId = params.bookId
+  const audioBookId = params.audioBookId
+  const category = params.category
+
   return (
     <React.Fragment>
       <ListBox>
-          <div id='listname'>
-            <h3>후기</h3>
-          </div>
-          <div>
-            카드 목록
-          </div>
+        <div id="listbox">
+          <button onClick={() => {history.push(`/reviewWrite/${category}/${bookId}/${audioBookId}/{}`)}}>수정</button>
+          <button onClick={() => {}}>X</button>
+          <Body>
+            <h3 style={{ fontSize: "16px" }}>
+              {props.item.username}
+            </h3>
+            <span>
+              {props.item.title}
+            </span>
+            <hr/>
+            <Text margin="0px">{props.item.content}</Text>
+          </Body>
+        </div>
+
       </ListBox>
     </React.Fragment>
   )
 }
 
 const ListBox = styled.div`
-  width: 1310px;
-  background-color: yellow;
-
-  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
 
   font-family: noto-sans-cjk-kr, sans-serif;
   font-weight: 400;
   font-style: normal;
 
-  #listname {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  border: 1px solid gray;
+  border-radius: 10px;
 
-    h3 {
-      font-size: 25px;
-      margin-right: 10px;
-    }
-
-    span {
-      font-size: 18px;
-      color: #707070;
-    }
-  }
+  margin: 10px;
 
   #listbox {
-    width: 708px;
-    height: 652px;
-
-    padding: 44px 46px;
-
-    border: 1px solid gray;
-    border-radius: 20px;
-
-    #list {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      
-      margin-bottom: 10px;
-
-      h3 {
-        font-size: 20px;
-      }
-    }
+    margin: 10px;
+    /* background-color: rebeccapurple; */
   }
 `
 
-const PlayerSt = styled.div`
-  background-color: #EAEAEA;
 
-  width: 50px;
-  height: 50px;
+const Body = styled.div`
+  width: 220px;
   
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  
-  border-radius: 20px;
-  
-  cursor: pointer;
+  h3 {
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+  }
+
+  span {
+    /* background-color: red; */
+  }
 `
-
 
 export default AudioReview;

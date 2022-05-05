@@ -1,77 +1,74 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import AudioReview from '../components/AudioReview';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
-import {BsFillPlayFill} from 'react-icons/bs';
-import AudioReview from '../components/AudioReview';
+import { BsFillPlayFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as getActions } from "../redux/modules/audio";
-
-
-import music1 from '../music/미리듣기 (online-audio-converter.com).wav';
-import music2 from '../music/어반 자카파(urban zakapa)-커피를 마시고 (reprise).mp3';
+import { history } from '../redux/configureStore';
+import { useBeforeunload } from "react-beforeunload";
 import { useParams } from 'react-router-dom';
 
 const AudioPlay = (props) => {
-  const params = useParams();
-  // console.log(params)
-  const bookId = params.bookId
-  const audioBookId = params.audioBookId
 
   const dispatch = useDispatch();
 
+  // 새로고침 경고 알럿
+  useBeforeunload((event) => event.preventDefault());
+
+  const params = useParams();
+  const bookId = params.bookId
+  const audioBookId = params.audioBookId
+  const category = params.category
+
+
+  // 오디오북 재생목록 불러오기
   const audioDetail = useSelector((state) => state.audio.audio_list);
-  console.log("받은 데이타", audioDetail) 
-
   const playList = audioDetail.audioFileDtoList
-  console.log(playList)
+  // console.log("받은 데이타", audioDetail) 
+  // console.log(playList)
 
-  // const [hello, setHello] = React.useState(detail.bookImg);
-  // console.log("데이터 담기나?", hello)
+  // 오디오북 리뷰 불러오기
+  const audioReview = useSelector((state) => state.audio.review_list);
+  console.log("리뷰 데이타", audioReview)
 
-  const song = [music1, "https://image8292.s3.ap-northeast-2.amazonaws.com/audio/13238855-f56f-4885-96aa-2c923eca85ff.wav", "https://image8292.s3.ap-northeast-2.amazonaws.com/audio/608889b2-b7db-4f9b-85aa-00bf20f91e53.wav"]
-  // 막혀 있는 부분
-  const [music, setMusic] = React.useState(song);
   const [play, setPlay] = React.useState("");
-  // console.log("음악", play)
 
   React.useEffect(() => {
     dispatch(getActions.getAudioAC(audioBookId));
+    dispatch(getActions.getReviewAC(audioBookId));
   }, []);
 
-  // 오디오 플레이어에 접근하기 위한 훅
-  const playBtnClick = useRef();
-
-    return (
+  return (
     <React.Fragment>
       <HeaderSt>
-          {audioDetail.title} > 오디오 듣기
+        {audioDetail.title} > 오디오 듣기
       </HeaderSt>
       <Wrap>
         <Player>
           <PlayerImg>
             <Img>
-              <img style={{ width: "100%", height: "100%"}}
+              <img style={{ width: "100%", height: "100%" }}
                 src={audioDetail.bookImg}
               />
             </Img>
             <AudioPlayer
-              ref={playBtnClick}
-              className='audio' 
-              autoPlay={false} 
+              showJumpControls={false}
+              className='audio'
+              autoPlay={false}
               src={play}
               volume={1}
               // progressUpdateInterval            
               // onListen={()=>{}}
               // ListenInterval
               onPlay={e => console.log("onPlay")}
-              // other props here
+            // other props here
             />
           </PlayerImg>
           <h3>{audioDetail.title}</h3>
           <h4>저자 : {audioDetail.author}</h4>
-          {/* <h5>크리에이터 : 크리에이터 이름</h5> */}
-          <h3>{audioDetail.sellerName}</h3>
+          <h3>크리에이터 : {audioDetail.sellerName}</h3>
           <div id='creator'>
             {audioDetail.audioInfo}
           </div>
@@ -83,43 +80,61 @@ const AudioPlay = (props) => {
           </div>
           <div id='listbox'>
 
-          {/* 플레이리스트 목록 map */}
-          {playList && playList.map((item, idx) => (
-            <div key={idx} id='list'>
-              <h4>{idx + 1}</h4>
-              <h3>{item.s3FileName}</h3>
-              <PlayerSt onClick={() => {
-                setPlay(`${item.s3FileName}`)
-                console.log("paly상태", play)}}>
-                <BsFillPlayFill id='playbtn'/>
-              </PlayerSt>
-            </div>
-          ))}
+            {/* 플레이리스트 목록 map */}
+            {playList && playList.map((item, idx) => (
+              <div key={idx} id='list'>
+                <h4>{idx + 1}</h4>
+                <h3>Chapter{idx + 1}</h3>
+                <PlayerSt onClick={() => {
+                  setPlay(`${item.s3FileName}`)
+                  console.log("paly상태", play)
+                }}>
+                  <BsFillPlayFill id='playbtn' />
+                </PlayerSt>
+              </div>
+            ))}
           </div>
-      </ListBox>
+        </ListBox>
       </Wrap>
       <ReviewBox>
-        <AudioReview/>
+        <div id='reviewbox'>
+          <h3>후기</h3>
+          <span
+            onClick={() => {
+              history.push(`/reviewWrite/${category}/${bookId}/${audioBookId}`)
+            }}
+          >후기 등록하기</span>
+        </div>
+        {audioReview.length === 0 ?
+          <AudioCardSt>
+            후기가 없어요! 후기를 등록해주세요!
+          </AudioCardSt>
+          :
+          null
+        }
+        <div id='reviewcard'>
+          {audioReview && audioReview.map((item, idx) =>
+            <AudioReview item={item} key={idx} />
+          )}
+        </div>
       </ReviewBox>
 
     </React.Fragment>
-    ) }
-    
-  const Wrap = styled.div `
+  )
+}
+
+const Wrap = styled.div`
     width: 1440px;
     position: relative;
     margin: 0 auto;
     display: flex;
-    background-color: lightblue;
+    /* background-color: lightblue; */
   `
-  
-  const HeaderSt = styled.div `
+
+const HeaderSt = styled.div`
     width: 1440px;
     height: 27px;
-    /* background-color: red; */
-    display: flex;
-    justify-content: left;
-    align-items: center;
+
     margin: 0 auto;
     margin-top: 81px;
     margin-bottom: 18px;
@@ -129,32 +144,32 @@ const AudioPlay = (props) => {
     font-style: normal;
     font-size: 18px;
     `
-    
-    const Player = styled.div`
+
+const Player = styled.div`
     width: 464px;
-    background-color: red;
+    /* background-color: red; */
     
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
     
     position: relative;
     padding-bottom: 30px;
+
     font-family: noto-sans-cjk-kr, sans-serif;
     font-weight: 400;
     font-style: normal;
 
     h3 {
       width: 464px;
-      float: left;
+      /* float: left; */
       margin: 27px 0px 16px 0px;
       font-size: 25 px;
     }
 
     h4 {
       width: 464px;
-      float: left;
+      /* float: left; */
       margin: 0px 0px 16px 0px;
       font-size: 16px;
       font-weight: 300;
@@ -162,7 +177,7 @@ const AudioPlay = (props) => {
 
     h5 {
       width: 464px;
-      float: left;
+      /* float: left; */
       margin: 0px 0px 16px 0px;
       font-size: 16px;
       font-weight: 300;
@@ -183,7 +198,7 @@ const AudioPlay = (props) => {
 
       div {
         background : "white";
-          color : white;
+        color : white;
       }
 
       div.rhap_progress-filled {
@@ -196,15 +211,14 @@ const AudioPlay = (props) => {
     }
     `
 
-const PlayerImg = styled.div `
+const PlayerImg = styled.div`
   width: 464px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+
   position: relative;
   background-color: #F4F4F4;
   padding-bottom: 30px;
+
   font-family: noto-sans-cjk-kr, sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -215,14 +229,12 @@ const Img = styled.div`
 
   width: 268px;
   height: 340px;
+  
   margin: 0 auto;
   margin-top: 62px;
   margin-bottom: 30px;
+  
   position: relative;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 
   font-family: noto-sans-cjk-kr, sans-serif;
   font-weight: 400;
@@ -238,7 +250,7 @@ const ListBox = styled.div`
   font-weight: 400;
   font-style: normal;
 
-  background-color: red;
+  /* background-color: red; */
 
 
   #listname {
@@ -259,18 +271,19 @@ const ListBox = styled.div`
   #listbox {
     width: 708px;
     height: 780px;
+    
 
     overflow-y: scroll;
     ::-webkit-scrollbar {
-    /* 세로 스크롤 넓이 */
-    width: 8px;
+     /* 세로 스크롤 넓이 */  
+      width: 10px;
 
-    /* 가로 스크롤 높이 */
-    height: 8px;
+      /* 가로 스크롤 높이 */
+      height: 8px;
 
-    border-radius: 6px;
-    background: black;
-    /* background: rgba(255, 255, 255, 0.4); */
+      border-radius: 6px;
+      background: black;
+      background: rgba(255, 255, 255, 0.4);
     }
     ::-webkit-scrollbar-thumb {
       background-color: rgba(0, 0, 0, 0.3);
@@ -283,26 +296,34 @@ const ListBox = styled.div`
     border-radius: 20px;
 
     #list {
+      background-color: wheat;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
 
-      padding: 0px 46px;
+      padding: 0px 40px;
            
       margin-bottom: 10px;
+      margin-left: 10px;
+      margin-right: 10px;
+
+      border: 1px solid gray;
+      border-radius: 5px;
+
+      h4 {
+        width: 20px;
+        font-size: 25px;
+      }
 
       h3 {
-        width: 550px;
-        background-color: rebeccapurple;
+        width: 400px;
+        /* background-color: rebeccapurple; */
       
-        font-size: 20px;
+        font-size: 35px;
       }
     }
   }
-
-  #listbox::-webkit-scrollbar { width: 10px; }
-
 `
 
 const PlayerSt = styled.div`
@@ -322,20 +343,59 @@ const PlayerSt = styled.div`
 `
 
 const ReviewBox = styled.div`
-  background-color: green;
+  /* background-color: green; */
 
-  width: 1440px;
+  width: 1310px;
   margin: 0 auto;
-  /* height: 50px; */
+  
+  display: flex;
+  flex-direction: column;
+
+  /* border-radius: 20px; */
+
+  #reviewbox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    h3 {
+      font-size: 25px;
+      margin-right: 10px;
+    }
+
+    span {
+      font-size: 18px;
+      color: #707070;
+      cursor: pointer;
+    }
+  }
+
+  #reviewcard {
+    /* background-color: aqua; */
+    /* display: flex; */
+    flex-direction: row;
+    justify-content: left;
+
+    margin-bottom: 100px;
+    overflow-x: scroll;
+
+  }
+`
+
+const AudioCardSt = styled.div`
+  background-color: #F4F4F4;
+
+  width: 100%;
+  height: 100px;
   
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   
   border-radius: 20px;
-  
-  cursor: pointer;
+  padding: 43px 0px;
+  margin: 24px 0px;
 `
 
 export default AudioPlay;

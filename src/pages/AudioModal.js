@@ -5,29 +5,33 @@ import AudioPlayer from "react-h5-audio-player";
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as getActions } from "../redux/modules/book";
+import { useBeforeunload } from "react-beforeunload";
 
-
-
-// import CloseIcon from "@mui/icons-material/Close";
-// import ShareIcon from "@mui/icons-material/Share";
-// import { actionCreators as postActions } from "../redux/modules/post";
-
-// import { Text, Grid, Input, Button } from "../elements/index";
 
 const AudioModal = (props) => {
+
   const dispatch = useDispatch();
+
+  // 새로고침 경고 알럿
+  useBeforeunload((event) => event.preventDefault());
+
   const params = useParams();
-  // console.log(params)
   const bookId = params.bookId
-  // console.log("북아이디",bookId)
   const audioBookId = params.audiobookId
+  const category = params.category
+
+  // 로그인한 사용자인지 확인
+  const is_login = localStorage.getItem("is_login");
+
+  // 책 상세페이지 가져오기
   const detail = useSelector((state) => state.book.detail_book);
   console.log("디테일", detail)
-  const hello = detail.audioPreDtoList
 
-  const previewFile = hello.find((p) => p.audioBookId == audioBookId)
-  console.log(previewFile)
-  
+  // 책 상세페이지 속 오디오북 리스트(배열)를 가져옴
+  // 파람스의 audioBookId와 배열의 audioBookId가 같은 것을 찾아 preview에 넣어줌 
+  const files = detail.audioPreDtoList
+  const preview = files.find((p) => p.audioBookId == audioBookId)
+
   React.useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));
   }, []);
@@ -46,12 +50,15 @@ const AudioModal = (props) => {
               />
             </Img>
 
-            ddd
+            {detail.title}
+            {preview.audioBookId}번 오디오북
             <AudioPlayer
               className='audio' 
               autoPlay={false} 
-              src={previewFile.previewFile}
+              src={preview.previewFile}
               volume={1}
+              timeFormat={"mm:ss"}
+              defaultCurrentTime={"00:00"}
               // progressUpdateInterval            
               // onListen={()=>{}}
               // ListenInterval
@@ -63,7 +70,16 @@ const AudioModal = (props) => {
           {/* <Modal open={modalOpen} close={closeModal} /> */}
         </div>
         <div>
-          <button onClick={() => history.push(`/audioPlay/${bookId}/${audioBookId}`)}>더 듣기</button>
+          <button
+            onClick={() => {
+              if(!is_login) {
+                window.alert("로그인 후 이용 가능합니다!");
+                history.push(`/login`)
+                return;
+              } else {
+                history.push(`/audioPlay/${category}/${bookId}/${audioBookId}`)
+              }
+            }}>더 듣기</button>
         </div>
       </ModalBox>
     </ModalBack>

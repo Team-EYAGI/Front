@@ -22,6 +22,7 @@ import Search from '../pages/Search';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AudioModal from "../pages/AudioModal";
+import ReviewWirte from '../pages/ReviewWrite';
 
 function App() {
   return (
@@ -32,13 +33,13 @@ function App() {
         <Route path="/login" exact component={LogIn}/>
         <Route path="/signup" exact component={SignUp}/>
         <Route path="/audioPlay" exact component={AudioPlay}/>
-        <Route path="/audioPlay/:bookId/:audioBookId" exact component={AudioPlay}/>
+        <Route path="/audioPlay/:category/:bookId/:audioBookId" exact component={AudioPlay}/>
         <Route path="/audioWrite" exact component={AudioWrite}/>
         <Route path="/audioWrite/:category/:bookId" exact component={AudioWrite}/>
         <Route path="/book/" exact component={Book}/>
         <Route path="/book/:category" exact component={Book}/>
         <Route path="/bookDetail/:category/:bookId" exact component={BookDetail}/>
-        <Route path="/audioModal/:bookId/:audiobookId" exact component={AudioModal}/>
+        <Route path="/audioModal/:category/:bookId/:audiobookId" exact component={AudioModal}/>
         <Route path="/funding" exact component={Funding}/>
         <Route path="/fundingDetail" exact component={FundingDetail}/>
         <Route path="/fundingWrite" exact component={FundingWrite}/>
@@ -49,6 +50,9 @@ function App() {
         <Route path="/requestWrite/:bookId" exact component={RequestWrite}/>
         <Route path="/requestWrite/:bookId/:bookRequestId" exact component={RequestWrite}/>
         <Route path="/search" exact component={Search}/>
+        <Route path="/reviewWrite/:category/:bookId/:audioBookId" exact component={ReviewWirte}/>
+        <Route path="/reviewWrite/:category/:bookId/:audioBookId/:newCommentId" exact component={ReviewWirte}/>
+       <Footer/>
       </ConnectedRouter>
     </React.Fragment>
   );
