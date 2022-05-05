@@ -1,25 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Grid } from '../elements/Index';
 import { history } from '../redux/configureStore';
 import { IoHeart } from "react-icons/io5";
 import { BsFillPlayFill } from "react-icons/bs";
+import "../styles/modal.css"
+import AudioPlayer from "react-h5-audio-player";
+
+import music1 from '../music/미리듣기 (online-audio-converter.com).wav';
+import music2 from '../music/어반 자카파(urban zakapa)-커피를 마시고 (reprise).mp3';
 
 const AudioBookList = (props) => {
-  // console.log("오디오디테일", props)
+  
+  console.log("오디오디테일11", props.e)
   const bookId = props.detail.bookId
-  console.log(bookId)
+
+  const audioPreDtoList = props.detail.audioPreDtoList
+  console.log(audioPreDtoList)
 
   const is_login = localStorage.getItem("is_login");
 
   return (
     <React.Fragment>
       <Wrap>
-        <span>
+        <AudioCardSt1>
+        <span id="title">
           오디오북 목록
         </span>
-        <AudioCardSt1>
-          <p>아직 오디오북 목록이 없네요! 오디오북을 요청해볼까요?</p>
-          <button
+        <button
             onClick={() => {
               if(!is_login) {
                 window.alert("로그인 후 이용 가능합니다!");
@@ -27,38 +35,41 @@ const AudioBookList = (props) => {
               } else {
                 history.push(`/requestWrite/${bookId}`)
               }
-            }}>오디오북 요청하러가기</button>
+            }}>새 오디오북 요청하러가기</button>
         </AudioCardSt1>
-        <AudioCardSt>
+        {audioPreDtoList && audioPreDtoList.map((item, idx) => (
+          <AudioCardSt key={idx}>
           <ImgSt/>
-          <ContentSt>
-            <span>크리에이터 이름</span>
-            <span id='contents'>
-              내용이 들어간다?내용이 들어간다?내용이 들어간다?
-              내용이 들어간다?내용이 들어간다?내용이 들어간다?
-              내용이 들어간다?내용이 들어간다?내용이 들어간다?
-              내용이 들어간다?내용이 들어간다?내용이 들어간다?
-              내용이 들어간다?내용이 들어간다?내용이 들어간다?
-              내용이 들어간다?내용이 들어간다?내용이 들어간다?
-            </span>
-          </ContentSt>
-          <PlayerSt
+          <ContentSt
             onClick={()=> {
-              history.push(`/audioPlay/${bookId}`)
+              history.push(`/audioPlay/${bookId}/${item.audioBookId}`)
             }}
           >
+            <span id="name">{item.sellerName}</span>
+            <span id='contents'>
+              {item.contents}
+            </span>
+          </ContentSt>
+          <PlayerSt 
+            onClick={() => {
+              history.push(`/audioModal/${bookId}/${item.audioBookId}`)
+            }}
+            // onClick={openModal}  
+          >
             <BsFillPlayFill style={{width: "54px", height: "50px"}}/>
-            <span>click</span>
+            <span>01:00</span>
           </PlayerSt>
           <HeartSt>
             <IoHeart style={{width: "44px", height: "40px"}}/>
-            <span>1</span>
+            <span>{item.totalHeart}</span>
           </HeartSt>
         </AudioCardSt>
+        ))}
+  
         <AudioCardSt>
           <ImgSt/>
           <ContentSt>
-            <span>크리에이터 이름</span>
+            <span id="name">크리에이터 이름</span>
             <span id='contents'>
               내용이 들어간다?내용이 들어간다?내용이 들어간다?
               내용이 들어간다?내용이 들어간다?내용이 들어간다?
@@ -66,6 +77,11 @@ const AudioBookList = (props) => {
               내용이 들어간다?내용이 들어간다?내용이 들어간다?
               내용이 들어간다?내용이 들어간다?내용이 들어간다?
               내용이 들어간다?내용이 들어간다?내용이 들어간다?
+              내용이 들어간다?내용이 들어간다?내용이 들어간다?
+              내용이 들어간다?내용이 들어간다?내용이 들어간다?
+              내용이 들어간다?내용이 들어간다?내용이 들어간다?
+              내용이 들어간다?내용이 들어간다?내용이 들어간다?
+
             </span>
           </ContentSt>
           <PlayerSt 
@@ -93,31 +109,12 @@ const Wrap = styled.div`
   justify-content: center;
   align-items: center;
 
-  span {
-    width: 100%;
+  #title {
+    /* width: 100%; */
     float: left;
     font-size: 30px;
     font-weight: bold;
-  }
-`
-
-const AudioCardSt1 = styled.div`
-  background-color: #F4F4F4;
-
-  width: 100%;
-  height: 200px;
-  
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  
-  border-radius: 20px;
-  padding: 43px 0px;
-  margin: 24px 0px;
-
-  p {
-    font-size: 30px;
+    background-color: rebeccapurple;
   }
 
   button {
@@ -128,6 +125,25 @@ const AudioCardSt1 = styled.div`
     font-size: 20px;
 
     cursor: pointer;
+  }
+`
+
+const AudioCardSt1 = styled.div`
+  /* background-color: #F4F4F4; */
+
+  width: 100%;
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  
+  border-radius: 20px;
+  /* padding: 43px 0px; */
+  margin: 24px 0px 0px 0px;
+
+  p {
+    font-size: 30px;
   }
 `
 
@@ -162,18 +178,25 @@ const ContentSt = styled.div`
   background-color: lightgray;
 
   width: 692px;
+  min-height: 110px;
   
   display: flex;
   flex-direction: column;
   justify-content: left;
   align-items: center;
 
-  span {
+  cursor: pointer;
+
+  #name {
+    width: 100%;
     font-size: 20px;
     margin-bottom: 5px;
+    font-weight: 700;
+    padding-bottom: 5px;
   }
 
   #contents {
+    width: 100%;
     font-size: 16px;
   }
 `

@@ -9,20 +9,23 @@ import { actionCreators as getActions } from "../redux/modules/book";
 const BookDetail = () => {
   const dispatch = useDispatch();
   const params = useParams();
-  // console.log(params)
+  console.log(params)
   const bookId = params.bookId
+  const category = params.category
   // console.log("북아이디",bookId)
 
+  // 로그인 확인과 셀러인지 아닌지를 확인하기 위함
   const is_login = localStorage.getItem("is_login");
+  const seller = localStorage.getItem("seller");
+  
   const detail = useSelector((state) => state.book.detail_book);
-
-  console.log("상세" ,detail)
+  console.log("책 상세", detail)
+  console.log("책 상세", detail.audioPreDtoList)
+  console.log("제목", detail.title)
 
   React.useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));
   }, []);
-
-
 
   return (
     <React.Fragment>
@@ -42,14 +45,20 @@ const BookDetail = () => {
           </ImgSt>
           <ContentSt>
             <div>
-              <p>현재 녹음 갯수</p>
-              <p><span>53</span>개</p>
+              <p>참여한 크리에이터</p>
+              <p><span>11</span>명</p>
             </div>
             <div>
-              <button id="hello">펀딩 등록하기</button>
-              <button id="hi" onClick={() => {
-                history.push(`/audioWrite/${bookId}`)
-              }}>내 오디오 등록하기</button>
+              {seller === "ROLE_SELLER" ?
+                <>
+                  <button id="hello">펀딩 등록하기</button>
+                  <button id="hi" onClick={() => {
+                    history.push(`/audioWrite/${category}/${bookId}`)
+                  }}>내 오디오 등록하기</button>
+                </>
+                :
+                null            
+              }
               <button
                 onClick={()=> {
                   if(!is_login) {

@@ -63,7 +63,6 @@ const RequestWrite = (props) => {
                 id='uploadBtn'
                 onClick={() => {
                   dispatch(requestActions.editRequestAC(bookRequestId, title, contents));
-                  history.push('/request')
                 }}
               >수정하기</button>
             </div>
@@ -73,7 +72,6 @@ const RequestWrite = (props) => {
                 id='uploadBtn'
                 onClick={() => {
                   dispatch(requestActions.addRequestAC(bookId, title, contents));
-                  history.push('/request')
                 }}
               >등록하기</button>
             </div>

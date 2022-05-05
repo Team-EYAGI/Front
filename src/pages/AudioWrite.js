@@ -11,6 +11,7 @@ const AudioWrite = () => {
   const params = useParams();
   // console.log(params)
   const bookId = params.bookId
+  const category = params.category
 
   // 책 상세정보 가져오기
   const detail = useSelector((state) => state.book.detail_book);
@@ -23,8 +24,9 @@ const AudioWrite = () => {
     fileInput.current.click();
   };
 
+  const [contents, setContents] = React.useState("")
   const [file, setFile] = React.useState("")
-  console.log(file)
+  // console.log(contents)
 
   // 파일 선택하기
   const selectFile = (e) => {
@@ -32,9 +34,9 @@ const AudioWrite = () => {
     const reader = new FileReader();
     const file = fileInput.current.files[0];
     reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      // dispatch(reviewActions.setPreview(reader.result));
-    };
+    // reader.onloadend = () => {
+    //   // dispatch(reviewActions.setPreview(reader.result));
+    // };
   };
 
   // 오디오 추가하기
@@ -48,12 +50,13 @@ const AudioWrite = () => {
       return;
     }
     // 리뷰를 추가할 때 addReviewAc로 정보를 넘긴다.
-    // dispatch(addActions.addAudioAC({
-    //     information: { userId: userId, title: title, comment: comment },
-    //     file,
-    //     BookId,
-    //   })
-    // )
+    dispatch(addActions.addAudioAC({
+        information: { contents: contents },
+        file,
+        bookId,
+        category,
+      })
+    )
     // history.replace(`/detail/${itemId}`)
   }
 
@@ -85,9 +88,15 @@ const AudioWrite = () => {
               <span>{file.name}</span>
             </div>
             <div>
+              <input
+                type="text"
+                onChange={(e) => {
+                  setContents(e.target.value)
+                }}
+              />
               <input 
                 type="file" 
-                accept="image/jpg, image/jpeg, image/png, audio/mp3" 
+                accept="audio/wav audio/mp3" 
                 multiple 
                 ref={fileInput}
                 style={{display: 'none'}} 

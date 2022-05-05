@@ -40,15 +40,6 @@ const getEconomy = createAction(GET_ECONOMY, (economy) => ({economy}));
 const getKids = createAction(GET_KIDS, (kids) => ({kids}));
 
 
-// const getReview = createAction(SET_REVIEW, (comment_list) => ({comment_list}));
-// const deleteReview = createAction(DELETE_REVIEW, (commentId) => ({commentId}));
-// const editReview = createAction(EDIT_REVIEW, (itemId, comment_list) => ({itemId, comment_list}));
-// const helpReview = createAction(HELP_REVIEW, (commentId) => ({commentId}));
-
-// const uploading = createAction(UPLODING, (uploading) => ({ uploading }));
-// const uploadImg = createAction(UPLOAD_IMG, (image) => ({ image }));
-// const setPreview = createAction(SET_PREVIEW, (preview) => ({ preview }));
-
 // 미들웨어
 
 // 메인페이지 책 로드
@@ -72,6 +63,7 @@ const getMainAC = () => {
 
 // 책 상세페이지 로드
 const getBookDetailAC = (bookId) => {
+  console.log(bookId)
   return function (dispatch, getState, {history}) {
     axios.get(process.env.REACT_APP_BASE_URL + `/book/detail/${bookId}`, {
 
@@ -79,7 +71,7 @@ const getBookDetailAC = (bookId) => {
     // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      // console.log("상세페이지 정보", res)
+      console.log("상세페이지 정보", res.data)
       dispatch(getBookDetail(res.data))
 
     })
@@ -192,6 +184,7 @@ export default handleActions(
     }),
     [GET_BOOKDETAIL]: (state, action) =>
     produce(state, (draft) => {
+      // console.log("리듀서로 넘김",action.payload.detail_book)
       draft.detail_book = action.payload.detail_book;
     }),
     [GET_NOVEL]: (state, action) =>
