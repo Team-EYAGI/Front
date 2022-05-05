@@ -13,14 +13,14 @@ const CategoryBookCard2 = (props) => {
             history.push(`/bookdetail/${props.item.category}/${props.item.bookId}`)
           }}>
           <ImageBox>
-          <img
-            style={{ width: "100%" }}
-            src={props.item.bookImg}
-          />
-          </ImageBox> 
-            <h3 style={{ fontSize: "16px" }}>
-              {props.item.title}
-            </h3>
+            <img
+              style={{ width: "100%" }}
+              src={props.item.bookImg}
+            />
+          </ImageBox>
+          <h3 style={{ fontSize: "16px" }}>
+            {props.item.title}
+          </h3>
           <Text margin="0px">{props.item.author}</Text>
         </Body>
       </Wrap>

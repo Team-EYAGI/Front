@@ -38,6 +38,7 @@ const Main = () => {
 
 const SliderWrap = styled.div`
   width: 1920px;
+  height: 400px;
   position: relative;
   margin: 0 auto;
 `

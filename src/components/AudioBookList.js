@@ -9,11 +9,14 @@ import AudioPlayer from "react-h5-audio-player";
 
 import music1 from '../music/미리듣기 (online-audio-converter.com).wav';
 import music2 from '../music/어반 자카파(urban zakapa)-커피를 마시고 (reprise).mp3';
+import { useParams } from 'react-router-dom';
 
 const AudioBookList = (props) => {
+  const params = useParams();
   
   console.log("오디오디테일11", props.e)
   const bookId = props.detail.bookId
+  const category = params.category
 
   const audioPreDtoList = props.detail.audioPreDtoList
   console.log(audioPreDtoList)
@@ -42,7 +45,7 @@ const AudioBookList = (props) => {
           <ImgSt/>
           <ContentSt
             onClick={()=> {
-              history.push(`/audioPlay/${bookId}/${item.audioBookId}`)
+              history.push(`/audioPlay/${category}/${bookId}/${item.audioBookId}`)
             }}
           >
             <span id="name">{item.sellerName}</span>
@@ -52,7 +55,7 @@ const AudioBookList = (props) => {
           </ContentSt>
           <PlayerSt 
             onClick={() => {
-              history.push(`/audioModal/${bookId}/${item.audioBookId}`)
+              history.push(`/audioModal/${category}/${bookId}/${item.audioBookId}`)
             }}
             // onClick={openModal}  
           >
@@ -85,9 +88,7 @@ const AudioBookList = (props) => {
             </span>
           </ContentSt>
           <PlayerSt 
-            onClick={()=> {
-              history.push(`/audioPlay/${bookId}`)
-            }}
+
           >
             <BsFillPlayFill style={{width: "54px", height: "50px"}}/>
             <span>click</span>
