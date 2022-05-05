@@ -25,7 +25,6 @@ const Header = (props) => {
 
   const [word, setWord] = React.useState("")
 
-
   return (
     <>
       {is_session ?

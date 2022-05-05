@@ -42,7 +42,7 @@ function App() {
         <Route path="/audioModal/:category/:bookId/:audiobookId" exact component={AudioModal}/>
         <Route path="/funding" exact component={Funding}/>
         <Route path="/fundingDetail" exact component={FundingDetail}/>
-        <Route path="/fundingWrite" exact component={FundingWrite}/>
+        <Route path="/fundingWrite/:bookId" exact component={FundingWrite}/>
         <Route path="/mypage" exact component={MyPage}/>
         <Route path="/mypage/:category" exact component={MyPage}/>
         <Route path="/request" exact component={Request}/>
@@ -51,7 +51,7 @@ function App() {
         <Route path="/requestWrite/:bookId/:bookRequestId" exact component={RequestWrite}/>
         <Route path="/search" exact component={Search}/>
         <Route path="/reviewWrite/:category/:bookId/:audioBookId" exact component={ReviewWirte}/>
-        <Route path="/reviewWrite/:category/:bookId/:audioBookId/:newCommentId" exact component={ReviewWirte}/>
+        <Route path="/reviewWrite/:category/:bookId/:audioBookId/:commentId" exact component={ReviewWirte}/>
        <Footer/>
       </ConnectedRouter>
     </React.Fragment>

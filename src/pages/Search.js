@@ -1,8 +1,13 @@
 import React from 'react'
 import styled from 'styled-components';
 import SearchBookCard from '../components/SearchBookCard';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Search = () => {
+
+  const search = useSelector((state) => state.search.search_list);
+  console.log(search)
+  
   return (
     <React.Fragment>
         <HeaderSt>

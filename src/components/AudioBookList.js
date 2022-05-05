@@ -13,13 +13,12 @@ import { useParams } from 'react-router-dom';
 
 const AudioBookList = (props) => {
   const params = useParams();
-  
-  console.log("오디오디테일11", props.e)
+
   const bookId = props.detail.bookId
   const category = params.category
 
   const audioPreDtoList = props.detail.audioPreDtoList
-  console.log(audioPreDtoList)
+  console.log("리스트", audioPreDtoList)
 
   const is_login = localStorage.getItem("is_login");
 
