@@ -5,6 +5,7 @@ import axios from "axios";
 // 액션
 // 크롤링 데이터 로드
 const GET_MAIN = "GET_MAIN";
+const GET_MAINCATEGORY = "GET_MAINCATEGORY";
 const GET_BOOKDETAIL = "GET_BOOKDETAIL";
 const GET_NOVEL = "GET_NOVEL";
 const GET_POEM = "GET_POEM";
@@ -22,6 +23,7 @@ const GET_KIDS = "GET_KIDS";
 // 초기값
 const initialState = {
   main : [],
+  main_category : [],
   detail_book : [],
   category_novel : [],
   category_poem : [],
@@ -32,6 +34,7 @@ const initialState = {
 
 // 액션 생성 함수
 const getMain = createAction(GET_MAIN, (main) => ({main}));
+const getMainCategory = createAction(GET_MAINCATEGORY, (main_category) => ({main_category}));
 const getBookDetail = createAction(GET_BOOKDETAIL, (detail_book) => ({detail_book}));
 const getNovel = createAction(GET_NOVEL, (novel) => ({novel}));
 const getPoem = createAction(GET_POEM, (poem) => ({poem}));
@@ -51,7 +54,7 @@ const getMainAC = () => {
     // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      // console.log("메인페이지 리스트", res)
+      console.log("메인페이지 리스트", res)
       dispatch(getMain(res.data))
 
     })
@@ -60,6 +63,26 @@ const getMainAC = () => {
     })
   }
 }
+
+// 메인페이지 책 로드
+const getMainCategoryAC = () => {
+  return function (dispatch, getState, {history}) {
+    axios.get(process.env.REACT_APP_BASE_URL + `/category`, {
+
+    },
+    // {headers: { 'Authorization' : `Bearer ${myToken}`}}
+    )
+    .then((res) => {
+      console.log("메인 카테고리 리스트", res)
+      dispatch(getMainCategory(res.data))
+
+    })
+    .catch(error => {
+      console.log("error", error)
+    })
+  }
+}
+
 
 // 책 상세페이지 로드
 const getBookDetailAC = (bookId) => {
@@ -182,6 +205,10 @@ export default handleActions(
     produce(state, (draft) => {
       draft.main = action.payload.main;
     }),
+    [GET_MAINCATEGORY]: (state, action) =>
+    produce(state, (draft) => {
+      draft.main_category = action.payload.main_category;
+    }),
     [GET_BOOKDETAIL]: (state, action) =>
     produce(state, (draft) => {
       // console.log("리듀서로 넘김",action.payload.detail_book)
@@ -217,6 +244,7 @@ export default handleActions(
 const actionCreators = {
 // export 할 것들
   getMain,
+  getMainCategory,
   getBookDetail,
   getNovel,
   getPoem,
@@ -224,6 +252,7 @@ const actionCreators = {
   getEconomy,
   getKids,
   getMainAC,
+  getMainCategoryAC,
   getBookDetailAC,
   getNovelAC,
   getPoemAC,

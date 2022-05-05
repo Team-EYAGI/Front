@@ -10,7 +10,7 @@ const CategoryBookList = (props) => {
   const params = useParams();
   console.log(params)
 
-  const selfBook = props.selfBook;
+  const selfBook = props.mainCategory;
 
   const [genre, setGenre] = React.useState([
     "자기계발",
