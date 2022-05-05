@@ -15,17 +15,18 @@ const Funding = () => {
   // const fundName = params.fund //?
 
 
-  // const funding = useSelector((state) => state.fund.key);
- 
+  const funding = useSelector((state) => state.fund.fund_list);
+ console.log(funding)
 
-  // React.useEffect(() => {
-  //   dispatch(getActions.getFunding());
-  // }, []);
+  React.useEffect(() => {
+    dispatch(getActions.getFundingAC());
+  }, []);
 
 
   return (
     <React.Fragment>
-      <FundingCardList></FundingCardList>
+      <FundingCardList funding={funding} />
+
       {/* <Header>
          {key.map((item, idx) => (
            <fund
