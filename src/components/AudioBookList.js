@@ -6,9 +6,6 @@ import { IoHeart } from "react-icons/io5";
 import { BsFillPlayFill } from "react-icons/bs";
 import "../styles/modal.css"
 import AudioPlayer from "react-h5-audio-player";
-
-import music1 from '../music/미리듣기 (online-audio-converter.com).wav';
-import music2 from '../music/어반 자카파(urban zakapa)-커피를 마시고 (reprise).mp3';
 import { useParams } from 'react-router-dom';
 
 const AudioBookList = (props) => {
