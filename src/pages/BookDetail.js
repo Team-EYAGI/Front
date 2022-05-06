@@ -25,7 +25,10 @@ const BookDetail = () => {
 
   React.useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));
-  }, []);
+    return () => {
+      console.log(detail)
+    }
+  }, [dispatch]);
 
   return (
     <React.Fragment>

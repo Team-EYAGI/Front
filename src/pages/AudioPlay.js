@@ -26,8 +26,8 @@ const AudioPlay = (props) => {
   // 오디오북 재생목록 불러오기
   const audioDetail = useSelector((state) => state.audio.audio_list);
   const playList = audioDetail.audioFileDtoList
-  // console.log("받은 데이타", audioDetail) 
-  // console.log(playList)
+  console.log("받은 데이타", audioDetail) 
+  console.log(playList)
 
   // 오디오북 리뷰 불러오기
   const audioReview = useSelector((state) => state.audio.review_list);

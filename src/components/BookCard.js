@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Text } from "../elements/Index";
 import { history } from "../redux/configureStore";
 
-const CategoryBookCard2 = (props) => {
+const BookCard = (props) => {
 
   return (
     <React.Fragment>
@@ -70,4 +70,4 @@ const ImageBox = styled.div`
   }
 `
 
-export default CategoryBookCard2;
+export default BookCard;
