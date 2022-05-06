@@ -166,8 +166,9 @@ const addAudioAC = (payload) => {
   }
 }
 
-// 오디오북 리스트 겟
+// 오디오북 상세리스트 겟
 const getAudioAC = (audioBookId) => {
+  console.log(audioBookId)
   let Token = getToken("Authorization");
   // console.log(Token)
   return function (dispatch, getState, { history }) {
