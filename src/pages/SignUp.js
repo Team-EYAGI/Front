@@ -17,6 +17,20 @@ const Signup = (props) => {
     dispatch(userActions.signUpDB(email, username, password, passwordCheck));
   };
 
+  // if (
+  //   userId === "" ||
+  //   password === "" ||
+  //   userName === "" ||
+  //   passwordCheck === ""
+  // ) {
+  //   window.alert("모두 입력해주세요!");
+  //   return;
+  // }
+  // if ((!userIdCHK(userId)) || (!passwordCheck(password)) || (passwordCHK1(password)) || (password !== passwordCheck)) {
+  //   window.alert("회원가입 조건을 다시한번 확인해주세요.")
+  //   return;
+  // }
+
   return (
     <React.Fragment>
       <SignupContainer>
