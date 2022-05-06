@@ -14,8 +14,8 @@ const AudioBookList = (props) => {
   const bookId = props.detail.bookId
   const category = params.category
 
-  const audioPreDtoList = props.detail.audioPreDtoList
-  console.log("리스트", audioPreDtoList)
+  const audioBookList = props.detail.audio
+  console.log("리스트", audioBookList)
 
   const is_login = localStorage.getItem("is_login");
 
@@ -36,7 +36,7 @@ const AudioBookList = (props) => {
               }
             }}>새 오디오북 요청하러가기</button>
         </AudioCardSt1>
-        {audioPreDtoList && audioPreDtoList.map((item, idx) => (
+        {audioBookList && audioBookList.map((item, idx) => (
           <AudioCardSt key={idx}>
           <ImgSt/>
           <ContentSt

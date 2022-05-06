@@ -23,6 +23,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AudioModal from "../pages/AudioModal";
 import ReviewWirte from '../pages/ReviewWrite';
+import SellerProfile from '../pages/SellerProfile';
 
 function App() {
   return (
@@ -48,6 +49,9 @@ function App() {
         <Route path="/request" exact component={Request}/>
         <Route path="/requestWrite" exact component={RequestWrite}/>
         <Route path="/requestWrite/:bookId" exact component={RequestWrite}/>
+        <Route path="/sellerProfile" exact component={SellerProfile}/>
+        <Route path="/sellerProfile/:sellerName" exact component={SellerProfile}/>
+        <Route path="/sellerProfile/:sellerName/:category" exact component={SellerProfile}/>
         <Route path="/requestWrite/:bookId/:bookRequestId" exact component={RequestWrite}/>
         <Route path="/search" exact component={Search}/>
         <Route path="/reviewWrite/:category/:bookId/:audioBookId" exact component={ReviewWirte}/>

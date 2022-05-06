@@ -29,8 +29,9 @@ const AudioModal = (props) => {
 
   // 책 상세페이지 속 오디오북 리스트(배열)를 가져옴
   // 파람스의 audioBookId와 배열의 audioBookId가 같은 것을 찾아 preview에 넣어줌 
-  const files = detail.audioPreDtoList
-  const preview = files.find((p) => p.audioBookId == audioBookId)
+  // file 정보가 있을 때만 find 함수 실행
+  const files = detail.audio;
+  const preview = files ? files.find((p) => p.audioBookId == audioBookId) : null;
 
   React.useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));
@@ -38,50 +39,55 @@ const AudioModal = (props) => {
 
   return (
     <ModalBack>
-      <ModalBox>
-        <div style={{ width: "700px" }}>  
-        <GoBack>
-          <button onClick={() => history.goBack()}>X</button>       
-        </GoBack>    
-        <PlayerImg>
-            <Img>
-              <img style={{ width: "100%", height: "100%"}}
-                src={detail.bookImg}
-              />
-            </Img>
+      {preview ?
+        <ModalBox>
+          <div style={{ width: "700px" }}>
+            <GoBack>
+              <button onClick={() => history.goBack()}>X</button>
+            </GoBack>
+            <PlayerImg>
+              <Img>
+                <img style={{ width: "100%", height: "100%" }}
+                  src={detail.bookImg}
+                />
+              </Img>
 
-            {detail.title}
-            {preview.audioBookId}번 오디오북
-            <AudioPlayer
-              className='audio' 
-              autoPlay={false} 
-              src={preview.previewFile}
-              volume={1}
-              timeFormat={"mm:ss"}
-              defaultCurrentTime={"00:00"}
-              // progressUpdateInterval            
-              // onListen={()=>{}}
-              // ListenInterval
-              onPlay={e => console.log("onPlay")}
+              {detail.title}
+              {preview.audioBookId}번 오디오북
+              <AudioPlayer
+                className='audio'
+                autoPlay={false}
+                src={preview.previewFile}
+                volume={1}
+                timeFormat={"mm:ss"}
+                defaultCurrentTime={"00:00"}
+                // progressUpdateInterval            
+                // onListen={()=>{}}
+                // ListenInterval
+                onPlay={e => console.log("onPlay")}
               // other props here
-            />
-          </PlayerImg>
+              />
+            </PlayerImg>
 
-          {/* <Modal open={modalOpen} close={closeModal} /> */}
-        </div>
-        <div>
-          <button
-            onClick={() => {
-              if(!is_login) {
-                window.alert("로그인 후 이용 가능합니다!");
-                history.push(`/login`)
-                return;
-              } else {
-                history.push(`/audioPlay/${category}/${bookId}/${audioBookId}`)
-              }
-            }}>더 듣기</button>
-        </div>
-      </ModalBox>
+            {/* <Modal open={modalOpen} close={closeModal} /> */}
+          </div>
+          <div>
+            <button
+              onClick={() => {
+                if (!is_login) {
+                  window.alert("로그인 후 이용 가능합니다!");
+                  history.push(`/login`)
+                  return;
+                } else {
+                  history.push(`/audioPlay/${category}/${bookId}/${audioBookId}`)
+                }
+              }}>더 듣기</button>
+          </div>
+        </ModalBox>
+        :
+        null
+      }
+
     </ModalBack>
   );
 };
@@ -124,7 +130,7 @@ const GoBack = styled.div`
   }
 `;
 
-const PlayerImg = styled.div `
+const PlayerImg = styled.div`
   width: 464px;
   margin: 0 auto;
   display: flex;

@@ -3,38 +3,39 @@ import styled from "styled-components";
 import { Text } from "../elements/Index";
 import { history } from "../redux/configureStore";
 
-const SearchBookCard = (props) => {
-
+const BookCard = (props) => {
+  // console.log(props.item)
   return (
     <React.Fragment>
-        <Wrap>
-          <Body
-            onClick={() => {
-              history.push(`/bookdetail/${props.item.category}/${props.item.bookId}`)
-            }}>
-            <ImageBox>
+      <Wrap>
+        <Body
+          onClick={() => {
+            history.push(`/bookdetail/${props.item.category}/${props.item.bookId}`)
+          }}>
+          <ImageBox>
             <img
-              style={{ width: "100%", height: "100%" }}
-              src="http://image.kyobobook.co.kr/images/book/large/786/l9791190238786.jpg"
+              style={{ width: "100%" }}
+              src={props.item.bookImg}
             />
-            </ImageBox> 
-              <h3 style={{ fontSize: "16px" }}>
-                오늘부터 1일
-              </h3>
-            <Text margin="0px">지은이</Text>
-          </Body>
-        </Wrap>
+          </ImageBox>
+          <h3 style={{ fontSize: "16px" }}>
+            {props.item.title}
+          </h3>
+          <Text margin="0px">{props.item.author}</Text>
+        </Body>
+      </Wrap>
     </React.Fragment>
   );
 };
 
 const Wrap = styled.div`
+  height: 410px;
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  margin: 10px;
-
+  position: relative;
+  margin: 10px 10px 20px 10px;
+  
   font-family: noto-sans-cjk-kr, sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -42,10 +43,7 @@ const Wrap = styled.div`
 
 const Body = styled.div`
   width: 220px;
-
-  display: flex;
-  flex-direction: column;
-  position: relative;
+  
   cursor: pointer;
 
   h3 {
@@ -56,11 +54,19 @@ const Body = styled.div`
 `
 
 const ImageBox = styled.div`
-  border: 1px solid lightgray;
-  box-shadow: 0 0 2px gray;
-
   width: 220px;
   height: 300px;
+  /* box-shadow: 0 0 2px gray; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  img {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+
+  }
 `
 
-export default SearchBookCard;
+export default BookCard;
