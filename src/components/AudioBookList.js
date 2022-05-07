@@ -106,6 +106,10 @@ const Wrap = styled.div`
   justify-content: center;
   align-items: center;
 
+  font-family: Pretendard;
+  font-weight: 400;
+  font-style: normal;
+
   #title {
     /* width: 100%; */
     float: left;
@@ -139,8 +143,10 @@ const AudioCardSt1 = styled.div`
   /* padding: 43px 0px; */
   margin: 24px 0px 0px 0px;
 
-  p {
-    font-size: 30px;
+  button {
+    font-family: Pretendard;
+    font-weight: 400;
+    font-style: normal;   
   }
 `
 

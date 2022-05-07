@@ -27,19 +27,15 @@ const MainFundingList = () => {
 }
 
 const Wrap = styled.div`
-  width: 100%;
-
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 
-  margin-top: 60px;
-  margin-bottom: 40px;
+  margin: 60px 240px 40px 240px;
 
   font-size: 30px;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-family: noto-sans-cjk-kr, sans-serif;
+  font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
 
@@ -62,7 +58,7 @@ const Bottom = styled.div`
   display: flex;
   justify-content: space-around;
 
-  font-family: noto-sans-cjk-kr, sans-serif;
+  font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
 `

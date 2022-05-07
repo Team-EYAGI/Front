@@ -106,6 +106,10 @@ const HeaderSt = styled.div`
   display: flex;
   justify-content: center;
   /* align-items: center; */
+
+  font-family: Pretendard;
+  font-weight: 400;
+  font-style: normal;
 `
 
 const GenreSt = styled.h3`
@@ -121,6 +125,8 @@ const GenreSt = styled.h3`
   text-align: center;
   line-height: 40px;
   color: #333333;
+
+  
 
   cursor: pointer;
   :hover {

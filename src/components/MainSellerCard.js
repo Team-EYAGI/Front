@@ -35,7 +35,7 @@ const Wrap = styled.div`
   /* background-color: yellow; */
 
   
-  font-family: noto-sans-cjk-kr, sans-serif;
+  font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
 `

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 
 import MyPageAudioBook from '../components/MyPageAudioBook';
+import { useSelector } from 'react-redux';
 
 const MyPage = () => {
 
@@ -11,6 +12,9 @@ const MyPage = () => {
   console.log(params)
 
   const category = params.category;
+
+  const userImage = useSelector((state) => state.mypage.userImage);
+  console.log(userImage)
 
   const seller = localStorage.getItem("seller");
 
@@ -21,7 +25,7 @@ const MyPage = () => {
           <Profile>
             <Box>
               <div id='img'>
-                <img src='https://www.incheon.go.kr/humanframe/theme/incheon/assets/image/incheon04/img-0107-02.png'/>
+                <img src={userImage.userImage ? userImage.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png"} />
               </div>
               <div id='username'>
                 <h4>닉네임</h4>
@@ -32,40 +36,50 @@ const MyPage = () => {
               <h3>팔로잉 9,999명</h3>
               <h3>팔로워 9,999명</h3>
             </Box>
-            <button>프로필 편집</button>
+            <button
+              onClick={() => {
+                history.push(`/profileEdit`)
+              }}
+            >
+              프로필 편집
+            </button>
           </Profile>
           <List>
             {seller === "ROLE_SELLER" ?
               <ListBox>
-              <h2>크리에이터</h2>
-              <h3 onClick={() => {history.push(`/mypage/myAudio`)}}>업로드한 오디오북</h3>
-              <h3 onClick={() => {history.push(`/mypage/myFunding`)}}>등록한 펀딩</h3>
-            </ListBox>
-            :
-            null
+                <h2>크리에이터</h2>
+                <h3 onClick={() => { history.push(`/mypage/myAudio`) }}>업로드한 오디오북</h3>
+                <h3 onClick={() => { history.push(`/mypage/myFunding`) }}>등록한 펀딩</h3>
+              </ListBox>
+              :
+              null
             }
             <ListBox>
               <h2>서재</h2>
-              <h3 onClick={() => {history.push(`/mypage/listen`)}}>듣고 있는 오디오북</h3>
-              <h3 onClick={() => {history.push(`/mypage/likeAudio`)}}>책 바구니</h3>
+              <h3 onClick={() => { history.push(`/mypage/listen`) }}>듣고 있는 오디오북</h3>
+              <h3 onClick={() => { history.push(`/mypage/likeAudio`) }}>책 바구니</h3>
             </ListBox>
           </List>
-          <button id='submit'>크리에이터 신청하기</button>
+          {seller !== "ROLE_SELLER" ?
+            <button id='submit'>크리에이터 신청하기</button>
+            :
+            null
+          }
         </Menu>
         <Body>
           {category === "myAudio" ?
-          <MyPageAudioBook/>
-          :
-          category === "myFunding" ?
-          <div>Funding</div>
-          :
-          category === "listen" ?
-          <div>listen</div>
-          :
-          category === "likeAudio" ?
-          <div>likeAudio</div>
-          :
-          <div>이게기본</div>
+            <MyPageAudioBook />
+            :
+            category === "myFunding" ?
+              <div>Funding</div>
+              :
+              category === "listen" ?
+                <div>listen</div>
+                :
+                category === "likeAudio" ?
+                  <div>likeAudio</div>
+                  :
+                  <div>이게기본</div>
           }
         </Body>
       </Wrap>

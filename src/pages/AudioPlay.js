@@ -6,6 +6,7 @@ import 'react-h5-audio-player/lib/styles.css';
 import { BsFillPlayFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as getActions } from "../redux/modules/audio";
+import { actionCreators as libraryActions } from "../redux/modules/mypage";
 import { history } from '../redux/configureStore';
 import { useBeforeunload } from "react-beforeunload";
 import { useParams } from 'react-router-dom';
@@ -26,7 +27,7 @@ const AudioPlay = (props) => {
   // 오디오북 재생목록 불러오기
   const audioDetail = useSelector((state) => state.audio.audio_list);
   const playList = audioDetail.audioFileDtoList
-  console.log("받은 데이타", audioDetail) 
+  console.log("받은 데이타", audioDetail)
   console.log(playList)
 
   // 오디오북 리뷰 불러오기
@@ -38,6 +39,7 @@ const AudioPlay = (props) => {
   React.useEffect(() => {
     dispatch(getActions.getAudioAC(audioBookId));
     dispatch(getActions.getReviewAC(audioBookId));
+    // dispatch(libraryActions.getReviewAC(audioBookId));
   }, []);
 
   return (
@@ -47,25 +49,25 @@ const AudioPlay = (props) => {
       </HeaderSt>
       <Wrap>
         <Player>
-          <PlayerImg>
-            <Img>
-              <img style={{ width: "100%", height: "100%" }}
-                src={audioDetail.bookImg}
+          <ImgSt style={{ backgroundImage: `url(${audioDetail.bookImg})` }}>
+            <div id='img_wrap'>
+              <div id='img'>
+                <img src={audioDetail.bookImg} />
+              </div>
+              <AudioPlayer
+                showJumpControls={false}
+                className='audio'
+                autoPlay={false}
+                src={play}
+                volume={1}
+                // progressUpdateInterval            
+                // onListen={()=>{}}
+                // ListenInterval
+                onPlay={e => console.log("onPlay")}
+              // other props here
               />
-            </Img>
-            <AudioPlayer
-              showJumpControls={false}
-              className='audio'
-              autoPlay={false}
-              src={play}
-              volume={1}
-              // progressUpdateInterval            
-              // onListen={()=>{}}
-              // ListenInterval
-              onPlay={e => console.log("onPlay")}
-            // other props here
-            />
-          </PlayerImg>
+            </div>
+          </ImgSt>
           <h3>{audioDetail.title}</h3>
           <h4>저자 : {audioDetail.author}</h4>
           <h3>크리에이터 : {audioDetail.sellerName}</h3>
@@ -123,11 +125,14 @@ const AudioPlay = (props) => {
   )
 }
 
+
+
 const Wrap = styled.div`
     width: 1440px;
-    position: relative;
+    /* position: relative; */
     margin: 0 auto;
     display: flex;
+    align-items: center;
     /* background-color: lightblue; */
   `
 
@@ -135,11 +140,13 @@ const HeaderSt = styled.div`
     width: 1440px;
     height: 27px;
 
+    /* background-color: yellow; */
+
     margin: 0 auto;
     margin-top: 81px;
     margin-bottom: 18px;
 
-    font-family: noto-sans-cjk-kr,sans-serif;
+    font-family: Pretendard;
     font-weight: 400;
     font-style: normal;
     font-size: 18px;
@@ -147,16 +154,16 @@ const HeaderSt = styled.div`
 
 const Player = styled.div`
     width: 464px;
+    height: 100%;
     /* background-color: red; */
-    
+  
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     
-    position: relative;
-    padding-bottom: 30px;
+    /* position: relative; */
 
-    font-family: noto-sans-cjk-kr, sans-serif;
+    font-family: Pretendard;
     font-weight: 400;
     font-style: normal;
 
@@ -193,8 +200,9 @@ const Player = styled.div`
     /* 오디오 플레이어 커스텀 */
     .audio {
       width: 100%;
+      height: 80px;
       border-radius: 20px;
-      background-color: black;
+      background: none;
 
       div {
         background : "white";
@@ -210,35 +218,31 @@ const Player = styled.div`
       }
     }
     `
-
-const PlayerImg = styled.div`
+const ImgSt = styled.div`
   width: 464px;
-  margin: 0 auto;
+  height: 464px;
 
-  position: relative;
-  background-color: #F4F4F4;
-  padding-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 
-  font-family: noto-sans-cjk-kr, sans-serif;
-  font-weight: 400;
-  font-style: normal;
-`
+  background-repeat : no-repeat;
+  background-size : cover;
+  border-radius: 20px;
 
-const Img = styled.div`
-  background-color: gray;
-
-  width: 268px;
-  height: 340px;
-  
-  margin: 0 auto;
-  margin-top: 62px;
-  margin-bottom: 30px;
-  
-  position: relative;
-
-  font-family: noto-sans-cjk-kr, sans-serif;
-  font-weight: 400;
-  font-style: normal;
+  #img_wrap {
+    width: 464px;
+    height: 464px;
+    /* background-image: url(detail.bookImg) */
+    background: #F4F4F4;
+    background : rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 20px;
+  }
 `
 
 const ListBox = styled.div`
@@ -246,16 +250,15 @@ const ListBox = styled.div`
 
   margin: 0 auto;
 
-  font-family: noto-sans-cjk-kr, sans-serif;
+  font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
 
-  /* background-color: red; */
-
-
   #listname {
+    height: 30px;
     display: flex;
     align-items: center;
+    background-color: white;
 
     h3 {
       font-size: 25px;
@@ -270,7 +273,7 @@ const ListBox = styled.div`
 
   #listbox {
     width: 708px;
-    height: 780px;
+    height: 750px;
     
 
     overflow-y: scroll;

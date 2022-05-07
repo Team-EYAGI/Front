@@ -27,7 +27,7 @@ const Search = (props) => {
         }
       </Wrap>
       <HeaderSt>
-        총 {authorInfo ? bookInfo.length : 0}명의 작가가 검색되었습니다.
+        총 {authorInfo ? authorInfo.length : 0}명의 작가가 검색되었습니다.
       </HeaderSt>
       <Wrap>
         {authorInfo && authorInfo.map((item, idx) =>

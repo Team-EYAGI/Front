@@ -65,6 +65,47 @@ const loginDB = (email, password) => {
   };
 };
 
+// 카카오
+const kakaoLoginAC = (code) => {
+  console.log(code)
+  return function (dispatch, getState, { history }) {
+    axios
+      .get(process.env.REACT_APP_BASE_URL + `/user/kakao/callback?code=${code}`)
+      .then((res) => {
+        console.log(res);
+        console.log(res);
+        const token = res.headers.authorization;
+        console.log(token);
+        setToken(token);
+
+        const DecodedToken = jwtDecode(token);
+        console.log(DecodedToken);
+        // console.log(DecodedToken.sub);
+
+        localStorage.setItem("email", DecodedToken.USER_EMAIL);
+        localStorage.setItem("username", DecodedToken.USER_NIK);
+        localStorage.setItem("seller", DecodedToken.USER_ROLE);
+
+        dispatch(
+          login({
+            is_login: true,
+
+            email: DecodedToken.USER_EMAIL,
+            username: DecodedToken.USER_NIK,
+            seller: DecodedToken.USER_ROLE
+            //위치불확실 콘솔찍어서 확인
+          })
+        );
+        history.replace("/");
+        console.log("로그인성공!!");
+      })
+      .catch((error) => {
+        // alert(error.response.data.msg);
+        console.log(error)
+      });
+  };
+};
+
 
 // const loginCheckDB = () => {
 //   return function (dispatch, getState, { history }) {
@@ -139,7 +180,7 @@ const actionCreators = {
   getUser,
   signUpDB,
   logOut,
-
+  kakaoLoginAC,
   //   loginCheckDB,
 };
 
