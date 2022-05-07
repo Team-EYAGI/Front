@@ -67,9 +67,9 @@ const Div = styled.div`
   margin-bottom: 40px;
 
   font-size: 30px;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-family: noto-sans-cjk-kr, sans-serif;
+  font-family: Pretendard;
   font-weight: 400;
+  font-style: normal;
   font-style: normal;
 
   span {

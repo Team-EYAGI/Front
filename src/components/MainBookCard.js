@@ -38,8 +38,8 @@ const DivSt = styled.div`
   justify-content: center;
 
   cursor: pointer;
-  /* background-color: yellow; */
-  font-family: noto-sans-cjk-kr, sans-serif;
+
+  font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
 `;
@@ -69,7 +69,7 @@ const ImageSt = styled.div`
 
   img {
     border: 1px solid lightgray;
-    border-radius: 5px;
+    border-radius: 2px 10px 10px 2px;
   }
 `;
 

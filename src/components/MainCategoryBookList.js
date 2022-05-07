@@ -55,21 +55,24 @@ const Wrap = styled.div`
   display: flex;
   justify-content: space-around;
 
-  font-family: noto-sans-cjk-kr, sans-serif;
+  font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
 `
 
 const HeaderSt = styled.div`
-  width: 100%;
+  width: 1440px;
   height: 60px;
+
+  background-color: yellow;
+  margin: 60px;
 
   margin: auto;
   
   display: flex;
   flex-direction: row;
   
-  font-family: noto-sans-cjk-kr, sans-serif;
+  font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
   
@@ -98,25 +101,8 @@ const GenreSt = styled.h3`
   line-height: 40px;
   color: #333333;
 
-  /* @media screen and (max-width: 1000px) {
-    :last-child {
-      display: none;
-    }
-  }
-
-  @media screen and (max-width: 800px) {
-    :nth-child(4) {
-      display: none;
-    }
-  }
-
-  @media screen and (max-width: 600px) {
-    :nth-child(3) {
-      display: none;
-    }
-  } */
-
   cursor: pointer;
+  
   :hover {
     border: 1px solid gray;
     box-shadow: 0 0 3px black;

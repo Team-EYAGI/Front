@@ -9,6 +9,8 @@ import Book from "./modules/book";
 import Audio from "./modules/audio";
 import Search from "./modules/search";
 import Fund from "./modules/fund";
+import Mypage from "./modules/mypage";
+import Chat from "./modules/chat";
 
 // history를 페이지에서 편하게 사용할 수 있도록 준비
 export const history = createBrowserHistory();
@@ -19,6 +21,8 @@ const rootReducer = combineReducers({
   audio : Audio,
   search : Search,
   fund : Fund,
+  mypage : Mypage,
+  chat : Chat,
   router: connectRouter(history),
 });
 

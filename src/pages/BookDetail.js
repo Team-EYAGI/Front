@@ -5,6 +5,7 @@ import { history } from '../redux/configureStore';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as getActions } from "../redux/modules/book";
+import { actionCreators as libraryActions } from "../redux/modules/mypage";
 
 const BookDetail = () => {
   const dispatch = useDispatch();
@@ -19,16 +20,13 @@ const BookDetail = () => {
   const seller = localStorage.getItem("seller");
 
   const detail = useSelector((state) => state.book.detail_book);
-  // console.log("책 상세", detail)
+  console.log("책 상세", detail)
   // console.log("책 상세", detail.audioPreDtoList)
   // console.log("제목", detail.title)
 
   React.useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));
-    return () => {
-      console.log(detail)
-    }
-  }, [dispatch]);
+  }, []);
 
   return (
     <React.Fragment>
@@ -39,7 +37,7 @@ const BookDetail = () => {
 
         </HeaderSt>
         <BookInfoSt>
-          <ImgSt>
+          <ImgSt style={{ backgroundImage: `url(${detail.bookImg})` }}>
             <div id='img_wrap'>
               <div id='img'>
                 <img src={detail.bookImg} />
@@ -49,7 +47,7 @@ const BookDetail = () => {
           <ContentSt>
             <div>
               <p>참여한 크리에이터</p>
-              <p><span>11</span>명</p>
+              <p><span>{detail.audio ? detail.audio.length : 0}&nbsp;</span>명</p>
             </div>
             <div>
               {seller === "ROLE_SELLER" ?
@@ -76,9 +74,11 @@ const BookDetail = () => {
                 onClick={() => {
                   if (!is_login) {
                     window.alert("로그인 후 이용 가능합니다!");
+                    history.push(`/login`)
                     return;
                   } else {
-                    window.alert("내 서재에 담겼습니다!");
+                    dispatch(libraryActions.addLibraryAC(bookId));
+                    // window.alert("내 서재에 담겼습니다!");
                   }
                 }}
               >내 서재에 담기</button>
@@ -112,7 +112,8 @@ const Wrap = styled.div`
   position: relative;
   /* background-color: lightblue; */
   padding-bottom: 30px;
-  font-family: noto-sans-cjk-kr, sans-serif;
+
+  font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
 `
@@ -147,17 +148,24 @@ const BookInfoSt = styled.div`
 `
 
 const ImgSt = styled.div`
-  width: 50%;
+  width: 586px;
+  height: 582px;
   /* background-color: gray; */
+  /* background-image: ; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-repeat : no-repeat;
+  background-size : cover;
+  border-radius: 20px;
 
   #img_wrap {
     width: 586px;
     height: 582px;
-    background-color: #F4F4F4;
+    /* background-image: url(detail.bookImg) */
+    background: #F4F4F4;
+    background : rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -210,7 +218,7 @@ const ContentSt = styled.div`
       border-radius: 20px;
       background-color: #F4F4F4;
       font-size: 20px;
-      font-family: noto-sans-cjk-kr, sans-serif;
+      font-family: Pretendard;
       font-weight: 400;
       font-style: normal;
       cursor: pointer;

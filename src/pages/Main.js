@@ -6,11 +6,12 @@ import MainCategoryBookList from '../components/MainCategoryBookList';
 import MainSellerList from '../components/MainSellerList';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as getActions } from "../redux/modules/book";
+import { actionCreators as userActions } from "../redux/modules/user";
 import MainFundingList from '../components/MainFundingList';
 
 const Main = () => {
   const dispatch = useDispatch();
-
+  
   React.useEffect(() => {
     dispatch(getActions.getMainAC());
     dispatch(getActions.getMainCategoryAC());
@@ -18,9 +19,6 @@ const Main = () => {
 
   const main = useSelector((state) => state.book.main);
   const mainCategory = useSelector((state) => state.book.main_category);
-
-  // console.log(main)
-  // console.log(mainCategory)
 
 
   return (
@@ -37,9 +35,9 @@ const Main = () => {
       <FunddingWrap>
         <MainFundingList/>
       </FunddingWrap>
-      <Wrap>
+      <CategoryWrap>
         <MainCategoryBookList mainCategory={mainCategory}/>
-      </Wrap>
+      </CategoryWrap>
     </React.Fragment>
   )
 }
@@ -66,11 +64,26 @@ const Wrap = styled.div`
   
   display: flex;
   flex-direction: column;
-  font-family: 'Noto Sans KR', sans-serif;
+`
+
+const CategoryWrap = styled.div`
+  width: 1932px;
+  height: 650px;
+
+  /* background-color: aqua; */
+
+
+  margin: 0 auto;
+  margin-bottom: 20px;
+  
+  position: relative;
+  
+  display: flex;
+  flex-direction: column;
 `
 
 const SellerWrap = styled.div`
-  width: 1440px;
+  width: 1920px;
   height: 400px;
 
   /* background-color: aqua; */
@@ -87,7 +100,7 @@ const SellerWrap = styled.div`
 `
 
 const FunddingWrap = styled.div`
-  width: 1440px;
+  width: 1920px;
   height: 500px;
 
   /* background-color: aqua; */

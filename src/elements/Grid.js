@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Grid = (props) => {
-  const { position, border, column, is_flex, width, margin, padding, bg, children, min, radius, is_center, is_left, is_right } = props;
+  const { position, border, borderRadius, borderLeft, borderRight, borderBottom, column, is_flex, width, margin, padding, bg, children, min, radius, is_center, is_left, is_right } = props;
 
   const styles = {
       is_flex: is_flex,
@@ -16,7 +16,11 @@ const Grid = (props) => {
       min: min,
       radius: radius,
       column: column,
+      borderRadius: borderRadius,
       border: border,
+      borderLeft: borderLeft,
+      borderRight: borderRight,
+      borderBottom: borderBottom,
       position: position,
   };
   return (
@@ -47,6 +51,11 @@ const GridSt = styled.div`
   width: ${(props) => props.width};
   border-radius : ${(props) => props.radius};
   border : ${(props) => props.border};
+  border-radius : ${(props) => props.borderRadius};
+  border-top : ${(props) => props.border};
+  border-left : ${(props) => props.borderLeft};
+  border-right : ${(props) => props.borderRight};
+  border-bottom : ${(props) => props.borderBottom};
   position : ${(props) => props.position};
   ${(props) => (props.min ? `min-width: ${props.min};` : "")}
   height: 100%;

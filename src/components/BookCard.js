@@ -37,7 +37,7 @@ const Wrap = styled.div`
   margin: 10px;
 
   
-  font-family: noto-sans-cjk-kr, sans-serif;
+  font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
 `
@@ -65,7 +65,7 @@ const ImageBox = styled.div`
 
   img {
   border: 1px solid lightgray;
-  border-radius: 5px;
+  border-radius: 2px 10px 10px 2px;
 
   }
 `

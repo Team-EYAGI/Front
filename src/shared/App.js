@@ -24,6 +24,9 @@ import Footer from '../components/Footer';
 import AudioModal from "../pages/AudioModal";
 import ReviewWirte from '../pages/ReviewWrite';
 import SellerProfile from '../pages/SellerProfile';
+import ProfileEdit from '../pages/ProfileEdit';
+import Chat from '../pages/Chat';
+import KakaoAuthHandler from '../pages/KakaoAuthHandler';
 
 function App() {
   return (
@@ -33,6 +36,7 @@ function App() {
         <Route path="/" exact component={Main}/>
         <Route path="/login" exact component={LogIn}/>
         <Route path="/signup" exact component={SignUp}/>
+        <Route path="/chat" exact component={Chat}/>
         <Route path="/audioPlay" exact component={AudioPlay}/>
         <Route path="/audioPlay/:category/:bookId/:audioBookId" exact component={AudioPlay}/>
         <Route path="/audioWrite" exact component={AudioWrite}/>
@@ -46,6 +50,8 @@ function App() {
         <Route path="/fundingWrite/:bookId" exact component={FundingWrite}/>
         <Route path="/mypage" exact component={MyPage}/>
         <Route path="/mypage/:category" exact component={MyPage}/>
+        <Route path="/profileEdit" exact component={ProfileEdit}/>
+        <Route path="/profileEdit/:userId" exact component={ProfileEdit}/>
         <Route path="/request" exact component={Request}/>
         <Route path="/requestWrite" exact component={RequestWrite}/>
         <Route path="/requestWrite/:bookId" exact component={RequestWrite}/>
@@ -56,6 +62,7 @@ function App() {
         <Route path="/search" exact component={Search}/>
         <Route path="/reviewWrite/:category/:bookId/:audioBookId" exact component={ReviewWirte}/>
         <Route path="/reviewWrite/:category/:bookId/:audioBookId/:commentId" exact component={ReviewWirte}/>
+        <Route path="/user/kakao/callback" component={KakaoAuthHandler}/>
        <Footer/>
       </ConnectedRouter>
     </React.Fragment>

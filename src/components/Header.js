@@ -29,36 +29,38 @@ const Header = (props) => {
     <>
       {is_session ?
         <React.Fragment>
-          <Grid position="relative" margin="auto" width="1920px" is_flex padding="16px">
+          <Grid position="relative" margin="auto" width="1920px" is_flex padding="16px 250px">
             <Grid width="200px" is_center>
               {/* 텍스트 커서 효과주기 */}
               <Text onClick={() => { history.push('/') }} bold size="40px" margin="0px">EYAGI</Text>
             </Grid>
             <Grid position="relative" width="200px" margin="0px" padding="0px">
               <Grid is_center>
-                {/* <Text
-              size="20px"
-              onClick={() => {history.push('/signup')}}
-              >회원가입</Text> */}
-                <Text
-                  size="20px"
-                  margin="0px 10px 0px 0px"
+                <LoginBox
                   onClick={() => {
                     history.push(`/mypage/main`)
                   }}
-                > {userName}님</Text>
-                {/* <Text margin="0px">로그아웃</Text> */}
+                >
+                  <span>{userName}님</span>
+                </LoginBox>
               </Grid>
             </Grid>
           </Grid>
-          <Grid position="relative" margin="auto" bg="lightgray" is_center width="100%">
+          <Grid
+            position="relative"
+            margin="auto"
+            // bg="lightgray"
+            borderRadius="20px"
+            borderBottom="1px solid black"
+            is_center
+            width="1920px">
             <BottomSt>
               <Grid width="100%" is_left margin="0px 20px">
                 {/* <BsList size="25px" style={{ margin: "5px 20px 0px 20px" }} /> */}
                 <li onClick={() => { history.push(`/book/자기계발`); }}>카테고리별 도서</li>
                 <li onClick={() => { history.push('/funding') }}>오디오 펀딩</li>
                 <li onClick={() => { history.push('/request') }}>오디오북 요청 모아보기</li>
-                {/* <li>ㅇㅇㅇ</li> */}
+
               </Grid>
               <SearchWrap>
                 <Search
@@ -76,25 +78,33 @@ const Header = (props) => {
         </React.Fragment>
         :
         <React.Fragment>
-          <Grid position="relative" margin="auto" width="1920px" is_flex padding="16px">
+          <Grid position="relative" margin="auto" width="1920px" is_flex padding="16px 250px">
             <Grid width="200px" is_center>
               {/* 텍스트 커서 효과주기 */}
               <Text onClick={() => { history.push('/') }} bold size="40px" margin="0px">EYAGI</Text>
             </Grid>
             <Grid position="relative" width="200px" margin="0px" padding="0px">
               <Grid is_center>
-                <Text
-                  size="20px"
-                  margin="0px 10px 0px 0px"
-                  onClick={() => { history.push('/login') }}
-                >로그인 / 회원가입</Text>
-                {/* <Text margin="0px">로그아웃</Text> */}
+                <LoginBox
+                  onClick={() => {
+                    history.push(`/login`)
+                  }}
+                >
+                  <span>로그인/회원가입</span>
+                </LoginBox>
               </Grid>
             </Grid>
           </Grid>
-          <Grid position="relative" margin="auto" bg="lightgray" is_center width="100%">
+          <Grid
+            position="relative"
+            margin="auto"
+            // bg="lightgray"
+            borderRadius="20px"
+            borderBottom="1px solid black"
+            is_center
+            width="1920px">
             <BottomSt>
-              <Grid width="1000px" is_left margin="0px 20px">
+              <Grid width="100%" is_left margin="0px 20px">
                 {/* <BsList size="25px" style={{ margin: "5px 20px 0px 20px" }} /> */}
                 <li onClick={() => { history.push(`/book/자기계발`); }}>카테고리별 도서</li>
                 <li onClick={() => { history.push('/funding') }}>오디오 펀딩</li>
@@ -120,23 +130,50 @@ const Header = (props) => {
   )
 }
 
-const BottomSt = styled.ul`
-  width: 1920px;
+const LoginBox = styled.div`
+  width: 164px;
+  height: 54px;
+
+  background-color: #393C3F;
+  color: white;
+
+  font-family: Pretendard;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 18px;
+  border-radius: 10px;
+
   display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
+
+  cursor: pointer;
+
+  span {
+    text-align: center;
+    margin-bottom: 3px;
+  }
+`
+
+const BottomSt = styled.ul`
+  width: 1420px;
+  height: 50px;
+
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: space-between; */
   /* background-color: yellow; */
 
   padding: 0px;
   padding-bottom: 2px;
-  height: 33px;
   
   position: relative;
   list-style-type: none;
 
   cursor: pointer;
+
   font-family: Pretendard;
-  /* font-family: noto-sans-cjk-kr, sans-serif; */
   font-weight: 400;
   font-style: normal;
 
@@ -157,7 +194,7 @@ const BottomSt = styled.ul`
 
 const SearchWrap = styled.div`
   position: relative;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: Pretendard;
 `
 
 const Search = styled.input`
@@ -165,25 +202,28 @@ const Search = styled.input`
   background-image: "https://res.kurly.com/pc/service/common/1908/ico_search_x2.png";
 
   box-sizing: border-box;
-  border: 1px solid #f7f7f7;
-  border-radius: 50px;
+  background: #FFFFFF;
+  border: 1px solid #000000;
+  border-radius: 10px;
   outline: none;
 
-  width: 400px;
-  height: 40px;
+  width: 279px;
+  height: 48px;
   padding: 0px 30px 0px 14px;
-  margin-bottom: 2px;
+  /* margin-bottom: 2px; */
   margin-right: 20px;
   /* margin-left: -31px; */
 
-  letter-spacing: -1px;
-  font-weight: 400;
-  font-size: 12px;
+
   color: #666;
   line-height: 16px;
-  font-family: noto-sans-cjk-kr, sans-serif;
+
+  font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
+  font-size: 12px;
+  letter-spacing: -1px;
+
 `
 
 const SearchIcon = styled.div`
@@ -192,7 +232,7 @@ const SearchIcon = styled.div`
 
   position: absolute;
   right: 30px;
-  top: 3px;
+  top: 10px;
   width: 30px;
   height: 30px;
 `
