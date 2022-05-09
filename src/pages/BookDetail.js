@@ -46,7 +46,7 @@ const BookDetail = () => {
           </ImgSt>
           <ContentSt>
             <div>
-              <p>참여한 크리에이터</p>
+              <p>이 오디오북에 참여한 크리에이터</p>
               <p><span>{detail.audio ? detail.audio.length : 0}&nbsp;</span>명</p>
             </div>
             <div>
@@ -57,7 +57,7 @@ const BookDetail = () => {
                     onClick={() => {
                       history.push(`/fundingWrite/${bookId}`)
                     }}>
-                    펀딩 등록하기
+                    내 펀딩 등록하기
                   </button>
                   <button
                     id="hi"
@@ -86,7 +86,7 @@ const BookDetail = () => {
           </ContentSt>
         </BookInfoSt>
         <BookSumSt>
-          <span>
+          <span id='bookinfo'>
             책 정보
           </span>
           <div>
@@ -104,7 +104,7 @@ const BookDetail = () => {
 }
 
 const Wrap = styled.div`
-  width: 1200px;
+  width: 1196px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -119,9 +119,8 @@ const Wrap = styled.div`
 `
 
 const HeaderSt = styled.div`
-  width: 1200px;
+  width: 1196px;
   /* background-color: gray; */
-  font-size: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -129,16 +128,21 @@ const HeaderSt = styled.div`
   margin: 137px 0px 80px 0px;
   
   p {
+    font-size: 24px;
     margin: 0px 0px 23px 0px;
+    font-weight: 700;
+
   }
 
   span {
-    font-size: 30px;
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 400;
   }
 `
 
 const BookInfoSt = styled.div`
-  width: 1200px;
+  width: 1196px;
   /* background-color: greenyellow; */
   display: flex;
   flex-direction: row;
@@ -149,7 +153,7 @@ const BookInfoSt = styled.div`
 
 const ImgSt = styled.div`
   width: 586px;
-  height: 582px;
+  height: 586px;
   /* background-color: gray; */
   /* background-image: ; */
   display: flex;
@@ -158,23 +162,23 @@ const ImgSt = styled.div`
   align-items: center;
   background-repeat : no-repeat;
   background-size : cover;
-  border-radius: 20px;
+  border-radius: 30px;
 
   #img_wrap {
     width: 586px;
-    height: 582px;
-    /* background-image: url(detail.bookImg) */
-    background: #F4F4F4;
-    background : rgba(0, 0, 0, 0.5);
+    height: 586px;
+
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(26px);
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 20px;
+    border-radius: 30px;
   }
   
   #img {
-    width: 294px;
-    height: 440px;
+    width: 290px;
+    height: 438px;
     background-color: gray;
 
     img {
@@ -185,16 +189,16 @@ const ImgSt = styled.div`
 `
 
 const ContentSt = styled.div`
-  width: 38%;
+  /* width: 38%; */
   height: 582px;
-  /* background-color: red; */
+  background-color: red;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
 
   div {
-    width: 342px;
+    /* width: 342px; */
     /* background-color: gray; */
     display: flex;
     flex-direction: column;
@@ -202,7 +206,7 @@ const ContentSt = styled.div`
     align-items: center;
 
     p {
-      font-size: 30px;
+      font-size: 20px;
       font-weight: bold;
 
       span {
@@ -211,19 +215,26 @@ const ContentSt = styled.div`
     }
 
     button {
-      width: 342px;
+      width: 464px;
       height: 80px;
       margin-top: 16px;
-      border: none;
-      border-radius: 20px;
-      background-color: #F4F4F4;
+      border: 1px solid #0C0A0A;
+      border-radius: 10px;
+      background: #FFFEFC;
       font-size: 20px;
       font-family: Pretendard;
       font-weight: 400;
       font-style: normal;
       cursor: pointer;
+
+      :hover {
+        background: #0C0A0A;
+        border: none;
+        color: #FFFFFF;
+      }
     }
-  }
+
+}
 `
 
 const BookSumSt = styled.div`
@@ -233,16 +244,18 @@ const BookSumSt = styled.div`
   flex-direction: column;
   align-items: center;
 
-  span {
+  #bookinfo {
     width: 1200px;
     float: left;
-    font-size: 30px;
+    font-size: 22px;
     font-weight: bold;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #000000;
   }
 
   div {
     width: 1200px;
-    background-color: #F4F4F4;
+    /* background-color: #F4F4F4; */
     border-radius: 20px;
     display: flex;
     flex-direction: row;
@@ -252,8 +265,8 @@ const BookSumSt = styled.div`
     margin-bottom: 80px;
 
     span {
-      margin : 33px 98px;
-      font-size: 20px;
+      /* margin : 33px 98px; */
+      font-size: 16px;
     }
   }
 `

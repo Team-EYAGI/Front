@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Grid = (props) => {
-  const { position, border, borderRadius, borderLeft, borderRight, borderBottom, column, is_flex, width, margin, padding, bg, children, min, radius, is_center, is_left, is_right } = props;
+  const { maxWidth, position, border, borderRadius, borderLeft, borderRight, borderBottom, column, is_flex, width, margin, padding, bg, children, min, radius, is_center, is_left, is_right } = props;
 
   const styles = {
       is_flex: is_flex,
@@ -22,6 +22,7 @@ const Grid = (props) => {
       borderRight: borderRight,
       borderBottom: borderBottom,
       position: position,
+      maxWidth: maxWidth,
   };
   return (
     <React.Fragment>
@@ -48,6 +49,7 @@ Grid.defaultProps = {
 };
 
 const GridSt = styled.div`
+  max-width: ${(props) => props.maxWidth};
   width: ${(props) => props.width};
   border-radius : ${(props) => props.radius};
   border : ${(props) => props.border};
