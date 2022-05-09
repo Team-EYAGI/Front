@@ -44,11 +44,17 @@ const AudioPlay = (props) => {
 
   return (
     <React.Fragment>
-      <HeaderSt>
-        {audioDetail.title} > 오디오 듣기
-      </HeaderSt>
       <Wrap>
         <Player>
+          <HeaderSt>
+            <div>
+              {audioDetail.title}
+            </div>
+            <span>
+              저자: {audioDetail.author} / 크리에이터: {audioDetail.sellerName}
+            </span>
+          </HeaderSt>
+
           <ImgSt style={{ backgroundImage: `url(${audioDetail.bookImg})` }}>
             <div id='img_wrap'>
               <div id='img'>
@@ -68,25 +74,38 @@ const AudioPlay = (props) => {
               />
             </div>
           </ImgSt>
-          <h3>{audioDetail.title}</h3>
-          <h4>저자 : {audioDetail.author}</h4>
-          <h3>크리에이터 : {audioDetail.sellerName}</h3>
-          <div id='creator'>
-            {audioDetail.audioInfo}
+          <div id='name'>
+            <span id='creatorname'>{audioDetail.sellerName}</span>&nbsp;&nbsp;
+            <span id='fixname'>크리에이터</span>
           </div>
+          <AudioCardSt>
+            <SellerImg style={{ backgroundImage: (audioDetail.a ? `url(${audioDetail.Img})` : `url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png")`) }} />
+            <ContentSt>
+              <div id='preview'>
+                <div>팔로잉 팔로우</div>
+                <button
+                  onClick={() => {
+                    // history.push(`/audioModal/${category}/${bookId}/${item.audioBookId}`)
+                  }}
+                >팔로우 +</button>
+              </div>
+              <span id='contents'>
+                {audioDetail.audioInfo}
+              </span>
+            </ContentSt>
+          </AudioCardSt>
         </Player>
         <ListBox>
           <div id='listname'>
-            <h3>목차</h3>
+            <h3>목차</h3>&nbsp;&nbsp;
             <span>2개 챕터</span>
           </div>
-          <div id='listbox'>
-
+          <div id='playbox'>
             {/* 플레이리스트 목록 map */}
             {playList && playList.map((item, idx) => (
               <div key={idx} id='list'>
-                <h4>{idx + 1}</h4>
-                <h3>Chapter{idx + 1}</h3>
+                <h4>{idx + 1}. Chapter{idx + 1}</h4>
+                {/* <h3>Chapter{idx + 1}</h3> */}
                 <PlayerSt onClick={() => {
                   setPlay(`${item.s3FileName}`)
                   console.log("paly상태", play)
@@ -128,36 +147,70 @@ const AudioPlay = (props) => {
 
 
 const Wrap = styled.div`
-    width: 1440px;
-    /* position: relative; */
+    width: 1195px;
     margin: 0 auto;
+    
     display: flex;
+    justify-content: space-between;
     align-items: center;
     /* background-color: lightblue; */
+
+    #name {
+      width: 464px;
+      height: 24px;
+      margin-top: 44px;
+      margin-bottom: 25px;
+
+      #creatorname {
+        font-weight: 700;
+        font-size: 24px;
+      }
+
+      #fixname {
+        font-weight: 300;
+        font-size: 18px;
+        color: #707070;
+      }
+    }
   `
 
 const HeaderSt = styled.div`
-    width: 1440px;
-    height: 27px;
+    width: 464px;
+    height: 56px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     /* background-color: yellow; */
 
-    margin: 0 auto;
+    /* margin: 0 auto; */
     margin-top: 81px;
-    margin-bottom: 18px;
+    margin-bottom: 26px;
 
     font-family: Pretendard;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 18px;
+
+    div {
+      font-weight: 700;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    span {
+      font-weight: 400;
+      font-size: 16px;
+    }
+
+
     `
 
 const Player = styled.div`
-    width: 464px;
-    height: 100%;
+    width: 500px;
+    /* height: 789px; */
     /* background-color: red; */
   
-    margin: 0 auto;
+    /* margin: 0 auto; */
     display: flex;
     flex-direction: column;
     
@@ -166,29 +219,6 @@ const Player = styled.div`
     font-family: Pretendard;
     font-weight: 400;
     font-style: normal;
-
-    h3 {
-      width: 464px;
-      /* float: left; */
-      margin: 27px 0px 16px 0px;
-      font-size: 25 px;
-    }
-
-    h4 {
-      width: 464px;
-      /* float: left; */
-      margin: 0px 0px 16px 0px;
-      font-size: 16px;
-      font-weight: 300;
-    }
-
-    h5 {
-      width: 464px;
-      /* float: left; */
-      margin: 0px 0px 16px 0px;
-      font-size: 16px;
-      font-weight: 300;
-    }
 
     #creator {
       width: 464px;
@@ -235,8 +265,8 @@ const ImgSt = styled.div`
     width: 464px;
     height: 464px;
     /* background-image: url(detail.bookImg) */
-    background: #F4F4F4;
-    background : rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(26px);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -245,10 +275,82 @@ const ImgSt = styled.div`
   }
 `
 
-const ListBox = styled.div`
-  width: 708px;
+const AudioCardSt = styled.div`
+  width: 464px;
+  height: 180px;
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+`
 
-  margin: 0 auto;
+const SellerImg = styled.div`
+  width: 150px;
+  height: 150px;
+
+  background-repeat : no-repeat;
+  background-size : cover;
+  
+  border-radius: 15px;
+  border: 1px solid #878787;
+  
+  cursor: pointer;
+`
+
+const ContentSt = styled.div`
+  /* background-color: lightgray; */
+
+  width: 297px;
+  min-height: 64px;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: center;
+
+  cursor: pointer;
+
+  #contents {
+    margin-top: 10px;
+    width: 100%;
+    font-size: 12px;
+    min-height: 100px;
+  }
+
+  #preview {
+    width: 100%;
+    height: 30px;
+    /* background: yellow; */
+    text-align: right;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+      width: 73px;
+      height: 30px;
+
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 12px;
+
+      background: #FFFEFC;
+      border: 1px solid #0C0A0A;
+      border-radius: 10px;
+    }
+  }
+`
+
+const ListBox = styled.div`
+  width: 590px;
+  height: 100%;
+  /* background-color: red; */
+
+  /* margin: 0 auto; */
 
   font-family: Pretendard;
   font-weight: 400;
@@ -259,20 +361,23 @@ const ListBox = styled.div`
     display: flex;
     align-items: center;
     background-color: white;
+    margin-top: 80px;
+    margin-bottom: 26px;
 
     h3 {
-      font-size: 25px;
-      margin-right: 10px;
+      font-weight: 700;
+      font-size: 24px;
     }
 
     span {
+      font-weight: 300;
       font-size: 18px;
       color: #707070;
     }
   }
 
-  #listbox {
-    width: 708px;
+  #playbox {
+    width: 590px;
     height: 750px;
     
 
@@ -293,30 +398,30 @@ const ListBox = styled.div`
       border-radius: 6px;
     }
 
-    padding: 44px 0px;
+    /* padding: 20px 0px; */
 
-    border: 1px solid gray;
-    border-radius: 20px;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
 
     #list {
-      background-color: wheat;
+      /* background-color: wheat; */
+
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
 
-      padding: 0px 40px;
+      padding: 0px 20px;
            
       margin-bottom: 10px;
-      margin-left: 10px;
-      margin-right: 10px;
 
-      border: 1px solid gray;
-      border-radius: 5px;
+      border-top: 1px solid gray;
+      border-bottom: 1px solid gray;
 
       h4 {
-        width: 20px;
-        font-size: 25px;
+        width: 400px;
+        font-weight: 400;
+        font-size: 20px;
       }
 
       h3 {
@@ -325,12 +430,26 @@ const ListBox = styled.div`
       
         font-size: 35px;
       }
+/* 
+      :hover {
+        background: #0C0A0A;
+        border-radius: 10px;
+
+        h4 {
+         color: white;
+        }
+
+        div {
+          border: 1px solid white;
+          color: white;
+        }
+      } */
     }
   }
 `
 
 const PlayerSt = styled.div`
-  background-color: #EAEAEA;
+  /* background-color: #EAEAEA; */
 
   width: 50px;
   height: 50px;
@@ -340,15 +459,23 @@ const PlayerSt = styled.div`
   justify-content: center;
   align-items: center;
   
-  border-radius: 20px;
+  border-radius: 50px;
+  border: 0.5px solid #000000;
   
   cursor: pointer;
+
+  
+  :hover {
+    background-color: #000000;
+    color: white;
+    border: 0.5px solid #FFFFFF;
+  }
 `
 
 const ReviewBox = styled.div`
   /* background-color: green; */
 
-  width: 1310px;
+  width: 1195px;
   margin: 0 auto;
   
   display: flex;
@@ -383,22 +510,6 @@ const ReviewBox = styled.div`
     overflow-x: scroll;
 
   }
-`
-
-const AudioCardSt = styled.div`
-  background-color: #F4F4F4;
-
-  width: 100%;
-  height: 100px;
-  
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  
-  border-radius: 20px;
-  padding: 43px 0px;
-  margin: 24px 0px;
 `
 
 export default AudioPlay;

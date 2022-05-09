@@ -42,15 +42,16 @@ const Main = () => {
   )
 }
 
-const SliderWrap = styled.div`
-  width: 1920px;
-  height: 400px;
-  position: relative;
-  margin: 0 auto;
-`
+// const SliderWrap = styled.div`
+//   width: 1920px;
+//   height: 400px;
+//   position: relative;
+//   margin: 0 auto;
+// `
 
 // 메인의 크기는 1440px로 고정
 const Wrap = styled.div`
+
   width: 1440px;
   height: 650px;
 
@@ -67,7 +68,7 @@ const Wrap = styled.div`
 `
 
 const CategoryWrap = styled.div`
-  width: 1932px;
+  width: 1920px;
   height: 650px;
 
   /* background-color: aqua; */
@@ -115,5 +116,84 @@ const FunddingWrap = styled.div`
   flex-direction: column;
   font-family: 'Noto Sans KR', sans-serif;
 `
+
+const SliderWrap = styled.div`
+  max-width: 1920px;
+  width: 100%;
+  height: 400px;
+  position: relative;
+  margin: 0 auto;
+`
+
+// // 메인의 크기는 1440px로 고정
+// const Wrap = styled.div`
+//   max-width: 1440px;
+//   width: calc(100% - 40px);
+//   height: 650px;
+
+//   /* background-color: aqua; */
+
+
+//   margin: 0 auto;
+//   margin-bottom: 20px;
+  
+//   position: relative;
+  
+//   display: flex;
+//   flex-direction: column;
+// `
+
+// const CategoryWrap = styled.div`
+//   max-width: 1920px;
+//   width: 100%;
+//   height: 650px;
+
+//   /* background-color: aqua; */
+
+
+//   margin: 0 auto;
+//   margin-bottom: 20px;
+  
+//   position: relative;
+  
+//   display: flex;
+//   flex-direction: column;
+// `
+
+// const SellerWrap = styled.div`
+//   max-width: 1920px;
+//   width: 100%;
+//   height: 400px;
+
+//   /* background-color: aqua; */
+
+//   margin: 0 auto;
+//   margin-top: 20px;
+//   margin-bottom: 20px;
+  
+//   position: relative;
+  
+//   display: flex;
+//   flex-direction: column;
+//   font-family: 'Noto Sans KR', sans-serif;
+// `
+
+// const FunddingWrap = styled.div`
+//   max-width: 1920px;
+//   width: 100%;
+//   height: 500px;
+
+//   /* background-color: aqua; */
+
+//   margin: 0 auto;
+//   margin-top: 20px;
+//   margin-bottom: 20px;
+  
+//   position: relative;
+  
+//   display: flex;
+//   flex-direction: column;
+//   font-family: 'Noto Sans KR', sans-serif;
+// `
 
 export default Main;

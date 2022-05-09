@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Text } from '../elements/Index';
-import { BsList } from "react-icons/bs";
+import { BsPerson } from "react-icons/bs";
+import { FiLogOut } from "react-icons/fi";
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 import { useDispatch, useSelector } from "react-redux";
@@ -29,39 +30,26 @@ const Header = (props) => {
     <>
       {is_session ?
         <React.Fragment>
-          <Grid position="relative" margin="auto" width="1920px" is_flex padding="16px 250px">
-            <Grid width="200px" is_center>
-              {/* 텍스트 커서 효과주기 */}
-              <Text onClick={() => { history.push('/') }} bold size="40px" margin="0px">EYAGI</Text>
-            </Grid>
-            <Grid position="relative" width="200px" margin="0px" padding="0px">
-              <Grid is_center>
-                <LoginBox
-                  onClick={() => {
-                    history.push(`/mypage/main`)
-                  }}
-                >
-                  <span>{userName}님</span>
-                </LoginBox>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid
-            position="relative"
-            margin="auto"
-            // bg="lightgray"
-            borderRadius="20px"
-            borderBottom="1px solid black"
-            is_center
-            width="1920px">
+          <HeaderWrap>
+            <LogoBox>
+              <img
+                onClick={() => { history.push('/') }}
+                src='https://blog.kakaocdn.net/dn/SJmxC/btqxeJAzjZA/UgEHLHzJlq9TZBpo7hyi5k/img.jpg'
+              />
+            </LogoBox>
+            <div>
+              <BsPerson size="25px" style={{ margin: "0.26vw 0px 0px 0px" }} />
+              <FiLogOut size="25px" style={{ margin: "0.26vw 0px 0px 1.04vw" }} />
+            </div>
+          </HeaderWrap>
+          <BottomWrap>
             <BottomSt>
-              <Grid width="100%" is_left margin="0px 20px">
-                {/* <BsList size="25px" style={{ margin: "5px 20px 0px 20px" }} /> */}
+              <div id='list'>
                 <li onClick={() => { history.push(`/book/자기계발`); }}>카테고리별 도서</li>
                 <li onClick={() => { history.push('/funding') }}>오디오 펀딩</li>
                 <li onClick={() => { history.push('/request') }}>오디오북 요청 모아보기</li>
-
-              </Grid>
+                {/* <li>ㅇㅇㅇ</li> */}
+              </div>
               <SearchWrap>
                 <Search
                   onChange={(e) => {
@@ -74,43 +62,34 @@ const Header = (props) => {
                   }} />
               </SearchWrap>
             </BottomSt>
-          </Grid>
+          </BottomWrap>
         </React.Fragment>
         :
         <React.Fragment>
-          <Grid position="relative" margin="auto" width="1920px" is_flex padding="16px 250px">
-            <Grid width="200px" is_center>
-              {/* 텍스트 커서 효과주기 */}
-              <Text onClick={() => { history.push('/') }} bold size="40px" margin="0px">EYAGI</Text>
-            </Grid>
-            <Grid position="relative" width="200px" margin="0px" padding="0px">
-              <Grid is_center>
-                <LoginBox
-                  onClick={() => {
-                    history.push(`/login`)
-                  }}
-                >
-                  <span>로그인/회원가입</span>
-                </LoginBox>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid
-            position="relative"
-            margin="auto"
-            // bg="lightgray"
-            borderRadius="20px"
-            borderBottom="1px solid black"
-            is_center
-            width="1920px">
+          <HeaderWrap>
+            <LogoBox>
+              <img
+                onClick={() => { history.push('/') }}
+                src='https://blog.kakaocdn.net/dn/SJmxC/btqxeJAzjZA/UgEHLHzJlq9TZBpo7hyi5k/img.jpg'
+              />
+            </LogoBox>
+            <LoginBox
+              onClick={() => {
+                history.push(`/login`)
+              }}
+            >
+              <span>로그인/회원가입</span>
+            </LoginBox>
+          </HeaderWrap>
+          <BottomWrap>
             <BottomSt>
-              <Grid width="100%" is_left margin="0px 20px">
+              <div id='list'>
                 {/* <BsList size="25px" style={{ margin: "5px 20px 0px 20px" }} /> */}
                 <li onClick={() => { history.push(`/book/자기계발`); }}>카테고리별 도서</li>
                 <li onClick={() => { history.push('/funding') }}>오디오 펀딩</li>
                 <li onClick={() => { history.push('/request') }}>오디오북 요청 모아보기</li>
                 {/* <li>ㅇㅇㅇ</li> */}
-              </Grid>
+              </div>
               <SearchWrap>
                 <Search
                   onChange={(e) => {
@@ -123,24 +102,92 @@ const Header = (props) => {
                   }} />
               </SearchWrap>
             </BottomSt>
-          </Grid>
+          </BottomWrap>
         </React.Fragment>
       }
     </>
   )
 }
 
-const LoginBox = styled.div`
-  width: 164px;
-  height: 54px;
+const HeaderWrap = styled.div`
+  /* background-color: lightblue; */
+  max-width: 1440px;
+  width: calc(100%-480px);
 
-  background-color: #393C3F;
+  height: 50px;
+  
+  position: relative;
+  margin: 0 auto;
+  padding: 0.83vw 13.02vw;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const BottomWrap = styled.div`
+  /* background-color: yellow; */
+  max-width: 1440px;
+  /* width: 100%; */
+  width: calc(100%-480px);
+
+  height: 50px;
+  
+  position: relative;
+  margin: 0 auto;
+  padding: 0.3vw 13.02vw;
+
+  border-radius: 20px;
+  border-bottom: 1px solid black;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`
+
+const LogoBox = styled.div`
+  width: 10.4vw;
+  height: 2.8vw;
+
+  /* background-color: #393C3F; */
   color: white;
 
   font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
-  font-size: 18px;
+  font-size: 0.94vw;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+  span {
+    text-align: center;
+    margin-bottom: 3px;
+  }
+`
+
+const LoginBox = styled.div`
+  width: 8.54vw;
+  height: 2.81vw;
+
+  /* background-color: #393C3F; */
+  color: white;
+
+  font-family: Pretendard;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 0.94vw;
   border-radius: 10px;
 
   display: flex;
@@ -152,12 +199,13 @@ const LoginBox = styled.div`
 
   span {
     text-align: center;
-    margin-bottom: 3px;
+    margin-bottom: 0.16vw;
   }
 `
 
 const BottomSt = styled.ul`
-  width: 1420px;
+  max-width: 1440px;
+  width: 100%;
   height: 50px;
 
   display: flex;
@@ -177,13 +225,24 @@ const BottomSt = styled.ul`
   font-weight: 400;
   font-style: normal;
 
+  #list {
+    width: 100%;
+    /* background-color: red; */
+
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    /* margin: 0px 20px; */
+  }
+
   li {
-    padding: 7px 40px 0px 0px;
+    padding: 0.36vw 2.08vw 0vw 0vw;
     
-    font-size: 25px;
+    font-size: 1.30vw;
     font-weight: bold;
     color: #333;
-    line-height: 20px;
+    line-height: 1.04vw;
 
     cursor: pointer;
     :hover {
@@ -195,6 +254,11 @@ const BottomSt = styled.ul`
 const SearchWrap = styled.div`
   position: relative;
   font-family: Pretendard;
+  /* background-color: red; */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const Search = styled.input`
@@ -207,34 +271,29 @@ const Search = styled.input`
   border-radius: 10px;
   outline: none;
 
-  width: 279px;
-  height: 48px;
-  padding: 0px 30px 0px 14px;
-  /* margin-bottom: 2px; */
-  margin-right: 20px;
-  /* margin-left: -31px; */
-
+  width: 14.53vw;
+  height: 2.50vw;
+  padding: 0.00vw 1.56vw 0.00vw 0.73vw;
+  margin-right: 1.04vw;
 
   color: #666;
-  line-height: 16px;
+  line-height: 0.83vw;
 
   font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
-  font-size: 12px;
-  letter-spacing: -1px;
-
+  font-size: 0.63vw;
 `
 
 const SearchIcon = styled.div`
   background-image: url(https://res.kurly.com/pc/service/common/1908/ico_search_x2.png);
-  background-size: 30px;
+  background-size: 1.56vw;
 
   position: absolute;
-  right: 30px;
-  top: 10px;
-  width: 30px;
-  height: 30px;
+  right: 1.56vw;
+  top: 0.52vw;
+  width: 1.56vw;
+  height: 1.56vw;
 `
 
 export default Header;
