@@ -7,6 +7,8 @@ import { history } from '../redux/configureStore';
 import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../shared/Token";
 import { actionCreators as searchActions } from "../redux/modules/search";
+import { actionCreators } from "../redux/modules/user";
+import logo from '../src_assets/eyagiLogo1.png'
 
 
 const Header = (props) => {
@@ -34,12 +36,24 @@ const Header = (props) => {
             <LogoBox>
               <img
                 onClick={() => { history.push('/') }}
-                src='https://blog.kakaocdn.net/dn/SJmxC/btqxeJAzjZA/UgEHLHzJlq9TZBpo7hyi5k/img.jpg'
+                src={logo}
+                // src='https://blog.kakaocdn.net/dn/SJmxC/btqxeJAzjZA/UgEHLHzJlq9TZBpo7hyi5k/img.jpg'
               />
             </LogoBox>
             <div>
-              <BsPerson size="25px" style={{ margin: "0.26vw 0px 0px 0px" }} />
-              <FiLogOut size="25px" style={{ margin: "0.26vw 0px 0px 1.04vw" }} />
+              <BsPerson
+                size="25px"
+                style={{ margin: "5px 0px 0px 0px", cursor: "pointer" }}
+                onClick={() => {
+                  history.push(`/mypage/listen`)
+                }}/>
+              <FiLogOut
+                size="25px"
+                style={{ margin: "5px 2px 0px 20px", cursor: "pointer" }}
+                onClick={() => {
+                  dispatch(actionCreators.logOut());              
+                }}
+                />
             </div>
           </HeaderWrap>
           <BottomWrap>
@@ -70,7 +84,7 @@ const Header = (props) => {
             <LogoBox>
               <img
                 onClick={() => { history.push('/') }}
-                src='https://blog.kakaocdn.net/dn/SJmxC/btqxeJAzjZA/UgEHLHzJlq9TZBpo7hyi5k/img.jpg'
+                src={logo}
               />
             </LogoBox>
             <LoginBox
@@ -110,15 +124,11 @@ const Header = (props) => {
 }
 
 const HeaderWrap = styled.div`
-  /* background-color: lightblue; */
-  max-width: 1440px;
-  width: calc(100%-480px);
-
-  height: 50px;
+  width: 1200px;
+  height: 60px;
   
   position: relative;
-  margin: 0 auto;
-  padding: 0.83vw 13.02vw;
+  margin: 10px auto;
 
   display: flex;
   flex-direction: row;
@@ -127,15 +137,13 @@ const HeaderWrap = styled.div`
 `
 
 const BottomWrap = styled.div`
-  /* background-color: yellow; */
   max-width: 1440px;
-  /* width: 100%; */
   width: calc(100%-480px);
 
   height: 50px;
   
   position: relative;
-  margin: 0 auto;
+  margin: 0px auto;
   padding: 0.3vw 13.02vw;
 
   border-radius: 20px;
@@ -148,28 +156,15 @@ const BottomWrap = styled.div`
 `
 
 const LogoBox = styled.div`
-  width: 10.4vw;
-  height: 2.8vw;
+  width: 192px;
+  height: 60px;
 
-  /* background-color: #393C3F; */
   color: white;
-
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 0.94vw;
-  border-radius: 10px;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  cursor: pointer;
 
   img {
     width: 100%;
     height: 100%;
+    cursor: pointer;
   }
   span {
     text-align: center;
@@ -178,17 +173,17 @@ const LogoBox = styled.div`
 `
 
 const LoginBox = styled.div`
-  width: 8.54vw;
-  height: 2.81vw;
+  width: 164px;
+  height: 54px;
 
-  /* background-color: #393C3F; */
+  background-color: #393C3F;
   color: white;
 
   font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
   font-size: 0.94vw;
-  border-radius: 10px;
+  border-radius: 24px;
 
   display: flex;
   flex-direction: row;
@@ -204,14 +199,11 @@ const LoginBox = styled.div`
 `
 
 const BottomSt = styled.ul`
-  max-width: 1440px;
-  width: 100%;
-  height: 50px;
+
+  width: 1200px;
+  height: 30px;
 
   display: flex;
-  /* align-items: center; */
-  /* justify-content: space-between; */
-  /* background-color: yellow; */
 
   padding: 0px;
   padding-bottom: 2px;
@@ -226,20 +218,20 @@ const BottomSt = styled.ul`
   font-style: normal;
 
   #list {
-    width: 100%;
-    /* background-color: red; */
+    width: 1200px;
 
     display: flex;
     flex-direction: row;
     justify-content: left;
     align-items: center;
-    /* margin: 0px 20px; */
+
   }
 
   li {
-    padding: 0.36vw 2.08vw 0vw 0vw;
+
+    padding: 5px 40px 0px 0px;
     
-    font-size: 1.30vw;
+    font-size: 15px;
     font-weight: bold;
     color: #333;
     line-height: 1.04vw;
@@ -252,48 +244,45 @@ const BottomSt = styled.ul`
 `
 
 const SearchWrap = styled.div`
-  position: relative;
-  font-family: Pretendard;
-  /* background-color: red; */
+   position: relative;
+   font-family: Pretendard;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
+   display: flex;
+   justify-content: center;
+   align-items: center;
+`;
 
 const Search = styled.input`
-  background-color: #f7f7f7;
+  background-color: #FFFFFF;
   background-image: "https://res.kurly.com/pc/service/common/1908/ico_search_x2.png";
-
   box-sizing: border-box;
-  background: #FFFFFF;
   border: 1px solid #000000;
   border-radius: 10px;
   outline: none;
-
-  width: 14.53vw;
-  height: 2.50vw;
-  padding: 0.00vw 1.56vw 0.00vw 0.73vw;
-  margin-right: 1.04vw;
-
-  color: #666;
-  line-height: 0.83vw;
-
+  width: 279px;
+  height: 48px;
+  padding: 0 60px 0 14px;
+  margin-bottom: 2px;
+  margin-left: -31px;
+  letter-spacing: -1px;
   font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
-  font-size: 0.63vw;
-`
+
+  font-size: 12px;
+  color: #666;
+  line-height: 16px;
+`;
 
 const SearchIcon = styled.div`
   background-image: url(https://res.kurly.com/pc/service/common/1908/ico_search_x2.png);
-  background-size: 1.56vw;
-
+  background-size: 30px;
   position: absolute;
-  right: 1.56vw;
-  top: 0.52vw;
-  width: 1.56vw;
-  height: 1.56vw;
-`
+  right: 5px;
+  top: -2px;
+  width: 30px;
+  height: 30px;
+`;
+
 
 export default Header;
