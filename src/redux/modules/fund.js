@@ -6,16 +6,21 @@ import { getToken } from "../../shared/Token";
 // action
 const GET_FUND = "GET_FUND";
 const ADD_FUND = "ADD_REQUEST";
+const ADD_LIKE = 'ADD_LIKE';
+const DEL_LIKE = 'DEL_LIKE';
 
 // 초기값
 const initialState = {
   fund_list : [],
   fund_add : [],
+  list: [],
 };
 
 // action creater
 const getFunding = createAction(GET_FUND, (fund_list) => ({fund_list}));
 const addFunding = createAction(ADD_FUND, (fund_add) => ({fund_add}));
+const addLike = createAction(ADD_LIKE, (like) => ({ like }))
+const delLike = createAction(DEL_LIKE, (like) => ({ like }))
 
 
 // 미들웨어
@@ -80,6 +85,17 @@ const addFundingAC = (payload) => {
   }
 }
 
+// //좋아요
+// export const addLikeDB = (postId) => {
+//   axios
+//   .get(process.env.REACT_APP_BASE_URL + `/fund/like/`), {
+
+//   },
+//       .then((response) => {
+//         console.log(response);
+//       });
+// };
+
 
 //리듀서
 export default handleActions(
@@ -91,7 +107,13 @@ export default handleActions(
     [ADD_FUND]: (state, action) =>
     produce(state, (draft) => {
       draft.fund_add = action.payload.fund_add;
-    }),
+    }),    
+    [ADD_LIKE]: (state, action) => {
+        return {
+          ...state,
+          list: action.payload.like,
+        };
+      },
   },
   initialState
 );
