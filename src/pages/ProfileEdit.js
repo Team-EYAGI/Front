@@ -1,9 +1,11 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as getActions } from "../redux/modules/book";
 import { actionCreators as profileActions } from "../redux/modules/mypage";
+import { actionCreators as libraryActions } from "../redux/modules/mypage";
+
 import { useBeforeunload } from "react-beforeunload";
 
 
@@ -15,6 +17,9 @@ const ProfileEdit = (props) => {
 
   const preview = useSelector((state) => state.mypage.preview);
   console.log("프리뷰", preview)
+
+  const profile = useSelector((state) => state.mypage.profile);
+  console.log("프로필", profile)
 
   const [introduce, setIntroduce] = React.useState("")
 
@@ -66,32 +71,36 @@ const ProfileEdit = (props) => {
     }
     // 리뷰를 추가할 때 addReviewAc로 정보를 넘긴다.
     dispatch(profileActions.addProfileAC({
-        information: { introduce: introduce },
-        file,
-      })
+      information: { introduce: introduce },
+      file,
+    })
     )
     // history.replace(`/detail/${itemId}`)
   }
+
+  useEffect(() => {
+    dispatch(libraryActions.getProfileAC());
+  }, []);
 
 
   return (
     <ModalBack>
       <ModalBox>
-        프로필 수정 페이지
         <GoBack>
           <button onClick={() => history.goBack()}>X</button>
         </GoBack>
+        {/* <div>프로필을 수정해주세요!</div> */}
         <Wrap>
           <Body>
             <ImageBox>
               <img
                 onClick={handleClick}
                 style={{ width: "100%" }}
-                src={preview ? preview : 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png'}
+                src={preview ? preview : profile.userImage}
               />
             </ImageBox>
             <h3 style={{ fontSize: "16px" }}>
-              닉네임
+              {profile.userName}
             </h3>
             {seller === "ROLE_SELLER" ?
               <>
@@ -101,7 +110,8 @@ const ProfileEdit = (props) => {
                   onChange={(e) => {
                     setIntroduce(e.target.value)
                   }}
-                  ></input>
+                  defaultValue={profile ? profile.introduce : null}
+                ></input>
               </>
               :
               null
@@ -114,10 +124,12 @@ const ProfileEdit = (props) => {
               ref={fileInput}
               style={{ display: 'none' }}
               onChange={selectFile}
+
             />
-            <button onClick={addImage}>프로필 등록하기</button>
+            
           </Body>
         </Wrap>
+        <button onClick={addImage}>프로필 수정하기</button>
       </ModalBox>
     </ModalBack>
   );
@@ -127,15 +139,41 @@ const ProfileEdit = (props) => {
 const ModalBox = styled.div`
   position: absolute;
   top: calc(25vh - 100px);
-  left: calc(40vw - 200px);
+  left: calc(40vw - 150px);
   background-color: white;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   border-radius: 10px;
-  width: 750px;
-  height: 700px;
+  width: 550px;
+  height: 550px;
   flex-direction: column;
+
+  
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+
+  button {
+    width: 200px;
+    height: 40px;
+    margin-bottom: 15px;
+    background-color: #FFFEFC;
+    border: 1px solid #000000;
+    border-radius: 10px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+
+    :hover {
+      background-color: #000000;
+      border: 1px solid #FFFEFC;
+      color: white;
+
+      cursor: pointer;
+    }
+  }
 `;
 
 const ModalBack = styled.div`
@@ -148,8 +186,10 @@ const ModalBack = styled.div`
 `;
 
 const GoBack = styled.div`
+  width: 500px;
   height: 60px;
 
+  background-color: yellow;
   button {
     width: 30px;
     height: 30px;
@@ -189,16 +229,21 @@ const Body = styled.div`
     overflow:hidden;
     text-overflow: ellipsis;
   }
+
+
 `
 
 const ImageBox = styled.div`
-  width: 200px;
-  height: 200px;
-  border-radius: 100px;
+  width: 150px;
+  height: 150px;
+  border-radius: 30px;
   background-color: azure;
   overflow: hidden;
   border: 1px solid #f4f4f4;
   box-shadow: 0 0 2px gray;
+
+  background-repeat : no-repeat;
+    background-size : cover;
 
   display: flex;
   flex-direction: column;
@@ -207,6 +252,9 @@ const ImageBox = styled.div`
   img {
     width:100%;
     height:100%;
+    background-repeat : no-repeat;
+    background-size : cover;
+
     object-fit:cover;
   }
 `
