@@ -1,22 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
+import { actionCreators as libraryActions } from "../redux/modules/mypage";
 
 import MyPageAudioBook from '../components/MyPageAudioBook';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 const MyPage = () => {
+  const dispatch = useDispatch();
 
   const params = useParams();
   console.log(params)
 
   const category = params.category;
 
-  const userImage = useSelector((state) => state.mypage.userImage);
-  console.log(userImage)
+  const likeBook = useSelector((state) => state.mypage.library_likeBook);
+  console.log(likeBook)
+
+  const profile = useSelector((state) => state.mypage.profile);
+  console.log(profile)
+
+  const listenAudio = useSelector((state) => state.mypage.library_listenAudio);
+  console.log(listenAudio)
+
+  // const userImage = useSelector((state) => state.mypage.userImage);
+  // console.log(userImage)
 
   const seller = localStorage.getItem("seller");
+
+  useEffect(() => {
+    dispatch(libraryActions.getLikeBookAC());
+    dispatch(libraryActions.getProfileAC());
+    dispatch(libraryActions.getListenAudioAC());
+  }, []);
+
 
   return (
     <React.Fragment>
@@ -25,16 +43,18 @@ const MyPage = () => {
           <Profile>
             <Box>
               <div id='img'>
-                <img src={userImage.userImage ? userImage.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png"} />
+                <img src={profile.userImage ? profile.userImage : null} />
               </div>
               <div id='username'>
-                <h4>닉네임</h4>
-                <h5>hello@naver.com</h5>
+                <h4>{profile.userName}</h4>
+                <h5>팔로잉 &nbsp;<span>1,529명</span></h5>
+                <h5>팔로워 &nbsp;<span>93명</span></h5>
               </div>
             </Box>
             <Box>
-              <h3>팔로잉 9,999명</h3>
-              <h3>팔로워 9,999명</h3>
+              <h3>
+                {profile.introduce}
+              </h3>
             </Box>
             <button
               onClick={() => {
@@ -43,52 +63,87 @@ const MyPage = () => {
             >
               프로필 편집
             </button>
+            {seller !== "ROLE_SELLER" ?
+              <span id='creatorform'>크리에이터 신청하기</span>
+              :
+              null
+            }
           </Profile>
           <List>
             {seller === "ROLE_SELLER" ?
               <ListBox>
-                <h2>크리에이터</h2>
-                <h3 onClick={() => { history.push(`/mypage/myAudio`) }}>업로드한 오디오북</h3>
-                <h3 onClick={() => { history.push(`/mypage/myFunding`) }}>등록한 펀딩</h3>
+                <h2>| 크리에이터</h2>
+                <h3
+                  style={{ textDecoration: (category === "myAudio" ? "underline" : null) }}
+                  onClick={() => { history.push(`/mypage/myAudio`) }}>업로드한 오디오북
+                </h3>
+                <h3
+                  style={{ textDecoration: (category === "myFunding" ? "underline" : null) }}
+                  onClick={() => { history.push(`/mypage/myFunding`) }}>등록한 펀딩
+                </h3>
               </ListBox>
               :
               null
             }
             <ListBox>
-              <h2>서재</h2>
-              <h3 onClick={() => { history.push(`/mypage/listen`) }}>듣고 있는 오디오북</h3>
-              <h3 onClick={() => { history.push(`/mypage/likeAudio`) }}>책 바구니</h3>
+              <h2>| 서재</h2>
+              <h3
+                style={{ textDecoration: (category === "listen" ? "underline" : null) }}
+                onClick={() => { history.push(`/mypage/listen`) }}>듣고 있는 오디오북
+              </h3>
+              <h3
+                style={{ textDecoration: (category === "likeAudio" ? "underline" : null) }}
+                onClick={() => { history.push(`/mypage/likeAudio`) }}>찜한 오디오북(책 찜)
+              </h3>
             </ListBox>
           </List>
-          {seller !== "ROLE_SELLER" ?
-            <button id='submit'>크리에이터 신청하기</button>
-            :
-            null
-          }
+
         </Menu>
-        <Body>
-          {category === "myAudio" ?
-            <MyPageAudioBook />
-            :
-            category === "myFunding" ?
+        <div>
+          {
+          // category === "myAudio" && myAudio ? 
+          //  <span>총 0개</span>
+          //   :
+          //   category === "myFunding" && myFunding ? 
+          //  <span>총 0개</span>
+          //  :
+           category === "listen" && listenAudio ? 
+           <span id='num'>총 {listenAudio.length}개</span>
+           :
+           category === "likeAudio" && likeBook ? 
+           <span id='num'>총 {likeBook.length}개</span>
+           :
+           <span id='num'>아직 등록된 것이 없습니다!</span>
+            }
+          
+          <Body>
+
+            {category === "myAudio" ?
               <div>Funding</div>
               :
-              category === "listen" ?
-                <div>listen</div>
+              category === "myFunding" ?
+                <div>Funding</div>
                 :
-                category === "likeAudio" ?
-                  <div>likeAudio</div>
+                category === "listen" ? listenAudio.map((item, idx) => (
+                  <MyPageAudioBook key={idx} item={item} />
+                ))
                   :
-                  <div>이게기본</div>
-          }
-        </Body>
+                  category === "likeAudio" ? likeBook.map((item, idx) => (
+                    <MyPageAudioBook key={idx} item={item} />
+                  ))
+                    :
+                    <div>이게기본</div>
+            }
+          </Body>
+        </div>
       </Wrap>
     </React.Fragment>
   )
 }
 
 const Wrap = styled.div`
-  width: 1440px;
+  width: 1200px;
+  min-height: 700px;
   margin: 0 auto;
   margin-top: 36px;
   display: flex;
@@ -96,31 +151,35 @@ const Wrap = styled.div`
   justify-content: space-between;
   /* align-items: center; */
   position: relative;
-  background-color: lightblue;
+  /* background-color: lightblue; */
   padding-top: 30px;
   padding-bottom: 30px;
-  font-family: noto-sans-cjk-kr, sans-serif;
-  font-weight: 400;
+  font-family: 'Pretendard';
   font-style: normal;
+  font-weight: 400;
+
+  #num {
+    font-size: 16px;
+    margin: 0px 0px 5px 8px;
+  }
 `
 
 const Menu = styled.div`
-  width: 342px;
+  width: 300px;
   /* margin: 0 auto; */
   height: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
   
-  background-color: white;
+  /* background-color: white; */
   position: relative;
   
   border-radius: 10px;
 
   padding-bottom: 30px;
 
-  font-family: noto-sans-cjk-kr, sans-serif;
-  font-weight: 400;
+  font-family: 'Pretendard';
   font-style: normal;
 
   #submit {
@@ -139,57 +198,100 @@ const Menu = styled.div`
 `
 
 const Body = styled.div`
-  width: 952px;
+  width: 800px;
+  height: 700px;
+
+  overflow-y: scroll;
+    ::-webkit-scrollbar {
+     /* 세로 스크롤 넓이 */  
+      width: 10px;
+
+      /* 가로 스크롤 높이 */
+      height: 8px;
+
+      border-radius: 6px;
+      background: black;
+      background: rgba(255, 255, 255, 0.4);
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 6px;
+    }
+
 
   flex-wrap: wrap;
   display: flex;
   flex-direction: row;
   /* align-items: center; */
   position: relative;
-  background-color: yellow;
+  /* background-color: yellow; */
   padding-bottom: 30px;
 
 `
 
 const Profile = styled.div`
-  width: 342px;
-  height: 271px;
+  width: 300px;
+  min-height: 220px;
 
+  /* background-color: purple; */
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  border: 1px solid #EAEAEA;
-  border-radius: 10px;
-
   button {
     width: 300px;
-    height: 45px;
-    border: 1px solid #EAEAEA;
-    box-sizing: border-box;
-    border-radius: 10px;
-    background-color: #FFFFFF;
+    height: 48px;
 
+    /* box-sizing: border-box; */
+    border-radius: 10px;
+    background-color: #0C0A0A;;
+
+    color: #FFFFFF;
+
+    font-weight: 400;
     font-size: 14px;
 
     cursor: pointer;
   }
+
+  #creatorform {
+    width: 100%;
+    /* background-color: yellow; */
+    margin-top: 13px;
+
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 100%;
+    text-decoration-line: underline;
+
+    color: #0C0A0A;
+
+    :hover {
+      color: purple;
+      cursor: pointer;
+    }
+  }
 `
 
 const Box = styled.div`
+
+/* background-color: yellow; */
   width: 300px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  margin: 10px 0px;
+  /* align-items: center; */
+  margin: 5px 0px;
+
+  
 
   #img {
-    width: 77px;
-    height: 77px;
-    margin-top: 40px;
+    width: 108px;
+    height: 108px;
+    /* margin-top: 40px; */
 
-    border-radius: 50px;
+    border-radius: 15px;
+    border: 1px solid black;
     overflow: hidden;
 
     img {
@@ -200,45 +302,56 @@ const Box = styled.div`
   }
 
   #username {
-    width: 65%;
-    margin-top: 40px;
+    width: 59%;
+    /* margin-top: 40px; */
 
     h4 {
-      font-size: 25px;
-      margin: 0px;
+      font-weight: 700;
+      font-size: 24px;
+      margin: 0px 0px 10px 0px;
     }
 
     h5 {
+      font-weight: 300;
       font-size: 14px;
       margin: 2px 0px 0px 0px;
+
+      span {
+        font-weight: 500;
+      }
     }
   }
 
 
   h3 {
-    width: 45%;
-    font-size: 16px;
-    text-align: center;
-    cursor: pointer;
+    width: 100%;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 150%;
+
+    text-align: justify;
+
+    color: #0C0A0A;
   }
 `
 
 const List = styled.div`
-  width: 342px;
-  height: 350px;
+  width: 300px;
+  height: 300px;
 
+  /* background-color: yellow; */
   margin-top: 20px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  border: 1px solid #EAEAEA;
-  border-radius: 10px;
+  /* border: 1px solid #EAEAEA; */
+  /* border-radius: 10px; */
 `
 
 const ListBox = styled.div`
-  width: 300px;
+  width: 100%;
   display: flex;
   flex-direction: column;
 
@@ -249,6 +362,9 @@ const ListBox = styled.div`
   h3 {
     margin: 8px 0px;
     cursor: pointer;
+    font-weight: 400;
+    font-size: 16px;
+    color: #525252;
   }
   
 `

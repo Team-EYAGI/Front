@@ -118,13 +118,17 @@ const AudioPlay = (props) => {
         </ListBox>
       </Wrap>
       <ReviewBox>
-        <div id='reviewbox'>
-          <h3>후기</h3>
+        <div id='reviewbox1'>
+          <div id='reviewHeader'>
+            <h3>후기</h3>
+            <h4>2개</h4>
+          </div>
+
           <span
             onClick={() => {
               history.push(`/reviewWrite/${category}/${bookId}/${audioBookId}`)
             }}
-          >후기 등록하기</span>
+          >후기 작성하기</span>
         </div>
         {audioReview.length === 0 ?
           <AudioCardSt>
@@ -413,7 +417,7 @@ const ListBox = styled.div`
 
       padding: 0px 20px;
            
-      margin-bottom: 10px;
+      /* margin-bottom: 10px; */
 
       border-top: 1px solid gray;
       border-bottom: 1px solid gray;
@@ -430,7 +434,7 @@ const ListBox = styled.div`
       
         font-size: 35px;
       }
-/* 
+
       :hover {
         background: #0C0A0A;
         border-radius: 10px;
@@ -443,7 +447,7 @@ const ListBox = styled.div`
           border: 1px solid white;
           color: white;
         }
-      } */
+      }
     }
   }
 `
@@ -474,6 +478,7 @@ const PlayerSt = styled.div`
 
 const ReviewBox = styled.div`
   /* background-color: green; */
+  height: 605px;
 
   width: 1195px;
   margin: 0 auto;
@@ -481,33 +486,77 @@ const ReviewBox = styled.div`
   display: flex;
   flex-direction: column;
 
-  /* border-radius: 20px; */
+  /* border-bottom: 1px solid black; */
 
-  #reviewbox {
+  font-family: 'Pretendard';
+  font-style: normal;
+
+  margin-bottom: 114px;
+
+
+  #reviewbox1 {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    justify-content: space-between;
+    align-items: flex-end;
+    /* background-color: yellow; */
+    
 
-    h3 {
-      font-size: 25px;
-      margin-right: 10px;
+    height: 150px;
+
+    padding: 0px 0px 20px 0px;
+    border-bottom: 2px solid #000000;
+
+    #reviewHeader {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 30px;
+      /* background-color: rebeccapurple; */
+
+      h3 {
+        font-weight: 700;
+        font-size: 24px;
+        margin-right: 10px;
+      }
+
+      h4 {
+        font-weight: 300;
+        font-size: 18px;
+        color: #707070;
+        cursor: pointer;
+      }
     }
 
     span {
-      font-size: 18px;
-      color: #707070;
+      font-weight: 500;
+      font-size: 14px;
+      color: #000000;
       cursor: pointer;
+      height: 30px;
+
+      margin-right: 8px;
+      /* background-color: white; */
     }
   }
 
   #reviewcard {
-    /* background-color: aqua; */
-    /* display: flex; */
-    flex-direction: row;
-    justify-content: left;
+    overflow-y: scroll;
+    ::-webkit-scrollbar {
+     /* 세로 스크롤 넓이 */  
+      width: 10px;
 
-    margin-bottom: 100px;
-    overflow-x: scroll;
+      /* 가로 스크롤 높이 */
+      height: 8px;
+
+      border-radius: 6px;
+      background: black;
+      background: rgba(255, 255, 255, 0.4);
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 6px;
+    }
 
   }
 `

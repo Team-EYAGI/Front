@@ -8,7 +8,7 @@ const MainSellerCard = () => {
       <Wrap>
         <Body
           onClick={() => {
-            history.push(`/sellerProfile/sellerName`)
+            history.push(`/sellerProfile/{sellerName}/Audiobook`)
           }}>
           <ImageBox>
             <img

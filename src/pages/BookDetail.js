@@ -191,7 +191,7 @@ const ImgSt = styled.div`
 const ContentSt = styled.div`
   /* width: 38%; */
   height: 582px;
-  background-color: red;
+  /* background-color: red; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;

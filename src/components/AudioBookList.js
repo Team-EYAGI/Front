@@ -39,7 +39,7 @@ const AudioBookList = (props) => {
         <CardWrap>
           {audioBookList && audioBookList.map((item, idx) => (
             <AudioCardSt key={idx}>
-              <ImgSt style={{ backgroundImage: (audioBookList.a ? `url(${audioBookList.Img})` : `url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png")`)}}/>
+              <ImgSt style={{ backgroundImage: (item.sellerImg ? `url(${item.sellerImg})` : `url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png")`) }} />
               <ContentSt>
                 <div id='preview'>
                   <button
@@ -53,13 +53,13 @@ const AudioBookList = (props) => {
                   {item.contents}
                 </span>
                 <div id='preview'>
-                  <span>00.00.00</span>
+                  <span>{item.createdAt.split('오후' || '오전')[0]}</span>
                 </div>
               </ContentSt>
             </AudioCardSt>
           ))}
 
-          <AudioCardSt>
+          {/* <AudioCardSt>
             <ImgSt />
             <ContentSt>
               <div id='preview'>
@@ -76,7 +76,7 @@ const AudioBookList = (props) => {
                 <span>00.00.00</span>
               </div>
             </ContentSt>
-          </AudioCardSt>
+          </AudioCardSt> */}
         </CardWrap>
       </Wrap>
     </React.Fragment>
@@ -224,7 +224,7 @@ const ContentSt = styled.div`
       width: 104px;
       height: 34px;
 
-      font-family: 'Noto Sans CJK KR';
+      font-family: 'Pretendard';
       font-style: normal;
       font-weight: 500;
       font-size: 10px;
@@ -233,58 +233,6 @@ const ContentSt = styled.div`
       border: 1px solid #000000;
       border-radius: 10px;
     }
-  }
-`
-
-const PlayerSt = styled.div`
-  background-color: #EAEAEA;
-
-  width: 120px;
-  height: 120px;
-  
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  
-  border-radius: 20px;
-  
-  cursor: pointer;
-
-  span {
-    font-size: 15px;
-
-    display: flex;
-    justify-content: center;
-    
-    margin-top: 5px;
-  }
-`
-
-const HeartSt = styled.div`
-  background-color: #EAEAEA;
-
-  width: 120px;
-  height: 120px;
-  
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  
-  border-radius: 20px;
-  
-  cursor: pointer;
-
-  span {
-    font-size: 20px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-    margin-top: 5px;
   }
 `
 

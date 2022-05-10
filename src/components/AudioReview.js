@@ -32,24 +32,31 @@ const AudioReview = (props) => {
     <React.Fragment>
       <ListBox>
         <div id="listbox">
-          {username === reviewUsername ?
-            <>
+          {/* {username === reviewUsername ?
+            <div>
               <button onClick={() => { history.push(`/reviewWrite/${category}/${bookId}/${audioBookId}/${commentId}`) }}>수정</button>
               <button onClick={deleteReview}>X</button>
-            </>
+            </div>
             :
             null
-          }
+          } */}
 
           <Body>
-            <h3 style={{ fontSize: "16px" }}>
-              {props.item.username}
-            </h3>
+            <div id='bodytitle'>
+              <h3 style={{ fontSize: "16px" }}>
+                {props.item.username}
+              </h3>
+              <div>
+                <button onClick={() => { history.push(`/reviewWrite/${category}/${bookId}/${audioBookId}/${commentId}`) }}>수정</button>
+                <button onClick={deleteReview}>X</button>
+              </div>
+            </div>
+
             <span>
               {props.item.title}
             </span>
-            <hr />
-            <Text margin="0px">{props.item.content}</Text>
+            {/* <hr />
+            <Text margin="0px">{props.item.content}</Text> */}
           </Body>
         </div>
 
@@ -62,25 +69,46 @@ const ListBox = styled.div`
   display: flex;
   flex-direction: row;
 
-  font-family: noto-sans-cjk-kr, sans-serif;
-  font-weight: 400;
+  height: 87px;
+
+  /* background-color: rebeccapurple; */
+
+  font-family: 'Pretendard';
   font-style: normal;
+  /* background-color: rebeccapurple; */
 
-  border: 1px solid gray;
-  border-radius: 10px;
 
-  margin: 10px;
+  border-bottom: 0.5px solid #000000;
 
   #listbox {
+    
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    width: 100%;
     margin: 10px;
+    /* background-color: burlywood; */
+
+    h3 {
+      font-weight: 500;
+      font-size: 16px;
+      color: #8E8E8E;
+    }
+
+    span {
+      font-weight: 400;
+      font-size: 16px;
+      color: #000000;
+
+    }
     /* background-color: rebeccapurple; */
   }
 `
 
 
 const Body = styled.div`
-  width: 220px;
-  
+  width: 100%;
+  /* background-color: yellow; */
   h3 {
     white-space: nowrap;
     overflow:hidden;
@@ -89,6 +117,17 @@ const Body = styled.div`
 
   span {
     /* background-color: red; */
+  }
+
+  #bodytitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 24px;
+    /* background-color: white; */
+    margin-bottom: 10px;
   }
 `
 
