@@ -141,10 +141,54 @@ const signUpDB = (email, username, password, passwordCheck) => {
       })
       
       .catch((err) => {
+        // alert(error.response.data.msg);
         console.log("에러",err);
       });
   };
 };
+
+
+//이메일 중복확인
+const emailCheckF = (email) => {
+  console.log(email);
+  return function (dispatch, getState) {
+    
+    axios
+      .post(process.env.REACT_APP_BASE_URL + `/user/email/check`, {        
+        email: email,
+      })
+      .then((res) => {     
+        console.log(res);
+        window.alert("사용 가능한 이메일입니다!");       
+      })
+      .catch((err) => {
+        console.log("이메일 중복", err);
+        window.alert("이미 사용 중인 이메일입니다!");
+      });
+  };
+};
+
+
+
+//닉네임 중복확인
+const usernameCheckF = (username) => {
+  console.log(username);
+  return function (dispatch, getState) {    
+    axios
+      .post(process.env.REACT_APP_BASE_URL + `/user/userName/check`, {        
+        username: username,
+    })
+      .then((res) => {
+        console.log(res);        
+        window.alert("사용 가능한 닉네임입니다!");        
+      })
+      .catch((err) => {
+        console.log("닉네임 중복", err);
+        window.alert("이미 사용 중인 닉네임입니다!");
+      });
+  };
+};
+
 
 //-----------------------reducer------------------------
 export default handleActions(
@@ -161,12 +205,14 @@ export default handleActions(
       produce(state, (draft) => {
         localStorage.removeItem("email");
         localStorage.removeItem("token");
-        // deleteCookie("is_login");
+        localStorage.removeItem("username");
+        localStorage.removeItem("seller");
+        localStorage.removeItem("is_login");
         draft.user = null;
 
         draft.is_login = false;
-        // window.location.replace("/");
-        // console.log("로그아웃합니다")
+        window.location.replace("/");
+        console.log("로그아웃합니다")
       }),
     [GET_USER]: (state, action) => produce(state, (draft) => {}),
   },
@@ -181,6 +227,8 @@ const actionCreators = {
   signUpDB,
   logOut,
   kakaoLoginAC,
+  usernameCheckF,
+  emailCheckF,
   //   loginCheckDB,
 };
 

@@ -11,8 +11,16 @@ const Login = (props) => {
   const [password, setPwd] = useState("");
 
   const login = () => {
+    if (email === "" || password === "") {
+      window.alert("아이디와 비밀번호를 모두 입력해주세요!");
+      return;
+    }
     dispatch(userActions.loginDB(email, password)); //유저네임? 이메일?
   };
+
+  const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
+  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   return (
     <React.Fragment>
@@ -23,52 +31,51 @@ const Login = (props) => {
             <div id="buttonBox">
               <LoginBox>
                 <div id="box">
-                <input
-                  onChange={(e) => {
-                    setId(e.target.value);
-                  }}
-                  placeholder="이메일"
-                  value={email}                  
-                ></input>
-                <input
-                  onChange={(e) => {
-                    setPwd(e.target.value);
-                  }}
-                  placeholder="비밀번호"
-                  value={password}
-                  type="password"                 
-                ></input>
+                    <input
+                      onChange={(e) => {
+                        setId(e.target.value);
+                      }}
+                      placeholder="이메일"
+                      value={email}
+                    ></input>
+
+                    <input
+                      onChange={(e) => {
+                        setPwd(e.target.value);
+                      }}
+                      placeholder="비밀번호"
+                      value={password}
+                      type="password"
+                    ></input>
                 </div>
-              </LoginBox>              
-              <button id="loginbtn"
+              </LoginBox>
+              <button
+                id="loginbtn"
                 onClick={login}
                 type="button"
-                // onClick={()=>{ history.push('/main')}} 
+                // onClick={()=>{ history.push('/main')}}
               >
                 로그인
               </button>
-              </div>            
+            </div>
             <hr></hr>
             <p>다른 방법으로 로그인</p>
-            <button id="kakaobtn"
-              onClick={login}
+            <button
+              id="kakaobtn"
+              onClick={() => {
+                window.open(KAKAO_AUTH_URL);
+              }}
               type="button"
-              
             >
               카카오로 로그인
             </button>
-            <button id="naverbtn"
-              onClick={login}
-              type="button"
-            >
-              어쩌구로 로그인
-            </button>
             <hr />
-            <button id="signupbtn"
+            <button
+              id="signupbtn"
               onClick={() => {
                 history.push("/SignUp");
               }}
-              type="button"              
+              type="button"
             >
               간편 회원가입
             </button>
@@ -105,7 +112,7 @@ const LoginContainer = styled.div`
     cursor: pointer;
   }
 
-  #buttonBox{
+  #buttonBox {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -114,8 +121,7 @@ const LoginContainer = styled.div`
     padding-top: 15px;
   }
 
-    
-  #loginbtn{    
+  #loginbtn {
     margin-left: 70px;
     box-shadow: none;
     width: 157px;
@@ -123,29 +129,29 @@ const LoginContainer = styled.div`
     background-color: #62bdfa;
     margin-top: 10px;
   }
-  
-  #kakaobtn {    
-    box-shadow: none;         
+
+  #kakaobtn {
+    box-shadow: none;
     border: 0px;
-    width: 464px;           
+    width: 464px;
     height: 60px;
-    background-color: #FAE100;  
+    background-color: #fae100;
     margin-top: 5px;
   }
 
-  #naverbtn {    
-    box-shadow: none;   
-    width: 464px;           
+  #naverbtn {
+    box-shadow: none;
+    width: 464px;
     height: 60px;
     background-color: #19ce60;
     margin-top: 5px;
   }
 
-  #signupbtn {    
-    box-shadow: none;       
-    width: 464px;           
+  #signupbtn {
+    box-shadow: none;
+    width: 464px;
     height: 60px;
-    background-color: #62bdfa;       
+    background-color: #62bdfa;
     margin-top: 5px;
   }
 `;
@@ -153,8 +159,6 @@ const LoginContainer = styled.div`
 const LoginBox = styled.div`
   border-radius: 5px;
   width: 250px;
-  
-
 
   #box {
     input {
@@ -168,6 +172,5 @@ const LoginBox = styled.div`
     }
   }
 `;
-
 
 export default Login;
