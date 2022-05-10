@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as userActions } from "../redux/modules/user";
-import { emailCHK, passwordCHK, usernameCHK } from "../shared/Common";
+import { emailCHK, passwordCHK, usernameCHK } from "../shared/Commons";
 
 const Signup = (props) => {
   const { history } = props;
