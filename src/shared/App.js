@@ -26,6 +26,8 @@ import ReviewWirte from '../pages/ReviewWrite';
 import SellerProfile from '../pages/SellerProfile';
 import ProfileEdit from '../pages/ProfileEdit';
 import Chat from '../pages/Chat';
+import Admin from '../pages/Admin';
+import AdminChat from '../pages/AdminChat';
 import KakaoAuthHandler from '../pages/KakaoAuthHandler';
 
 function App() {
@@ -33,6 +35,8 @@ function App() {
     <React.Fragment className="App">
       <ConnectedRouter history={history}>
         <Header/>
+        <Route path="/Admin" exact component={Admin}/>
+        <Route path="/AdminChat/:roomId" exact component={AdminChat}/>
         <Route path="/" exact component={Main}/>
         <Route path="/login" exact component={LogIn}/>
         <Route path="/signup" exact component={SignUp}/>
