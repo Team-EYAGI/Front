@@ -70,10 +70,13 @@ const kakaoLoginAC = (code) => {
   console.log(code)
   return function (dispatch, getState, { history }) {
     axios
-      .get(process.env.REACT_APP_BASE_URL + `/user/kakao/callback?code=${code}`)
+      .get(process.env.REACT_APP_BASE_URL + `/user/kakao/callback?code=${code}`, {
+        
+      })
       .then((res) => {
+
         console.log(res);
-        console.log(res);
+ 
         const token = res.headers.authorization;
         console.log(token);
         setToken(token);
@@ -208,6 +211,8 @@ export default handleActions(
         localStorage.removeItem("username");
         localStorage.removeItem("seller");
         localStorage.removeItem("is_login");
+        localStorage.removeItem("roomId");
+        localStorage.removeItem("userId");
         draft.user = null;
 
         draft.is_login = false;

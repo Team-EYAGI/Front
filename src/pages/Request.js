@@ -68,7 +68,7 @@ const Wrap = styled.div`
   margin-top: 100px;
   margin-bottom: 80px;
   padding-right: 40px;
-  width: 1440px;
+  width: 1100px;
 `
 
 const RequestTitle = styled.h2`

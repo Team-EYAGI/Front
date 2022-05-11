@@ -60,7 +60,7 @@ const RequestList = (props) => {
             // backgroundColor: "green"
           }}
         >
-          {props.item.userEmail}
+          {props.item.userName}
         </CommentData>
         <CommentData
           style={{

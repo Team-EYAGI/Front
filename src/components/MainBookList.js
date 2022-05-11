@@ -20,16 +20,9 @@ const BookList = (props) => {
 
   return (
     <React.Fragment>
-      <Div>
-        <span>추천도서</span>
-        <span
-            id="plus"
-            onClick={() => {
-              history.push(`/book/자기계발`);
-
-            }}
-          >더보기 ></span>
-      </Div>
+      <Wrap>
+        <span style={{fontSize: "20px", fontWeight: "700"}}>추천도서</span>
+      </Wrap>
       <Swiper
         slidesPerView={5}
         spaceBetween={0}
@@ -55,7 +48,7 @@ const BookList = (props) => {
   )
 }
 
-const Div = styled.div`
+const Wrap = styled.div`
   width: 100%;
 
   display: flex;
@@ -63,18 +56,17 @@ const Div = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  margin-top: 60px;
-  margin-bottom: 40px;
+  margin: 60px 0px 40px 0px;
 
-  font-size: 30px;
   font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
-  font-style: normal;
+
+  border-bottom: 2px solid #000000;
 
   span {
-    font-size: 20px;
-    margin: 0px 20px;
+    margin: 0px 10px 15px 21px;
+    /* margin: 0px 20px; */
     /* background-color: rebeccapurple; */     
   }
 

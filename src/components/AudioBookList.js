@@ -14,7 +14,7 @@ const AudioBookList = (props) => {
   const bookId = props.detail.bookId
   const category = params.category
 
-  const audioBookList = props.detail.audio
+  const audioBookList = props.detail ? props.detail.audio : null
   console.log("리스트", audioBookList)
 
   const is_login = localStorage.getItem("is_login");
@@ -36,10 +36,19 @@ const AudioBookList = (props) => {
               }
             }}>새 오디오북 요청하러가기</button>
         </AudioCardSt1>
+        {audioBookList && audioBookList.length === 0 ?
+          <AudioReviewNone>
+            아직 참여한 크리에이터가 없어요! 새 오디오북을 요청해볼까요?
+          </AudioReviewNone>
+          :
+          null
+        }
         <CardWrap>
           {audioBookList && audioBookList.map((item, idx) => (
             <AudioCardSt key={idx}>
-              <ImgSt style={{ backgroundImage: (item.sellerImg ? `url(${item.sellerImg})` : `url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png")`) }} />
+              <ImgSt>
+                <img src={item.sellerImg ? item.sellerImg : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png"} />
+              </ImgSt>
               <ContentSt>
                 <div id='preview'>
                   <button
@@ -58,30 +67,42 @@ const AudioBookList = (props) => {
               </ContentSt>
             </AudioCardSt>
           ))}
-
-          {/* <AudioCardSt>
-            <ImgSt />
-            <ContentSt>
-              <div id='preview'>
-                <button>1분 미리듣기 ▶</button>
-              </div>
-              <span id="name">크리에이터 이름</span>
-              <span id='contents'>
-                내용이 들어간다?내용이 들어간다?내용이 들어간다?
-                내용이 들어간다?내용이 들어간다?내용이 들어간다?
-                내용이 들어간다?내용이 들어간다?내용이 들어간다?
-                내용이 들어간다?내용이 들어간다?내용이 들어간다?
-              </span>
-              <div id='preview'>
-                <span>00.00.00</span>
-              </div>
-            </ContentSt>
-          </AudioCardSt> */}
         </CardWrap>
       </Wrap>
     </React.Fragment>
   )
 }
+
+const AudioReviewNone = styled.div`
+  width: 1100px;
+  min-height: 200px;
+  
+
+  /* background-color: purple; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+`
+
+const SellerImg = styled.div`
+  width: 130px;
+  height: 130px;
+  
+  border-radius: 15px;
+  border: 1px solid #878787;
+  
+  cursor: pointer;
+  
+
+  overflow: hidden;
+
+img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+`
 
 const Wrap = styled.div`
   width: 100%;
@@ -126,7 +147,7 @@ const CardWrap = styled.div`
   justify-content: left;
   align-items: center;
 
-  /* background-color: aliceblue; */
+  background-color: aliceblue;
   flex-wrap: wrap;
 
   font-family: Pretendard;
@@ -159,8 +180,8 @@ const AudioCardSt1 = styled.div`
 const AudioCardSt = styled.div`
   /* background-color: #F4F4F4; */
 
-  width: 586px;
-  height: 180px;
+  width: 536px;
+  height: 130px;
   
   display: flex;
   flex-direction: row;
@@ -176,22 +197,26 @@ const AudioCardSt = styled.div`
 const ImgSt = styled.div`
   /* background-color: #C4C4C4; */
 
-  width: 150px;
-  height: 150px;
-
-  background-repeat : no-repeat;
-  background-size : cover;
-  
+  width: 125px;
+  height: 125px;
   border-radius: 15px;
   border: 1px solid #878787;
   
   cursor: pointer;
+
+  overflow: hidden;
+
+    img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
 `
 
 const ContentSt = styled.div`
   /* background-color: lightgray; */
 
-  width: 405px;
+  width: 375px;
   min-height: 64px;
   
   display: flex;

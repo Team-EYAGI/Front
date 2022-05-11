@@ -37,7 +37,7 @@ const Header = (props) => {
               <img
                 onClick={() => { history.push('/') }}
                 src={logo}
-                // src='https://blog.kakaocdn.net/dn/SJmxC/btqxeJAzjZA/UgEHLHzJlq9TZBpo7hyi5k/img.jpg'
+              // src='https://blog.kakaocdn.net/dn/SJmxC/btqxeJAzjZA/UgEHLHzJlq9TZBpo7hyi5k/img.jpg'
               />
             </LogoBox>
             <div>
@@ -46,14 +46,14 @@ const Header = (props) => {
                 style={{ margin: "5px 0px 0px 0px", cursor: "pointer" }}
                 onClick={() => {
                   history.push(`/mypage/listen`)
-                }}/>
+                }} />
               <FiLogOut
                 size="25px"
                 style={{ margin: "5px 2px 0px 20px", cursor: "pointer" }}
                 onClick={() => {
-                  dispatch(actionCreators.logOut());              
+                  dispatch(actionCreators.logOut());
                 }}
-                />
+              />
             </div>
           </HeaderWrap>
           <BottomWrap>
@@ -72,7 +72,11 @@ const Header = (props) => {
                   placeholder="검색어를 입력해주세요."></Search>
                 <SearchIcon
                   onClick={() => {
-                    dispatch(searchActions.addSearchAC(word));
+                    if (word === "") {
+                      window.alert("검색어를 입력해주세요!")
+                    } else {
+                      dispatch(searchActions.addSearchAC(word));
+                    }
                   }} />
               </SearchWrap>
             </BottomSt>
@@ -127,6 +131,7 @@ const HeaderWrap = styled.div`
   width: 1200px;
   height: 60px;
   
+  
   position: relative;
   margin: 10px auto;
 
@@ -139,7 +144,9 @@ const HeaderWrap = styled.div`
 const BottomWrap = styled.div`
   max-width: 1440px;
   width: calc(100%-480px);
+  /* min-width: 1200px; */
 
+  /* background-color: yellow; */
   height: 50px;
   
   position: relative;
@@ -156,7 +163,7 @@ const BottomWrap = styled.div`
 `
 
 const LogoBox = styled.div`
-  width: 192px;
+  width: 190px;
   height: 60px;
 
   color: white;

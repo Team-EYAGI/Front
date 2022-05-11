@@ -45,7 +45,7 @@ const DivSt = styled.div`
 `;
 
 const CardSt = styled.div`
-  width: 267px;
+  width: 200px;
 
   display: flex;
   flex-direction: column;
@@ -59,8 +59,8 @@ const CardSt = styled.div`
 
 const ImageSt = styled.div`
   /* background-color: black; */
-  width: 250px;
-  height: 330px;
+  width: 200px;
+  height: 310px;
   margin: 0 auto;
 
   display: flex;
@@ -77,7 +77,7 @@ const NameSt = styled.div`
   float: left;
   
   h3 {
-    width: 267px;
+    width: 180px;
     /* float: left; */
     margin-top: 15px;
     margin-left: 10px;

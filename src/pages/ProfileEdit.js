@@ -20,6 +20,7 @@ const ProfileEdit = (props) => {
 
   const profile = useSelector((state) => state.mypage.profile);
   console.log("프로필", profile)
+  
 
   const [introduce, setIntroduce] = React.useState("")
 
@@ -29,16 +30,12 @@ const ProfileEdit = (props) => {
 
   // // upload라는 훅 생성
   const fileInput = useRef();
-  // const fileInput2 = useRef();
 
   // // 인풋을 대신 클릭해주기 위한 함수
   const handleClick = () => {
     fileInput.current.click();
   };
 
-  // const handleClick2 = () => {
-  //   fileInput2.current.click();
-  // };
 
   // 파일 선택하기
   const selectFile = (e) => {
@@ -50,14 +47,6 @@ const ProfileEdit = (props) => {
     };
   };
 
-
-  // 파일 선택하기
-  // const selectAudioFile = (e) => {
-  //   setAudioFile(e.target.files[0])
-  //   const reader = new FileReader();
-  //   const file = fileInput.current.files[0];
-  //   reader.readAsDataURL(file);
-  // };
 
   // 오디오 추가하기
   const addImage = () => {
@@ -104,17 +93,18 @@ const ProfileEdit = (props) => {
             </h3>
             {seller === "ROLE_SELLER" ?
               <>
-                <input
+                <textarea
                   type='text'
-                  placeholder='소개글은 이렇게 입력'
+                  maxLength='100'
+                  placeholder='자기소개를 100자 내로 작성해주세요.'
                   onChange={(e) => {
                     setIntroduce(e.target.value)
                   }}
                   defaultValue={profile ? profile.introduce : null}
-                ></input>
+                ></textarea>
               </>
               :
-              null
+              <div>프로필 사진을 등록해주세요!</div>
             }
 
             <input
@@ -124,9 +114,8 @@ const ProfileEdit = (props) => {
               ref={fileInput}
               style={{ display: 'none' }}
               onChange={selectFile}
-
             />
-            
+
           </Body>
         </Wrap>
         <button onClick={addImage}>프로필 수정하기</button>
@@ -158,19 +147,22 @@ const ModalBox = styled.div`
     width: 200px;
     height: 40px;
     margin-bottom: 15px;
-    background-color: #FFFEFC;
-    border: 1px solid #000000;
+
     border-radius: 10px;
+
+
+    background-color: #000000;
+    border: 1px solid #FFFEFC;
+    color: white;
 
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 400;
 
     :hover {
-      background-color: #000000;
-      border: 1px solid #FFFEFC;
-      color: white;
-
+      background-color: #FFFEFC;
+      border: 1px solid #000000;
+      color: #000000;
       cursor: pointer;
     }
   }
@@ -189,29 +181,27 @@ const GoBack = styled.div`
   width: 500px;
   height: 60px;
 
-  background-color: yellow;
+  /* background-color: yellow; */
   button {
     width: 30px;
     height: 30px;
     float: right;
     border: 1px solid gray;
+    color: black;
     border-radius: 5px;
     background: none;
   }
 `;
 const Wrap = styled.div`
-  height: 200px;
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* align-items: center; */
-  /* position: relative; */
+  height: 300px;
+
   margin: 10px;
-  /* background-color: yellow; */
+  /* background-color: red; */
 
   
-  font-family: noto-sans-cjk-kr, sans-serif;
-  font-weight: 400;
+  font-family: 'Pretendard';
   font-style: normal;
+  font-weight: 400;
 `
 
 const Body = styled.div`
@@ -225,11 +215,17 @@ const Body = styled.div`
   cursor: pointer;
 
   h3 {
-    white-space: nowrap;
-    overflow:hidden;
-    text-overflow: ellipsis;
+    margin-bottom: 20px;
   }
 
+  textarea {
+    width: 400px;
+    height: 80px;
+    margin-bottom: 10px;
+    resize: none;
+    border-radius: 5px;
+    padding: 10px;
+  } 
 
 `
 

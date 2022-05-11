@@ -25,11 +25,17 @@ const Book = () => {
   // console.log("키즈", kids)
 
   React.useEffect(() => {
-    dispatch(getActions.getNovelAC());
-    dispatch(getActions.getPoemAC());
-    dispatch(getActions.getEconomyAC());
-    dispatch(getActions.getKidsAC());
-    dispatch(getActions.getSelfAC());
+    if (categoryName === "자기계발") {
+      dispatch(getActions.getSelfAC());
+    } else if (categoryName === "소설") {
+      dispatch(getActions.getNovelAC());
+    } else if (categoryName === "시･에세이") {
+      dispatch(getActions.getPoemAC());
+    } else if (categoryName === "유･아동") {
+      dispatch(getActions.getKidsAC());
+    } else {
+      dispatch(getActions.getEconomyAC());
+    }
   }, []);
 
   // 카테고리 버튼
@@ -49,9 +55,18 @@ const Book = () => {
             key={idx}
             onClick={() => {
               history.push(`/book/${item}`);
+              if (item === "자기계발") {
+                dispatch(getActions.getSelfAC());
+              } else if (item === "소설") {
+                dispatch(getActions.getNovelAC());
+              } else if (item === "시･에세이") {
+                dispatch(getActions.getPoemAC());
+              } else if (item === "유･아동") {
+                dispatch(getActions.getKidsAC());
+              } else {
+                dispatch(getActions.getEconomyAC());
+              }
             }}
-
-
             size="20"
             color="white"
           >
@@ -86,8 +101,8 @@ const Book = () => {
 const Wrap = styled.div`
   /* background-color: lightblue; */
 
-  width: 1200px;
-  margin: auto;
+  width: 1100px;
+  margin: 0 auto;
 
   display: flex;
   justify-content: center;
@@ -96,12 +111,14 @@ const Wrap = styled.div`
 `
 
 const HeaderSt = styled.div`
-  width: 1200px;
+  width: 1100px;
   height: 60px;
   margin: 0 auto;
 
+  /* background-color: rebeccapurple; */
+
   margin-top: 20px;
-  margin-bottom: 100px;
+  margin-bottom: 80px;
 
   display: flex;
   justify-content: center;
@@ -113,21 +130,21 @@ const HeaderSt = styled.div`
 `
 
 const GenreSt = styled.h3`
-  width: 140px;
-  height: 40px;
+  width: 100px;
+  height: 30px;
 
   margin: 20px 10px 0px 10px;
 
-  border: 2px solid black;
-  border-radius: 20px;
-  box-sizing: border-box;
+  padding-bottom: 9px;
+  background: #FFFFFF;
+  border: 1px solid #D3D3D3;
+  border-radius: 100px;
 
   text-align: center;
   line-height: 40px;
   color: #333333;
 
-  
-
+  font-size: 16px;
   cursor: pointer;
   :hover {
     border: 1px solid gray;
