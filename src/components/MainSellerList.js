@@ -3,26 +3,26 @@ import MainSellerCard from './MainSellerCard';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 
-const MainSellerList = () => {
+const MainSellerList = (props) => {
+
+  const creator = props.mainCreator
+
   return (
     <React.Fragment>
       <Wrap>
-        <span>Best Seller</span>
+        <span>오늘의 크리에이터</span>
       </Wrap>
       <Bottom>
-        <MainSellerCard />
-        <MainSellerCard />
-        <MainSellerCard />
-        <MainSellerCard />
-        <MainSellerCard />
-        <MainSellerCard />
+      {creator && creator.map((item, idx) => (
+          <MainSellerCard key={idx} item={item}/>
+        ))}
       </Bottom>
     </React.Fragment>
   )
 }
 
 const Wrap = styled.div`
-  margin: 60px 240px 40px 240px;
+  margin: 60px 0px 40px 0px;
 
   display: flex;
   flex-direction: row;
@@ -34,10 +34,13 @@ const Wrap = styled.div`
   font-weight: 400;
   font-style: normal;
 
+  /* background-color: yellow; */
+  border-bottom: 2px solid #000000;
+
   span {
     font-size: 20px;
-    margin: 0px 20px;
-    /* background-color: rebeccapurple; */     
+    font-weight: 700;
+    margin: 0px 10px 15px 21px;
   }
 
   #plus:hover {
@@ -47,8 +50,9 @@ const Wrap = styled.div`
 `
 
 const Bottom = styled.div`
-  width: 1440px;
+  width: 1100px;
   margin: 0 auto;
+
   
   display: flex;
   justify-content: space-around;

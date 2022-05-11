@@ -26,6 +26,7 @@ const BookDetail = () => {
 
   React.useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));
+    return () => dispatch;
   }, []);
 
   return (
@@ -95,7 +96,15 @@ const BookDetail = () => {
             </span>
           </div>
         </BookSumSt>
+
         <AudioSt>
+        {/* {detail.audio?.detail.audio.length === 0 ?
+          <AudioReviewNone>
+            후기가 없어요! 후기를 등록해주세요!
+          </AudioReviewNone>
+          :
+          null
+        } */}
           <AudioBookList detail={detail} />
         </AudioSt>
       </Wrap>
@@ -104,7 +113,7 @@ const BookDetail = () => {
 }
 
 const Wrap = styled.div`
-  width: 1196px;
+  width: 1100px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -113,19 +122,18 @@ const Wrap = styled.div`
   /* background-color: lightblue; */
   padding-bottom: 30px;
 
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
+
 `
 
 const HeaderSt = styled.div`
-  width: 1196px;
+  width: 1100px;
+
   /* background-color: gray; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 137px 0px 80px 0px;
+  margin: 102px 0px 80px 0px;
   
   p {
     font-size: 24px;
@@ -142,7 +150,8 @@ const HeaderSt = styled.div`
 `
 
 const BookInfoSt = styled.div`
-  width: 1196px;
+    width: 1100px;
+
   /* background-color: greenyellow; */
   display: flex;
   flex-direction: row;
@@ -152,8 +161,8 @@ const BookInfoSt = styled.div`
 `
 
 const ImgSt = styled.div`
-  width: 586px;
-  height: 586px;
+  width: 550px;
+  height: 550px;
   /* background-color: gray; */
   /* background-image: ; */
   display: flex;
@@ -165,8 +174,8 @@ const ImgSt = styled.div`
   border-radius: 30px;
 
   #img_wrap {
-    width: 586px;
-    height: 586px;
+    width: 550px;
+  height: 550px;
 
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(26px);
@@ -177,8 +186,8 @@ const ImgSt = styled.div`
   }
   
   #img {
-    width: 290px;
-    height: 438px;
+    width: 260px;
+    height: 400px;
     background-color: gray;
 
     img {
@@ -215,7 +224,7 @@ const ContentSt = styled.div`
     }
 
     button {
-      width: 464px;
+      width: 430px;
       height: 80px;
       margin-top: 16px;
       border: 1px solid #0C0A0A;
@@ -238,14 +247,16 @@ const ContentSt = styled.div`
 `
 
 const BookSumSt = styled.div`
-  width: 1200px;
+  width: 1100px;
+
   /* background-color: lightcoral; */
   display: flex;
   flex-direction: column;
   align-items: center;
 
   #bookinfo {
-    width: 1200px;
+    width: 1100px;
+
     float: left;
     font-size: 22px;
     font-weight: bold;
@@ -254,7 +265,8 @@ const BookSumSt = styled.div`
   }
 
   div {
-    width: 1200px;
+    width: 1100px;
+
     /* background-color: #F4F4F4; */
     border-radius: 20px;
     display: flex;
@@ -271,7 +283,8 @@ const BookSumSt = styled.div`
   }
 `
 const AudioSt = styled.div`
-  width: 1200px;
+  width: 1100px;
+
   position: relative;
 
 `

@@ -18,7 +18,7 @@ const BookCard = (props) => {
               src={props.item.bookImg}
             />
           </ImageBox>
-          <h3 style={{ fontSize: "16px" }}>
+          <h3>
             {props.item.title}
           </h3>
           <Text margin="0px">{props.item.author}</Text>
@@ -29,13 +29,9 @@ const BookCard = (props) => {
 };
 
 const Wrap = styled.div`
-  height: 410px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  margin: 10px;
 
+  height: 360px;
+  margin: 10px;
   
   font-family: Pretendard;
   font-weight: 400;
@@ -43,11 +39,14 @@ const Wrap = styled.div`
 `
 
 const Body = styled.div`
-  width: 220px;
+  width: 100%;
   
-  cursor: pointer;
+
 
   h3 {
+    width: 180px;
+
+    font-size: 14px;
     white-space: nowrap;
     overflow:hidden;
     text-overflow: ellipsis;
@@ -55,18 +54,22 @@ const Body = styled.div`
 `
 
 const ImageBox = styled.div`
-  width: 220px;
-  height: 300px;
-  /* box-shadow: 0 0 2px gray; */
+  width: 180px;
+  height: 260px;
+
+  /* border-radius: 2px 10px 10px 2px; */
 
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 
+  
+
   img {
   border: 1px solid lightgray;
   border-radius: 2px 10px 10px 2px;
-
+  /* box-shadow: 0 0 2px gray; */
+  cursor: pointer;
   }
 `
 

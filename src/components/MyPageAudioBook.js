@@ -1,18 +1,36 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Text } from "../elements/Index";
 import { history } from "../redux/configureStore";
+import { actionCreators as libraryActions } from "../redux/modules/mypage";
 
 const MyPageAudioBook = (props) => {
-// console.log(props.item)
+  // console.log(props.item)
+  const dispatch = useDispatch();
+  const bookId = props.item.bookId;
+  // console.log(bookId)
+
+  const params = useParams();
+  const category = params.category
+
+
+  const audioBookId = props.item.audioBookId;
 
   return (
     <React.Fragment>
-            <Wrap>
+      <Wrap>
         <Body>
           <ImageBox
             onClick={() => {
-              history.push(`/bookdetail/${props.item.category}/${props.item.bookId}`)
+              if(category === "likeBook") {
+                history.push(`/bookdetail/${props.item.category}/${props.item.bookId}`)
+              } else if(category === "listen" || category === "myAudio") {
+                history.push(`/audioPlay/${props.item.category}/${props.item.bookId}/${props.item.audioBookId}`)
+              } else if(category === "myFunding") {
+                history.push(`/funding`)
+              } 
             }}
           >
             <img
@@ -25,7 +43,20 @@ const MyPageAudioBook = (props) => {
           </h3>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
             <Text margin="0px">{props.item.author}</Text>
-            <Text color="gray" margin="0px">삭제</Text>
+            <Text
+              color="gray"
+              margin="0px"
+              onClick={() => {
+                if(bookId && audioBookId) {
+                  dispatch(libraryActions.deleteAudioBookAC(audioBookId));
+                }
+
+                if(bookId && !audioBookId) {
+                  dispatch(libraryActions.deleteLikeBookAC(bookId));
+                }
+
+              }}
+            >삭제</Text>
           </div>
         </Body>
       </Wrap>
@@ -48,7 +79,7 @@ const Wrap = styled.div`
 `
 
 const Body = styled.div`
-  width: 180px;
+  width: 170px;
 
   /* background-color: red; */
   margin-top: 10px;
@@ -61,11 +92,11 @@ const Body = styled.div`
 `
 
 const ImageBox = styled.div`
-  width: 180px;
+width: 170px;
   height: 260px;
   /* box-shadow: 0 0 2px gray; */
 
-  background-color: purple;
+  /* background-color: purple; */
 
   display: flex;
   flex-direction: column;

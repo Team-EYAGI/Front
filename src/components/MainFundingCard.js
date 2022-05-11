@@ -24,12 +24,8 @@ const MainFundingCard = () => {
 
 const Wrap = styled.div`
   height: 200px;
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* align-items: center; */
-  /* position: relative; */
+
   margin: 10px;
-  /* background-color: yellow; */
 
   font-family: Pretendard;
   font-weight: 400;
@@ -37,7 +33,7 @@ const Wrap = styled.div`
 `
 
 const Body = styled.div`
-  width: 220px;
+  width: 200px;
   /* background-color: rebeccapurple; */
 
   display: flex;
@@ -54,8 +50,8 @@ const Body = styled.div`
 `
 
 const ImageBox = styled.div`
-  width: 250px;
-  height: 250px;
+  width: 190px;
+  height: 190px;
   background-color: azure;
   overflow: hidden;
   border: 1px solid #f4f4f4;

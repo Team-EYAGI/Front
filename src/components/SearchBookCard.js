@@ -29,20 +29,22 @@ const BookCard = (props) => {
 };
 
 const Wrap = styled.div`
-  height: 410px;
+  height: 360px;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   margin: 10px 10px 20px 10px;
+
+  background-color: rebeccapurple;
   
-  font-family: noto-sans-cjk-kr, sans-serif;
+  font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
 `
 
 const Body = styled.div`
-  width: 220px;
+  width: 180px;
   
   cursor: pointer;
 
@@ -54,8 +56,8 @@ const Body = styled.div`
 `
 
 const ImageBox = styled.div`
-  width: 220px;
-  height: 300px;
+  width: 180px;
+  height: 260px;
   /* box-shadow: 0 0 2px gray; */
 
   display: flex;

@@ -7,13 +7,14 @@ const MainFundingList = () => {
   return (
     <React.Fragment>
       <Wrap>
-        <span>오디오 펀딩</span>
+        <span style={{fontSize: "20px", fontWeight: "700"}}>오디오 펀딩</span>
         <span
+          style={{fontSize: "16px"}}
           id="plus"
           onClick={() => {
             history.push(`/funding`)
           }}
-        >더 보기 ></span>
+        >더 보러가기</span>
       </Wrap>
       <Bottom>
         <MainFundingCard />
@@ -32,16 +33,18 @@ const Wrap = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  margin: 60px 240px 40px 240px;
+  margin: 60px 0px 40px 0px;
 
   font-size: 30px;
   font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
 
+  border-bottom: 2px solid #000000;
   span {
-    font-size: 20px;
-    margin: 0px 20px;
+    margin: 0px 10px 15px 21px;
+    font-weight: 400;
+
     /* background-color: rebeccapurple; */     
   }
 
@@ -52,7 +55,7 @@ const Wrap = styled.div`
 `
 
 const Bottom = styled.div`
-  width: 1440px;
+  width: 1100px;
   margin: 0 auto;
   
   display: flex;
