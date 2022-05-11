@@ -22,6 +22,16 @@ const CategoryBookList = (props) => {
 
   return (
     <React.Fragment>
+            <Wrap>
+        <span style={{fontSize: "20px", fontWeight: "700"}}>카테고리별 오디오북</span>
+        <span
+          style={{fontSize: "16px"}}
+          id="plus"
+          onClick={() => {
+            history.push(`/funding`)
+          }}
+        >카테고리 전체보기</span>
+      </Wrap>
       <HeaderSt>
          {genre.map((item, idx) => (
            <GenreSt
@@ -37,19 +47,44 @@ const CategoryBookList = (props) => {
           </GenreSt>
           ))}
         </HeaderSt>
-      <Wrap>
+      <Body>
         {selfBook && selfBook.map((item, idx) => (
           <MainCategoryBookCard key={idx} item={item}/>
         ))}
-      </Wrap>
+      </Body>
     </React.Fragment>
   )
 }
 
 const Wrap = styled.div`
-  width: 1440px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 
-  padding-top: 100px;
+  margin: 60px 0px 0px 0px;
+
+  font-size: 30px;
+  font-family: Pretendard;
+  font-weight: 400;
+  font-style: normal;
+
+  border-bottom: 2px solid #000000;
+  span {
+    margin: 0px 10px 15px 21px;
+    /* background-color: rebeccapurple; */     
+  }
+
+  #plus:hover {
+    cursor: pointer;
+    color: violet; 
+  }
+`
+
+const Body = styled.div`
+  width: 1100px;
+
+  padding-top: 28px;
   margin: 0 auto;
   
   display: flex;
@@ -61,13 +96,9 @@ const Wrap = styled.div`
 `
 
 const HeaderSt = styled.div`
-  width: 1440px;
-  height: 60px;
+  width: 1100px;
 
-  background-color: yellow;
-  margin: 60px;
-
-  margin: auto;
+  margin: 0 auto;
   
   display: flex;
   flex-direction: row;
@@ -75,34 +106,26 @@ const HeaderSt = styled.div`
   font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
-  
-  & span {
-    font-size: 20px;
-    margin: 20px 10px;
-    cursor: pointer;
 
-    :hover {
-      color: gray;
-    }
-  }
 `
 
 const GenreSt = styled.h3`
-  width: 140px;
-  height: 40px;
+  width: 100px;
+  height: 30px;
 
-  border: 2px solid gray;
-  border-radius: 20px;
-  box-sizing: border-box;
+  margin: 48px 7px 0px 0px;
 
-  margin: 20px 10px 50px 10px;
+  padding-bottom: 9px;
+  background: #FFFFFF;
+  border: 1px solid #D3D3D3;
+  border-radius: 100px;
 
   text-align: center;
   line-height: 40px;
   color: #333333;
 
+  font-size: 16px;
   cursor: pointer;
-  
   :hover {
     border: 1px solid gray;
     box-shadow: 0 0 3px black;

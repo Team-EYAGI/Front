@@ -23,17 +23,15 @@ const SellerProfile = () => {
 
   const listenAudio = useSelector((state) => state.mypage.library_listenAudio);
   console.log(listenAudio)
-  
+
   // const userImage = useSelector((state) => state.mypage.userImage);
   // console.log(userImage)
 
   const seller = localStorage.getItem("seller");
 
-  useEffect(() => {
-    dispatch(libraryActions.getLikeBookAC());
-    dispatch(libraryActions.getProfileAC());
-    dispatch(libraryActions.getListenAudioAC());
-  }, []);
+  // useEffect(() => {
+
+  // }, []);
 
 
   return (
@@ -43,10 +41,10 @@ const SellerProfile = () => {
           <Profile>
             <Box>
               <div id='img'>
-                <img src={profile.userImage ? profile.userImage : null } />
+                <img src={profile.userImage ? profile.userImage : null} />
               </div>
               <div id='username'>
-                <h4>{profile.userName}</h4>
+                <h4>{params.sellerName}</h4>
                 <h5>팔로잉 &nbsp;<span>1,529명</span></h5>
                 <h5>팔로워 &nbsp;<span>93명</span></h5>
               </div>
@@ -61,7 +59,7 @@ const SellerProfile = () => {
                 history.push(`/profileEdit`)
               }}
             >
-              프로필 편집
+              팔로우
             </button>
             {seller !== "ROLE_SELLER" ?
               <span id='creatorform'>크리에이터 신청하기</span>
@@ -70,37 +68,64 @@ const SellerProfile = () => {
             }
           </Profile>
           <List>
-
               <ListBox>
                 <h2>| 크리에이터</h2>
                 <h3
-                  style={{ textDecoration: (category === "Audiobook" ? "underline" : null) }}
-                  onClick={() => { history.push(`/sellerProfile/{sellerName}/Audiobook`) }}>업로드한 오디오북
+                  style={{ textDecoration: (category === "audiobook" ? "underline" : null) }}
+                  onClick={() => { history.push(`/sellerProfile/sellerName/audiobook`) }}>업로드한 오디오북
                 </h3>
                 <h3
-                  style={{ textDecoration: (category === "Funding" ? "underline" : null) }}
-                  onClick={() => { history.push(`/sellerProfile/{sellerName}/Funding`) }}>등록한 펀딩
+                  style={{ textDecoration: (category === "funding" ? "underline" : null) }}
+                  onClick={() => { history.push(`/sellerProfile/sellerName/funding`) }}>등록한 펀딩
                 </h3>
               </ListBox>
-              </List>
+          </List>
+
         </Menu>
-        <Body>
-          {category === "Audiobook" ?
-            <div>아직 등록된 오디오북이 없습니다!</div>
-            :
-            category === "Funding" ?
-              <div>아직 등록된 펀딩이 없습니다!</div>
+        <div>
+          {
+          // category === "myAudio" && myAudio ? 
+          //  <span>총 0개</span>
+          //   :
+          //   category === "myFunding" && myFunding ? 
+          //  <span>총 0개</span>
+          //  :
+           category === "listen" && listenAudio ? 
+           <span id='num'>총 {listenAudio.length}개</span>
+           :
+           category === "likeAudio" && likeBook ? 
+           <span id='num'>총 {likeBook.length}개</span>
+           :
+           <span id='num'>아직 등록된 것이 없습니다!</span>
+            }
+          
+          <Body>
+
+            {category === "myAudio" ?
+              <div>Funding</div>
               :
-                  null
-          }
-        </Body>
+              category === "myFunding" ?
+                <div>Funding</div>
+                :
+                category === "listen" ? listenAudio.map((item, idx) => (
+                  <MyPageAudioBook key={idx} item={item} />
+                ))
+                  :
+                  category === "likeAudio" ? likeBook.map((item, idx) => (
+                    <MyPageAudioBook key={idx} item={item} />
+                  ))
+                    :
+                    <div>이게기본</div>
+            }
+          </Body>
+        </div>
       </Wrap>
     </React.Fragment>
   )
 }
 
 const Wrap = styled.div`
-  width: 1200px;
+  width: 1100px;
   min-height: 700px;
   margin: 0 auto;
   margin-top: 36px;
@@ -112,13 +137,18 @@ const Wrap = styled.div`
   /* background-color: lightblue; */
   padding-top: 30px;
   padding-bottom: 30px;
-  font-family: noto-sans-cjk-kr, sans-serif;
-  font-weight: 400;
+  font-family: 'Pretendard';
   font-style: normal;
+  font-weight: 400;
+
+  #num {
+    font-size: 16px;
+    margin: 0px 0px 5px 8px;
+  }
 `
 
 const Menu = styled.div`
-  width: 300px;
+  width: 290px;
   /* margin: 0 auto; */
   height: 700px;
   display: flex;
@@ -132,26 +162,12 @@ const Menu = styled.div`
 
   padding-bottom: 30px;
 
-  font-family: 'Pretendard';
-  font-style: normal;
-
-  #submit {
-    margin-top: 5px;
-    width: 342px;
-    height: 48px;
-
-    background-color: #FAFAFA;
-
-    border: 1px solid #EAEAEA;
-    border-radius: 10px;
-    font-size: 16px;
-
-    cursor: pointer;
-  }
+  /* font-family: 'Pretendard';
+  font-style: normal; */
 `
 
 const Body = styled.div`
-  width: 800px;
+  width: 750px;
   height: 700px;
 
   overflow-y: scroll;
@@ -176,14 +192,14 @@ const Body = styled.div`
   display: flex;
   flex-direction: row;
   /* align-items: center; */
-  position: relative;
+  /* position: relative; */
   /* background-color: yellow; */
   padding-bottom: 30px;
 
 `
 
 const Profile = styled.div`
-  width: 300px;
+  width: 290px;
   min-height: 220px;
 
   /* background-color: purple; */
@@ -192,7 +208,7 @@ const Profile = styled.div`
   align-items: center;
 
   button {
-    width: 300px;
+    width: 290px;
     height: 48px;
 
     /* box-sizing: border-box; */
@@ -229,7 +245,7 @@ const Profile = styled.div`
 const Box = styled.div`
 
 /* background-color: yellow; */
-  width: 300px;
+  width: 290px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -239,8 +255,8 @@ const Box = styled.div`
   
 
   #img {
-    width: 108px;
-    height: 108px;
+    width: 100px;
+    height: 100px;
     /* margin-top: 40px; */
 
     border-radius: 15px;
@@ -260,13 +276,13 @@ const Box = styled.div`
 
     h4 {
       font-weight: 700;
-      font-size: 24px;
+      font-size: 22px;
       margin: 0px 0px 10px 0px;
     }
 
     h5 {
       font-weight: 300;
-      font-size: 14px;
+      font-size: 13px;
       margin: 2px 0px 0px 0px;
 
       span {
@@ -278,6 +294,7 @@ const Box = styled.div`
 
   h3 {
     width: 100%;
+    /* min-height: 10px; */
     font-weight: 400;
     font-size: 13px;
     line-height: 150%;
@@ -289,7 +306,7 @@ const Box = styled.div`
 `
 
 const List = styled.div`
-  width: 300px;
+width: 290px;
   height: 300px;
 
   /* background-color: yellow; */

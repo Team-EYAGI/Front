@@ -2,22 +2,26 @@ import React from 'react';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 
-const MainSellerCard = () => {
+const MainSellerCard = (props) => {
+
+  const creator = props.item;
+  console.log(creator)
+
   return (
     <React.Fragment>
       <Wrap>
         <Body
           onClick={() => {
-            history.push(`/sellerProfile/{sellerName}/Audiobook`)
+            history.push(`/sellerProfile/${creator.username}/audiobook`)
           }}>
           <ImageBox>
             <img
               style={{ width: "100%" }}
-              src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png'
+              src={creator ? creator.userImage : 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png'}
             />
           </ImageBox>
           <h3 style={{ fontSize: "16px" }}>
-            크리에이터 이름
+            {creator ? creator.username : "이름 없음"}
           </h3>
         </Body>
       </Wrap>
@@ -27,12 +31,8 @@ const MainSellerCard = () => {
 
 const Wrap = styled.div`
   height: 200px;
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* align-items: center; */
-  /* position: relative; */
+
   margin: 10px;
-  /* background-color: yellow; */
 
   
   font-family: Pretendard;
@@ -41,8 +41,7 @@ const Wrap = styled.div`
 `
 
 const Body = styled.div`
-  width: 220px;
-  /* background-color: rebeccapurple; */
+  width: 200px;
 
   display: flex;
   flex-direction: column;
@@ -58,8 +57,8 @@ const Body = styled.div`
 `
 
 const ImageBox = styled.div`
-  width: 200px;
-  height: 200px;
+  width: 190px;
+  height: 190px;
   border-radius: 100px;
   background-color: azure;
   overflow: hidden;
