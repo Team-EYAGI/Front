@@ -35,10 +35,10 @@ const RequestWrite = (props) => {
           <p>오디오북 요청하기</p>          
         </HeaderSt>
         <BookInfoSt>
-          <ImgSt>
+          <ImgSt style={{ backgroundImage: `url(${detail.bookImg})` }}>
             <div id='img_wrap'>
               <div id='img'>
-                <img src={detail.bookImg}/>
+                <img src={detail.bookImg} />
               </div>
             </div>
           </ImgSt>
@@ -88,7 +88,7 @@ const RequestWrite = (props) => {
 const Wrap = styled.div`
   /* background-color: lightblue; */
 
-  width: 1200px;
+  width: 1100px;
   margin: 0 auto;
   padding-bottom: 30px;
 
@@ -96,21 +96,21 @@ const Wrap = styled.div`
   flex-direction: column;
   align-items: center;
 
-  font-family: noto-sans-cjk-kr, sans-serif;
+  font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
 `
 
 const HeaderSt = styled.div`
-  width: 1200px;
-  margin: 137px 0px 80px 0px;
+  width: 1100px;
+  margin: 80px 0px 40px 0px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   
-  font-size: 40px;
+  font-size: 30px;
   
   p {
     margin: 0px 0px 23px 0px;
@@ -118,9 +118,8 @@ const HeaderSt = styled.div`
 `
 
 const BookInfoSt = styled.div`
-  /* background-color: greenyellow; */
 
-  width: 1200px;
+  width: 1100px;
 
   padding-bottom: 80px;
 
@@ -131,29 +130,31 @@ const BookInfoSt = styled.div`
 `
 
 const ImgSt = styled.div`
-  /* background-color: gray; */
-  
-  width: 50%;
-  
+  width: 500px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-repeat : no-repeat;
+  background-size : cover;
+  border-radius: 30px;
 
   #img_wrap {
-    width: 586px;
-    height: 582px;
-    background-color: #F4F4F4;
+    width: 500px;
+    height: 500px;
+
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(26px);
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 20px;
+    border-radius: 30px;
   }
   
   #img {
-    width: 294px;
-    height: 440px;
-    background-color: gray;
+    width: 210px;
+    height: 350px;
 
     img {
       width: 100%;
@@ -163,69 +164,25 @@ const ImgSt = styled.div`
 `
 
 const ContentSt = styled.div`
-  /* background-color: red; */
 
   width: 50%;
-  height: 582px;
+  height: 500px;
 
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
 
-  #file {
-    background-color: #e4e4e4;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    border-radius: 20px;
-
-    button {
-      background-color: #F4F4F4;
-
-      width: 100px;
-      height: 50px;
-      border-radius: 20px;
-      border: none;
-
-      font-size: 18px;
-      font-weight: bold;
-      font-family: noto-sans-cjk-kr, sans-serif;
-      font-style: normal;
-      cursor: pointer;
-    }
-
-    span {
-      width: 400px;
-      font-size: 17px;
-      float: left;
-      margin-left: 10px;
-      /* background-color: yellow; */
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-    }
-  }
-
-
   div {
-    /* background-color: gray; */
     width: 1000px;
     
-
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
 
     p {
       font-size: 20px;
       font-weight: bold;
-
-      span {
-        font-size: 40px;
-      }
     }
 
     textarea {
@@ -234,29 +191,34 @@ const ContentSt = styled.div`
       padding: 30px;
 
       resize: none;
-
+      background-color: #FFFFFF;
       border-radius: 20px;
 
-      font-size: 20px;
-      font-weight: bold;
-      font-family: noto-sans-cjk-kr, sans-serif;
+      font-size: 14px;
+      font-family: Pretendard;
+      font-weight: 400;
       font-style: normal;
     }
 
-    #uploadBtn {
+    button {
       width: 342px;
       height: 80px;
       margin-bottom: 40px;
 
-      border: none;
       border-radius: 20px;
-      background-color: #F4F4F4;
+      background-color: #000000;
+      color: #FFFFFF;
+      box-shadow: 2px 2px 2px 2px gray;
 
       font-size: 20px;
-      font-weight: bold;
-      font-family: noto-sans-cjk-kr, sans-serif;
+      font-family: Pretendard;
+      font-weight: 700;
       font-style: normal;
       cursor: pointer;
+
+      :hover {
+        box-shadow: 4px 4px 4px 4px gray;
+      }
     }
   }
 `

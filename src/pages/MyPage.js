@@ -11,18 +11,24 @@ const MyPage = () => {
   const dispatch = useDispatch();
 
   const params = useParams();
-  console.log(params)
+  // console.log(params)
 
   const category = params.category;
 
   const likeBook = useSelector((state) => state.mypage.library_likeBook);
-  console.log(likeBook)
+  // console.log(likeBook)
 
   const profile = useSelector((state) => state.mypage.profile);
-  console.log(profile)
+  // console.log(profile)
 
   const listenAudio = useSelector((state) => state.mypage.library_listenAudio);
   console.log(listenAudio)
+
+  const myFunding = useSelector((state) => state.mypage.library_registerFunding);
+  // console.log(myFunding)
+
+  const myAudio = useSelector((state) => state.mypage.library_registerAudioBook);
+  // console.log(myFunding)
 
   // const userImage = useSelector((state) => state.mypage.userImage);
   // console.log(userImage)
@@ -33,6 +39,8 @@ const MyPage = () => {
     dispatch(libraryActions.getLikeBookAC());
     dispatch(libraryActions.getProfileAC());
     dispatch(libraryActions.getListenAudioAC());
+    dispatch(libraryActions.getRegisterAudioBookAC());
+    dispatch(libraryActions.getRegisterFundingAC());
   }, []);
 
 
@@ -92,8 +100,8 @@ const MyPage = () => {
                 onClick={() => { history.push(`/mypage/listen`) }}>듣고 있는 오디오북
               </h3>
               <h3
-                style={{ textDecoration: (category === "likeAudio" ? "underline" : null) }}
-                onClick={() => { history.push(`/mypage/likeAudio`) }}>찜한 오디오북(책 찜)
+                style={{ textDecoration: (category === "likeBook" ? "underline" : null) }}
+                onClick={() => { history.push(`/mypage/likeBook`) }}>찜한 오디오북(책 찜)
               </h3>
             </ListBox>
           </List>
@@ -101,34 +109,59 @@ const MyPage = () => {
         </Menu>
         <div>
           {
-          // category === "myAudio" && myAudio ? 
-          //  <span>총 0개</span>
-          //   :
-          //   category === "myFunding" && myFunding ? 
-          //  <span>총 0개</span>
-          //  :
-           category === "listen" && listenAudio ? 
-           <span id='num'>총 {listenAudio.length}개</span>
-           :
-           category === "likeAudio" && likeBook ? 
-           <span id='num'>총 {likeBook.length}개</span>
-           :
-           <span id='num'>아직 등록된 것이 없습니다!</span>
-            }
-          
+            category === "myAudio" && myAudio ? 
+             <span>총 {myAudio.length}개</span>
+              :
+              category === "myFunding" && myFunding ? 
+             <span>총 {myFunding.length}개</span>
+             :
+            category === "listen" && listenAudio ?
+              <span id='num'>총 {listenAudio.length}개</span>
+              :
+              category === "likeBook" && likeBook ?
+                <span id='num'>총 {likeBook.length}개</span>
+                :
+                null
+          }
+
+          {
+          (category === "myAudio") && (myAudio && myAudio.length === 0) ?
+            <AudioReviewNone>
+              아직 등록한 오디오북이 없네요! 오디오북을 등록해볼까요?
+            </AudioReviewNone>
+            :
+            (category === "myFunding") && (myFunding && myFunding.length === 0) ?
+            <AudioReviewNone>
+              아직 펀딩을 시도하지 않았어요! 펀딩을 시작해볼까요?
+            </AudioReviewNone>
+            :
+          (category === "listen") && (listenAudio && listenAudio.length === 0) ?
+            <AudioReviewNone>
+              아직 듣고 있는 오디오북이 없어요! 들으러 가볼까요?
+            </AudioReviewNone>
+            :
+            (category === "likeBook") && (likeBook && likeBook.length === 0) ?
+              <AudioReviewNone>
+                아직 찜한 책이 없어요! 책을 둘러보러 가볼까요?
+              </AudioReviewNone>
+              :
+              null
+          }
           <Body>
 
-            {category === "myAudio" ?
-              <div>Funding</div>
+            {category === "myAudio" ? myAudio.map((item, idx) => (
+                <MyPageAudioBook key={idx} item={item} />
+              ))
               :
-              category === "myFunding" ?
-                <div>Funding</div>
+              category === "myFunding" ? myFunding.map((item, idx) => (
+                <MyPageAudioBook key={idx} item={item} />
+              ))
                 :
                 category === "listen" ? listenAudio.map((item, idx) => (
                   <MyPageAudioBook key={idx} item={item} />
                 ))
                   :
-                  category === "likeAudio" ? likeBook.map((item, idx) => (
+                  category === "likeBook" ? likeBook.map((item, idx) => (
                     <MyPageAudioBook key={idx} item={item} />
                   ))
                     :
@@ -141,8 +174,41 @@ const MyPage = () => {
   )
 }
 
+
+
+const AudioReviewNone = styled.div`
+  width: 100%;
+  min-height: 200px;
+  
+
+  /* background-color: purple; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+`
+
+const SellerImg = styled.div`
+  width: 130px;
+  height: 130px;
+  
+  border-radius: 15px;
+  border: 1px solid #878787;
+  
+  cursor: pointer;
+  
+
+  overflow: hidden;
+
+img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+`
+
 const Wrap = styled.div`
-  width: 1200px;
+  width: 1100px;
   min-height: 700px;
   margin: 0 auto;
   margin-top: 36px;
@@ -165,7 +231,7 @@ const Wrap = styled.div`
 `
 
 const Menu = styled.div`
-  width: 300px;
+  width: 290px;
   /* margin: 0 auto; */
   height: 700px;
   display: flex;
@@ -179,26 +245,12 @@ const Menu = styled.div`
 
   padding-bottom: 30px;
 
-  font-family: 'Pretendard';
-  font-style: normal;
-
-  #submit {
-    margin-top: 5px;
-    width: 342px;
-    height: 48px;
-
-    background-color: #FAFAFA;
-
-    border: 1px solid #EAEAEA;
-    border-radius: 10px;
-    font-size: 16px;
-
-    cursor: pointer;
-  }
+  /* font-family: 'Pretendard';
+  font-style: normal; */
 `
 
 const Body = styled.div`
-  width: 800px;
+  width: 750px;
   height: 700px;
 
   overflow-y: scroll;
@@ -223,14 +275,14 @@ const Body = styled.div`
   display: flex;
   flex-direction: row;
   /* align-items: center; */
-  position: relative;
+  /* position: relative; */
   /* background-color: yellow; */
   padding-bottom: 30px;
 
 `
 
 const Profile = styled.div`
-  width: 300px;
+  width: 290px;
   min-height: 220px;
 
   /* background-color: purple; */
@@ -239,7 +291,7 @@ const Profile = styled.div`
   align-items: center;
 
   button {
-    width: 300px;
+    width: 290px;
     height: 48px;
 
     /* box-sizing: border-box; */
@@ -276,7 +328,7 @@ const Profile = styled.div`
 const Box = styled.div`
 
 /* background-color: yellow; */
-  width: 300px;
+  width: 290px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -286,8 +338,8 @@ const Box = styled.div`
   
 
   #img {
-    width: 108px;
-    height: 108px;
+    width: 100px;
+    height: 100px;
     /* margin-top: 40px; */
 
     border-radius: 15px;
@@ -307,13 +359,13 @@ const Box = styled.div`
 
     h4 {
       font-weight: 700;
-      font-size: 24px;
+      font-size: 22px;
       margin: 0px 0px 10px 0px;
     }
 
     h5 {
       font-weight: 300;
-      font-size: 14px;
+      font-size: 13px;
       margin: 2px 0px 0px 0px;
 
       span {
@@ -325,6 +377,7 @@ const Box = styled.div`
 
   h3 {
     width: 100%;
+    /* min-height: 10px; */
     font-weight: 400;
     font-size: 13px;
     line-height: 150%;
@@ -336,7 +389,7 @@ const Box = styled.div`
 `
 
 const List = styled.div`
-  width: 300px;
+  width: 290px;
   height: 300px;
 
   /* background-color: yellow; */

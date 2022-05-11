@@ -79,7 +79,11 @@ const AudioPlay = (props) => {
             <span id='fixname'>크리에이터</span>
           </div>
           <AudioCardSt>
-            <SellerImg style={{ backgroundImage: (audioDetail.a ? `url(${audioDetail.Img})` : `url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png")`) }} />
+            <SellerImg>
+              <img src={audioDetail.sellerImage ? audioDetail.sellerImage : null} />
+            </SellerImg>
+
+            {/* style={{ backgroundImage: (audioDetail.sellerImage ? `url(${audioDetail.sellerImage})` : `url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png")`) }} */}
             <ContentSt>
               <div id='preview'>
                 <div>팔로잉 팔로우</div>
@@ -131,9 +135,9 @@ const AudioPlay = (props) => {
           >후기 작성하기</span>
         </div>
         {audioReview.length === 0 ?
-          <AudioCardSt>
+          <AudioReviewNone>
             후기가 없어요! 후기를 등록해주세요!
-          </AudioCardSt>
+          </AudioReviewNone>
           :
           null
         }
@@ -151,7 +155,7 @@ const AudioPlay = (props) => {
 
 
 const Wrap = styled.div`
-    width: 1195px;
+    width: 1100px;
     margin: 0 auto;
     
     display: flex;
@@ -179,7 +183,7 @@ const Wrap = styled.div`
   `
 
 const HeaderSt = styled.div`
-    width: 464px;
+    width: 450px;
     height: 56px;
 
     display: flex;
@@ -210,7 +214,7 @@ const HeaderSt = styled.div`
     `
 
 const Player = styled.div`
-    width: 500px;
+    width: 450px;
     /* height: 789px; */
     /* background-color: red; */
   
@@ -220,9 +224,9 @@ const Player = styled.div`
     
     /* position: relative; */
 
-    font-family: Pretendard;
+    /* font-family: Pretendard;
     font-weight: 400;
-    font-style: normal;
+    font-style: normal; */
 
     #creator {
       width: 464px;
@@ -253,8 +257,8 @@ const Player = styled.div`
     }
     `
 const ImgSt = styled.div`
-  width: 464px;
-  height: 464px;
+  width: 450px;
+  height: 450px;
 
   display: flex;
   flex-direction: column;
@@ -266,8 +270,8 @@ const ImgSt = styled.div`
   border-radius: 20px;
 
   #img_wrap {
-    width: 464px;
-    height: 464px;
+    width: 450px;
+  height: 450px;
     /* background-image: url(detail.bookImg) */
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(26px);
@@ -280,9 +284,22 @@ const ImgSt = styled.div`
 `
 
 const AudioCardSt = styled.div`
-  width: 464px;
+  width: 450px;
   height: 180px;
   
+  /* background-color: purple; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+`
+
+const AudioReviewNone = styled.div`
+  width: 1100px;
+  height: 180px;
+  
+
+  /* background-color: purple; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -290,17 +307,25 @@ const AudioCardSt = styled.div`
 `
 
 const SellerImg = styled.div`
-  width: 150px;
-  height: 150px;
-
-  background-repeat : no-repeat;
-  background-size : cover;
+  width: 130px;
+  height: 130px;
   
   border-radius: 15px;
   border: 1px solid #878787;
   
   cursor: pointer;
+  
+
+  overflow: hidden;
+
+img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
 `
+
+
 
 const ContentSt = styled.div`
   /* background-color: lightgray; */
@@ -312,8 +337,6 @@ const ContentSt = styled.div`
   flex-direction: column;
   justify-content: left;
   align-items: center;
-
-  cursor: pointer;
 
   #contents {
     margin-top: 10px;
@@ -342,6 +365,8 @@ const ContentSt = styled.div`
       font-weight: 500;
       font-size: 12px;
 
+      cursor: pointer;
+
       background: #FFFEFC;
       border: 1px solid #0C0A0A;
       border-radius: 10px;
@@ -350,7 +375,7 @@ const ContentSt = styled.div`
 `
 
 const ListBox = styled.div`
-  width: 590px;
+    width: 550px;
   height: 100%;
   /* background-color: red; */
 
@@ -381,7 +406,7 @@ const ListBox = styled.div`
   }
 
   #playbox {
-    width: 590px;
+    width: 550px;
     height: 750px;
     
 
@@ -398,7 +423,7 @@ const ListBox = styled.div`
       background: rgba(255, 255, 255, 0.4);
     }
     ::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: rgba(0, 0, 0, 0.8);
       border-radius: 6px;
     }
 
@@ -478,9 +503,10 @@ const PlayerSt = styled.div`
 
 const ReviewBox = styled.div`
   /* background-color: green; */
-  height: 605px;
+  min-height: 400px;
+  max-height: 605px;
 
-  width: 1195px;
+  width: 1100px;
   margin: 0 auto;
   
   display: flex;
