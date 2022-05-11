@@ -4,6 +4,7 @@ import { produce } from "immer";
 import { setToken } from "../../shared/Token";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
+import { emailCHK, passwordCHK, usernameCHK } from "../../shared/Commons";
 
 // action
 const LOGIN = "LOGIN";
@@ -24,7 +25,7 @@ const initialState = {
 //------------------middleware------------------------------
 
 //-------------로그인-------------------
-const loginDB = (email, password) => {
+const loginAC = (email, password) => {
   console.log(email)
   return function (dispatch, getState, { history }) {
     axios
@@ -59,7 +60,7 @@ const loginDB = (email, password) => {
         console.log("로그인성공!!");
       })
       .catch((error) => {
-        alert(error.response.data.msg);
+        window.alert("아이디와 비밀번호를 다시 확인해주세요!");
         // console.log(error)
       });
   };
@@ -70,13 +71,9 @@ const kakaoLoginAC = (code) => {
   console.log(code)
   return function (dispatch, getState, { history }) {
     axios
-      .get(process.env.REACT_APP_BASE_URL + `/user/kakao/callback?code=${code}`, {
-        
-      })
-      .then((res) => {
-
+      .get(process.env.REACT_APP_BASE_URL + `/user/kakao/callback?code=${code}`)
+      .then((res) => {        
         console.log(res);
- 
         const token = res.headers.authorization;
         console.log(token);
         setToken(token);
@@ -123,7 +120,7 @@ const kakaoLoginAC = (code) => {
 // };
 
 //------------회원가입-------------------
-const signUpDB = (email, username, password, passwordCheck) => {
+const signUpAC = (email, username, password, passwordCheck) => {
   console.log(email)
   console.log(username)
   console.log(password)
@@ -152,8 +149,12 @@ const signUpDB = (email, username, password, passwordCheck) => {
 
 
 //이메일 중복확인
-const emailCheckF = (email) => {
+const emailCheckAC = (email) => {
   console.log(email);
+  if (!emailCHK(email)){
+    window.alert("이메일 조건을 다시 확인해주세요!")
+    return;
+  }
   return function (dispatch, getState) {
     
     axios
@@ -174,8 +175,12 @@ const emailCheckF = (email) => {
 
 
 //닉네임 중복확인
-const usernameCheckF = (username) => {
+const usernameCheckAC = (username) => {
   console.log(username);
+  if (!usernameCHK(username)){
+    window.alert("닉네임 조건을 다시 확인해주세요!")
+    return;
+  }
   return function (dispatch, getState) {    
     axios
       .post(process.env.REACT_APP_BASE_URL + `/user/userName/check`, {        
@@ -227,13 +232,13 @@ export default handleActions(
 //action creator export
 const actionCreators = {
   login,
-  loginDB,
+  loginAC,
   getUser,
-  signUpDB,
+  signUpAC,
   logOut,
   kakaoLoginAC,
-  usernameCheckF,
-  emailCheckF,
+  usernameCheckAC,
+  emailCheckAC,
   //   loginCheckDB,
 };
 

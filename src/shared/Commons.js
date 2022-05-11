@@ -16,6 +16,6 @@ export const emailCHK = (email) => {
   
   // 닉네임(이름) 형식: 한글 또는 알파벳 대소문자(a~z, A~Z)
   export const usernameCHK = (username) => {
-    let _reg = /^[가-힣a-zA-Z]+$/;
+    let _reg = /^[가-힣a-zA-Z]{2,8}$/;
     return _reg.test(username);
   };
