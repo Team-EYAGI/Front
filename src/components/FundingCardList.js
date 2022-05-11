@@ -1,49 +1,80 @@
 import React from "react";
 import styled from "styled-components";
-import AudioPlayer from 'react-h5-audio-player';
+import AudioPlayer from "react-h5-audio-player";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import FundingCard from "./FundingCard";
 import FundingWrite from "../pages/FundingWrite";
 
-
 const FundingCardList = (props) => {
-  console.log(props.funding)
+  console.log(props.funding);
   const history = useHistory();
   const params = useParams();
   const fundId = params.fundId;
   console.log(params);
-  const fund = props.funding
+  const fund = props.funding;
   return (
     <React.Fragment>
+      <AudioHeader>오디오 펀딩  >  펀딩 상세</AudioHeader>
       <Wrap>
-      {fund.map((item, idx) => (
-           <FundingCard fundcard={item} />
-
-      
-          ))}
+        {fund.map((item, idx) => (
+          <FundingCard fundcard={item} />
+        ))}
       </Wrap>
     </React.Fragment>
   );
 };
 
-const Wrap = styled.div`
-  width: 1440px;
+const AudioHeader = styled.div`
+  width: 1200px;
+  height: 60px;
+  
   margin-top: 20px;
+  margin-bottom: 20px;
   margin: 0 auto;
   position: relative;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
   align-items: center;
+  `
+
+const Wrap = styled.div`
+  width: 1200px;
+  /* background-color: yellowgreen; */
+  margin-top: 20px;
+  margin: 0 auto;
+  height: 1000px;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  align-items: center;
+
+  overflow-y: scroll;
+    ::-webkit-scrollbar {
+     /* 세로 스크롤 넓이 */  
+      width: 10px;
+
+      /* 가로 스크롤 높이 */
+      height: 8px;
+
+      border-radius: 6px;
+      background: black;
+      background: rgba(255, 255, 255, 0.4);
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 6px;
+    }
+
+    /* padding: 20px 0px; */
 
   #button {
     width: 111px;
     height: 48px;
     border: 2px solid #c0c0c0;
     border-radius: 20px;
-    background-color: #f4f4f4;
+    /* background-color: #f4f4f4; */
     font-size: 20px;
     font-family: noto-sans-cjk-kr, sans-serif;
     font-weight: 400;

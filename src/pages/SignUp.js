@@ -16,11 +16,11 @@ const Signup = (props) => {
 
 
   const checkUsername = () => {
-    dispatch(userActions.usernameCheckF(username));
+    dispatch(userActions.usernameCheckAC(username));
   };
 
   const checkEmail = () => {
-    dispatch(userActions.emailCheckF(email));
+    dispatch(userActions.emailCheckAC(email));
   };
 
 
@@ -44,7 +44,7 @@ const Signup = (props) => {
     }
 
 
-    dispatch(userActions.signUpDB(email, username, password, passwordCheck));
+    dispatch(userActions.signUpAC(email, username, password, passwordCheck));
   };
 
   return (
@@ -52,7 +52,7 @@ const Signup = (props) => {
       <SignupContainer>
         <form>
           <center>
-            <h3>간편 회원가입</h3>
+            <h2>간편 가입</h2>
 
             <div>
               <MailBox>
@@ -66,8 +66,10 @@ const Signup = (props) => {
                 <button 
                 id="Mail" 
                 type="button"
-                onClick={checkEmail}>
-                  이메일 중복확인
+                onClick={checkEmail}
+                disabled={!emailCHK}
+                >
+                  중복확인
                 </button>
               </MailBox>
 
@@ -75,13 +77,13 @@ const Signup = (props) => {
               {email.length < 1 ? null : !emailCHK(email) ? (
                 <div>
                   <li style={{ color: "red" }}>
-                    6자 이상의 영문 혹은 영문과 숫자를 조합한 이메일형식
+                  ✖  6자 이상의 영문 혹은 영문과 숫자를 조합한 이메일형식
                   </li>
                 </div>
               ) : (
                 <div>
                   <li style={{ color: "green" }}>
-                    6자 이상의 영문 혹은 영문과 숫자를 조합한 이메일형식
+                  ✔  6자 이상의 영문 혹은 영문과 숫자를 조합한 이메일형식 
                   </li>
                 </div>
               )}
@@ -96,10 +98,24 @@ const Signup = (props) => {
                 value={username}
                 placeholder="닉네임"
               ></input>
-              <button id="Name" type="button" onClick={checkUsername}>
-                닉네임 중복확인
+              <button id="Name" type="button" onClick={checkUsername} disabled={username===""}>
+                중복확인
               </button>
               </Nickbox>
+              
+            {username.length < 1 ? null : !usernameCHK(username) ? (
+                <div>
+                  <li style={{ color: "red" }}>
+                  ✖  2-8자의 한글 또는 영문
+                  </li>
+                </div>
+              ) : (
+                <div>
+                  <li style={{ color: "green" }}>
+                  ✔  2-8자의 한글 또는 영문
+                  </li>
+                </div>
+              )}
             </div>
             
             <div>
@@ -114,16 +130,16 @@ const Signup = (props) => {
               {/* 비밀번호 유효성 검사 */}
               {password.length < 1 ? null : !passwordCHK(password) ? (
                 <div className="checkPw">
-                  <li style={{ color: "red" }}> 8글자 이상 입력</li>
+                  <li style={{ color: "red" }}> ✖  8글자 이상 입력</li>
                   <li style={{ color: "red" }}>
-                    영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합
+                  ✖  영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합
                   </li>
                 </div>
               ) : (
                 <div className="checkPw">
-                  <li style={{ color: "green" }}> 8글자 이상 입력</li>
+                  <li style={{ color: "green" }}> ✔  8글자 이상 입력</li>
                   <li style={{ color: "green" }}>
-                    영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합
+                  ✔  영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합
                   </li>
                 </div>
               )}
@@ -142,11 +158,11 @@ const Signup = (props) => {
               {/* 비밀번호와 비밀번호 체크 비교 */}
               {passwordCheck.length < 1 ? null : password !== passwordCheck ? (
                 <div style={{ color: "red" }}>
-                  <li>동일한 비밀번호를 입력해주세요.</li>
+                  <li>✖  동일한 비밀번호를 입력해주세요.</li>
                 </div>
               ) : (
                 <div style={{ color: "green" }}>
-                  <li>동일한 비밀번호를 입력해주세요.</li>
+                  <li>✔  비밀번호 일치</li>
                 </div>
               )}
             </div>
@@ -175,8 +191,16 @@ const SignupContainer = styled.div`
   border-radius: 5px;
   padding: 44px 50px 10px 37px;
 
+  li {
+list-style: none;
+    width: 360px;
+    font-size: 12px;
+    text-align: left;
+    margin-top: 2px;
+  }
+
   input {
-    font-family: noto-sans-cjk-kr, sans-serif;
+    font-family: "Pretendard";
     font-style: normal;
     font-size: 18px;
     border: 1px solid #c0c0c0;
@@ -187,7 +211,7 @@ const SignupContainer = styled.div`
   }
 
   #signup {
-    font-family: noto-sans-cjk-kr, sans-serif;
+    font-family: "Pretendard";
     font-style: normal;
     font-size: 18px;
     border: 0px;
@@ -196,13 +220,13 @@ const SignupContainer = styled.div`
     box-shadow: none;
     width: 364px;
     height: 60px;
-    background-color: #62bdfa;
+    background-color: #0c0a0a;
     margin-top: 50px;
     cursor: pointer;
   }
 
   #Mail {
-    font-family: noto-sans-cjk-kr, sans-serif;
+    font-family: "Pretendard";
     font-style: normal;
     font-size: 18px;
     border: 0px;
@@ -212,13 +236,13 @@ const SignupContainer = styled.div`
     margin: 10px;
     width: 90px;
     height: 60px;
-    background-color: #62bdfa;
+    background-color: #0c0a0a;
     margin-top: 30px;
     cursor: pointer;
   }
 
   #Name {
-    font-family: noto-sans-cjk-kr, sans-serif;
+    font-family: "Pretendard";
     font-style: normal;
     font-size: 18px;
     border: 0px;
@@ -228,7 +252,7 @@ const SignupContainer = styled.div`
     margin: 10px;
     width: 90px;
     height: 60px;
-    background-color: #62bdfa;
+    background-color: #0c0a0a;
     margin-top: 30px;
     cursor: pointer;
   }
@@ -242,10 +266,10 @@ const MailBox = styled.div`
   justify-content: space-around;
   background-color: fff;
   margin-left: 120px;
-  border: 0px solid #c0c0c0;
+  border: 0px solid #0cac0c;
   width: 500px;
   height: 80px;
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 5px;
 `
 
@@ -257,10 +281,10 @@ const Nickbox = styled.div`
   justify-content: space-around;
   background-color: fff;
   margin-left: 120px;
-  border: 0px solid #c0c0c0;
+  border: 0px solid #0cac0c;
   width: 500px;
   height: 80px;
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 5px;
 `
 

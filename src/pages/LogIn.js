@@ -15,7 +15,7 @@ const Login = (props) => {
       window.alert("아이디와 비밀번호를 모두 입력해주세요!");
       return;
     }
-    dispatch(userActions.loginDB(email, password)); //유저네임? 이메일?
+    dispatch(userActions.loginAC(email, password)); //유저네임? 이메일?
   };
 
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
@@ -27,26 +27,26 @@ const Login = (props) => {
       <LoginContainer>
         <form>
           <center>
-            <h3>로그인</h3>
+            <h2>로그인</h2>
             <div id="buttonBox">
               <LoginBox>
                 <div id="box">
-                    <input
-                      onChange={(e) => {
-                        setId(e.target.value);
-                      }}
-                      placeholder="이메일"
-                      value={email}
-                    ></input>
+                  <input
+                    onChange={(e) => {
+                      setId(e.target.value);
+                    }}
+                    placeholder="이메일"
+                    value={email}
+                  ></input>
 
-                    <input
-                      onChange={(e) => {
-                        setPwd(e.target.value);
-                      }}
-                      placeholder="비밀번호"
-                      value={password}
-                      type="password"
-                    ></input>
+                  <input
+                    onChange={(e) => {
+                      setPwd(e.target.value);
+                    }}
+                    placeholder="비밀번호"
+                    value={password}
+                    type="password"
+                  ></input>
                 </div>
               </LoginBox>
               <button
@@ -59,7 +59,6 @@ const Login = (props) => {
               </button>
             </div>
             <hr></hr>
-            <p>다른 방법으로 로그인</p>
             <button
               id="kakaobtn"
               onClick={() => {
@@ -69,7 +68,7 @@ const Login = (props) => {
             >
               카카오로 로그인
             </button>
-            <hr />
+
             <button
               id="signupbtn"
               onClick={() => {
@@ -97,18 +96,17 @@ const LoginContainer = styled.div`
   width: 464px;
   height: 537px;
   font-size: 16px;
-  border-radius: 5px;
+  border-radius: 10px;
   padding: 0px 50px 10px 37px;
-  font-family: noto-sans-cjk-kr, sans-serif;
+  font-family: "Pretendard";
   font-style: normal;
 
   button {
-    font-family: noto-sans-cjk-kr, sans-serif;
+    font-family: "Pretendard";
     font-style: normal;
     font-size: 18px;
     border: 0px;
-    border-radius: 5px;
-    color: white;
+    border-radius: 10px;
     cursor: pointer;
   }
 
@@ -118,7 +116,7 @@ const LoginContainer = styled.div`
     align-items: center;
     justify-content: space-around;
     padding-bottom: 15px;
-    padding-top: 15px;
+    padding-top: 5px;
   }
 
   #loginbtn {
@@ -126,8 +124,11 @@ const LoginContainer = styled.div`
     box-shadow: none;
     width: 157px;
     height: 118px;
-    background-color: #62bdfa;
+    background-color: #0c0a0a;
     margin-top: 10px;
+    color: white;
+    font-family: "Pretendard";
+    font-style: normal;
   }
 
   #kakaobtn {
@@ -135,35 +136,39 @@ const LoginContainer = styled.div`
     border: 0px;
     width: 464px;
     height: 60px;
-    background-color: #fae100;
+    background-color: #fae44d;
     margin-top: 5px;
-  }
-
-  #naverbtn {
-    box-shadow: none;
-    width: 464px;
-    height: 60px;
-    background-color: #19ce60;
-    margin-top: 5px;
+    color: #212127;
+    font-family: "Pretendard";
+    font-style: normal;
+    font-weight: 600;
   }
 
   #signupbtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    float: left;
     box-shadow: none;
-    width: 464px;
-    height: 60px;
-    background-color: #62bdfa;
+    width: 120px;
+    height: 24px;
+    background-color: #fff;
     margin-top: 5px;
+    color: #0c0a0a;
+    font-family: "Pretendard";
+    font-style: normal;
+    font-weight: 600;
   }
 `;
 
 const LoginBox = styled.div`
-  border-radius: 5px;
+  border-radius: 10px;
   width: 250px;
 
   #box {
     input {
       border: 1px solid #c0c0c0;
-      border-radius: 5px;
+      border-radius: 10px;
       width: 298px;
       height: 48px;
       margin-top: 10px;

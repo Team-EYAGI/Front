@@ -85,16 +85,29 @@ const addFundingAC = (payload) => {
   }
 }
 
-// //좋아요
-// export const addLikeDB = (postId) => {
-//   axios
-//   .get(process.env.REACT_APP_BASE_URL + `/fund/like/`), {
+//좋아요
+const addLikeDB = (fundHeartBool, fundId) => {
+  console.log(fundId)
+  console.log(fundHeartBool)
 
-//   },
-//       .then((response) => {
-//         console.log(response);
-//       });
-// };
+  let Token = getToken("Authorization");
+  return function (dispatch, getState, { history }) {
+    axios
+      .post(process.env.REACT_APP_BASE_URL + `/fund/like/${fundId}`, {
+        fundHeartBool : fundHeartBool
+      },
+      { headers: { 'Authorization': `${Token}` } }
+      )
+
+      .then((res) => {
+        console.log(res);        
+      })
+      .catch((error) => {
+        window.alert("아이디와 비밀번호를 다시 확인해주세요!");
+        // console.log(error)
+      });
+  };
+};
 
 
 //리듀서
@@ -123,6 +136,7 @@ const actionCreators = {
 // export 할 것들
 getFundingAC,
 addFundingAC,
+addLikeDB,
 };
 
 export { actionCreators };
