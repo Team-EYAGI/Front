@@ -6,7 +6,8 @@ import { getToken } from "../../shared/Token"; //겟토큰으로 사용자 토�
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 
-let sockjs = new SockJS("http://54.180.115.121/chatting");
+
+let sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + `/chatting`);
 let client = Stomp.over(sockjs);
 client.debug = null;
 
@@ -83,7 +84,9 @@ const addPostAX = (post_info) => {
     // logger("post모듈 addPostAX - 1", post_info.appointmentDate);
 
     
-    axios.post("http://54.180.115.121/chatting/chat/rooms", { //우리 서버에 필요한 정보 담아주도록 수정해야함.
+
+    axios.post(process.env.REACT_APP_CHAT_URL + `/chatting/chat/rooms`, { //우리 서버에 필요한 정보 담아주도록 수정해야함.
+
         title: post_info.title,
         headCount: post_info.headCount,
         category: post_info.foodCategory,
