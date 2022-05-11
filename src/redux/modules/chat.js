@@ -8,9 +8,9 @@ import jwtDecode from "jwt-decode";
 // import { getToken } from "../../shared/Token";
 
 
-// let sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + "/chatting");
-// let client = Stomp.over(sockjs);
-// client.debug = null;
+let sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + "/chatting");
+let client = Stomp.over(sockjs);
+client.debug = null;
 
 
 // Action`
@@ -28,6 +28,7 @@ const SET_REQ_LIST = "SET_REQ_LIST";
 // 채팅 참여 user 정보
 const GET_CHAT_USER = "GET_CHAT_USER";
 
+const GET_MESSAGE= "GET_MESSAGE";
 // ActionCreator
 
 // 현재 채팅방 정보
@@ -54,7 +55,9 @@ const setMessage = createAction(SET_MSG, (chatMassageArray) => ({
 const setChatList = createAction(SET_CHAT_LIST, (myChatList) => ({
   myChatList,
 }));
-
+const getMSG = createAction(GET_MESSAGE, (newMessage) => ({
+  newMessage,
+}));
 // // 채팅 참여중인 사용자 목록 조회
 // const getChatUser = createAction(GET_CHAT_USER, (user_in_chat_list) => ({
 //   user_in_chat_list,
@@ -79,6 +82,7 @@ const initialState = {
   now_time: null,
   userInList: [],
   setMessage: [],
+  msg : [],
 };
 
 // middleware
@@ -232,7 +236,7 @@ export default handleActions(
         // 들어온 메세지 안의 대상자 id 와 현재 사용자 id 비교
         // const user_id = jwtDecode(getToken).userId;
         const m = action.payload.newMessage;
-
+        console.log(action.payload.newMessage);
           const one_msg = {
             type: m.type,
             room_id: m.roomId,
@@ -243,6 +247,24 @@ export default handleActions(
             msg_id: m.id,
           };
           draft.messages.push(one_msg);
+        }
+      ),
+
+      [GET_MESSAGE]: (state, action) =>
+      produce(state, (draft) => {
+        console.log(action.payload.newMessage);
+        const m = action.payload.newMessage;
+
+          const one_msg = {
+            type: m.type,
+            room_id: m.roomId,
+            sender_id: m.senderId,
+
+            message: m.message,
+            createdAt: m.createdAt,
+            msg_id: m.id,
+          };
+          draft.msg.push(one_msg);
         }
       ),
   // setMessage - 메세지 DB에서 조회할때 해당 방의 메세지 내역 불러옴
@@ -276,6 +298,7 @@ const actionCreators = {
   moveChatRoom,
   // clearChat,
   getMessages,
+  getMSG,
   // requestChatListAX,
   // awaitChatListAX,
   // getChatUserAX,

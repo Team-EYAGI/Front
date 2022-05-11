@@ -1,32 +1,36 @@
 import React from 'react'
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { Grid, Text } from "../elements/Index";
 import moment from "moment";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
-import Join from "../components/Join";
 import { actionCreators as chatActions } from "../redux/modules/chat";
 import ChatList from '../components/ChatList';
 import { useParams } from 'react-router-dom';
+import styled, { createGlobalStyle } from 'styled-components';
+import Join from "../components/Join";
 
 const AdminChatList = (props) => {
+  const dispatch = useDispatch();
+
     const params = useParams();
     const roomId = params.roomId;
-    const preview = useSelector((state) => state.chat.messages);
+
     const beforeMessage = useSelector((state) => state.chat.setMessage);
     console.log(beforeMessage);
-    console.log(preview);
-    const dispatch = useDispatch();
 
-    const sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + "/chatting");
+    const sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + `/chatting`);
     const stompClient = Stomp.over(sockjs);
     const Token = localStorage.getItem("token");
 
+
+    const preview = useSelector((state) => state.chat.messages);
+    console.log(preview);
+
+  
     React.useEffect(() => {
 
       connect();
-      dispatch( chatActions.getChatMessagesAX(roomId)); 
+      // dispatch( chatActions.getChatMessagesAX(roomId)); 
       return () => { };
     }, []);
      
@@ -42,13 +46,16 @@ const AdminChatList = (props) => {
 
 
         //채팅 룸에 접속한다음  소켓연결이 되야하는 라인  : 방 입장하는 버튼
-  const enterRoom = (roomId) => {
+  const enterRoom = () => {
+    
+    const Token = localStorage.getItem("token");
     console.log(roomId);
     stompClient.connect()
     stompClient.subscribe(`/sub/api/chat/rooms/${roomId}`, (data) => {
       const onMessage = JSON.parse(data.body);
       console.log(onMessage);
       const now_time = moment().format("YYYY-MM-DD HH:mm:ss");
+      dispatch( chatActions.getChatMessagesAX(roomId)); 
       dispatch(
         chatActions.getMessages({ ...onMessage, createdAt: now_time })
       );
@@ -59,12 +66,34 @@ const AdminChatList = (props) => {
     );
   };
 
+  const [list, setList] = React.useState([
+    { nick: "임시 사용자", text: "test message" },
+  ]);
+
+    //연결된 서버와의 통신시 payloadData의 타입에 따른 정보들 //메세지 읽어오는부분
+    const onMessageReceived = (payload) => {
+      console.log(payload)
+      var payloadData = JSON.parse(payload.body);
+      console.log(payloadData);//서버에서 보내주는 정보
+      switch (payloadData.type) {
+        case "JOIN":
+          break;
+        case "MESSAGE":
+          break;
+        case "TALK":
+          setList((list) => [
+            ...list,
+            { nick: payloadData.sender, text: payloadData.message },
+          ]);
+          break;
+      }
+    };
+
     const [message, setMessage] = React.useState("");
     const changeMessage = (e) => {
       setMessage(e.target.value);
     };
-    const sendMessage = () => {
-      const roomId = localStorage.getItem("roomId");
+    const sendMessage = (roomId) => {
       const userId = localStorage.getItem("userId");
       try {
         const data = {
@@ -105,14 +134,18 @@ const AdminChatList = (props) => {
             <div>채팅방</div>
             <div id='hello'>
                 {beforeMessage.map((item, idx) => (<ChatList key={idx} item={item} />))}
-                {preview.map((item, idx) => (<ChatList key={idx} item={item} />))} 
             </div>
             <div>
-                <textarea onChange={changeMessage} />
-                <button onClick={sendMessage}>전송</button>
-                <button onClick={()=>{
-                  enterRoom(roomId);
-                }}>연결..</button>
+            {preview.map((item, idx) => (<ChatList key={idx} item={item} />))}
+            </div>
+            <div>
+                <input type="text" onChange={changeMessage} />
+                <button onClick={()=> {
+                  sendMessage(roomId);
+                }}>전송</button>
+                 <Join
+            enterRoom={enterRoom}
+          />
                 <div>
                 </div>
             </div>

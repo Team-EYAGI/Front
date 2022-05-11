@@ -44,9 +44,9 @@ return (
       <div onClick={()=>{
         history.push(`/AdminChat/${props.item.roomId}`);
       }}>
-        <div>{props.item.createdAt}</div>
-        <a>{props.item.senderName}님의 문의</a>
-        <div>뚠뚠</div>
+        <div>문의 날짜 : {props.item.createdAt}</div>
+        <a>{props.item.nickname}님의 문의</a>
+        <div>권한 : {props.item.userRole}</div>
       </div>
     </React.Fragment>
     )
