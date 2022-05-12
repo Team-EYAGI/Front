@@ -4,11 +4,14 @@ import styled from "styled-components";
 
 function Join(props) {
   const {
-    enterRoom
+    enterRoom,
+    click
   } = props;
 
   return (
-        <button onClick={enterRoom}>문의시작!</button>
+        <button 
+        className={((click == false) ? "hide" : "")} 
+        onClick={enterRoom}>문의시작!</button>
   );
 }
 

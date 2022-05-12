@@ -97,7 +97,7 @@ const setChatListAX = () => {
     { headers: { 'Authorization': `${Token}` } }
     )
     .then((res) => {
-      console.log("채팅방 목록", res)
+      // console.log("채팅방 목록", res)
       dispatch(setChatList(res.data))
 
     })
@@ -107,45 +107,6 @@ const setChatListAX = () => {
   }
 }
 
-// const setChatListAX = () => {
-//   return function (dispatch, getState, { history }) {
-//     let Token = getToken("Authorization");
-//     if (Token) {
-//       axios
-//         .get(process.env.REACT_APP_CHAT_URL + "/rooms")
-//         .then((res) => {
-//           console.log("채팅방 목록", res);
-
-//           let my_chat_list = [];
-//           res.data.forEach((c) => {
-//             let one_chat_info = {
-//               room_id: c.roomId,
-//               senderName: c.nickname,
-//               // senderRole : c.,
-//               message: c.message
-//             };
-//             my_chat_list.push(one_chat_info);
-//           });
-//           dispatch(setChatList(my_chat_list));
-//         })
-//         .catch((e) => {
-//           // customAlert.sweetConfirmReload(
-//           //   "채팅방을 불러올 수 없어요",
-//           //   [
-//           //     "채팅방을 불러오는 데 실패했어요.",
-//           //     "홈 탭으로 돌아간 후에 다시 시도해주세요.",
-//           //   ],
-//           //   "history"
-//           // );
-//           console.log("나의 채팅방 목록 조회 에러", e);
-//         });
-//     } 
-//     // else {
-//     //   dispatch(userAction.loginCheck());
-//     // }
-//   };
-// };
-
 const getChatMessagesAX = (roomId) => {
   return function (dispatch, getState, {history}) {
     let Token = getToken("Authorization");
@@ -153,7 +114,7 @@ const getChatMessagesAX = (roomId) => {
     { headers: { 'Authorization': `${Token}` } }
     )
     .then((res) => {
-      console.log("이전 메세지 목록", res)
+      // console.log("이전 메세지 목록", res)
       dispatch(setMessage(res.data))
 
     })
@@ -163,46 +124,6 @@ const getChatMessagesAX = (roomId) => {
   }
 }
 
-// enterRoom 할때 실행됨
-// 방에 입장하는 순간 디비에서 채팅 메세지 내역 불러오기
-// const getChatMessagesAX = () => {
-//   return function (dispatch, getState, { history }) {
-//     // const room_id = getState().chat.currentChat.room_id;
-//     // const room = getState().chat.currentChat;
-
-//     axios
-//       .get(`/chat/${room_id}/messages`)
-//       .then((res) => {
-//         console.log("채팅 메세지 목록 조회", res);
-//         console.log("채팅 메세지 room", room);
-//         let chatMassageArray = [];
-//         res.data.content.forEach((m) => {
-//           let one_msg_info = {
-//             type: m.type,
-//             room_id: m.roomId,
-//             sender_id: m.senderId,
-//             message: m.message,
-//             createdAt: m.createdAt
-//           };
-//           chatMassageArray.push(one_msg_info);
-//         });
-//         dispatch(setMessage(chatMassageArray));
-//       })
-//       .catch((e) => {
-//         // customAlert.sweetConfirmReload(
-//         //   "불러오기 실패",
-//         //   [
-//         //     "채팅방 메세지를 불러오는데 실패했어요.",
-//         //     "잠시 후 다시 시도해주세요.",
-//         //   ],
-//         //   ""
-//         // );
-//         console.log("채팅 메세지 불러오기 실패", e);
-//       });
-//   };
-// };
-
-
 export default handleActions(
   {
     // setChatList - 나만의 채팅 목록
@@ -210,33 +131,14 @@ export default handleActions(
       produce(state, (draft) => {
         draft.chatListInfo = action.payload.myChatList;
       }),
-    // // moveChatRoom - 현재 채팅방 id, name
-    // [MOVE_CHAT_ROOM]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     draft.currentChat.room_id = action.payload.room_id;
-    //     draft.currentChat.roomName = action.payload.roomName;
-    //     draft.currentChat.post_id = action.payload.post_id;
-    //     draft.currentChat.own_user_id = action.payload.own_user_id;
-    //     draft.currentChat.order_time = action.payload.order_time;
-    //   }),
-    // // clearChat - 현재방 id, name 초기화
-    // [CLEAR_CHAT]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     draft.currentChat.room_id = null;
-    //     draft.currentChat.roomName = null;
-    //     draft.currentChat.post_id = null;
-    //     draft.currentChat.own_user_id = null;
-    //     draft.currentChat.order_time = null;
-    //     draft.userInList = [];
-    //     draft.messages = [];
-    //   }),
+   
     // getMessages - 새로운 메세지 정보를 메세지 리스트에 추가
     [GET_MSG]: (state, action) =>
       produce(state, (draft) => {
         // 들어온 메세지 안의 대상자 id 와 현재 사용자 id 비교
         // const user_id = jwtDecode(getToken).userId;
         const m = action.payload.newMessage;
-        console.log(action.payload.newMessage);
+        // console.log(action.payload.newMessage);
           const one_msg = {
             type: m.type,
             room_id: m.roomId,
@@ -252,7 +154,7 @@ export default handleActions(
 
       [GET_MESSAGE]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload.newMessage);
+        // console.log(action.payload.newMessage);
         const m = action.payload.newMessage;
 
           const one_msg = {
@@ -276,18 +178,7 @@ export default handleActions(
         // });
         draft.setMessage = action.payload.chatMassageArray;
       }),
-    // [SET_REQ_LIST]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     draft.requestList = action.payload.request_list;
-    //   }),
-    // [AWAIT_LIST]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     draft.awaitList = action.payload.await_list;
-    //   }),
-    // [GET_CHAT_USER]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     draft.userInList = action.payload.user_in_chat_list;
-    //   }),
+    
   },
   initialState
 );
@@ -299,12 +190,7 @@ const actionCreators = {
   // clearChat,
   getMessages,
   getMSG,
-  // requestChatListAX,
-  // awaitChatListAX,
-  // getChatUserAX,
-  // awaitChatOut,
-  // leaveChatAX,
-  // addPostAX
+ 
 };
 
 export { actionCreators };
