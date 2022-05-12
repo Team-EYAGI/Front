@@ -175,7 +175,7 @@ const ImgSt = styled.div`
 
   #img_wrap {
     width: 550px;
-  height: 550px;
+    height: 550px;
 
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(26px);
@@ -187,12 +187,14 @@ const ImgSt = styled.div`
   
   #img {
     width: 260px;
-    height: 400px;
-    background-color: gray;
+    /* height: 400px; */
+
 
     img {
       width: 100%;
-      height: 100%;    
+      /* height: 100%; */
+      /* border: 1px solid lightgray; */
+      border-radius: 2px 10px 10px 2px;
     }
   }
 `

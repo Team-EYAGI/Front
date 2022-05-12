@@ -3,7 +3,11 @@ import MainFundingCard from './MainFundingCard';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 
-const MainFundingList = () => {
+const MainFundingList = (props) => {
+
+  const mainFunding = props.mainFunding
+  // console.log("메인펀딩 프롭스", mainFunding)
+
   return (
     <React.Fragment>
       <Wrap>
@@ -17,11 +21,9 @@ const MainFundingList = () => {
         >더 보러가기</span>
       </Wrap>
       <Bottom>
-        <MainFundingCard />
-        <MainFundingCard />
-        <MainFundingCard />
-        <MainFundingCard />
-        <MainFundingCard />
+      {mainFunding && mainFunding.map((item, idx) => (
+          <MainFundingCard key={idx} item={item}/>
+        ))}
       </Bottom>
     </React.Fragment>
   )

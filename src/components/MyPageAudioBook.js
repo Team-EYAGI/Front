@@ -7,13 +7,15 @@ import { history } from "../redux/configureStore";
 import { actionCreators as libraryActions } from "../redux/modules/mypage";
 
 const MyPageAudioBook = (props) => {
-  // console.log(props.item)
+  console.log(props.item)
   const dispatch = useDispatch();
   const bookId = props.item.bookId;
   // console.log(bookId)
 
   const params = useParams();
   const category = params.category
+
+  const is_session = localStorage.getItem("is_login");
 
 
   const audioBookId = props.item.audioBookId;
@@ -24,13 +26,18 @@ const MyPageAudioBook = (props) => {
         <Body>
           <ImageBox
             onClick={() => {
-              if(category === "likeBook") {
+              if (category === "likeBook") {
                 history.push(`/bookdetail/${props.item.category}/${props.item.bookId}`)
-              } else if(category === "listen" || category === "myAudio") {
+              } else if (category === "listen" || category === "myAudio" || category === "audiobook") {
+                if (category === "audiobook" && !is_session) {
+                  window.alert("로그인 후 이용 가능합니다!")
+                  history.push(`/login`)
+                  return;
+                }
                 history.push(`/audioPlay/${props.item.category}/${props.item.bookId}/${props.item.audioBookId}`)
-              } else if(category === "myFunding") {
+              } else if (category === "myFunding") {
                 history.push(`/funding`)
-              } 
+              }
             }}
           >
             <img
@@ -43,20 +50,26 @@ const MyPageAudioBook = (props) => {
           </h3>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
             <Text margin="0px">{props.item.author}</Text>
-            <Text
-              color="gray"
-              margin="0px"
-              onClick={() => {
-                if(bookId && audioBookId) {
-                  dispatch(libraryActions.deleteAudioBookAC(audioBookId));
-                }
+            {category === "audiobook" || category === "funding" || category === "myFunding" || category === "myAudio" ?
+              null
+              :
+              <Text
+                color="gray"
+                margin="0px"
+                onClick={() => {
+                  if (bookId && audioBookId) {
+                    dispatch(libraryActions.deleteAudioBookAC(audioBookId));
+                  }
 
-                if(bookId && !audioBookId) {
-                  dispatch(libraryActions.deleteLikeBookAC(bookId));
-                }
+                  if (bookId && !audioBookId) {
+                    dispatch(libraryActions.deleteLikeBookAC(bookId));
+                  }
 
-              }}
-            >삭제</Text>
+                }}
+              >삭제</Text>
+
+            }
+
           </div>
         </Body>
       </Wrap>

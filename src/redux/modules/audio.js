@@ -11,6 +11,7 @@ const DELETE_REQUEST = "DELETE_REQUEST";
 
 const ADD_AUDIO = "ADD_AUDIO";
 const GET_AUDIO = "GET_AUDIO";
+const ADD_AUDIO_CHECK = "ADD_AUDIO_CHECK";
 
 const GET_REVIEW = "GET_REVIEW";
 const ADD_REVIEW = "ADD_REVIEW";
@@ -23,6 +24,7 @@ const initialState = {
   request_list: [],
   request_add: [],
   audio_list: [],
+  audio_check: [],
   review_list: [],
   review_add: [],
 };
@@ -34,6 +36,7 @@ const editRequest = createAction(EDIT_REQUEST, (bookRequestId, request_list) => 
 const deleteRequest = createAction(DELETE_REQUEST, (bookRequestId) => ({ bookRequestId }));
 
 const addAudio = createAction(ADD_AUDIO, (audio_list) => ({ audio_list }));
+const addAudioCheck = createAction(ADD_AUDIO_CHECK, (audio_check) => ({ audio_check }));
 const getAudio = createAction(GET_AUDIO, (audio_list) => ({ audio_list }));
 
 const getReview = createAction(GET_REVIEW, (review_list) => ({ review_list }));
@@ -166,6 +169,27 @@ const addAudioAC = (payload) => {
   }
 }
 
+// 오디오북 첫 등록인지 확인하기
+const addAudioCheckAC = (bookId) => {
+  // console.log(bookId)
+
+  let Token = getToken("Authorization");
+  return function (dispatch, getState, { history }) {
+    axios.post(process.env.REACT_APP_BASE_URL + `/book/detail/newAudio/check/${bookId}`, {
+
+    },
+      { headers: { 'Authorization': `${Token}` } }
+    )
+      .then((res) => {
+        console.log("첫등록이니? 성공", res)
+        dispatch(addAudioCheck(res.data))
+      })
+      .catch(error => {
+        console.log("error", error)
+      })
+  }
+}
+
 // 오디오북 상세리스트 겟
 const getAudioAC = (audioBookId) => {
   console.log(audioBookId)
@@ -282,6 +306,10 @@ export default handleActions(
         draft.request_list = action.payload.request_list;
         console.log("스테이스상태", state)
       }),
+      [ADD_AUDIO_CHECK]: (state, action) =>
+      produce(state, (draft) => {
+        draft.audio_check = action.payload.audio_check;
+      }),
     // [ADD_REQUEST]: (state, action) =>
     // produce(state, (draft) => {
     //   draft.request_add = action.payload.request_add;
@@ -315,16 +343,16 @@ export default handleActions(
 
 const actionCreators = {
   // export 할 것들
-  getRequest,
-  addRequest,
-  editRequest,
-  deleteRequest,
-  addAudio,
-  getAudio,
-  getReview,
-  addReview,
-  editReview,
-  deleteReview,
+  // getRequest,
+  // addRequest,
+  // editRequest,
+  // deleteRequest,
+  // addAudio,
+  // getAudio,
+  // getReview,
+  // addReview,
+  // editReview,
+  // deleteReview,
   getRequestAC,
   addRequestAC,
   editRequestAC,
@@ -335,6 +363,7 @@ const actionCreators = {
   addReviewAC,
   editReviewAC,
   deleteReviewAC,
+  addAudioCheckAC,
 };
 
 export { actionCreators };

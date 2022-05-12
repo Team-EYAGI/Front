@@ -33,15 +33,15 @@ const Request = () => {
         <RequestTable>
           <TableInfo>
             {/* 공통적인 InfoItem 속성을 제외한 부분만 inline 스타일 적용 */}
-            <InfoItem style={{ width: "70px" }}>
-              번호
-            </InfoItem>
-            <InfoItem style={{ width: "1000px" }}>
-              제목
-            </InfoItem>
-            <InfoItem style={{ width: "200px" }}>
+            <InfoItem style={{ width: "195px" }}>
               작성자
             </InfoItem>
+            <InfoItem style={{ width: "1100px" }}>
+              제목
+            </InfoItem>
+            {/* <InfoItem style={{ width: "200px" }}>
+              작성자
+            </InfoItem> */}
             <InfoItem style={{ width: "200px" }}>
               작성일
             </InfoItem>
@@ -75,25 +75,23 @@ const RequestTitle = styled.h2`
   margin: 0;
   padding-bottom: 5px;
   color: #4c4c4c;
-  font-size: 13px;
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 24px;
   letter-spacing: 0px;
-  font-family: 'Noto Sans KR', sans-serif;
 `
 
 const RequestInfo = styled.ul`
   margin: 0;
   padding-left: 0;
-  list-style-type: none;
+  /* list-style-type: none; */
   & > li {
     padding: 0;
     display: flex;
-    color: #666666;
-    font-size: 12px;
+    color: #8E8E8E;
+    font-size: 14px;
     font-weight: 300;
     line-height: 18px;
     letter-spacing: 0px;
-    font-family: 'Noto Sans KR', sans-serif;
   }
 
   #header {
@@ -109,7 +107,6 @@ const RequestTable = styled.div`
   margin-top: 15px;
   border-top: 2px solid #666666;
   border-bottom: 1px solid #666666;
-  font-family: 'Noto Sans KR', sans-serif;
 `
 
 const TableInfo = styled.div`
@@ -123,13 +120,14 @@ const TableInfo = styled.div`
 
 const InfoItem = styled.div`
   padding: 25px 0px 23px 0;
-  color: #353535;
-  font-size: 15px;
+  color: #000000;
+  font-size: 16px;
   line-height: 140%;
-  font-weight: 300;
+  font-weight: 500;
   letter-spacing: 0px;
   vertical-align: middle;
   text-align: center;
+  margin: 0px 10px;
 `
 
 const ReveiwButtonWrap = styled.div`
@@ -148,7 +146,6 @@ const ReviewButton = styled.button`
   font-size: 13px;
   font-weight: 400;
   line-height: 30px;
-  font-family: 'Noto Sans KR', sans-serif;
   color: #fff;
   background-color: #666666;
   border: 1px solid #666666;

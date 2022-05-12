@@ -30,6 +30,7 @@ const AudioBookList = (props) => {
             onClick={() => {
               if (!is_login) {
                 window.alert("로그인 후 이용 가능합니다!");
+                history.push(`/login`)
                 return;
               } else {
                 history.push(`/requestWrite/${bookId}`)
@@ -62,7 +63,7 @@ const AudioBookList = (props) => {
                   {item.contents}
                 </span>
                 <div id='preview'>
-                  <span>{item.createdAt.split('오후' || '오전')[0]}</span>
+                  <span>{item.createdAt.split('오후')[0]}</span>
                 </div>
               </ContentSt>
             </AudioCardSt>
@@ -85,25 +86,6 @@ const AudioReviewNone = styled.div`
   align-items: center;
 `
 
-const SellerImg = styled.div`
-  width: 130px;
-  height: 130px;
-  
-  border-radius: 15px;
-  border: 1px solid #878787;
-  
-  cursor: pointer;
-  
-
-  overflow: hidden;
-
-img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-`
-
 const Wrap = styled.div`
   width: 100%;
   display: flex;
@@ -113,10 +95,6 @@ const Wrap = styled.div`
 
   /* background-color: aliceblue; */
   flex-wrap: wrap;
-
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
 
   #title {
     /* width: 100%; */
@@ -147,7 +125,7 @@ const CardWrap = styled.div`
   justify-content: left;
   align-items: center;
 
-  background-color: aliceblue;
+  /* background-color: aliceblue; */
   flex-wrap: wrap;
 
   font-family: Pretendard;
@@ -257,6 +235,12 @@ const ContentSt = styled.div`
       background: #F9F7F4;
       border: 1px solid #000000;
       border-radius: 10px;
+
+      :hover {
+        background: #0C0A0A;
+        border: 1px solid #000000;
+        color: #FFFFFF;
+      }
     }
   }
 `
