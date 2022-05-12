@@ -7,6 +7,7 @@ import { history } from "../redux/configureStore";
 import { actionCreators as getActions } from "../redux/modules/book";
 import { actionCreators as reviewActions } from "../redux/modules/audio";
 import { useBeforeunload } from "react-beforeunload";
+import { BsXSquare } from "react-icons/bs";
 
 
 const ReviewWirte = (props) => {
@@ -31,7 +32,7 @@ const ReviewWirte = (props) => {
 
   let _review = is_edit ? audioReview.find((p) => p.commentId == commentId) : null;
   console.log(_review)
-  
+
   // 로그인한 사용자인지 확인
   const is_login = localStorage.getItem("is_login");
 
@@ -43,74 +44,93 @@ const ReviewWirte = (props) => {
       <ModalBox>
         <div style={{ width: "700px" }}>
           <GoBack>
-            <button onClick={() => history.goBack()}>X</button>
+            <BsXSquare id="icon" onClick={() => history.goBack()} size="30px"/> 
           </GoBack>
         </div>
-        <div>
-          <input
-            type="text"
-            defaultValue={title}
-            placeholder="제목"
-            onChange={(e) => {
-              setTitle(e.target.value)
-            }}
-          />
-          <input
-            type="text"
-            defaultValue={content}
-            placeholder="내용"
-            onChange={(e) => {
-              setContent(e.target.value)
-            }}
-          />
-        </div>
-        <div>
-          {is_edit ?
-            <button
-              onClick={() => {
-                dispatch(reviewActions.editReviewAC(
-                  category,
-                  bookId,
-                  audioBookId,
-                  title,
-                  content,
-                  commentId,
-                  ));
-              }}>후기 수정</button>
-            :
-            <button
-              onClick={() => {
-                dispatch(reviewActions.addReviewAC(
-                  category,
-                  bookId,
-                  audioBookId,
-                  title,
-                  content,
-                  ));
-              }}>후기 등록</button>
-          }
+        <ContentSt>
+          <div>
+            <p>후기 작성하기</p>
+            <h3>제목 |</h3>
+            <input
+              maxLength='30'
+              type="text"
+              defaultValue={title}
+              placeholder="제목을 30자 이내로 작성해주세요."
+              onChange={(e) => {
+                setTitle(e.target.value)
+              }}
+            />
+            <h3>내용 |</h3>
+            <textarea
+              maxLength='80'
+              type="text"
+              defaultValue={content}
+              placeholder="내용을 80자 이내로 작성해주세요."
+              onChange={(e) => {
+                setContent(e.target.value)
+              }}
+            />
+          </div>
 
-        </div>
+          {is_edit ?
+            <div>
+              <button
+                onClick={() => {
+                  if(title === "" || content === "") {
+                    window.alert("내용을 모두 입력해주세요!")
+                    return;
+                  }
+                  dispatch(reviewActions.editReviewAC(
+                    category,
+                    bookId,
+                    audioBookId,
+                    title,
+                    content,
+                    commentId,
+                  ));
+                }}
+              >수정하기</button>
+            </div>
+            :
+            <div>
+              <button
+                onClick={() => {
+                  if(title === "" || content === "") {
+                    window.alert("내용을 모두 입력해주세요!")
+                    return;
+                  }
+                  dispatch(reviewActions.addReviewAC(
+                    category,
+                    bookId,
+                    audioBookId,
+                    title,
+                    content,
+                  ));
+                }}
+              >등록하기</button>
+            </div>
+          }
+        </ContentSt>
       </ModalBox>
     </ModalBack>
   );
 };
 
-export default ReviewWirte;
+
 
 const ModalBox = styled.div`
   position: absolute;
   top: calc(25vh - 100px);
-  left: calc(40vw - 200px);
-  background-color: white;
+  left: calc(40vw - 150px);
+  background-color: #FFFEFC;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   border-radius: 10px;
-  width: 750px;
-  height: 700px;
+  width: 550px;
+  height: 550px;
   flex-direction: column;
-`;
+`
 
 const ModalBack = styled.div`
   position: fixed;
@@ -119,50 +139,103 @@ const ModalBack = styled.div`
   bottom: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.3);
-`;
+`
 
 const GoBack = styled.div`
-  height: 60px;
+  width: 600px;
 
-  button {
-    width: 30px;
-    height: 30px;
+  #icon {
+    margin-top: 20px;
     float: right;
-    border: 1px solid gray;
-    border-radius: 5px;
-    background: none;
+    cursor: pointer;
   }
-`;
+`
 
-const PlayerImg = styled.div`
-  width: 464px;
-  margin: 0 auto;
+const ContentSt = styled.div`
+
+  width: 90%;
+  height: 500px;
+
   display: flex;
   flex-direction: column;
-  align-items: center;
-  position: relative;
-  background-color: #F4F4F4;
-  padding-bottom: 30px;
-  font-family: noto-sans-cjk-kr, sans-serif;
-  font-weight: 400;
-  font-style: normal;
-`
-
-const Img = styled.div`
-  background-color: gray;
-
-  width: 268px;
-  height: 340px;
-  margin: 0 auto;
-  margin-top: 62px;
-  margin-bottom: 30px;
-  position: relative;
-
-  display: flex;
-  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
 
-  font-family: noto-sans-cjk-kr, sans-serif;
-  font-weight: 400;
-  font-style: normal;
+  div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+      font-weight: 700;
+      font-size: 25px;
+      /* margin: 0px 0px 23px 0px; */
+
+      margin-bottom: 30px;
+    }
+
+    h3 {
+      font-size: 20px;
+      width: 97%;
+      margin: 30px 0px 0px 0px;
+      font-weight: 700;
+    }
+
+    input {
+      width: 91%;
+      margin-top: 10px;
+      padding: 20px;
+
+      resize: none;
+      background-color: #FFFFFF;
+      border: 1px solid #C4C4C4;
+      border-radius: 10px;
+
+      font-size: 14px;
+      font-family: Pretendard;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+
+    textarea {
+      width: 91%;
+      margin-top: 10px;
+      padding: 20px;
+
+      resize: none;
+      background: #FFFFFF;
+      border: 1px solid #C4C4C4;
+      border-radius: 10px;
+
+      font-size: 14px;
+      font-family: Pretendard;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    button {
+      width: 342px;
+      height: 60px;
+      margin: 40px 0px;
+
+      border-radius: 10px;
+      background-color: #000000;
+      color: #FFFFFF;
+      /* box-shadow: 2px 2px 2px 2px gray; */
+
+      font-size: 20px;
+      font-family: Pretendard;
+      font-weight: 700;
+      font-style: normal;
+      cursor: pointer;
+
+      :hover {
+        box-shadow: 2px 2px 2px 2px gray;
+      }
+    }
+  }
 `
+
+export default ReviewWirte;

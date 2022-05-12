@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
-import { actionCreators as libraryActions } from "../redux/modules/mypage";
+import { actionCreators as creatorActions } from "../redux/modules/creator";
 
 import MyPageAudioBook from '../components/MyPageAudioBook';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,26 +12,34 @@ const SellerProfile = () => {
 
   const params = useParams();
   console.log(params)
+  const sellerId = params.sellerName;
 
   const category = params.category;
 
-  const likeBook = useSelector((state) => state.mypage.library_likeBook);
-  console.log(likeBook)
 
-  const profile = useSelector((state) => state.mypage.profile);
+  const audioBookList = useSelector((state) => state.creator.creator_audiobook);
+  console.log(audioBookList)
+
+  const profile = useSelector((state) => state.creator.creator_profile);
   console.log(profile)
 
-  const listenAudio = useSelector((state) => state.mypage.library_listenAudio);
-  console.log(listenAudio)
+  const fundingList = useSelector((state) => state.creator.creator_funding);
+  console.log(fundingList)
 
   // const userImage = useSelector((state) => state.mypage.userImage);
   // console.log(userImage)
 
   const seller = localStorage.getItem("seller");
 
-  // useEffect(() => {
+  useEffect(() => {
+    dispatch(creatorActions.getProfileAC(sellerId));
 
-  // }, []);
+    if (category === "audiobook") {
+      dispatch(creatorActions.getAudioAC(sellerId));
+    } else {
+      dispatch(creatorActions.getFundingAC(sellerId));
+    }
+  }, []);
 
 
   return (
@@ -44,7 +52,7 @@ const SellerProfile = () => {
                 <img src={profile.userImage ? profile.userImage : null} />
               </div>
               <div id='username'>
-                <h4>{params.sellerName}</h4>
+                <h4>{profile.userName}</h4>
                 <h5>팔로잉 &nbsp;<span>1,529명</span></h5>
                 <h5>팔로워 &nbsp;<span>93명</span></h5>
               </div>
@@ -56,66 +64,70 @@ const SellerProfile = () => {
             </Box>
             <button
               onClick={() => {
-                history.push(`/profileEdit`)
+                // history.push(`/profileEdit`)
               }}
             >
               팔로우
             </button>
-            {seller !== "ROLE_SELLER" ?
-              <span id='creatorform'>크리에이터 신청하기</span>
-              :
-              null
-            }
           </Profile>
           <List>
-              <ListBox>
-                <h2>| 크리에이터</h2>
-                <h3
-                  style={{ textDecoration: (category === "audiobook" ? "underline" : null) }}
-                  onClick={() => { history.push(`/sellerProfile/sellerName/audiobook`) }}>업로드한 오디오북
-                </h3>
-                <h3
-                  style={{ textDecoration: (category === "funding" ? "underline" : null) }}
-                  onClick={() => { history.push(`/sellerProfile/sellerName/funding`) }}>등록한 펀딩
-                </h3>
-              </ListBox>
+            <ListBox>
+              <h2>| 크리에이터</h2>
+              <h3
+                style={{ textDecoration: (category === "audiobook" ? "underline" : null) }}
+                onClick={() => {
+                  history.push(`/sellerProfile/${sellerId}/audiobook`)
+                  dispatch(creatorActions.getAudioAC(sellerId));
+                }}>
+                업로드한 오디오북
+              </h3>
+              <h3
+                style={{ textDecoration: (category === "funding" ? "underline" : null) }}
+                onClick={() => {
+                  history.push(`/sellerProfile/${sellerId}/funding`)
+                  dispatch(creatorActions.getFundingAC(sellerId));
+                }}>
+                등록한 펀딩
+              </h3>
+            </ListBox>
           </List>
 
         </Menu>
         <div>
           {
-          // category === "myAudio" && myAudio ? 
-          //  <span>총 0개</span>
-          //   :
-          //   category === "myFunding" && myFunding ? 
-          //  <span>총 0개</span>
-          //  :
-           category === "listen" && listenAudio ? 
-           <span id='num'>총 {listenAudio.length}개</span>
-           :
-           category === "likeAudio" && likeBook ? 
-           <span id='num'>총 {likeBook.length}개</span>
-           :
-           <span id='num'>아직 등록된 것이 없습니다!</span>
-            }
-          
+            category === "funding" && fundingList ?
+              <span>총 {fundingList.length}개</span>
+              :
+              category === "audiobook" && audioBookList ?
+                <span>총 {audioBookList.length}개</span>
+                :
+                null
+          }
+
+          {
+            (category === "audiobook") && (audioBookList && audioBookList.length === 0) ?
+              <AudioReviewNone>
+                아직 크리에이터가 오디오북을 등록하지 않았습니다!
+              </AudioReviewNone>
+              :
+              (category === "funding") && (fundingList && fundingList.length === 0) ?
+                <AudioReviewNone>
+                  아직 크리에이터가 펀딩을 진행하지 않았습니다!
+                </AudioReviewNone>
+                :
+                null
+          }
           <Body>
 
-            {category === "myAudio" ?
-              <div>Funding</div>
+            {category === "funding" ? fundingList.map((item, idx) => (
+              <MyPageAudioBook key={idx} item={item} />
+            ))
               :
-              category === "myFunding" ?
-                <div>Funding</div>
+              category === "audiobook" ? audioBookList.map((item, idx) => (
+                <MyPageAudioBook key={idx} item={item} />
+              ))
                 :
-                category === "listen" ? listenAudio.map((item, idx) => (
-                  <MyPageAudioBook key={idx} item={item} />
-                ))
-                  :
-                  category === "likeAudio" ? likeBook.map((item, idx) => (
-                    <MyPageAudioBook key={idx} item={item} />
-                  ))
-                    :
-                    <div>이게기본</div>
+                null
             }
           </Body>
         </div>
@@ -123,6 +135,18 @@ const SellerProfile = () => {
     </React.Fragment>
   )
 }
+
+const AudioReviewNone = styled.div`
+  width: 100%;
+  min-height: 200px;
+  
+
+  /* background-color: purple; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+`
 
 const Wrap = styled.div`
   width: 1100px;

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as getActions } from "../redux/modules/book";
 import { useBeforeunload } from "react-beforeunload";
+import { BsXSquare } from "react-icons/bs";
 
 
 const AudioModal = (props) => {
@@ -43,7 +44,8 @@ const AudioModal = (props) => {
         <ModalBox>
           <div style={{ width: "700px" }}>
             <GoBack>
-              <button onClick={() => history.goBack()}>X</button>
+            <BsXSquare id="icon" onClick={() => history.goBack()} size="30px"/> 
+
             </GoBack>
 
             <PlayerImg style={{ backgroundImage: `url(${detail.bookImg})` }}>
@@ -62,6 +64,7 @@ const AudioModal = (props) => {
                 volume={1}
                 timeFormat={"mm:ss"}
                 defaultCurrentTime={"00:00"}
+                showJumpControls={false}
                 // progressUpdateInterval            
                 // onListen={()=>{}}
                 // ListenInterval
@@ -84,7 +87,7 @@ const AudioModal = (props) => {
                 } else {
                   history.push(`/audioPlay/${category}/${bookId}/${audioBookId}`)
                 }
-              }}>더 듣기</button>
+              }}>더 들으러 가볼까요?</button>
           </div>
         </ModalBox>
         :
@@ -101,7 +104,7 @@ const ModalBox = styled.div`
   position: absolute;
   top: calc(25vh - 100px);
   left: calc(40vw - 150px);
-  background-color: white;
+  background-color: #FFFEFC;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -110,22 +113,18 @@ const ModalBox = styled.div`
   height: 550px;
   flex-direction: column;
 
-  font-family: 'Pretendard';
-  font-style: normal;
-  font-weight: 400;
-  color: white;
-
   #morebtn {
-    width: 100px;
-    height: 30px;
+    width: 200px;
+    height: 40px;
     margin-bottom: 15px;
     background-color: #FFFEFC;
-    border: 1px solid #000000;
+    border: 1.5px solid #000000;
     border-radius: 10px;
 
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 400;
+    font-size: 14px;
 
     :hover {
       background-color: #000000;
@@ -155,13 +154,11 @@ const GoBack = styled.div`
   width: 600px;
   height: 60px;
 
-  button {
-    width: 30px;
-    height: 30px;
+  #icon {
+    color: #000000;
+    margin-top: 5px;
     float: right;
-    border: 1px solid gray;
-    border-radius: 5px;
-    background: none;
+    cursor: pointer;
   }
 `;
 
@@ -171,9 +168,6 @@ const PlayerImg = styled.div`
   margin: 0 auto;
 
   background-color: #F4F4F4;
-  font-family: noto-sans-cjk-kr, sans-serif;
-  font-weight: 400;
-  font-style: normal;
   border-radius: 30px;
 
   background-repeat : no-repeat;
@@ -200,8 +194,15 @@ const PlayerImg = styled.div`
       height: 80px;
       border-radius: 30px;
       background: none;
-      border: none;
-
+      box-shadow: none;
+    
+      .rhap_progress-indicator {
+      background: #FFFFFF;
+    }
+    
+    .rhap_volume-indicator {
+      background: #FFFFFF;
+    }
       div {
         background : "white";
         color : white;

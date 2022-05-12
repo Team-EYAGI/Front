@@ -11,6 +11,7 @@ import Search from "./modules/search";
 import Fund from "./modules/fund";
 import Mypage from "./modules/mypage";
 import Chat from "./modules/chat";
+import Creator from "./modules/creator"
 
 // history를 페이지에서 편하게 사용할 수 있도록 준비
 export const history = createBrowserHistory();
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   fund : Fund,
   mypage : Mypage,
   chat : Chat,
+  creator : Creator,
   router: connectRouter(history),
 });
 

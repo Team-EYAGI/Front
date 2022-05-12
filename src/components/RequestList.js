@@ -12,8 +12,8 @@ const RequestList = (props) => {
   const dispatch = useDispatch();
 
   const bookId = props.item.bookId
-  const email = localStorage.getItem("email");
-  const userEmail = props.item.userEmail;
+  const userName = localStorage.getItem("username");
+  const thisUserName = props.item.userName;
 
   const bookRequestId = props.item.bookRequestId
   
@@ -34,13 +34,13 @@ const RequestList = (props) => {
       >
         <CommentData
           style={{
-            width: "55px",
+            width: "217px",
             textAlign: "center",
-            paddingRight: "18px",
-            // backgroundColor: "red"
+            color: "#8E8E8E"
+            // backgroundColor: "green"
           }}
         >
-          {props.item.bookRequestId}
+          {props.item.userName}
         </CommentData>
         <CommentData
           style={{
@@ -53,15 +53,7 @@ const RequestList = (props) => {
         >
           {props.item.title}
         </CommentData>
-        <CommentData
-          style={{
-            width: "215px",
-            textAlign: "center",
-            // backgroundColor: "green"
-          }}
-        >
-          {props.item.userName}
-        </CommentData>
+
         <CommentData
           style={{
             paddingRight: "14px",
@@ -69,7 +61,7 @@ const RequestList = (props) => {
             textAlign: "center",
           }}
         >
-          {props.item.modifiedAt}
+          {props.item.createdAt.split('오전')[0]}
         </CommentData>
       </OneComment>
       {clickRequest && (
@@ -81,7 +73,7 @@ const RequestList = (props) => {
           </DetailWrap>
 
         {/* 쿠키에 저장된 userId와 user의 값 비교 */}
-        {email == userEmail ? 
+        {userName == thisUserName ? 
         <div style={{display: "flex", flexDirection: "row", justifyContent: "right", alignItems: "right"}}>
         <ButtonWrap>
           <EditButton
@@ -130,6 +122,7 @@ const OneComment = styled.div`
 
   font-weight: 400;
   font-size: 15px;
+
 `;
 
 const CommentData = styled.div`
@@ -140,11 +133,19 @@ const CommentData = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  margin: 0px 10px;
+
+  font-weight: 500;
+  font-size: 16px;
+
+  color: #000000;
+
 `;
 
 const RequestDetail = styled.div`
   padding: 10px;
-  background-color: #e4e4e4;
+  background-color: #F6F6F6;
 `
 
 const DetailWrap = styled.div`
@@ -152,7 +153,7 @@ const DetailWrap = styled.div`
 `
 
 const RequestComment = styled.p`
-  margin: 12px 0px 20px 115px;
+  margin: 12px 0px 20px 210px;
   line-height: 16px;
   text-align: left;
 `

@@ -160,7 +160,8 @@ const FunddingWrap = styled.div`
 const SliderWrap = styled.div`
   max-width: 1920px;
   width: 100%;
-  height: 400px;
+  max-height: 450px;
+  height: 100%;
   position: relative;
   margin: 0 auto;
 `

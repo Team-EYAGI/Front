@@ -222,12 +222,6 @@ const Player = styled.div`
     display: flex;
     flex-direction: column;
     
-    /* position: relative; */
-
-    /* font-family: Pretendard;
-    font-weight: 400;
-    font-style: normal; */
-
     #creator {
       width: 464px;
       height: 227px;
@@ -241,6 +235,15 @@ const Player = styled.div`
       height: 80px;
       border-radius: 20px;
       background: none;
+      box-shadow: none;
+
+      .rhap_progress-indicator {
+        background: #ffffff;
+      }
+
+      .rhap_volume-indicator {
+        background: #ffffff;
+      }
 
       div {
         background : "white";
@@ -408,22 +411,19 @@ const ListBox = styled.div`
   #playbox {
     width: 550px;
     height: 750px;
-    
-
+  
     overflow-y: scroll;
     ::-webkit-scrollbar {
      /* 세로 스크롤 넓이 */  
-      width: 10px;
-
-      /* 가로 스크롤 높이 */
-      height: 8px;
-
+      width: 7px;
+      
       border-radius: 6px;
-      background: black;
-      background: rgba(255, 255, 255, 0.4);
+      background: #FFFFFC;
+      border: 1px solid #000000;
     }
     ::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.8);
+      height: 17%;
+      background-color: #000000;
       border-radius: 6px;
     }
 
@@ -504,7 +504,7 @@ const PlayerSt = styled.div`
 const ReviewBox = styled.div`
   /* background-color: green; */
   min-height: 400px;
-  max-height: 605px;
+  max-height: 570px;
 
   width: 1100px;
   margin: 0 auto;
@@ -550,7 +550,6 @@ const ReviewBox = styled.div`
         font-weight: 300;
         font-size: 18px;
         color: #707070;
-        cursor: pointer;
       }
     }
 
@@ -570,17 +569,16 @@ const ReviewBox = styled.div`
     overflow-y: scroll;
     ::-webkit-scrollbar {
      /* 세로 스크롤 넓이 */  
-      width: 10px;
-
-      /* 가로 스크롤 높이 */
-      height: 8px;
-
+      width: 7px;
+      height: 100%;
+      
       border-radius: 6px;
-      background: black;
-      background: rgba(255, 255, 255, 0.4);
+      background: #FFFFFC;
+      border: 1px solid #000000;
     }
     ::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.3);
+      height: 17%;
+      background-color: #000000;
       border-radius: 6px;
     }
 
