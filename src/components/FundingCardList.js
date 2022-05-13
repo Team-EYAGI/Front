@@ -39,8 +39,7 @@ const AudioHeader = styled.div`
   `
 
 const Wrap = styled.div`
-  width: 1200px;
-  /* background-color: yellowgreen; */
+  width: 1100px;
   margin-top: 20px;
   margin: 0 auto;
   height: 1000px;
@@ -66,9 +65,7 @@ const Wrap = styled.div`
       background-color: rgba(0, 0, 0, 0.3);
       border-radius: 6px;
     }
-
-    /* padding: 20px 0px; */
-
+    
   #button {
     width: 111px;
     height: 48px;
