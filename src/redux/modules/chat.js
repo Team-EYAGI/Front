@@ -9,9 +9,9 @@ import jwtDecode from "jwt-decode";
 
 
 
-// let sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + "/chatting");
-// let client = Stomp.over(sockjs);
-// client.debug = null;
+let sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + "/chatting");
+let client = Stomp.over(sockjs);
+client.debug = null;
 
 
 // Action`

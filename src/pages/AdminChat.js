@@ -17,7 +17,6 @@ const AdminChatList = (props) => {
     const roomId = params.roomId;
 
     const beforeMessage = useSelector((state) => state.chat.setMessage); // 애는 잘됨
-    console.log(beforeMessage);
     
     const sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + `/chatting`);
     const stompClient = Stomp.over(sockjs);
@@ -25,7 +24,6 @@ const AdminChatList = (props) => {
 
 
     const preview = useSelector((state) => state.chat.messages); //얘가 문젠데..
-    console.log(preview);
 
   
     React.useEffect(() => {
@@ -34,7 +32,7 @@ const AdminChatList = (props) => {
       dispatch( chatActions.getChatMessagesAX(roomId)); 
       dispatch(chatActions.clearChat());
       return () => { };
-    }, []);
+    }, []); 
      
  
       const connect = () => {
@@ -182,23 +180,25 @@ flex-direction: column;
 justify-content: flex-end;
 align-items: center;
 flex-wrap: nowrap;
-overflow: hidden scroll;
+overflow-x: hidden;
+overflow-y: scroll;
 
 box-sizing: border-box;
 & * {box-sizing: border-box;}
 
 ::-webkit-scrollbar{
-  display: none
-};
+  display: none;
+}
 
 #lastest {
   width: 100%;
+  height: auto;
 }
 
 #hello {
   
   width: 100%;
-  max-height: 100%
+  max-height: 100%;
   display: flex;
   flex-flow: column;
   justify-content: flex-end;

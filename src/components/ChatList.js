@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { Grid, Text, Image } from "../elements";
 import { Grid, Text } from "../elements/Index";
 const ChatList = (props) => {
-
   const userId = localStorage.getItem("userId");
-  // console.log(userId);
   // 메세지 타임
   let time = "";
   if (!(props.item.createdAt === null)) {
@@ -41,7 +39,7 @@ const ChatList = (props) => {
   if (props.item.type === "TALK") {
     // 내가 보낸 메세지의 뷰
  
-    if ((props.item.sender_id) === parseInt(userId)) {
+    if ((props.item.sender_id) === parseInt(userId) || (props.item.senderId) === parseInt(userId)) {
       return (
         <React.Fragment>
           <Wrap style={
