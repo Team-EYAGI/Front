@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { actionCreators as addActions } from "../redux/modules/audio";
 import { actionCreators as getActions } from "../redux/modules/book";

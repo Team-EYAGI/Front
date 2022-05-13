@@ -15,6 +15,7 @@ const DELETE_LISTEN_AUDIOBOOK = "DELETE_LISTEN_AUDIOBOOK";
 
 // const ADD_LISTEN = "ADD_LISTEN";
 const ADD_PROFILE = "ADD_PROFILE";
+const ADD_VOICE = "ADD_VOICE";
 const GET_PROFILE = "GET_PROFILE";
 
 // 이미지 액션
@@ -30,6 +31,7 @@ const initialState = {
   library_registerFunding: [],
   userImage: [],
   profile: [],
+  // sellorVoice: [],
 };
 
 // 액션 생성 함수
@@ -44,7 +46,6 @@ const deleteAudioBook = createAction(DELETE_LISTEN_AUDIOBOOK, (audioBookId) => (
 
 // const addListen = createAction(ADD_LISTEN, (library) => ({library}));
 const addProfile = createAction(ADD_PROFILE, (a) => ({ a }));
-
 
 const uploading = createAction(UPLODING, (uploading) => ({ uploading }));
 const uploadImg = createAction(UPLOAD_IMG, (image) => ({ image }));
@@ -248,6 +249,44 @@ const addProfileAC = (payload) => {
   }
 }
 
+// 크리에이터 목소리 등록
+const addVoiceAC = (payload) => {
+  console.log(payload)
+  let Token = getToken("Authorization");
+
+  return function (dispatch, getState, { history }) {
+    // formData 형식으로 이미지 전송
+    const formData = new FormData();
+    formData.append("audio", payload.file)
+
+    // FormData의 key 확인
+    for (let key of formData.keys()) { console.log(key); }
+    // FormData의 value 확인
+    for (let value of formData.values()) { console.log(value); }
+
+    window.alert("등록중이니 조금만 기다려주세요!(시간이 쪼금.. 걸려요!!)")
+
+    axios.post(process.env.REACT_APP_BASE_URL + `/seller/new/voice`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          'Authorization': `${Token}`
+        }
+      }
+    )
+      .then((res) => {
+        console.log("오디오 등록 완료", res)
+        // dispatch(uploadImg({userId, title, comment}))
+        history.push(`/loading`)
+      })
+      .catch(error => {
+        console.log("서버에러", error)
+        window.alert("파일 등록에 실패했습니다. 확장자를 다시한번 확인해주세요!")
+      })
+  }
+}
+
 
 // 리듀서
 export default handleActions(
@@ -313,6 +352,7 @@ const actionCreators = {
   deleteAudioBookAC,
   addProfileAC,
   getProfileAC,
+  addVoiceAC,
   uploading,
   uploadImg,
   setPreview,
