@@ -12,17 +12,17 @@ import logo from '../src_assets/eyagiLogo1.png'
 
 const AdminChatList = (props) => {
   const dispatch = useDispatch();
-  const handleEvent = (e) => { 
-    if (e.nativeEvent.isComposing) { return; } 
-    if (e.key !== "Enter") { 
-      return; } sendMessage();
-  };
+  // const handleEvent = (e) => { 
+  //   if (e.nativeEvent.isComposing) { return; } 
+  //   if (e.key !== "Enter") { 
+  //     return; } sendMessage();
+  // };
 
     const params = useParams();
     const roomId = params.roomId;
 
-    const beforeMessage = useSelector((state) => state.chat.setMessage);
-    console.log(beforeMessage);
+    // const beforeMessage = useSelector((state) => state.chat.setMessage);
+    // console.log(beforeMessage);
 
     const sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + `/chatting`);
     const stompClient = Stomp.over(sockjs);
@@ -54,7 +54,7 @@ const AdminChatList = (props) => {
   const [click ,setClick] = React.useState(true);
         //채팅 룸에 접속한다음  소켓연결이 되야하는 라인  : 방 입장하는 버튼
   const enterRoom = () => {
-    
+    // const roomId = localStorage.getItem("roomId");
     const Token = localStorage.getItem("token");
     setClick(false);
 
@@ -63,8 +63,9 @@ const AdminChatList = (props) => {
       const onMessage = JSON.parse(data.body);
       console.log(onMessage);
       const now_time = moment().format("YYYY-MM-DD HH:mm:ss");
-      dispatch( chatActions.getChatMessagesAX(roomId)); 
+      // dispatch( chatActions.getChatMessagesAX(roomId)); 
       dispatch(
+        chatActions.getChatMessagesAX(roomId),
         chatActions.getMessages({ ...onMessage, createdAt: now_time })
       );
     },
@@ -157,7 +158,7 @@ const AdminChatList = (props) => {
           </div>
           <Wrap>
             <div id="lastest">
-              {beforeMessage.map((item, idx) => (<ChatList key={idx} item={item} />))}
+              {/* {beforeMessage.map((item, idx) => (<ChatList key={idx} item={item} />))} */}
             </div>
             <div id='hello'>
               {preview.map((item, idx) => (<ChatList key={idx} item={item} />))}
