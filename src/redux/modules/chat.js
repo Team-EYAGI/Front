@@ -8,6 +8,7 @@ import jwtDecode from "jwt-decode";
 // import { getToken } from "../../shared/Token";
 
 
+
 let sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + "/chatting");
 let client = Stomp.over(sockjs);
 client.debug = null;
@@ -91,7 +92,6 @@ const initialState = {
 // 사용자 개인의 참여중인 채팅 목록을 조회한다.
 const setChatListAX = () => {
   return function (dispatch, getState, {history}) {
-    
   let Token = getToken("Authorization");
     axios.get(process.env.REACT_APP_CHAT_URL + "/rooms", 
     { headers: { 'Authorization': `${Token}` } }

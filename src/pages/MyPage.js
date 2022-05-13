@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 import { actionCreators as libraryActions } from "../redux/modules/mypage";
+import AudioPlayer from "react-h5-audio-player";
 
 import MyPageAudioBook from '../components/MyPageAudioBook';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,24 +17,20 @@ const MyPage = () => {
   const category = params.category;
 
   const likeBook = useSelector((state) => state.mypage.library_likeBook);
-  // console.log(likeBook)
-
   const profile = useSelector((state) => state.mypage.profile);
-  console.log(profile)
-
   const listenAudio = useSelector((state) => state.mypage.library_listenAudio);
-  // console.log(listenAudio)
-
   const myFunding = useSelector((state) => state.mypage.library_registerFunding);
-  // console.log(myFunding)
-
   const myAudio = useSelector((state) => state.mypage.library_registerAudioBook);
-  // console.log(myFunding)
-
-  // const userImage = useSelector((state) => state.mypage.userImage);
-  // console.log(userImage)
-
   const seller = localStorage.getItem("seller");
+
+
+
+  const player = useRef();
+
+  useEffect(() => {
+    player.current.audio.current.pause();  // -3-
+  }, [profile]);
+
 
   useEffect(() => {
     dispatch(libraryActions.getProfileAC());
@@ -70,7 +67,23 @@ const MyPage = () => {
                 {profile.introduce}
               </h3>
             </Box>
+            <AudioPlayer
+                className='audio'
+                autoPlay={false}
+                src={profile.sellerVoice}
+                volume={1}
+                timeFormat={"mm:ss"}
+                defaultCurrentTime={"00:00"}
+                showJumpControls={false}
+                ref={player}
+                // progressUpdateInterval            
+                // onListen={()=>{}}
+                // ListenInterval
+                onPlay={e => console.log("onPlay")}
+              // other props here
+              />
             <button
+              id='btn'
               onClick={() => {
                 history.push(`/profileEdit`)
               }}
@@ -78,9 +91,27 @@ const MyPage = () => {
               프로필 편집
             </button>
             {seller !== "ROLE_SELLER" ?
-              <span id='creatorform'>크리에이터 신청하기</span>
+              <span 
+                id='creatorform'
+                onClick={() => {
+                  window.open(`https://forms.gle/UR8cGG2YDWnc7f1y8`)
+                }}
+                >크리에이터 신청하기</span>
               :
-              <span id='creatorform'>내 목소리 등록하기</span>
+              profile.sellerVoice ?
+              <span
+                id='creatorform'
+                onClick={() => {
+                  history.push(`/addvoice`)
+                }}
+                >내 목소리 다시 올리기</span>
+                :
+                <span
+                id='creatorform'
+                onClick={() => {
+                  history.push(`/addvoice`)
+                }}
+                >내 목소리 등록하기</span>
             }
           </Profile>
           <List>
@@ -206,24 +237,24 @@ const AudioReviewNone = styled.div`
   align-items: center;
 `
 
-const SellerImg = styled.div`
-  width: 130px;
-  height: 130px;
+// const SellerImg = styled.div`
+//   width: 130px;
+//   height: 130px;
   
-  border-radius: 15px;
-  border: 1px solid #878787;
+//   border-radius: 15px;
+//   border: 1px solid #878787;
   
-  cursor: pointer;
+//   cursor: pointer;
   
 
-  overflow: hidden;
+//   overflow: hidden;
 
-img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-`
+// img {
+//   width:100%;
+//   height:100%;
+//   object-fit:cover;
+// }
+// `
 
 const Wrap = styled.div`
   width: 1100px;
@@ -251,7 +282,7 @@ const Wrap = styled.div`
 const Menu = styled.div`
   width: 290px;
   /* margin: 0 auto; */
-  height: 700px;
+  min-height: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -301,13 +332,47 @@ const Body = styled.div`
 const Profile = styled.div`
   width: 290px;
   min-height: 220px;
+  /* height: 100%; */
 
   /* background-color: purple; */
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  button {
+  .audio {
+      width: 100%;
+      height: 80px;
+      border-radius: 5px;
+      background: none;
+      margin-bottom: 20px;
+      /* box-shadow: none; */
+
+      .rhap_progress-indicator {
+      background: #0C0A0A;;
+
+    }
+    
+    .rhap_volume-indicator {
+      background: #0C0A0A;;
+
+    }
+      div {
+        /* background : black; */
+        color : black;
+      }
+
+      div.rhap_progress-filled {
+        background-color : #0C0A0A;;
+
+      }
+
+      button {
+        color : #0C0A0A;;
+
+      }
+    }
+
+  #btn {
     width: 290px;
     height: 48px;
 
@@ -327,9 +392,10 @@ const Profile = styled.div`
     width: 100%;
     /* background-color: yellow; */
     margin-top: 13px;
+    margin-left: 3px;
 
     font-weight: 300;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 100%;
     text-decoration-line: underline;
 

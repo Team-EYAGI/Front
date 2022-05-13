@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Text } from '../elements/Index';
 import { BsPerson } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
+import { RiAdminLine } from "react-icons/ri";
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +20,7 @@ const Header = (props) => {
 
 
   const is_session = localStorage.getItem("is_login");
+  const seller = localStorage.getItem("seller");
   // const is_token = localStorage.getItem("token");
   const userName = localStorage.getItem("username");
 
@@ -30,12 +32,12 @@ const Header = (props) => {
 
   const handleEvent = (e) => {
     if (e.nativeEvent.isComposing) {
-       return;
-       }
+      return;
+    }
     if (e.key !== "Enter") {
       return;
     }
-  
+
     sendWord();
   };
 
@@ -59,12 +61,21 @@ const Header = (props) => {
         </LogoBox>
         {is_session ?
           <div>
-            <BsPerson
-              size="25px"
-              style={{ margin: "5px 0px 0px 0px", cursor: "pointer" }}
-              onClick={() => {
-                history.push(`/mypage/listen`)
-              }} />
+            {seller === "ROLE_ADMIN" ?
+              <RiAdminLine
+                size="25px"
+                style={{ margin: "5px 0px 0px 0px", cursor: "pointer" }}
+                onClick={() => {
+                  history.push(`/Admin`)
+                }} />
+              :
+              <BsPerson
+                size="25px"
+                style={{ margin: "5px 0px 0px 0px", cursor: "pointer" }}
+                onClick={() => {
+                  history.push(`/mypage/listen`)
+                }} />
+            }
             <FiLogOut
               size="25px"
               style={{ margin: "5px 2px 0px 20px", cursor: "pointer" }}
@@ -119,6 +130,11 @@ const HeaderWrap = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
+  #admin {
+    background-color: yellow;
+    margin: 0px 10px 0px 0px;
+  }
 `
 
 const BottomWrap = styled.div`

@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as fundActions } from "../redux/modules/fund";
 import { actionCreators as getActions } from "../redux/modules/book";
-
+import { BiSearch } from "react-icons/bi";
 
 const FundingWrite = () => {
   const dispatch = useDispatch();
@@ -63,66 +63,69 @@ const FundingWrite = () => {
     dispatch(getActions.getBookDetailAC(bookId));
   }, []);
 
-
   return (
     <React.Fragment>
-       <Wrap>
+      <Wrap>
         <HeaderSt>
-          <p>펀딩 등록</p>          
+          <p>펀딩 등록</p>
         </HeaderSt>
         <BookInfoSt>
           <ImgSt>
             <div id='img_wrap'>
               <div id='img'>
-                <img src={detail.bookImg}/>
+                <img src={detail.bookImg} />
+              </div>
+              <div>
+                <p>{detail.title}</p>
+                <h3>{detail.author}</h3>
               </div>
             </div>
+
           </ImgSt>
           <ContentSt>
-            <div>
-              <p>"{detail.title}" 오디오북을 요청합니다.</p>
-              <span>{detail.author}</span>
-              <textarea
-                
-                maxLength='30'
-                type='text'
-                placeholder='내용을 입력해주세요.' 
-                onChange={(e) => {
-                  setContent(e.target.value)
-                }}
+            <p>샘플 오디오 파일</p>
+            <div id='file'>
+              <span>{file ? file.name : "파일을 선택해주세요!"}</span>
+              <BiSearch id='addbtn' onClick={handleClick} size="24px" />
+            </div> 
+            <div id='goal'>
+              <p>펀딩 목표</p>
+            <input              
+              placeholder="5이상 숫자 입력"
               />
             </div>
-            <div id='file'>
-              <button id='addbtn' onClick={handleClick}>파일 추가</button>
-              <span>{file.name}</span>
-            </div>
-            <input 
-                type="file" 
-                accept="audio/wav audio/mp3" 
-                multiple 
+            <div>                            
+                  <p>프로젝트에 대한 간단한 어필도 있으면 좋아요!</p>
+                  <textarea
+                    type="text"
+                    maxLength="100"
+                    placeholder='최소 10자 이상 입력해주세요!'
+                    onChange={(e) => {
+                      setContent(e.target.value)
+                    }}
+                  />
+
+              <input
+                type="file"
+                accept="audio/wav audio/mp3"
+                multiple
                 ref={fileInput}
-                style={{display: 'none'}} 
+                style={{ display: 'none' }}
                 onChange={selectFile}
               />
-          
-            <div>
               <button
                 id='uploadBtn'
                 onClick={addFunding}
               >등록하기</button>
-            </div>
 
+              
+            </div>
           </ContentSt>
         </BookInfoSt>
       </Wrap>
-
-
     </React.Fragment>
-
-
   )
 }
-
 
 const Wrap = styled.div`
   /* background-color: lightblue; */
@@ -134,26 +137,19 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  font-family: noto-sans-cjk-kr, sans-serif;
-  font-weight: 400;
-  font-style: normal;
 `
 
 const HeaderSt = styled.div`
   width: 1200px;
-  margin: 137px 0px 80px 0px;
+  margin: 80px 0px 60px 0px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
-  font-size: 40px;
-  
-  p {
-    margin: 0px 0px 23px 0px;
-  }
+
+  font-weight: 700;
+  font-size: 26px;  
 `
 
 const BookInfoSt = styled.div`
@@ -180,124 +176,167 @@ const ImgSt = styled.div`
   align-items: center;
 
   #img_wrap {
-    width: 586px;
-    height: 582px;
-    background-color: #F4F4F4;
+    width: 464px;
+    min-height: 300px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 20px;
+    
+    /* background: #FFFFFF; */
+    border: 1px solid #C4C4C4;
+    border-radius: 10px;
+
+    p {
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #000000;
+    }
+
+    h3 {
+      text-align: center;
+      font-weight: 400;
+      font-size: 14px;
+      color: #525252;
+      margin: 10px 0px 40px 0px;
+    }
   }
   
   #img {
-    width: 294px;
-    height: 440px;
-    background-color: gray;
+    margin-top: 40px;
+    width: 120px;
+    min-height: 100px;
 
     img {
       width: 100%;
-      height: 100%;    
+      /* height: 100%; */
+
+      border: 1px solid lightgray;
+      border-radius: 2px 10px 10px 2px;
     }
   }
 `
 
 const ContentSt = styled.div`
-  /* background-color: red; */
 
-  width: 50%;
+  width: 464px;
   height: 582px;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  /* justify-content: space-around; */
   align-items: center;
 
-  #file {
-    background-color: #e4e4e4;
+  p {
     width: 100%;
+    font-weight: 600;
+    font-size: 20px;
+    color: #000000;
+    margin-top: 36px;
+  }
+
+  h5 {
+    width: 100%;
+    margin: 0px 5px 3px 0px;
+    font-weight: 300;
+    text-align: right;
+    :hover {
+      color: purple;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
+  #file {
+    width: 100%;
+    height: 40px;
     display: flex;
     flex-direction: row;
-    justify-content: left;
-    border-radius: 20px;
+    justify-content: space-between;
+    background: #F4F4F4;
+    border: 1px solid #E4E4E4;
+    border-radius: 10px;
+    margin-bottom: 10px;
 
-    button {
-      background-color: #F4F4F4;
-
-      width: 100px;
-      height: 50px;
-      border-radius: 20px;
-      border: none;
-
-      font-size: 18px;
-      font-weight: bold;
-      font-family: noto-sans-cjk-kr, sans-serif;
-      font-style: normal;
+    #addbtn {
+      margin: 8px 14px 8px 0px;
       cursor: pointer;
     }
 
     span {
       width: 400px;
-      font-size: 17px;
-      float: left;
-      margin-left: 10px;
-      /* background-color: yellow; */
+      font-weight: 400;
+      font-size: 16px;
+      color: #525252;
+
+      margin: 10px 0px 8px 11px;
       white-space: nowrap;
       overflow:hidden;
       text-overflow: ellipsis;
     }
   }
 
+  #goal {
+    width: 423px;
+      height: 100px;
+      resize: none;
+      padding: 20px;
 
-  div {
-    /* background-color: gray; */
-    width: 1000px;
-    
+      font-family: 'Pretendard';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-
-    p {
-      font-size: 20px;
-      font-weight: bold;
-
-      span {
-        font-size: 40px;
-      }
-    }
+      background: #FFFFFF;
+      border: 1px solid #E4E4E4;
+      border-radius: 10px;
+  }
 
     textarea {
-      width: 600px;
-      margin-top: 30px;
-      padding: 30px;
-
+      width: 423px;
+      height: 100px;
       resize: none;
+      padding: 20px;
 
-      border-radius: 20px;
-
-      font-size: 20px;
-      font-weight: bold;
-      font-family: noto-sans-cjk-kr, sans-serif;
+      font-family: 'Pretendard';
       font-style: normal;
+      font-weight: 400;
+      font-size: 15px;
+
+      background: #FFFFFF;
+      border: 1px solid #E4E4E4;
+      border-radius: 10px;
     }
 
     #uploadBtn {
-      width: 342px;
-      height: 80px;
+      width: 464px;
+      height: 60px;
+      margin-top: 80px;
       margin-bottom: 40px;
 
-      border: none;
-      border-radius: 20px;
-      background-color: #F4F4F4;
+      /* background: #F4F4F4;
+      border: 1px solid #E4E4E4; */
+      background: #0C0A0A;
+      color: #FFFFFF;
+      border-radius: 10px;
 
-      font-size: 20px;
-      font-weight: bold;
-      font-family: noto-sans-cjk-kr, sans-serif;
+      font-family: 'Pretendard';
       font-style: normal;
-      cursor: pointer;
+      font-weight: 400;
+      font-size: 20px;
+
+      :hover {
+        cursor: pointer;
+        background: #0C0A0A;
+        color: #FFFFFF;
+        border: 1px solid #0C0A0A;
+
+        box-shadow: 3px 3px 3px 3px gray;
+      }
     }
-  }
+  
 `
+
 
 export default FundingWrite;
