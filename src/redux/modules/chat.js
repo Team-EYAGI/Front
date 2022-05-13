@@ -9,9 +9,9 @@ import jwtDecode from "jwt-decode";
 
 
 
-let sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + "/chatting");
-let client = Stomp.over(sockjs);
-client.debug = null;
+// let sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + "/chatting");
+// let client = Stomp.over(sockjs);
+// client.debug = null;
 
 
 // Action`
@@ -19,6 +19,8 @@ client.debug = null;
 const SET_CHAT_LIST = "SET_CHAT_LIST";
 // 옮겨가는 (입장하려고 클릭한) 현재 방정보 입력
 const MOVE_CHAT_ROOM = "MOVE_CHAT_ROOM";
+// 뒤로가기 클릭시 현재방 정보 초기화
+const CLEAR_CHAT = "CLEAR_CHAT";
 // 구독하면서 실행되는 액션
 // 새로입력되는 메세지(리스트 형태) 내용을 메세지에 추가
 const GET_MSG = "GET_MSG";
@@ -44,6 +46,8 @@ const moveChatRoom = createAction(
   })
 );
 
+// 현재 채팅방 정보 초기화
+const clearChat = createAction(CLEAR_CHAT, () => {});
 // 채팅방 메세지
 const getMessages = createAction(GET_MSG, (newMessage) => ({
   newMessage,
@@ -116,7 +120,7 @@ const getChatMessagesAX = (roomId) => {
     .then((res) => {
       // console.log("이전 메세지 목록", res)
       dispatch(setMessage(res.data))
-
+      history.push(`/AdminChat/${roomId}`);
     })
     .catch(error => {
       console.log("error", error)
@@ -131,7 +135,29 @@ export default handleActions(
       produce(state, (draft) => {
         draft.chatListInfo = action.payload.myChatList;
       }),
-   
+    
+    // moveChatRoom - 현재 채팅방 id, name
+    [MOVE_CHAT_ROOM]: (state, action) =>
+      produce(state, (draft) => {
+        draft.currentChat.room_id = action.payload.room_id;
+        draft.currentChat.roomName = action.payload.roomName;
+        draft.currentChat.post_id = action.payload.post_id;
+        draft.currentChat.own_user_id = action.payload.own_user_id;
+        draft.currentChat.order_time = action.payload.order_time;
+      }),
+
+    // clearChat - 현재방 id, name 초기화
+    [CLEAR_CHAT]: (state, action) =>
+      produce(state, (draft) => {
+        draft.currentChat.room_id = null;
+        draft.currentChat.roomName = null;
+        draft.currentChat.post_id = null;
+        draft.currentChat.own_user_id = null;
+        draft.currentChat.order_time = null;
+        draft.userInList = [];
+        draft.messages = [];
+      }),
+
     // getMessages - 새로운 메세지 정보를 메세지 리스트에 추가
     [GET_MSG]: (state, action) =>
       produce(state, (draft) => {
@@ -152,7 +178,7 @@ export default handleActions(
         }
       ),
 
-      [GET_MESSAGE]: (state, action) =>
+    [GET_MESSAGE]: (state, action) =>
       produce(state, (draft) => {
         // console.log(action.payload.newMessage);
         const m = action.payload.newMessage;
@@ -169,7 +195,7 @@ export default handleActions(
           draft.msg.push(one_msg);
         }
       ),
-  // setMessage - 메세지 DB에서 조회할때 해당 방의 메세지 내역 불러옴
+    // setMessage - 메세지 DB에서 조회할때 해당 방의 메세지 내역 불러옴
     // 이전 메세지 내역중 유형이 대화인 내용만 리덕스에 저장
     [SET_MSG]: (state, action) =>
       produce(state, (draft) => {
@@ -187,7 +213,7 @@ const actionCreators = {
   setChatListAX,
   getChatMessagesAX,
   moveChatRoom,
-  // clearChat,
+  clearChat,
   getMessages,
   getMSG,
  

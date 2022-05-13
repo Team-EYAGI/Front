@@ -18,11 +18,11 @@ import logo from '../src_assets/eyagiLogo1.png'
 const Chat = (props) => {
   const dispatch = useDispatch();
   useBeforeunload((event) => event.preventDefault());
-  // const handleEvent = (e) => { 
-  //   if (e.nativeEvent.isComposing) { return; } 
-  //   if (e.key !== "Enter") { 
-  //     return; } sendMessage();
-  // };
+  const handleEvent = (e) => { 
+    if (e.nativeEvent.isComposing) { return; } 
+    if (e.key !== "Enter") { 
+      return; } sendMessage();
+  };
 
 
   const sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + `/chatting`);
