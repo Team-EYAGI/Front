@@ -9,6 +9,10 @@ import { useBeforeunload } from "react-beforeunload";
 
 const RequestWrite = (props) => {
   const dispatch = useDispatch();
+
+  // 새로고침 경고 알럿
+  useBeforeunload((event) => event.preventDefault());
+
   const params = useParams();
   // console.log(params)
   const bookId = params.bookId
@@ -17,12 +21,9 @@ const RequestWrite = (props) => {
 
   // 리덕스에 저장된 책 상세페이지 정보 불러오기
   const detail = useSelector((state) => state.book.detail_book);
-  // console.log(detail)
 
-    // 새로고침 경고 알럿
-    useBeforeunload((event) => event.preventDefault());
-
-  const is_edit = bookRequestId ? true : false; 
+  // 수정페이지인지 아닌지 확인
+  const is_edit = bookRequestId ? true : false;
 
   // 오디오북 Post 요청을 보내기 위해 필요한 정보 (제목, 이유)
   const title = `"${detail.title}" 오디오북을 요청합니다.`
@@ -33,24 +34,24 @@ const RequestWrite = (props) => {
   }, []);
 
   return (
-   <React.Fragment>
+    <React.Fragment>
       <Wrap>
-        <HeaderSt>
-          <p>오디오북 요청하기</p>          
-        </HeaderSt>
-        <BookInfoSt>
-          <ImgSt>
+        <Header>
+          <p>오디오북 요청하기</p>
+        </Header>
+        <BookInfo>
+          <ImgBox>
             <div id='img_wrap'>
               <div id='img'>
-                <img src={detail.bookImg}/>
+                <img src={detail.bookImg} />
               </div>
               <div>
-              <p>{detail.title}</p>
-              <h3>{detail.author}</h3>
+                <p>{detail.title}</p>
+                <h3>{detail.author}</h3>
+              </div>
             </div>
-            </div>
-          </ImgSt>
-          <ContentSt>
+          </ImgBox>
+          <Content>
             <div>
               <p>요청이유</p>
               <textarea
@@ -66,33 +67,33 @@ const RequestWrite = (props) => {
             </div>
             {is_edit ?
               <div>
-              <button
-                id='uploadBtn'
-                onClick={() => {
-                  if(contents.length < 10) {
-                    window.alert ("최소 10자 이상 입력해주세요!")
-                    return;
-                  }
-                  dispatch(requestActions.editRequestAC(bookRequestId, title, contents));
-                }}
-              >수정하기</button>
-            </div>
-            :
-            <div>
-              <button
-                id='uploadBtn'
-                onClick={() => {
-                  if(contents.length < 10) {
-                    window.alert ("최소 10자 이상 입력해주세요!")
-                    return;
-                  }
-                  dispatch(requestActions.addRequestAC(bookId, title, contents));
-                }}
-              >등록하기</button>
-            </div>
+                <button
+                  id='uploadBtn'
+                  onClick={() => {
+                    if (contents.length < 10) {
+                      window.alert("최소 10자 이상 입력해주세요!")
+                      return;
+                    }
+                    dispatch(requestActions.editRequestAC(bookRequestId, title, contents));
+                  }}
+                >수정하기</button>
+              </div>
+              :
+              <div>
+                <button
+                  id='uploadBtn'
+                  onClick={() => {
+                    if (contents.length < 10) {
+                      window.alert("최소 10자 이상 입력해주세요!")
+                      return;
+                    }
+                    dispatch(requestActions.addRequestAC(bookId, title, contents));
+                  }}
+                >등록하기</button>
+              </div>
             }
-          </ContentSt>
-        </BookInfoSt>
+          </Content>
+        </BookInfo>
       </Wrap>
     </React.Fragment>
   )
@@ -105,24 +106,21 @@ const Wrap = styled.div`
 
   display: flex;
   flex-direction: column;
-  align-items: center;
 `
 
-const HeaderSt = styled.div`
+const Header = styled.div`
   width: 1200px;
   margin: 40px 0px 0px 0px;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 
   font-weight: 700;
   font-size: 26px;  
 `
 
-const BookInfoSt = styled.div`
-
+const BookInfo = styled.div`
   width: 1200px;
 
   display: flex;
@@ -131,8 +129,7 @@ const BookInfoSt = styled.div`
   align-items: center;
 `
 
-const ImgSt = styled.div`
-  
+const ImgBox = styled.div`
   width: 50%;
   
   display: flex;
@@ -145,10 +142,8 @@ const ImgSt = styled.div`
     min-height: 300px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     
-    /* background: #FFFFFF; */
     border: 1px solid #E4E4E4;
     border-radius: 10px;
 
@@ -182,14 +177,13 @@ const ImgSt = styled.div`
   }
 `
 
-const ContentSt = styled.div`
+const Content = styled.div`
 
   width: 464px;
   height: 582px;
 
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   p {
     width: 100%;
@@ -232,7 +226,6 @@ const ContentSt = styled.div`
     #uploadBtn {
       width: 464px;
       height: 60px;
-      /* margin-bottom: 40px; */
 
       background: #0C0A0A;
       color: #FFFFFF;

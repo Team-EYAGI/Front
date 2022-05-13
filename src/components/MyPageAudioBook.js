@@ -1,23 +1,22 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Text } from "../elements/Index";
+import { useParams } from "react-router-dom";
+
+import { useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as libraryActions } from "../redux/modules/mypage";
 
 const MyPageAudioBook = (props) => {
-  console.log(props.item)
+  // console.log(props.item)
   const dispatch = useDispatch();
-  const bookId = props.item.bookId;
-  // console.log(bookId)
 
   const params = useParams();
   const category = params.category
 
   const is_session = localStorage.getItem("is_login");
 
-
+  const bookId = props.item.bookId;
   const audioBookId = props.item.audioBookId;
 
   return (
@@ -60,16 +59,12 @@ const MyPageAudioBook = (props) => {
                   if (bookId && audioBookId) {
                     dispatch(libraryActions.deleteAudioBookAC(audioBookId));
                   }
-
                   if (bookId && !audioBookId) {
                     dispatch(libraryActions.deleteLikeBookAC(bookId));
                   }
-
                 }}
               >삭제</Text>
-
             }
-
           </div>
         </Body>
       </Wrap>
@@ -93,8 +88,6 @@ const Wrap = styled.div`
 
 const Body = styled.div`
   width: 170px;
-
-  /* background-color: red; */
   margin-top: 10px;
   
   h3 {
@@ -105,11 +98,8 @@ const Body = styled.div`
 `
 
 const ImageBox = styled.div`
-width: 170px;
+  width: 170px;
   height: 260px;
-  /* box-shadow: 0 0 2px gray; */
-
-  /* background-color: purple; */
 
   display: flex;
   flex-direction: column;
@@ -117,14 +107,13 @@ width: 170px;
   border-radius: 2px 10px 10px 2px;
 
   img {
-  border: 1px solid lightgray;
-  border-radius: 2px 10px 10px 2px;
-  cursor: pointer;
+    border: 1px solid lightgray;
+    border-radius: 2px 10px 10px 2px;
+    cursor: pointer;
   }
 
   button {
     position: absolute;
-    
   }
 `
 

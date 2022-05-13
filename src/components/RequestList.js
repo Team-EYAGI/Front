@@ -16,11 +16,10 @@ const RequestList = (props) => {
   const thisUserName = props.item.userName;
 
   const bookRequestId = props.item.bookRequestId
-  
+
   const [clickRequest, setClickRequest] = useState(false);
 
   const deleteRequest = () => {
-    // 리뷰를 삭제할 때 commentId를 찾아 삭제할 예정
     dispatch(requestActions.deleteRequestAC(bookRequestId))
     history.replace(`/request`)
   }
@@ -37,7 +36,6 @@ const RequestList = (props) => {
             width: "217px",
             textAlign: "center",
             color: "#8E8E8E"
-            // backgroundColor: "green"
           }}
         >
           {props.item.userName}
@@ -48,7 +46,6 @@ const RequestList = (props) => {
             paddingRight: "250px",
             width: "750px",
             textAlign: "left",
-            // backgroundColor: "yellow"
           }}
         >
           {props.item.title}
@@ -72,32 +69,32 @@ const RequestList = (props) => {
             </RequestComment>
           </DetailWrap>
 
-        {/* 쿠키에 저장된 userId와 user의 값 비교 */}
-        {userName == thisUserName ? 
-        <div style={{display: "flex", flexDirection: "row", justifyContent: "right", alignItems: "right"}}>
-        <ButtonWrap>
-          <EditButton
-            onClick={() => {
-              history.push(`/requestWrite/${bookId}/${bookRequestId}`)
-            }}
-          >
-            수정
-          </EditButton>
-        </ButtonWrap>
-        <ButtonWrap>
-          <DeleteButton
-            onClick={deleteRequest}
-          >
-            삭제
-          </DeleteButton>
-        </ButtonWrap>
-      </div>
-      :
-      null
-      }
-        
-    
-         {/* <HelpWrap>
+          {/* 쿠키에 저장된 userId와 user의 값 비교 */}
+          {userName == thisUserName ?
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "right", alignItems: "right" }}>
+              <ButtonWrap>
+                <EditButton
+                  onClick={() => {
+                    history.push(`/requestWrite/${bookId}/${bookRequestId}`)
+                  }}
+                >
+                  수정
+                </EditButton>
+              </ButtonWrap>
+              <ButtonWrap>
+                <DeleteButton
+                  onClick={deleteRequest}
+                >
+                  삭제
+                </DeleteButton>
+              </ButtonWrap>
+            </div>
+            :
+            null
+          }
+
+
+          {/* <HelpWrap>
             <HelpButton
             //  onClick={() => {
             //    dispatch(reviewActions.helpReviewAC(itemId, commentId))
@@ -106,7 +103,7 @@ const RequestList = (props) => {
               도움이 돼요&nbsp;1
             </HelpButton>
           </HelpWrap> */}
-       </RequestDetail>
+        </RequestDetail>
       )}
 
     </React.Fragment>

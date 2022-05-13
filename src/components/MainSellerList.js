@@ -1,7 +1,6 @@
 import React from 'react';
 import MainSellerCard from './MainSellerCard';
 import styled from 'styled-components';
-import { history } from '../redux/configureStore';
 
 const MainSellerList = (props) => {
 

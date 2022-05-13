@@ -4,15 +4,18 @@ import axios from "axios";
 import { getToken } from "../../shared/Token";
 
 // 액션
+// 1. 듣고 싶은 오디오북 요청하기
 const GET_REQUEST = "GET_REQUEST";
 const ADD_REQUEST = "ADD_REQUEST";
 const EDIT_REQUEST = "EDIT_REQUEST";
 const DELETE_REQUEST = "DELETE_REQUEST";
 
+// 2. 크리에이터가 오디오북 등록하는 부분
 const ADD_AUDIO = "ADD_AUDIO";
 const GET_AUDIO = "GET_AUDIO";
 const ADD_AUDIO_CHECK = "ADD_AUDIO_CHECK";
 
+// 3. 리뷰 CRUD 부분
 const GET_REVIEW = "GET_REVIEW";
 const ADD_REVIEW = "ADD_REVIEW";
 const EDIT_REVIEW = "EDIT_REVIEW";
@@ -68,8 +71,6 @@ const getRequestAC = () => {
 
 // 오디오북 요청 추가
 const addRequestAC = (bookId, title, contents) => {
-  // console.log(bookId)
-
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     axios.post(process.env.REACT_APP_BASE_URL + `/book/${bookId}/request/new`, {
@@ -101,7 +102,6 @@ const editRequestAC = (bookRequestId, title, contents) => {
     )
       .then((res) => {
         console.log("수정완료!", res)
-        // dispatch(editRequest(res.data))
         history.replace(`/request`)
       })
       .catch(error => {
@@ -214,7 +214,6 @@ const getAudioAC = (audioBookId) => {
 // 오디오북 후기 겟
 const getReviewAC = (audioBookId) => {
   let Token = getToken("Authorization");
-  // console.log(Token)
   return function (dispatch, getState, { history }) {
     axios.get(process.env.REACT_APP_BASE_URL + `/audio/detail/${audioBookId}/comment`,
       { headers: { 'Authorization': `${Token}` } }
@@ -233,9 +232,6 @@ const getReviewAC = (audioBookId) => {
 
 // 오디오북 후기 추가
 const addReviewAC = (category, bookId, audioBookId, title, content) => {
-  console.log(category)
-  console.log(bookId)
-  console.log(audioBookId)
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     axios.post(process.env.REACT_APP_BASE_URL + `/audio/detail/${audioBookId}/comment/new`, {
@@ -256,11 +252,6 @@ const addReviewAC = (category, bookId, audioBookId, title, content) => {
 
 // 오디오북 후기 수정
 const editReviewAC = (category, bookId, audioBookId, title, content, commentId) => {
-  console.log("수정하기준비", commentId)
-  console.log(category)
-  console.log(bookId)
-  console.log(audioBookId)
-  console.log(commentId)
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     axios.put(process.env.REACT_APP_BASE_URL + `/audio/detail/comment/edit/${commentId}`, {
@@ -281,14 +272,13 @@ const editReviewAC = (category, bookId, audioBookId, title, content, commentId) 
 
 // 오디오북 후기 삭제
 const deleteReviewAC = (commentId) => {
-  console.log("삭제준비완료", commentId)
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     axios.delete(process.env.REACT_APP_BASE_URL + `/audio/detail/comment/remove/${commentId}`,
       { headers: { 'Authorization': `${Token}` } },
     )
       .then((res) => {
-        console.log("삭제완료", res)
+        // console.log("삭제완료", res)
         dispatch(deleteReview(commentId))
       })
       .catch(error => {
@@ -306,22 +296,12 @@ export default handleActions(
         draft.request_list = action.payload.request_list;
         console.log("스테이스상태", state)
       }),
-      [ADD_AUDIO_CHECK]: (state, action) =>
+    [ADD_AUDIO_CHECK]: (state, action) =>
       produce(state, (draft) => {
         draft.audio_check = action.payload.audio_check;
       }),
-    // [ADD_REQUEST]: (state, action) =>
-    // produce(state, (draft) => {
-    //   draft.request_add = action.payload.request_add;
-    // }),
-    // [EDIT_REQUEST]: (state, action) =>
-    // produce(state, (draft) => {
-    //   draft.request_add = action.payload.request_list;
-    // }),
     [DELETE_REQUEST]: (state, action) =>
       produce(state, (draft) => {
-        // console.log(action.payload)
-        // console.log(action.payload.bookRequestId)
         draft.request_list = draft.request_list.filter((p) => p.bookRequestId !== action.payload.bookRequestId);
       }),
     [GET_AUDIO]: (state, action) =>
@@ -343,16 +323,6 @@ export default handleActions(
 
 const actionCreators = {
   // export 할 것들
-  // getRequest,
-  // addRequest,
-  // editRequest,
-  // deleteRequest,
-  // addAudio,
-  // getAudio,
-  // getReview,
-  // addReview,
-  // editReview,
-  // deleteReview,
   getRequestAC,
   addRequestAC,
   editRequestAC,
