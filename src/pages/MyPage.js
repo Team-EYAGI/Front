@@ -31,6 +31,7 @@ const MyPage = () => {
     player.current.audio.current.pause();  // -3-
   }, [profile]);
 
+
   useEffect(() => {
     dispatch(libraryActions.getProfileAC());
 
@@ -90,7 +91,12 @@ const MyPage = () => {
               프로필 편집
             </button>
             {seller !== "ROLE_SELLER" ?
-              <span id='creatorform'>크리에이터 신청하기</span>
+              <span 
+                id='creatorform'
+                onClick={() => {
+                  window.open(`https://forms.gle/UR8cGG2YDWnc7f1y8`)
+                }}
+                >크리에이터 신청하기</span>
               :
               profile.sellerVoice ?
               <span
