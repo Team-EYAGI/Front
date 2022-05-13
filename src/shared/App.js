@@ -29,6 +29,9 @@ import Chat from '../pages/Chat';
 import Admin from '../pages/Admin';
 import AdminChat from '../pages/AdminChat';
 import KakaoAuthHandler from '../pages/KakaoAuthHandler';
+import AddProfileVoice from '../pages/AddProfileVoice';
+import Loading from '../pages/Loading'
+
 
 function App() {
   return (
@@ -56,6 +59,9 @@ function App() {
         <Route path="/mypage/:category" exact component={MyPage}/>
         <Route path="/profileEdit" exact component={ProfileEdit}/>
         <Route path="/profileEdit/:userId" exact component={ProfileEdit}/>
+        <Route path="/addvoice" exact component={AddProfileVoice}/>
+        <Route path="/addvoice/:userId" exact component={AddProfileVoice}/>
+        <Route path="/loading" exact component={Loading}/>
         <Route path="/request" exact component={Request}/>
         <Route path="/requestWrite" exact component={RequestWrite}/>
         <Route path="/requestWrite/:bookId" exact component={RequestWrite}/>
