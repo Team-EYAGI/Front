@@ -62,6 +62,7 @@ function App() {
         <Route path="/addvoice" exact component={AddProfileVoice}/>
         <Route path="/addvoice/:userId" exact component={AddProfileVoice}/>
         <Route path="/loading" exact component={Loading}/>
+        <Route path="/loading/:result" exact component={Loading}/>
         <Route path="/request" exact component={Request}/>
         <Route path="/requestWrite" exact component={RequestWrite}/>
         <Route path="/requestWrite/:bookId" exact component={RequestWrite}/>

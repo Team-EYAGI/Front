@@ -1,28 +1,26 @@
 import React from 'react'
 import styled from 'styled-components';
 import AudioBookList from '../components/AudioBookList';
-import { history } from '../redux/configureStore';
 import { useParams } from 'react-router-dom';
+
+import { history } from '../redux/configureStore';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as getActions } from "../redux/modules/book";
 import { actionCreators as libraryActions } from "../redux/modules/mypage";
 
 const BookDetail = () => {
+
   const dispatch = useDispatch();
   const params = useParams();
-  // console.log(params)
   const bookId = params.bookId
   const category = params.category
-  // console.log("북아이디",bookId)
 
   // 로그인 확인과 셀러인지 아닌지를 확인하기 위함
   const is_login = localStorage.getItem("is_login");
-  const seller = localStorage.getItem("seller");
+  const authority = localStorage.getItem("seller");
 
+  // 책 상세페이지 정보 가져오기
   const detail = useSelector((state) => state.book.detail_book);
-  console.log("책 상세", detail)
-  // console.log("책 상세", detail.audioPreDtoList)
-  // console.log("제목", detail.title)
 
   React.useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));
@@ -32,37 +30,34 @@ const BookDetail = () => {
   return (
     <React.Fragment>
       <Wrap>
-        <HeaderSt>
+        <Header>
           <p>{detail.title}</p>
           <span>{detail.author}</span>
-
-        </HeaderSt>
-        <BookInfoSt>
-          <ImgSt style={{ backgroundImage: `url(${detail.bookImg})` }}>
+        </Header>
+        <BookInfo>
+          <ImgBox style={{ backgroundImage: `url(${detail.bookImg})` }}>
             <div id='img_wrap'>
               <div id='img'>
                 <img src={detail.bookImg} />
               </div>
             </div>
-          </ImgSt>
-          <ContentSt>
+          </ImgBox>
+          <Content>
             <div>
               <p>이 오디오북에 참여한 크리에이터</p>
               <p><span>{detail.audio ? detail.audio.length : 0}&nbsp;</span>명</p>
             </div>
             <div>
-              {seller === "ROLE_SELLER" ?
+              {authority === "ROLE_SELLER" ?
                 <>
                   <button
-                    id="hello"
                     onClick={() => {
                       history.push(`/fundingWrite/${bookId}`)
                     }}>
                     내 펀딩 등록하기
                   </button>
                   <button
-                    id="hi"
-                    onClick={() => {
+                     onClick={() => {
                       history.push(`/audioWrite/${category}/${bookId}`)
                     }}>
                     내 오디오 등록하기
@@ -79,14 +74,14 @@ const BookDetail = () => {
                     return;
                   } else {
                     dispatch(libraryActions.addLibraryAC(bookId));
-                    // window.alert("내 서재에 담겼습니다!");
                   }
                 }}
               >내 서재에 담기</button>
             </div>
-          </ContentSt>
-        </BookInfoSt>
-        <BookSumSt>
+          </Content>
+        </BookInfo>
+
+        <BookSum>
           <span id='bookinfo'>
             책 정보
           </span>
@@ -95,18 +90,11 @@ const BookDetail = () => {
               {detail.summary}
             </span>
           </div>
-        </BookSumSt>
+        </BookSum>
 
-        <AudioSt>
-        {/* {detail.audio?.detail.audio.length === 0 ?
-          <AudioReviewNone>
-            후기가 없어요! 후기를 등록해주세요!
-          </AudioReviewNone>
-          :
-          null
-        } */}
+        <AudioBookBox>
           <AudioBookList detail={detail} />
-        </AudioSt>
+        </AudioBookBox>
       </Wrap>
     </React.Fragment>
   )
@@ -118,20 +106,14 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  /* background-color: lightblue; */
   padding-bottom: 30px;
-
-
 `
 
-const HeaderSt = styled.div`
+const Header = styled.div`
   width: 1100px;
 
-  /* background-color: gray; */
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   margin: 102px 0px 80px 0px;
   
@@ -139,7 +121,6 @@ const HeaderSt = styled.div`
     font-size: 24px;
     margin: 0px 0px 23px 0px;
     font-weight: 700;
-
   }
 
   span {
@@ -149,10 +130,9 @@ const HeaderSt = styled.div`
   }
 `
 
-const BookInfoSt = styled.div`
-    width: 1100px;
+const BookInfo = styled.div`
+  width: 1100px;
 
-  /* background-color: greenyellow; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -160,15 +140,10 @@ const BookInfoSt = styled.div`
   padding-bottom: 80px;
 `
 
-const ImgSt = styled.div`
+const ImgBox = styled.div`
   width: 550px;
   height: 550px;
-  /* background-color: gray; */
-  /* background-image: ; */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+
   background-repeat : no-repeat;
   background-size : cover;
   border-radius: 30px;
@@ -187,30 +162,21 @@ const ImgSt = styled.div`
   
   #img {
     width: 260px;
-    /* height: 400px; */
-
 
     img {
       width: 100%;
-      /* height: 100%; */
-      /* border: 1px solid lightgray; */
       border-radius: 2px 10px 10px 2px;
     }
   }
 `
 
-const ContentSt = styled.div`
-  /* width: 38%; */
+const Content = styled.div`
   height: 582px;
-  /* background-color: red; */
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  align-items: center;
 
   div {
-    /* width: 342px; */
-    /* background-color: gray; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -248,13 +214,11 @@ const ContentSt = styled.div`
 }
 `
 
-const BookSumSt = styled.div`
+const BookSum = styled.div`
   width: 1100px;
 
-  /* background-color: lightcoral; */
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   #bookinfo {
     width: 1100px;
@@ -267,28 +231,16 @@ const BookSumSt = styled.div`
   }
 
   div {
-    width: 1100px;
-
-    /* background-color: #F4F4F4; */
-    border-radius: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
     margin-top: 20px;
     margin-bottom: 80px;
 
     span {
-      /* margin : 33px 98px; */
       font-size: 16px;
     }
   }
 `
-const AudioSt = styled.div`
+const AudioBookBox = styled.div`
   width: 1100px;
-
-  position: relative;
-
 `
 
 export default BookDetail;

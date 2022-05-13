@@ -1,9 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components';
 import MainBookCard from '../components/MainBookCard';
-import { Grid, Text } from "../elements/Index";
-import { history } from '../redux/configureStore';
-
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";

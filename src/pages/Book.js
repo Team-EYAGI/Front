@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import BookCard from '../components/BookCard';
 import { useParams } from "react-router-dom";
+
 import { history } from '../redux/configureStore';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as getActions } from "../redux/modules/book";
@@ -113,14 +114,11 @@ const Book = () => {
 }
 
 const Wrap = styled.div`
-  /* background-color: lightblue; */
-
   width: 1100px;
   margin: 0 auto;
 
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-wrap: wrap;
 `
 
@@ -129,18 +127,11 @@ const HeaderSt = styled.div`
   height: 60px;
   margin: 0 auto;
 
-  /* background-color: rebeccapurple; */
-
   margin-top: 20px;
   margin-bottom: 80px;
 
   display: flex;
   justify-content: center;
-  /* align-items: center; */
-
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
 `
 
 const GenreSt = styled.h3`
@@ -153,14 +144,14 @@ const GenreSt = styled.h3`
   background: #FFFFFF;
   border: 1px solid #D3D3D3;
   border-radius: 100px;
+  
+  font-weight: 400;
+  font-size: 16px;
 
   text-align: center;
   line-height: 40px;
-  font-weight: 400;
-  /* color: #333333; */
   color: #767676;
 
-  font-size: 16px;
   cursor: pointer;
   :hover {
     background: #0C0A0A;

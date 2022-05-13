@@ -19,7 +19,7 @@ const getProfile = createAction(GET_CREATOR_PROFILE, (creator_profile) => ({crea
 const getFunding = createAction(GET_CREATOR_FUNDING, (creator_funding) => ({creator_funding}));
 const getAudio = createAction(GET_CREATOR_AUDIO, (creator_audiobook) => ({creator_audiobook}));
 
-// 메인페이지 추천도서 겟
+// 셀러 프로필 정보 가져오기
 const getProfileAC = (sellerId) => {
   return function (dispatch, getState, {history}) {
     axios.get(process.env.REACT_APP_BASE_URL + `/viewer/seller/${sellerId}`, {
@@ -38,7 +38,7 @@ const getProfileAC = (sellerId) => {
   }
 }
 
-// 메인페이지 추천도서 겟
+// 셀러 펀딩정보 가져오기
 const getFundingAC = (sellerId) => {
   return function (dispatch, getState, {history}) {
     axios.get(process.env.REACT_APP_BASE_URL + `/viewer/sellerFund/${sellerId}`, {
@@ -49,7 +49,6 @@ const getFundingAC = (sellerId) => {
     .then((res) => {
       console.log("셀러 펀딩 정보", res)
       dispatch(getFunding(res.data))
-
     })
     .catch(error => {
       console.log("error", error)
@@ -57,7 +56,7 @@ const getFundingAC = (sellerId) => {
   }
 }
 
-// 메인페이지 추천도서 겟
+// 셀러 오디오북 정보 가져오기
 const getAudioAC = (sellerId) => {
   return function (dispatch, getState, {history}) {
     axios.get(process.env.REACT_APP_BASE_URL + `/viewer/sellerAudioBook/${sellerId}`, {
@@ -68,7 +67,6 @@ const getAudioAC = (sellerId) => {
     .then((res) => {
       console.log("셀러 오디오북 정보", res)
       dispatch(getAudio(res.data))
-
     })
     .catch(error => {
       console.log("error", error)

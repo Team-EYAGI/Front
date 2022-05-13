@@ -61,21 +61,21 @@ const Header = (props) => {
         </LogoBox>
         {is_session ?
           <div>
-            {seller === "ROLE_ADMIN" ?
+            {/* {seller === "ROLE_ADMIN" ? */}
               <RiAdminLine
                 size="25px"
                 style={{ margin: "5px 0px 0px 0px", cursor: "pointer" }}
                 onClick={() => {
                   history.push(`/Admin`)
                 }} />
-              :
+              {/* : */}
               <BsPerson
                 size="25px"
                 style={{ margin: "5px 0px 0px 0px", cursor: "pointer" }}
                 onClick={() => {
                   history.push(`/mypage/listen`)
                 }} />
-            }
+            {/* } */}
             <FiLogOut
               size="25px"
               style={{ margin: "5px 2px 0px 20px", cursor: "pointer" }}

@@ -17,7 +17,7 @@ const MainSellerCard = (props) => {
           <ImageBox>
             <img
               style={{ width: "100%" }}
-              src={creator ? creator.userImage : 'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png'}
+              src={creator ? creator.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
             />
           </ImageBox>
           <h3 style={{ fontSize: "16px" }}>
