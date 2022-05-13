@@ -19,10 +19,10 @@ const MyPage = () => {
   // console.log(likeBook)
 
   const profile = useSelector((state) => state.mypage.profile);
-  // console.log(profile)
+  console.log(profile)
 
   const listenAudio = useSelector((state) => state.mypage.library_listenAudio);
-  console.log(listenAudio)
+  // console.log(listenAudio)
 
   const myFunding = useSelector((state) => state.mypage.library_registerFunding);
   // console.log(myFunding)
@@ -36,11 +36,17 @@ const MyPage = () => {
   const seller = localStorage.getItem("seller");
 
   useEffect(() => {
-    dispatch(libraryActions.getLikeBookAC());
     dispatch(libraryActions.getProfileAC());
-    dispatch(libraryActions.getListenAudioAC());
-    dispatch(libraryActions.getRegisterAudioBookAC());
-    dispatch(libraryActions.getRegisterFundingAC());
+
+    if (category === "likeBook") {
+      dispatch(libraryActions.getLikeBookAC());
+    } else if (category === "listen") {
+      dispatch(libraryActions.getListenAudioAC());
+    } else if (category === "myAudio") {
+      dispatch(libraryActions.getRegisterAudioBookAC());
+    } else {
+      dispatch(libraryActions.getRegisterFundingAC());
+    }
   }, []);
 
 
@@ -74,7 +80,7 @@ const MyPage = () => {
             {seller !== "ROLE_SELLER" ?
               <span id='creatorform'>크리에이터 신청하기</span>
               :
-              null
+              <span id='creatorform'>내 목소리 등록하기</span>
             }
           </Profile>
           <List>
@@ -83,11 +89,17 @@ const MyPage = () => {
                 <h2>| 크리에이터</h2>
                 <h3
                   style={{ textDecoration: (category === "myAudio" ? "underline" : null) }}
-                  onClick={() => { history.push(`/mypage/myAudio`) }}>업로드한 오디오북
+                  onClick={() => {
+                    history.push(`/mypage/myAudio`)
+                    dispatch(libraryActions.getRegisterAudioBookAC());
+                  }}>업로드한 오디오북
                 </h3>
                 <h3
                   style={{ textDecoration: (category === "myFunding" ? "underline" : null) }}
-                  onClick={() => { history.push(`/mypage/myFunding`) }}>등록한 펀딩
+                  onClick={() => {
+                    history.push(`/mypage/myFunding`)
+                    dispatch(libraryActions.getRegisterFundingAC());
+                  }}>등록한 펀딩
                 </h3>
               </ListBox>
               :
@@ -97,11 +109,17 @@ const MyPage = () => {
               <h2>| 서재</h2>
               <h3
                 style={{ textDecoration: (category === "listen" ? "underline" : null) }}
-                onClick={() => { history.push(`/mypage/listen`) }}>듣고 있는 오디오북
+                onClick={() => {
+                  history.push(`/mypage/listen`)
+                  dispatch(libraryActions.getListenAudioAC());
+                }}>듣고 있는 오디오북
               </h3>
               <h3
                 style={{ textDecoration: (category === "likeBook" ? "underline" : null) }}
-                onClick={() => { history.push(`/mypage/likeBook`) }}>찜한 오디오북(책 찜)
+                onClick={() => {
+                  history.push(`/mypage/likeBook`)
+                  dispatch(libraryActions.getLikeBookAC());
+                }}>찜한 책
               </h3>
             </ListBox>
           </List>
@@ -109,49 +127,49 @@ const MyPage = () => {
         </Menu>
         <div>
           {
-            category === "myAudio" && myAudio ? 
-             <span>총 {myAudio.length}개</span>
+            category === "myAudio" && myAudio ?
+              <span>총 {myAudio.length}개</span>
               :
-              category === "myFunding" && myFunding ? 
-             <span>총 {myFunding.length}개</span>
-             :
-            category === "listen" && listenAudio ?
-              <span id='num'>총 {listenAudio.length}개</span>
-              :
-              category === "likeBook" && likeBook ?
-                <span id='num'>총 {likeBook.length}개</span>
+              category === "myFunding" && myFunding ?
+                <span>총 {myFunding.length}개</span>
                 :
-                null
+                category === "listen" && listenAudio ?
+                  <span id='num'>총 {listenAudio.length}개</span>
+                  :
+                  category === "likeBook" && likeBook ?
+                    <span id='num'>총 {likeBook.length}개</span>
+                    :
+                    null
           }
 
           {
-          (category === "myAudio") && (myAudio && myAudio.length === 0) ?
-            <AudioReviewNone>
-              아직 등록한 오디오북이 없네요! 오디오북을 등록해볼까요?
-            </AudioReviewNone>
-            :
-            (category === "myFunding") && (myFunding && myFunding.length === 0) ?
-            <AudioReviewNone>
-              아직 펀딩을 시도하지 않았어요! 펀딩을 시작해볼까요?
-            </AudioReviewNone>
-            :
-          (category === "listen") && (listenAudio && listenAudio.length === 0) ?
-            <AudioReviewNone>
-              아직 듣고 있는 오디오북이 없어요! 들으러 가볼까요?
-            </AudioReviewNone>
-            :
-            (category === "likeBook") && (likeBook && likeBook.length === 0) ?
+            (category === "myAudio") && (myAudio && myAudio.length === 0) ?
               <AudioReviewNone>
-                아직 찜한 책이 없어요! 책을 둘러보러 가볼까요?
+                아직 등록한 오디오북이 없네요! 오디오북을 등록해볼까요?
               </AudioReviewNone>
               :
-              null
+              (category === "myFunding") && (myFunding && myFunding.length === 0) ?
+                <AudioReviewNone>
+                  아직 펀딩을 시도하지 않았어요! 펀딩을 시작해볼까요?
+                </AudioReviewNone>
+                :
+                (category === "listen") && (listenAudio && listenAudio.length === 0) ?
+                  <AudioReviewNone>
+                    아직 듣고 있는 오디오북이 없어요! 들으러 가볼까요?
+                  </AudioReviewNone>
+                  :
+                  (category === "likeBook") && (likeBook && likeBook.length === 0) ?
+                    <AudioReviewNone>
+                      아직 찜한 책이 없어요! 책을 둘러보러 가볼까요?
+                    </AudioReviewNone>
+                    :
+                    null
           }
           <Body>
 
             {category === "myAudio" ? myAudio.map((item, idx) => (
-                <MyPageAudioBook key={idx} item={item} />
-              ))
+              <MyPageAudioBook key={idx} item={item} />
+            ))
               :
               category === "myFunding" ? myFunding.map((item, idx) => (
                 <MyPageAudioBook key={idx} item={item} />
@@ -165,7 +183,7 @@ const MyPage = () => {
                     <MyPageAudioBook key={idx} item={item} />
                   ))
                     :
-                    <div>이게기본</div>
+                    null
             }
           </Body>
         </div>
@@ -256,17 +274,16 @@ const Body = styled.div`
   overflow-y: scroll;
     ::-webkit-scrollbar {
      /* 세로 스크롤 넓이 */  
-      width: 10px;
-
-      /* 가로 스크롤 높이 */
-      height: 8px;
-
+      width: 7px;
+      height: 100%;
+      
       border-radius: 6px;
-      background: black;
-      background: rgba(255, 255, 255, 0.4);
+      /* background: #FFFFFC; */
+      /* border: 1px solid #000000; */
     }
     ::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.3);
+      height: 17%;
+      background-color: #000000;
       border-radius: 6px;
     }
 

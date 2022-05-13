@@ -47,28 +47,42 @@ const Book = () => {
     "경제",
   ])
 
+
+  const [btn, setBtn] = React.useState([])
+
   return (
     <React.Fragment>
       <HeaderSt>
          {category.map((item, idx) => (
            <GenreSt
+
             key={idx}
-            onClick={() => {
+            onClick={(e) => {
               history.push(`/book/${item}`);
               if (item === "자기계발") {
+                setBtn("자기계발")
                 dispatch(getActions.getSelfAC());
               } else if (item === "소설") {
+                setBtn("소설")
                 dispatch(getActions.getNovelAC());
               } else if (item === "시･에세이") {
+                setBtn("시･에세이")
                 dispatch(getActions.getPoemAC());
               } else if (item === "유･아동") {
+                setBtn("유･아동")
                 dispatch(getActions.getKidsAC());
               } else {
+                setBtn("경제")
                 dispatch(getActions.getEconomyAC());
               }
             }}
             size="20"
-            color="white"
+            // style={{  color: (category.find((i) => i == btn))
+            //     ? "#E8E8E8"
+            //     : "#0361FB"
+            // }}
+            
+              value={item[0]}
           >
             {item}
           </GenreSt>
@@ -142,13 +156,15 @@ const GenreSt = styled.h3`
 
   text-align: center;
   line-height: 40px;
-  color: #333333;
+  font-weight: 400;
+  /* color: #333333; */
+  color: #767676;
 
   font-size: 16px;
   cursor: pointer;
   :hover {
-    border: 1px solid gray;
-    box-shadow: 0 0 3px black;
+    background: #0C0A0A;
+    color: #FFFFFF;
   }
 `
 

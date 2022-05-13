@@ -1,21 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
+import { BsPlayFill } from "react-icons/bs";
+import { Text } from "../elements/Index";
 
-const MainFundingCard = () => {
+const MainFundingCard = (props) => {
+
+  const mainFunding = props.item
+  // console.log("메인펀딩 프롭스", mainFunding)
+
   return (
     <React.Fragment>
       <Wrap>
         <Body>
-          <ImageBox>
-            <img
-              style={{ width: "100%" }}
-              src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png'
-            />
-          </ImageBox>
+          <ImgSt style={{ backgroundImage: `url(${mainFunding.bookImg})` }}>
+            <div id='img_wrap'>
+              <div id='img'>
+                <BsPlayFill id='icon' color="white" size="20px"/>
+                <img src={mainFunding.bookImg}/>
+              </div>
+            </div>
+          </ImgSt>
           <h3 style={{ fontSize: "16px" }}>
-            펀딩 제목
+           {mainFunding.bookTitle}
           </h3>
+          <Text margin="0px 0px 0px 10px">{mainFunding.sellerName}</Text>
         </Body>
       </Wrap>
     </React.Fragment>
@@ -24,47 +33,73 @@ const MainFundingCard = () => {
 
 const Wrap = styled.div`
   height: 200px;
-
   margin: 10px;
-
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
 `
 
 const Body = styled.div`
-  width: 200px;
+  width: 100%;
   /* background-color: rebeccapurple; */
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   
   cursor: pointer;
 
   h3 {
+    width: 175px;
+
+    font-size: 14px;
     white-space: nowrap;
     overflow:hidden;
     text-overflow: ellipsis;
+
+    margin-left: 10px;
+    margin-bottom: 10px;
+
   }
 `
 
-const ImageBox = styled.div`
+const ImgSt = styled.div`
   width: 190px;
   height: 190px;
-  background-color: azure;
-  overflow: hidden;
-  border: 1px solid #f4f4f4;
-  box-shadow: 0 0 2px gray;
 
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
+  background-repeat : no-repeat;
+  background-size : cover;
+  background: #EFEFEF;
+  border-radius: 10px;
 
-  img {
-    width:100%;
-    height:100%;
-    object-fit:cover;
+  #img_wrap {
+    width: 190px;
+    height: 190px;
+
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(26px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+  }
+  
+  #img {
+    width: 100px;
+    /* height: 162px; */
+    /* background-color: gray; */
+
+    #icon {
+      position : absolute;
+      left: 88px;
+      top: 80px;
+      background-color: #000000;
+      border-radius: 50px;
+      padding: 1px 1px 1px 2px;
+      /* border: 1px solid black; */
+    }
+
+    img {
+      width: 100%;
+      height: 100%;    
+    }
   }
 `
 

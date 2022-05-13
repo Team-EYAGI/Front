@@ -6,7 +6,7 @@ import { Grid, Text } from "../elements/Index";
 const ChatList = (props) => {
 
   const userId = localStorage.getItem("userId");
-  console.log(userId);
+  // console.log(userId);
   // 메세지 타임
   let time = "";
   if (!(props.item.createdAt === null)) {
@@ -19,19 +19,23 @@ const ChatList = (props) => {
   //components/Message.js 참고. 
   if (props.item.type === "ENTER" || props.item.type === "QUIT") {
     return (
-      <Grid
-        is_flex4="t"
-        border="none"
-        radius="0.8rem"
-        justify_content="center"
-        bg="rgba(54, 55, 60, 0.2)"
-        height="2.8rem"
-        margin="0 auto 1.6rem"
-      >
-        <Text>
-          {props.item.message}
-        </Text>
-      </Grid>
+      <React.Fragment>
+        <Wrap style={
+          {
+            alignItems : "center" ,
+            justifyContent : "center",
+            backgroundColor: "#f4f4f4",
+            maxWidth: "70%",
+            borderRadius:"5px",
+            padding:"5px",
+            margin:"20px auto"
+          }
+        }>
+          <Text>
+            {props.item.message}
+          </Text>
+        </Wrap>
+      </React.Fragment>
     );
   }
   if (props.item.type === "TALK") {
@@ -45,17 +49,16 @@ const ChatList = (props) => {
               alignItems : "flex-end" ,
               justifyContent : "flex-end"
             }
-          }
-          
-          >
+          }>
             {/* <Name>
             </Name> */}
-            <Card
-             align_items = "flex-end"
-            justify_content ="flex-end"
-            >
-              <p>{DB_time}</p>
-              <p>{props.item.message} text test</p>
+            <Card style={
+              {
+                justifyContent : "flex-end"
+              }
+            }>
+              <p className="m_date">{DB_time}</p>
+              <p className="my_message">{props.item.message}</p>
             </Card>
             </Wrap>
         </React.Fragment>
@@ -63,21 +66,26 @@ const ChatList = (props) => {
     } else{
       return (
         <React.Fragment>
-          <Wrap
-          align_items = "flex-start"
-          justify_content = "flex-start"
-          >
+          <Wrap style={
+            {
+              alignItems : "flex-start" ,
+              justifyContent : "flex-end"
+            }
+          }>
             <Name>
-              <p>{props.item.sender_id} 임의에 유저명</p>
+              <p>{props.item.sender_id}</p>
             </Name>
-            <Card
-            align_items = "flex-start"
-            justify_content = "flex-start"
+            <Card style={
+              {
+                justifyContent : "flex-start",
+                flexDirection:"row-reverse",
+              }
+            }
             >
-              <p>{DB_time}</p>
-              <p>{props.item.message} text test</p>
+              <p className="a_date">{DB_time}</p>
+              <p className="another">{props.item.message}</p>
             </Card>
-            </Wrap>
+          </Wrap>
         </React.Fragment>
       )
     }
@@ -87,12 +95,9 @@ const ChatList = (props) => {
 const Wrap = styled.div`
   display: flex;
   flex-flow: column nowrap;
-  // align-items: flex-start;
-  // justify-content: flex-start;
   width: 100%;
   box-sizing: border-box;
-  padding: 0 15px;
-  /* height: 30px; */
+  padding: 0 25px;
   & * {box-sizing: border-box;}
 `
 
@@ -101,15 +106,20 @@ const Name = styled.div`
   font-size: 16px;
   font-weight: 500;
   text-algin: right;
+  alignItems : flex-end;
+  display: none;
 
   & p {margin: 0; padding-bottom: 8px;}
 `
 
 const Card = styled.div`
   display: flex;
+  padding-top: 12px;
   // justify-content: flex-end;
-  & p { color: #fff; font-weight: 500; margin: 0; display: flex; align-items: flex-end; justify-content: flex-end; padding-right: 8px;}
-  & p:last-child { background-color: yellow; margin: 0; padding: 10px 8px;border-radius: 5px; box-shadow: 6px 5px 5px rgb(92 86 86); color:#222;}
+  & .m_date { color: #fff; font-weight: 300; margin: 0; display: flex; align-items: flex-end; justify-content: flex-end; padding-right: 8px; color: #000; font-size: 11px;}
+  & .my_message { background-color: #0C0A0A; margin: 0; padding: 12px 21px;border-radius:20px 3px 20px 20px ; color:#fff; font-size: 16px; line-height: 1.5; max-width: 427px; word-break: break-word;}
+  & .a_date { color: #fff; font-weight: 300; margin: 0; display: flex; align-items: flex-end; justify-content: flex-end; padding-left: 8px; color: #000; font-size: 11px;}
+  & .another {margin: 0; padding: 12px 21px;border-radius:3px 20px 20px 20px ;  color:#222; font-size: 16px; line-height: 1.5; max-width: 427px; word-break: break-word; border: 1px solid #0c0a0a; background-color:#fffefc;}
 `
 
 export default ChatList;

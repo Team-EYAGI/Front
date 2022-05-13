@@ -12,7 +12,7 @@ const MainSellerCard = (props) => {
       <Wrap>
         <Body
           onClick={() => {
-            history.push(`/sellerProfile/${creator.username}/audiobook`)
+            history.push(`/sellerProfile/${creator.id}/audiobook`)
           }}>
           <ImageBox>
             <img
@@ -33,11 +33,6 @@ const Wrap = styled.div`
   height: 200px;
 
   margin: 10px;
-
-  
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
 `
 
 const Body = styled.div`
@@ -62,7 +57,7 @@ const ImageBox = styled.div`
   border-radius: 100px;
   background-color: azure;
   overflow: hidden;
-  border: 1px solid #f4f4f4;
+  border: 1px solid #878787;
   box-shadow: 0 0 2px gray;
 
   display: flex;

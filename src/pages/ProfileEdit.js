@@ -28,6 +28,9 @@ const ProfileEdit = (props) => {
   // const [audioFile, setAudioFile] = React.useState("");
 
 
+    // 새로고침 경고 알럿
+    useBeforeunload((event) => event.preventDefault());
+
   // // upload라는 훅 생성
   const fileInput = useRef();
 

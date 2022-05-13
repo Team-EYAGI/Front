@@ -36,6 +36,7 @@ const initialState = {
   category_self : [],
 };
 
+
 // 액션 생성 함수
 const getMain = createAction(GET_MAIN, (main) => ({main}));
 const getMainCategory = createAction(GET_MAIN_CATEGORY, (main_category) => ({main_category}));

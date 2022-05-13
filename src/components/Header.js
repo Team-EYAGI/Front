@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../shared/Token";
 import { actionCreators as searchActions } from "../redux/modules/search";
 import { actionCreators } from "../redux/modules/user";
-import logo from '../src_assets/eyagiLogo1.png'
-
+// import logo from '../src_assets/eyagiLogo1.png'
+import logo from '../src_assets/logo.svg';
 
 const Header = (props) => {
   const dispatch = useDispatch();
@@ -28,102 +28,82 @@ const Header = (props) => {
 
   const [word, setWord] = React.useState("")
 
+  const handleEvent = (e) => {
+    if (e.nativeEvent.isComposing) {
+       return;
+       }
+    if (e.key !== "Enter") {
+      return;
+    }
+  
+    sendWord();
+  };
+
+  const sendWord = () => {
+    if (word === "") {
+      window.alert("검색어를 입력해주세요!")
+    } else {
+      dispatch(searchActions.addSearchAC(word));
+    }
+  }
+
   return (
-    <>
-      {is_session ?
-        <React.Fragment>
-          <HeaderWrap>
-            <LogoBox>
-              <img
-                onClick={() => { history.push('/') }}
-                src={logo}
-              // src='https://blog.kakaocdn.net/dn/SJmxC/btqxeJAzjZA/UgEHLHzJlq9TZBpo7hyi5k/img.jpg'
-              />
-            </LogoBox>
-            <div>
-              <BsPerson
-                size="25px"
-                style={{ margin: "5px 0px 0px 0px", cursor: "pointer" }}
-                onClick={() => {
-                  history.push(`/mypage/listen`)
-                }} />
-              <FiLogOut
-                size="25px"
-                style={{ margin: "5px 2px 0px 20px", cursor: "pointer" }}
-                onClick={() => {
-                  dispatch(actionCreators.logOut());
-                }}
-              />
-            </div>
-          </HeaderWrap>
-          <BottomWrap>
-            <BottomSt>
-              <div id='list'>
-                <li onClick={() => { history.push(`/book/자기계발`); }}>카테고리별 도서</li>
-                <li onClick={() => { history.push('/funding') }}>오디오 펀딩</li>
-                <li onClick={() => { history.push('/request') }}>오디오북 요청 모아보기</li>
-                {/* <li>ㅇㅇㅇ</li> */}
-              </div>
-              <SearchWrap>
-                <Search
-                  onChange={(e) => {
-                    setWord(e.target.value)
-                  }}
-                  placeholder="검색어를 입력해주세요."></Search>
-                <SearchIcon
-                  onClick={() => {
-                    if (word === "") {
-                      window.alert("검색어를 입력해주세요!")
-                    } else {
-                      dispatch(searchActions.addSearchAC(word));
-                    }
-                  }} />
-              </SearchWrap>
-            </BottomSt>
-          </BottomWrap>
-        </React.Fragment>
-        :
-        <React.Fragment>
-          <HeaderWrap>
-            <LogoBox>
-              <img
-                onClick={() => { history.push('/') }}
-                src={logo}
-              />
-            </LogoBox>
-            <LoginBox
+    <React.Fragment>
+      <HeaderWrap>
+        <LogoBox>
+          <img
+            onClick={() => { history.push('/') }}
+            src={logo}
+          // src='https://blog.kakaocdn.net/dn/SJmxC/btqxeJAzjZA/UgEHLHzJlq9TZBpo7hyi5k/img.jpg'
+          />
+        </LogoBox>
+        {is_session ?
+          <div>
+            <BsPerson
+              size="25px"
+              style={{ margin: "5px 0px 0px 0px", cursor: "pointer" }}
               onClick={() => {
-                history.push(`/login`)
+                history.push(`/mypage/listen`)
+              }} />
+            <FiLogOut
+              size="25px"
+              style={{ margin: "5px 2px 0px 20px", cursor: "pointer" }}
+              onClick={() => {
+                dispatch(actionCreators.logOut());
               }}
-            >
-              <span>로그인/회원가입</span>
-            </LoginBox>
-          </HeaderWrap>
-          <BottomWrap>
-            <BottomSt>
-              <div id='list'>
-                {/* <BsList size="25px" style={{ margin: "5px 20px 0px 20px" }} /> */}
-                <li onClick={() => { history.push(`/book/자기계발`); }}>카테고리별 도서</li>
-                <li onClick={() => { history.push('/funding') }}>오디오 펀딩</li>
-                <li onClick={() => { history.push('/request') }}>오디오북 요청 모아보기</li>
-                {/* <li>ㅇㅇㅇ</li> */}
-              </div>
-              <SearchWrap>
-                <Search
-                  onChange={(e) => {
-                    setWord(e.target.value)
-                  }}
-                  placeholder="검색어를 입력해주세요."></Search>
-                <SearchIcon
-                  onClick={() => {
-                    dispatch(searchActions.addSearchAC(word));
-                  }} />
-              </SearchWrap>
-            </BottomSt>
-          </BottomWrap>
-        </React.Fragment>
-      }
-    </>
+            />
+          </div>
+          :
+          <LoginBox
+            onClick={() => {
+              history.push(`/login`)
+            }}
+          >
+            <span>로그인</span>
+          </LoginBox>
+        }
+      </HeaderWrap>
+      <BottomWrap>
+        <BottomSt>
+          <div id='list'>
+            <li onClick={() => { history.push(`/book/자기계발`); }}>카테고리별 도서</li>
+            <li onClick={() => { history.push('/funding') }}>오디오 펀딩</li>
+            <li onClick={() => { history.push('/request') }}>오디오북 요청 모아보기</li>
+            {/* <li>ㅇㅇㅇ</li> */}
+          </div>
+          <SearchWrap>
+            <Search
+              onChange={(e) => {
+                setWord(e.target.value)
+              }}
+              onKeyDown={handleEvent}
+              placeholder="검색어를 입력해주세요."></Search>
+            <SearchIcon
+              onClick={sendWord} />
+          </SearchWrap>
+        </BottomSt>
+      </BottomWrap>
+    </React.Fragment>
   )
 }
 
@@ -133,7 +113,7 @@ const HeaderWrap = styled.div`
   
   
   position: relative;
-  margin: 10px auto;
+  margin: 20px auto -5px auto;
 
   display: flex;
   flex-direction: row;
@@ -163,14 +143,15 @@ const BottomWrap = styled.div`
 `
 
 const LogoBox = styled.div`
-  width: 190px;
+  width: 200px;
   height: 60px;
+
 
   color: white;
 
   img {
-    width: 100%;
-    height: 100%;
+    width: 190px;
+    height: 60px;
     cursor: pointer;
   }
   span {
@@ -180,17 +161,16 @@ const LogoBox = styled.div`
 `
 
 const LoginBox = styled.div`
-  width: 164px;
-  height: 54px;
+  width: 110px;
+  height: 40px;
 
-  background-color: #393C3F;
+  background: #0C0A0A;
+  border-radius: 10px;
   color: white;
 
-  font-family: Pretendard;
-  font-weight: 400;
   font-style: normal;
-  font-size: 0.94vw;
-  border-radius: 24px;
+  font-weight: 500;
+  font-size: 18px;
 
   display: flex;
   flex-direction: row;
@@ -201,7 +181,6 @@ const LoginBox = styled.div`
 
   span {
     text-align: center;
-    margin-bottom: 0.16vw;
   }
 `
 

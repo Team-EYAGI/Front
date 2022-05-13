@@ -66,12 +66,10 @@ const HeaderSt = styled.div`
   font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
-  background-color: lightblue;
 `
 
 const Wrap = styled.div`
   width: 1100px;
-  background-color: red;
   min-height: 1000px;
 
   margin-top: 20px;
@@ -85,7 +83,6 @@ const Wrap = styled.div`
 
 const Body = styled.div`
   width: 1000px;
-  background-color: yellow;
   min-height: 240px;
 
   margin-top: 20px;

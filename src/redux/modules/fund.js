@@ -14,12 +14,13 @@ const initialState = {
   fund_list : [],
   fund_add : [],
   list: [],
+  likeCnt: [],
 };
 
 // action creater
 const getFunding = createAction(GET_FUND, (fund_list) => ({fund_list}));
 const addFunding = createAction(ADD_FUND, (fund_add) => ({fund_add}));
-const addLike = createAction(ADD_LIKE, (like) => ({ like }))
+const addLike = createAction(ADD_LIKE, (like, fundId) => ({ like, fundId }))
 const delLike = createAction(DEL_LIKE, (like) => ({ like }))
 
 
@@ -34,7 +35,7 @@ const getFundingAC = () => {
     // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      console.log("펀딩리스트", res)
+      // console.log("펀딩리스트", res)
       dispatch(getFunding(res.data))
 
     })
@@ -47,7 +48,7 @@ const getFundingAC = () => {
 
 // 오디오북 파일 추가
 const addFundingAC = (payload) => {
-  console.log(payload)
+  // console.log(payload)
   let Token = getToken("Authorization");
   let bookId = payload.bookId
   return function (dispatch, getState, { history }) {
@@ -87,8 +88,8 @@ const addFundingAC = (payload) => {
 
 //좋아요
 const addLikeDB = (fundHeartBool, fundId) => {
-  console.log(fundId)
-  console.log(fundHeartBool)
+  // console.log(fundId)
+  // console.log(fundHeartBool)
 
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
@@ -100,11 +101,12 @@ const addLikeDB = (fundHeartBool, fundId) => {
       )
 
       .then((res) => {
-        console.log(res);        
+        console.log(res);       
+        dispatch(addLike(res.data, fundId)) 
       })
       .catch((error) => {
-        window.alert("아이디와 비밀번호를 다시 확인해주세요!");
-        // console.log(error)
+       
+        console.log(error)
       });
   };
 };
@@ -121,12 +123,11 @@ export default handleActions(
     produce(state, (draft) => {
       draft.fund_add = action.payload.fund_add;
     }),    
-    [ADD_LIKE]: (state, action) => {
-        return {
-          ...state,
-          list: action.payload.like,
-        };
-      },
+    [ADD_LIKE]: (state, action) =>  
+    produce(state, (draft) => {
+      console.log(action.payload)
+      draft.likeCnt = action.payload.like;
+      }),
   },
   initialState
 );

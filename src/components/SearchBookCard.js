@@ -36,7 +36,6 @@ const Wrap = styled.div`
   position: relative;
   margin: 10px 10px 20px 10px;
 
-  background-color: rebeccapurple;
   
   font-family: Pretendard;
   font-weight: 400;

@@ -6,11 +6,11 @@ import { BsFillPlayFill } from "react-icons/bs";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as getActions } from "../redux/modules/fund";
-
 import { useParams } from "react-router-dom";
+import Like from "../components/Like";
 
 const FundingCard = (props) => {
-  console.log(props.fundcard);
+  // console.log(props.fundcard);
   const dispatch = useDispatch();
   const [fundHeartBool, setFundHeartBool] = useState(true)
 
@@ -61,9 +61,10 @@ const FundingCard = (props) => {
           <Info>
             <div id="Sell">{fundingcard.sellerName}</div>
             <div className="heart">목표</div>
-            <div className="heart"
+            <Like fundingcard={fundingcard}/>
+            {/* <div className="heart"
             onClick={addLike}
-            >하트</div>
+            >하트</div> */}
             {/* 온클릭 이벤트 : 좋아요 누르면 채워진 하트, 좋아요 취소하면 비워진 하트 기능
           {(like && (
             <AiFillHeart
@@ -221,18 +222,6 @@ const Info = styled.div`
     align-items: center;
   }
 
-  #heart{
-    background-color: white;
-    border: 1px solid gray;
-    border-radius: 10px;
-    width: 80px;
-    float: left;
-    padding: 10px;
-    margin: 17px 0px 16px 0px;
-    font-size: 15 px;
-    text-align: center;
-    vertical-align: middle;
-  }
 `;
 
 const PlayerImg = styled.div`
