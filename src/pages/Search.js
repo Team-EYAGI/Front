@@ -1,44 +1,42 @@
 import React from 'react'
 import styled from 'styled-components';
 import SearchBookCard from '../components/SearchBookCard';
-import { useDispatch, useSelector } from 'react-redux';
+
+import { useSelector } from 'react-redux';
 
 const Search = (props) => {
 
+  // 검색된 목록 가져오기
   const search = useSelector((state) => state.search.search_list);
-  console.log(search)
 
   const bookInfo = search.book;
-  console.log(bookInfo)
-
   const authorInfo = search.author;
   const userInfo = search.user;
-
 
   return (
     <React.Fragment>
       <Wrap>
-        <HeaderSt>
+        <Header>
           총 {bookInfo ? bookInfo.length : 0}건의 도서가 검색되었습니다.
-        </HeaderSt>
+        </Header>
         <Body>
           {bookInfo && bookInfo.map((item, idx) =>
             <SearchBookCard key={idx} item={item} />
           )
           }
         </Body>
-        <HeaderSt>
+        <Header>
           총 {authorInfo ? authorInfo.length : 0}명의 작가가 검색되었습니다.
-        </HeaderSt>
+        </Header>
         <Body>
           {authorInfo && authorInfo.map((item, idx) =>
             <SearchBookCard key={idx} item={item} />
           )
           }
         </Body>
-        <HeaderSt>
+        <Header>
           총 {userInfo ? userInfo.length : 0}명의 크리에이터가 검색되었습니다.
-        </HeaderSt>
+        </Header>
         <Body>
           {userInfo && userInfo.map((item, idx) =>
             <SearchBookCard key={idx} item={item} />
@@ -50,22 +48,13 @@ const Search = (props) => {
   )
 }
 
-const HeaderSt = styled.div`
+const Header = styled.div`
   width: 1100px;
   height: 16px;
   margin: 0 auto;
 
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-  align-items: center;
-  position: relative;
   margin-top: 60px;
   margin-bottom: 40px;
-  
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
 `
 
 const Wrap = styled.div`
@@ -75,10 +64,6 @@ const Wrap = styled.div`
   margin-top: 20px;
   margin: 0 auto;
   flex-wrap: wrap;
-
-  display: flex;
-  justify-content: left;
-  align-items: center;
 `
 
 const Body = styled.div`
@@ -90,8 +75,6 @@ const Body = styled.div`
   flex-wrap: wrap;
 
   display: flex;
-  justify-content: left;
-  align-items: center;
 `
 
 

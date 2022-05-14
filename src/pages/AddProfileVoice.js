@@ -20,7 +20,7 @@ const AddProfileVoice = (props) => {
   const params = useParams();
   console.log(params)
 
-  // upload라는 훅 생성
+  // 인풋창 접근
   const fileInput = useRef();
 
   // 인풋을 대신 클릭해주기 위한 함수
@@ -29,7 +29,6 @@ const AddProfileVoice = (props) => {
   };
 
   const [file, setFile] = React.useState("")
-  // console.log(contents)
 
   // 파일 선택하기
   const selectFile = (e) => {
@@ -42,20 +41,12 @@ const AddProfileVoice = (props) => {
 
   // 오디오 추가하기
   const addVoice = () => {
-    // const userId = getCookie("userId")
     let file = fileInput.current.files[0];
-    console.log(file)
-    console.log(file.accept)
-    
-
     if (file === null) {
       window.alert("파일을 추가해주세요.")
       return;
     }
-    // 리뷰를 추가할 때 addReviewAc로 정보를 넘긴다.
-    dispatch(voiceActions.addVoiceAC({
-      file,
-    })
+    dispatch(voiceActions.addVoiceAC({ file })
     )
   }
 
@@ -67,7 +58,7 @@ const AddProfileVoice = (props) => {
             <BsXSquare id="icon" onClick={() => history.goBack()} size="30px" />
           </GoBack>
         </div>
-        <ContentSt>
+        <Content>
           <div>
             <p>내 목소리 등록하기</p>
             <div id='file'>
@@ -83,23 +74,18 @@ const AddProfileVoice = (props) => {
                 style={{ display: 'none' }}
                 onChange={selectFile}
               />
-
             </div>
           </div>
-
           <div>
             <button
               onClick={addVoice}
             >등록하기</button>
           </div>
-
-        </ContentSt>
+        </Content>
       </ModalBox>
     </ModalBack>
   );
 };
-
-
 
 const ModalBox = styled.div`
   position: absolute;
@@ -134,7 +120,7 @@ const GoBack = styled.div`
   }
 `
 
-const ContentSt = styled.div`
+const Content = styled.div`
 
   width: 90%;
   height: 500px;
@@ -176,8 +162,6 @@ const ContentSt = styled.div`
   p {
       font-weight: 700;
       font-size: 25px;
-      /* margin: 0px 0px 23px 0px; */
-
       margin-bottom: 30px;
     }
 
@@ -190,16 +174,15 @@ const ContentSt = styled.div`
       border-radius: 10px;
       background-color: #000000;
       color: #FFFFFF;
-      /* box-shadow: 2px 2px 2px 2px gray; */
 
       font-size: 20px;
       font-family: Pretendard;
       font-weight: 700;
       font-style: normal;
-      cursor: pointer;
 
       :hover {
         box-shadow: 2px 2px 2px 2px gray;
+        cursor: pointer;
       }
     }
 

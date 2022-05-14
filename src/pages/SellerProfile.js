@@ -1,35 +1,31 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import MyPageAudioBook from '../components/MyPageAudioBook';
+
 import { history } from '../redux/configureStore';
 import { actionCreators as creatorActions } from "../redux/modules/creator";
-
-import MyPageAudioBook from '../components/MyPageAudioBook';
 import { useDispatch, useSelector } from 'react-redux';
 
 const SellerProfile = () => {
   const dispatch = useDispatch();
 
   const params = useParams();
-  console.log(params)
   const sellerId = params.sellerName;
-
   const category = params.category;
 
-
+  // 셀러가 등록한 오디오북 가져오기
   const audioBookList = useSelector((state) => state.creator.creator_audiobook);
-  console.log(audioBookList)
 
+  // 셀러 프로필 정보 가져오기
   const profile = useSelector((state) => state.creator.creator_profile);
-  console.log(profile)
-
+  
+  // 셀러가 등록한 펀딩 정보 가져오기
   const fundingList = useSelector((state) => state.creator.creator_funding);
   console.log(fundingList)
 
-  // const userImage = useSelector((state) => state.mypage.userImage);
-  // console.log(userImage)
-
-  const seller = localStorage.getItem("seller");
+  // 권한이 무엇인지
+  const authority = localStorage.getItem("seller");
 
   useEffect(() => {
     dispatch(creatorActions.getProfileAC(sellerId));
@@ -41,7 +37,6 @@ const SellerProfile = () => {
     }
   }, []);
 
-
   return (
     <React.Fragment>
       <Wrap>
@@ -49,7 +44,7 @@ const SellerProfile = () => {
           <Profile>
             <Box>
               <div id='img'>
-                <img src={profile.userImage ? profile.userImage : null} />
+                <img src={profile.userImage ? profile.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
               </div>
               <div id='username'>
                 <h4>{profile.userName}</h4>

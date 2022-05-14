@@ -1,44 +1,32 @@
 import React, { useRef, useEffect } from 'react'
 import styled from "styled-components";
+import { useBeforeunload } from "react-beforeunload";
+
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
-import { actionCreators as getActions } from "../redux/modules/book";
 import { actionCreators as profileActions } from "../redux/modules/mypage";
 import { actionCreators as libraryActions } from "../redux/modules/mypage";
 
-import { useBeforeunload } from "react-beforeunload";
-
 
 const ProfileEdit = (props) => {
-
   const dispatch = useDispatch();
+  // 새로고침 경고 알럿
+  useBeforeunload((event) => event.preventDefault());
 
-  const seller = localStorage.getItem("seller");
-
+  const authority = localStorage.getItem("seller");
   const preview = useSelector((state) => state.mypage.preview);
-  console.log("프리뷰", preview)
-
   const profile = useSelector((state) => state.mypage.profile);
-  console.log("프로필", profile)
-  
+  // console.log("프로필", profile)
 
   const [introduce, setIntroduce] = React.useState("")
 
-  // const [file, setFile] = React.useState("");
-  // const [audioFile, setAudioFile] = React.useState("");
-
-
-    // 새로고침 경고 알럿
-    useBeforeunload((event) => event.preventDefault());
-
-  // // upload라는 훅 생성
+  // 인풋에 접근
   const fileInput = useRef();
 
-  // // 인풋을 대신 클릭해주기 위한 함수
+  // 인풋을 대신 클릭해주기 위한 함수
   const handleClick = () => {
     fileInput.current.click();
   };
-
 
   // 파일 선택하기
   const selectFile = (e) => {
@@ -50,10 +38,8 @@ const ProfileEdit = (props) => {
     };
   };
 
-
   // 오디오 추가하기
   const addImage = () => {
-    // const userId = getCookie("userId")
     let file = fileInput.current.files[0];
     console.log(file)
 
@@ -61,13 +47,11 @@ const ProfileEdit = (props) => {
       window.alert("파일을 추가해주세요.")
       return;
     }
-    // 리뷰를 추가할 때 addReviewAc로 정보를 넘긴다.
     dispatch(profileActions.addProfileAC({
       information: { introduce: introduce },
       file,
     })
     )
-    // history.replace(`/detail/${itemId}`)
   }
 
   useEffect(() => {
@@ -94,7 +78,7 @@ const ProfileEdit = (props) => {
             <h3 style={{ fontSize: "16px" }}>
               {profile.userName}
             </h3>
-            {seller === "ROLE_SELLER" ?
+            {authority === "ROLE_SELLER" ?
               <>
                 <textarea
                   type='text'
@@ -109,7 +93,6 @@ const ProfileEdit = (props) => {
               :
               <div>프로필 사진을 등록해주세요!</div>
             }
-
             <input
               type="file"
               accept="image/jpg image/jpeg image/png"
@@ -118,7 +101,6 @@ const ProfileEdit = (props) => {
               style={{ display: 'none' }}
               onChange={selectFile}
             />
-
           </Body>
         </Wrap>
         <button onClick={addImage}>프로필 수정하기</button>

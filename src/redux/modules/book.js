@@ -3,12 +3,16 @@ import { produce } from "immer";
 import axios from "axios";
 
 // 액션
-// 크롤링 데이터 로드
+// 1. 메인페이지 관련
 const GET_MAIN = "GET_MAIN";
 const GET_MAIN_CATEGORY = "GET_MAIN_CATEGORY";
 const GET_MAIN_FUNDING = "GET_MAIN_FUNDING";
 const GET_MAIN_CREATOR = "GET_MAIN_CREATOR";
+
+// 2. 책 상세페이지 관련
 const GET_BOOKDETAIL = "GET_BOOKDETAIL";
+
+// 3. 카테고리별 도서 목록 관련
 const GET_NOVEL = "GET_NOVEL";
 const GET_POEM = "GET_POEM";
 const GET_SELF = "GET_SELF";
@@ -16,11 +20,19 @@ const GET_ECONOMY = "GET_ECONOMY";
 const GET_KIDS = "GET_KIDS";
 
 
-// // 이미지 액션
-// const UPLODING = "UPLODING";
-// const UPLOAD_IMG = "UPLOAD_IMG";
-// const SET_PREVIEW = "SET_PREVIEW";
+// 액션 생성 함수
+const getMain = createAction(GET_MAIN, (main) => ({main}));
+const getMainCategory = createAction(GET_MAIN_CATEGORY, (main_category) => ({main_category}));
+const getMainFunding = createAction(GET_MAIN_FUNDING, (main_funding) => ({main_funding}));
+const getMainCreator = createAction(GET_MAIN_CREATOR, (main_creator) => ({main_creator}));
 
+const getBookDetail = createAction(GET_BOOKDETAIL, (detail_book) => ({detail_book}));
+
+const getNovel = createAction(GET_NOVEL, (novel) => ({novel}));
+const getPoem = createAction(GET_POEM, (poem) => ({poem}));
+const getSelf = createAction(GET_SELF, (self) => ({self}));
+const getEconomy = createAction(GET_ECONOMY, (economy) => ({economy}));
+const getKids = createAction(GET_KIDS, (kids) => ({kids}));
 
 // 초기값
 const initialState = {
@@ -36,22 +48,7 @@ const initialState = {
   category_self : [],
 };
 
-
-// 액션 생성 함수
-const getMain = createAction(GET_MAIN, (main) => ({main}));
-const getMainCategory = createAction(GET_MAIN_CATEGORY, (main_category) => ({main_category}));
-const getMainFunding = createAction(GET_MAIN_FUNDING, (main_funding) => ({main_funding}));
-const getMainCreator = createAction(GET_MAIN_CREATOR, (main_creator) => ({main_creator}));
-const getBookDetail = createAction(GET_BOOKDETAIL, (detail_book) => ({detail_book}));
-const getNovel = createAction(GET_NOVEL, (novel) => ({novel}));
-const getPoem = createAction(GET_POEM, (poem) => ({poem}));
-const getSelf = createAction(GET_SELF, (self) => ({self}));
-const getEconomy = createAction(GET_ECONOMY, (economy) => ({economy}));
-const getKids = createAction(GET_KIDS, (kids) => ({kids}));
-
-
 // 미들웨어
-
 // 메인페이지 추천도서 겟
 const getMainAC = () => {
   return function (dispatch, getState, {history}) {
@@ -61,7 +58,7 @@ const getMainAC = () => {
     // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      console.log("메인페이지 리스트", res)
+      // console.log("메인페이지 리스트", res)
       dispatch(getMain(res.data))
 
     })
@@ -80,7 +77,7 @@ const getMainCategoryAC = () => {
     // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      console.log("메인 카테고리 리스트", res)
+      // console.log("메인 카테고리 리스트", res)
       dispatch(getMainCategory(res.data))
 
     })
@@ -99,7 +96,7 @@ const getMainCreatorAC = () => {
     // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      console.log("메인 크리에이터 리스트", res)
+      // console.log("메인 크리에이터 리스트", res)
       dispatch(getMainCreator(res.data))
 
     })
@@ -119,7 +116,7 @@ const getMainFundingAC = () => {
     // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      console.log("메인 펀딩 리스트", res)
+      // console.log("메인 펀딩 리스트", res)
       dispatch(getMainFunding(res.data))
 
     })
@@ -128,9 +125,6 @@ const getMainFundingAC = () => {
     })
   }
 }
-
-
-
 
 // 책 상세페이지 겟
 const getBookDetailAC = (bookId) => {
@@ -142,7 +136,7 @@ const getBookDetailAC = (bookId) => {
     // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      console.log("상세페이지 정보", res.data)
+      // console.log("상세페이지 정보", res.data)
       dispatch(getBookDetail(res.data))
 
     })
@@ -267,17 +261,14 @@ export default handleActions(
     }),
     [GET_BOOKDETAIL]: (state, action) =>
     produce(state, (draft) => {
-      // console.log("리듀서로 넘김",action.payload.detail_book)
       draft.detail_book = action.payload.detail_book;
     }),
     [GET_NOVEL]: (state, action) =>
     produce(state, (draft) => {
-      // console.log("저장!", action.payload.novel)
       draft.category_novel = action.payload.novel;
     }),
     [GET_POEM]: (state, action) =>
     produce(state, (draft) => {
-      // console.log("리듀서", action.payload)
       draft.category_poem = action.payload.poem;
     }),
     [GET_SELF]: (state, action) =>
@@ -299,14 +290,6 @@ export default handleActions(
 
 const actionCreators = {
 // export 할 것들
-  getMain,
-  getMainCategory,
-  getBookDetail,
-  getNovel,
-  getPoem,
-  getSelf,
-  getEconomy,
-  getKids,
   getMainAC,
   getMainCategoryAC,
   getMainCreatorAC,

@@ -1,40 +1,35 @@
-import React, { useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import React from "react";
+import { useBeforeunload } from "react-beforeunload";
 import styled from "styled-components";
-import AudioPlayer from "react-h5-audio-player";
+import { BsXSquare } from "react-icons/bs";
+import { useParams } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
-import { actionCreators as getActions } from "../redux/modules/book";
 import { actionCreators as reviewActions } from "../redux/modules/audio";
-import { useBeforeunload } from "react-beforeunload";
-import { BsXSquare } from "react-icons/bs";
+
 
 
 const ReviewWirte = (props) => {
-
+ 
   const dispatch = useDispatch();
 
   // 새로고침 경고 알럿
   useBeforeunload((event) => event.preventDefault());
 
   const params = useParams();
-  console.log(params)
   const category = params.category;
   const bookId = params.bookId;
   const audioBookId = params.audioBookId;
   const commentId = params.commentId;
-  console.log(commentId)
 
   const audioReview = useSelector((state) => state.audio.review_list);
-  console.log(audioReview)
 
+  // 수정하기
   const is_edit = commentId ? true : false;
 
+  // 수정하는 페이지인 경우 commentId를 비교
   let _review = is_edit ? audioReview.find((p) => p.commentId == commentId) : null;
-  console.log(_review)
-
-  // 로그인한 사용자인지 확인
-  const is_login = localStorage.getItem("is_login");
 
   const [title, setTitle] = React.useState(_review ? _review.title : "");
   const [content, setContent] = React.useState(_review ? _review.content : "");
@@ -44,10 +39,10 @@ const ReviewWirte = (props) => {
       <ModalBox>
         <div style={{ width: "700px" }}>
           <GoBack>
-            <BsXSquare id="icon" onClick={() => history.goBack()} size="30px"/> 
+            <BsXSquare id="icon" onClick={() => history.goBack()} size="30px" />
           </GoBack>
         </div>
-        <ContentSt>
+        <Content>
           <div>
             <p>후기 작성하기</p>
             <h3>제목 |</h3>
@@ -76,7 +71,7 @@ const ReviewWirte = (props) => {
             <div>
               <button
                 onClick={() => {
-                  if(title === "" || content === "") {
+                  if (title === "" || content === "") {
                     window.alert("내용을 모두 입력해주세요!")
                     return;
                   }
@@ -95,7 +90,7 @@ const ReviewWirte = (props) => {
             <div>
               <button
                 onClick={() => {
-                  if(title === "" || content === "") {
+                  if (title === "" || content === "") {
                     window.alert("내용을 모두 입력해주세요!")
                     return;
                   }
@@ -110,7 +105,7 @@ const ReviewWirte = (props) => {
               >등록하기</button>
             </div>
           }
-        </ContentSt>
+        </Content>
       </ModalBox>
     </ModalBack>
   );
@@ -151,7 +146,7 @@ const GoBack = styled.div`
   }
 `
 
-const ContentSt = styled.div`
+const Content = styled.div`
 
   width: 90%;
   height: 500px;
@@ -159,7 +154,7 @@ const ContentSt = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  align-items: center;
+  /* align-items: center; */
 
   div {
     width: 100%;
@@ -170,8 +165,6 @@ const ContentSt = styled.div`
     p {
       font-weight: 700;
       font-size: 25px;
-      /* margin: 0px 0px 23px 0px; */
-
       margin-bottom: 30px;
     }
 
@@ -198,7 +191,6 @@ const ContentSt = styled.div`
       font-style: normal;
     }
 
-
     textarea {
       width: 91%;
       margin-top: 10px;
@@ -223,16 +215,15 @@ const ContentSt = styled.div`
       border-radius: 10px;
       background-color: #000000;
       color: #FFFFFF;
-      /* box-shadow: 2px 2px 2px 2px gray; */
 
       font-size: 20px;
       font-family: Pretendard;
       font-weight: 700;
       font-style: normal;
-      cursor: pointer;
 
       :hover {
         box-shadow: 2px 2px 2px 2px gray;
+        cursor: pointer;
       }
     }
   }

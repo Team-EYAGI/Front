@@ -1,22 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Grid } from '../elements/Index';
 import { history } from '../redux/configureStore';
-import { IoHeart } from "react-icons/io5";
-import { BsFillPlayFill } from "react-icons/bs";
 import "../styles/modal.css"
-import AudioPlayer from "react-h5-audio-player";
 import { useParams } from 'react-router-dom';
 
 const AudioBookList = (props) => {
   const params = useParams();
-
-  const bookId = props.detail.bookId
   const category = params.category
 
+  const bookId = props.detail.bookId
   const audioBookList = props.detail ? props.detail.audio : null
-  console.log("리스트", audioBookList)
+  // console.log("리스트", audioBookList)
 
+  // 로그인한 사용자인지 확인
   const is_login = localStorage.getItem("is_login");
 
   return (
@@ -38,9 +34,9 @@ const AudioBookList = (props) => {
             }}>새 오디오북 요청하러가기</button>
         </AudioCardSt1>
         {audioBookList && audioBookList.length === 0 ?
-          <AudioReviewNone>
+          <CreatorNone>
             아직 참여한 크리에이터가 없어요! 새 오디오북을 요청해볼까요?
-          </AudioReviewNone>
+          </CreatorNone>
           :
           null
         }
@@ -48,7 +44,7 @@ const AudioBookList = (props) => {
           {audioBookList && audioBookList.map((item, idx) => (
             <AudioCardSt key={idx}>
               <ImgSt>
-                <img src={item.sellerImg ? item.sellerImg : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png"} />
+                <img src={item.sellerImg ? item.sellerImg : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
               </ImgSt>
               <ContentSt>
                 <div id='preview'>
@@ -63,7 +59,7 @@ const AudioBookList = (props) => {
                   {item.contents}
                 </span>
                 <div id='preview'>
-                  <span>{item.createdAt.split('오후')[0]}</span>
+                  <span>{item.createdAt.split("")}</span>
                 </div>
               </ContentSt>
             </AudioCardSt>
@@ -74,12 +70,10 @@ const AudioBookList = (props) => {
   )
 }
 
-const AudioReviewNone = styled.div`
+const CreatorNone = styled.div`
   width: 1100px;
   min-height: 200px;
   
-
-  /* background-color: purple; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -92,17 +86,12 @@ const Wrap = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  /* background-color: aliceblue; */
   flex-wrap: wrap;
 
   #title {
-    /* width: 100%; */
     float: left;
     font-size: 22px;
     font-weight: bold;
-    /* background-color: rebeccapurple; */
-    
   }
 
   button {
@@ -118,14 +107,12 @@ const Wrap = styled.div`
 `
 
 const CardWrap = styled.div`
-  /* background-color: rebeccapurple; */
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: left;
   align-items: center;
 
-  /* background-color: aliceblue; */
   flex-wrap: wrap;
 
   font-family: Pretendard;
@@ -134,8 +121,6 @@ const CardWrap = styled.div`
 `
 
 const AudioCardSt1 = styled.div`
-  /* background-color: #F4F4F4; */
-
   width: 100%;
   
   display: flex;
@@ -156,8 +141,6 @@ const AudioCardSt1 = styled.div`
 `
 
 const AudioCardSt = styled.div`
-  /* background-color: #F4F4F4; */
-
   width: 536px;
   height: 130px;
   
@@ -173,8 +156,6 @@ const AudioCardSt = styled.div`
 `
 
 const ImgSt = styled.div`
-  /* background-color: #C4C4C4; */
-
   width: 125px;
   height: 125px;
   border-radius: 15px;
@@ -192,8 +173,6 @@ const ImgSt = styled.div`
 `
 
 const ContentSt = styled.div`
-  /* background-color: lightgray; */
-
   width: 375px;
   min-height: 64px;
   
@@ -220,7 +199,6 @@ const ContentSt = styled.div`
 
   #preview {
     width: 100%;
-    /* background: yellow; */
     text-align: right;
 
     button {

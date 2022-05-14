@@ -3,13 +3,15 @@ import styled from 'styled-components';
 import AudioReview from '../components/AudioReview';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
+
 import { BsFillPlayFill } from 'react-icons/bs';
-import { useDispatch, useSelector } from 'react-redux';
-import { actionCreators as getActions } from "../redux/modules/audio";
-import { actionCreators as libraryActions } from "../redux/modules/mypage";
-import { history } from '../redux/configureStore';
 import { useBeforeunload } from "react-beforeunload";
 import { useParams } from 'react-router-dom';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { actionCreators as getActions } from "../redux/modules/audio";
+import { history } from '../redux/configureStore';
+
 
 const AudioPlay = (props) => {
 
@@ -27,35 +29,32 @@ const AudioPlay = (props) => {
   // 오디오북 재생목록 불러오기
   const audioDetail = useSelector((state) => state.audio.audio_list);
   const playList = audioDetail.audioFileDtoList
-  console.log("받은 데이타", audioDetail)
-  console.log(playList)
 
   // 오디오북 리뷰 불러오기
   const audioReview = useSelector((state) => state.audio.review_list);
-  console.log("리뷰 데이타", audioReview)
 
+  // 플레이리스트 상태변경
   const [play, setPlay] = React.useState("");
 
   React.useEffect(() => {
     dispatch(getActions.getAudioAC(audioBookId));
     dispatch(getActions.getReviewAC(audioBookId));
-    // dispatch(libraryActions.getReviewAC(audioBookId));
   }, []);
 
   return (
     <React.Fragment>
       <Wrap>
         <Player>
-          <HeaderSt>
+          <Header>
             <div>
               {audioDetail.title}
             </div>
             <span>
               저자: {audioDetail.author} / 크리에이터: {audioDetail.sellerName}
             </span>
-          </HeaderSt>
+          </Header>
 
-          <ImgSt style={{ backgroundImage: `url(${audioDetail.bookImg})` }}>
+          <ImgBox style={{ backgroundImage: `url(${audioDetail.bookImg})` }}>
             <div id='img_wrap'>
               <div id='img'>
                 <img src={audioDetail.bookImg} />
@@ -66,26 +65,20 @@ const AudioPlay = (props) => {
                 autoPlay={false}
                 src={play}
                 volume={1}
-                // progressUpdateInterval            
-                // onListen={()=>{}}
-                // ListenInterval
                 onPlay={e => console.log("onPlay")}
-              // other props here
               />
             </div>
-          </ImgSt>
+          </ImgBox>
           <div id='name'>
             <span id='creatorname'>{audioDetail.sellerName}</span>&nbsp;&nbsp;
             <span id='fixname'>크리에이터</span>
           </div>
-          <AudioCardSt>
+          <AudioCard>
             <SellerImg>
-              <img src={audioDetail.sellerImage ? audioDetail.sellerImage : null} />
+              <img src={audioDetail.sellerImage ? audioDetail.sellerImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
             </SellerImg>
-
-            {/* style={{ backgroundImage: (audioDetail.sellerImage ? `url(${audioDetail.sellerImage})` : `url("https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZfKhY%2FbtrBqGLmp03%2Fd26IOo940K3zO0xLjTFMfK%2Fimg.png")`) }} */}
-            <ContentSt>
-              <div id='preview'>
+            <Content>
+              <div id='follow'>
                 <div>팔로잉 팔로우</div>
                 <button
                   onClick={() => {
@@ -96,8 +89,8 @@ const AudioPlay = (props) => {
               <span id='contents'>
                 {audioDetail.audioInfo}
               </span>
-            </ContentSt>
-          </AudioCardSt>
+            </Content>
+          </AudioCard>
         </Player>
         <ListBox>
           <div id='listname'>
@@ -122,12 +115,11 @@ const AudioPlay = (props) => {
         </ListBox>
       </Wrap>
       <ReviewBox>
-        <div id='reviewbox1'>
+        <div id='reviewbox'>
           <div id='reviewHeader'>
             <h3>후기</h3>
             <h4>2개</h4>
           </div>
-
           <span
             onClick={() => {
               history.push(`/reviewWrite/${category}/${bookId}/${audioBookId}`)
@@ -161,7 +153,6 @@ const Wrap = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* background-color: lightblue; */
 
     #name {
       width: 464px;
@@ -182,7 +173,7 @@ const Wrap = styled.div`
     }
   `
 
-const HeaderSt = styled.div`
+const Header = styled.div`
     width: 450px;
     height: 56px;
 
@@ -191,13 +182,8 @@ const HeaderSt = styled.div`
     justify-content: center;
     align-items: center;
 
-    /* background-color: yellow; */
-
-    /* margin: 0 auto; */
     margin-top: 81px;
     margin-bottom: 26px;
-
-    font-family: Pretendard;
 
     div {
       font-weight: 700;
@@ -209,16 +195,10 @@ const HeaderSt = styled.div`
       font-weight: 400;
       font-size: 16px;
     }
-
-
-    `
+  `
 
 const Player = styled.div`
     width: 450px;
-    /* height: 789px; */
-    /* background-color: red; */
-  
-    /* margin: 0 auto; */
     display: flex;
     flex-direction: column;
     
@@ -258,15 +238,11 @@ const Player = styled.div`
         color : white;
       }
     }
-    `
-const ImgSt = styled.div`
+
+`
+const ImgBox = styled.div`
   width: 450px;
   height: 450px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
 
   background-repeat : no-repeat;
   background-size : cover;
@@ -274,23 +250,37 @@ const ImgSt = styled.div`
 
   #img_wrap {
     width: 450px;
-  height: 450px;
-    /* background-image: url(detail.bookImg) */
+    height: 450px;
+
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(26px);
+
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     border-radius: 20px;
+
+    #img {
+      min-height: 300px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    
+      img {
+        width: 100%;
+        border-radius: 2px 10px 10px 2px;
+      }
+    }
+
   }
 `
 
-const AudioCardSt = styled.div`
+const AudioCard = styled.div`
   width: 450px;
   height: 180px;
   
-  /* background-color: purple; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -301,8 +291,6 @@ const AudioReviewNone = styled.div`
   width: 1100px;
   height: 180px;
   
-
-  /* background-color: purple; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -317,29 +305,23 @@ const SellerImg = styled.div`
   border: 1px solid #878787;
   
   cursor: pointer;
-  
 
   overflow: hidden;
 
-img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+  img {
+    width:100%;
+    height:100%;
+    object-fit: cover;
+  }
 `
-
-
-
-const ContentSt = styled.div`
-  /* background-color: lightgray; */
-
+const Content = styled.div`
   width: 297px;
   min-height: 64px;
   
   display: flex;
   flex-direction: column;
-  justify-content: left;
-  align-items: center;
+  /* justify-content: left; */
+  /* align-items: center; */
 
   #contents {
     margin-top: 10px;
@@ -348,11 +330,11 @@ const ContentSt = styled.div`
     min-height: 100px;
   }
 
-  #preview {
+  #follow {
     width: 100%;
     height: 30px;
     /* background: yellow; */
-    text-align: right;
+    /* text-align: right; */
     
     display: flex;
     flex-direction: row;
@@ -378,21 +360,18 @@ const ContentSt = styled.div`
 `
 
 const ListBox = styled.div`
-    width: 550px;
+  width: 550px;
   height: 100%;
-  /* background-color: red; */
 
-  /* margin: 0 auto; */
-
-  font-family: Pretendard;
   font-weight: 400;
-  font-style: normal;
 
   #listname {
     height: 30px;
+
     display: flex;
     align-items: center;
     background-color: white;
+
     margin-top: 80px;
     margin-bottom: 26px;
 
@@ -427,23 +406,16 @@ const ListBox = styled.div`
       border-radius: 6px;
     }
 
-    /* padding: 20px 0px; */
-
     border-top: 1px solid #000000;
     border-bottom: 1px solid #000000;
 
     #list {
-      /* background-color: wheat; */
-
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
 
       padding: 0px 20px;
-           
-      /* margin-bottom: 10px; */
-
       border-top: 1px solid gray;
       border-bottom: 1px solid gray;
 
@@ -455,8 +427,6 @@ const ListBox = styled.div`
 
       h3 {
         width: 400px;
-        /* background-color: rebeccapurple; */
-      
         font-size: 35px;
       }
 
@@ -478,8 +448,6 @@ const ListBox = styled.div`
 `
 
 const PlayerSt = styled.div`
-  /* background-color: #EAEAEA; */
-
   width: 50px;
   height: 50px;
   
@@ -493,7 +461,6 @@ const PlayerSt = styled.div`
   
   cursor: pointer;
 
-  
   :hover {
     background-color: #000000;
     color: white;
@@ -502,7 +469,6 @@ const PlayerSt = styled.div`
 `
 
 const ReviewBox = styled.div`
-  /* background-color: green; */
   min-height: 400px;
   max-height: 570px;
 
@@ -512,21 +478,14 @@ const ReviewBox = styled.div`
   display: flex;
   flex-direction: column;
 
-  /* border-bottom: 1px solid black; */
-
-  font-family: 'Pretendard';
-  font-style: normal;
-
   margin-bottom: 114px;
 
 
-  #reviewbox1 {
+  #reviewbox {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
-    /* background-color: yellow; */
-    
 
     height: 150px;
 
@@ -538,7 +497,6 @@ const ReviewBox = styled.div`
       flex-direction: row;
       align-items: center;
       height: 30px;
-      /* background-color: rebeccapurple; */
 
       h3 {
         font-weight: 700;
@@ -554,14 +512,14 @@ const ReviewBox = styled.div`
     }
 
     span {
+      height: 30px;
+      margin-right: 8px;
+
       font-weight: 500;
       font-size: 14px;
       color: #000000;
+      
       cursor: pointer;
-      height: 30px;
-
-      margin-right: 8px;
-      /* background-color: white; */
     }
   }
 

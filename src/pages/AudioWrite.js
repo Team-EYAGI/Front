@@ -1,15 +1,15 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
+import { BiSearch } from "react-icons/bi";
+import { useParams } from 'react-router-dom';
+
 import { actionCreators as addActions } from "../redux/modules/audio";
 import { actionCreators as getActions } from "../redux/modules/book";
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { BiSearch } from "react-icons/bi";
 
 const AudioWrite = () => {
   const dispatch = useDispatch();
   const params = useParams();
-  // console.log(params)
   const bookId = params.bookId
   const category = params.category
 
@@ -18,9 +18,9 @@ const AudioWrite = () => {
 
   // 첫 등록인지 확인하기
   const firstCheck = useSelector((state) => state.audio.audio_check);
-  console.log(firstCheck)
+  // console.log(firstCheck)
 
-  // upload라는 훅 생성
+  // 인풋에 접근
   const fileInput = useRef();
 
   // 인풋을 대신 클릭해주기 위한 함수
@@ -30,7 +30,6 @@ const AudioWrite = () => {
 
   const [contents, setContents] = React.useState("")
   const [file, setFile] = React.useState("")
-  // console.log(contents)
 
   // 파일 선택하기
   const selectFile = (e) => {
@@ -38,14 +37,10 @@ const AudioWrite = () => {
     const reader = new FileReader();
     const file = fileInput.current.files[0];
     reader.readAsDataURL(file);
-    // reader.onloadend = () => {
-    //   // dispatch(reviewActions.setPreview(reader.result));
-    // };
   };
 
   // 오디오 추가하기
   const addAudio = () => {
-    // const userId = getCookie("userId")
     let file = fileInput.current.files[0];
     console.log(file)
 
@@ -53,7 +48,6 @@ const AudioWrite = () => {
       window.alert("파일을 추가해주세요.")
       return;
     }
-    // 리뷰를 추가할 때 addReviewAc로 정보를 넘긴다.
     dispatch(addActions.addAudioAC({
       information: { contents: contents },
       file,
@@ -61,7 +55,6 @@ const AudioWrite = () => {
       category,
     })
     )
-    // history.replace(`/detail/${itemId}`)
   }
 
   React.useEffect(() => {
@@ -86,7 +79,6 @@ const AudioWrite = () => {
                 <h3>{detail.author}</h3>
               </div>
             </div>
-
           </ImgSt>
           <ContentSt>
             <p>오디오 파일 업로드</p>
@@ -113,8 +105,6 @@ const AudioWrite = () => {
                 :
                 null
               }
-
-
               <input
                 type="file"
                 accept="audio/wav"
@@ -161,8 +151,6 @@ const HeaderSt = styled.div`
 `
 
 const BookInfoSt = styled.div`
-  /* background-color: greenyellow; */
-
   width: 1200px;
 
   padding-bottom: 80px;
@@ -174,8 +162,6 @@ const BookInfoSt = styled.div`
 `
 
 const ImgSt = styled.div`
-  /* background-color: gray; */
-  
   width: 50%;
   
   display: flex;
@@ -190,8 +176,7 @@ const ImgSt = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
-    /* background: #FFFFFF; */
+
     border: 1px solid #C4C4C4;
     border-radius: 10px;
 
@@ -218,8 +203,6 @@ const ImgSt = styled.div`
 
     img {
       width: 100%;
-      /* height: 100%; */
-
       border: 1px solid lightgray;
       border-radius: 2px 10px 10px 2px;
     }
@@ -233,7 +216,6 @@ const ContentSt = styled.div`
 
   display: flex;
   flex-direction: column;
-  /* justify-content: space-around; */
   align-items: center;
 
   p {
@@ -307,8 +289,6 @@ const ContentSt = styled.div`
       margin-top: 80px;
       margin-bottom: 40px;
 
-      /* background: #F4F4F4;
-      border: 1px solid #E4E4E4; */
       background: #0C0A0A;
       color: #FFFFFF;
       border-radius: 10px;
@@ -327,8 +307,6 @@ const ContentSt = styled.div`
         box-shadow: 3px 3px 3px 3px gray;
       }
     }
-  
 `
-
 
 export default AudioWrite;

@@ -9,11 +9,10 @@ const Request = () => {
   const dispatch = useDispatch();
 
   const requestList = useSelector((state) => state.audio.request_list);
-  
+
   React.useEffect(() => {
     dispatch(requestActions.getRequestAC());
   }, [dispatch]);
-
 
   return (
     <React.Fragment>
@@ -21,12 +20,12 @@ const Request = () => {
         <RequestTitle>오디오북 요청하기</RequestTitle>
         <RequestInfo>
           <li>
-            <div id='header'/>
+            <div id='header' />
             이 공간은 듣고 싶은 오디오북에 대한 수요조사를 하는 공간입니다. 해당 게시판의 성격과 다른 글은
             사전동의 없이 담당 게시판으로 이동될 수 있습니다.
           </li>
           <li>
-            <div id='header'/>
+            <div id='header' />
             듣고 싶은 오디오북이 있다면 원하는 오디오북을 클릭하여 오디오북 요청서를 작성해주세요.
           </li>
         </RequestInfo>
@@ -48,7 +47,7 @@ const Request = () => {
           </TableInfo>
           {requestList && requestList.map((item, idx) => {
             // ReviewDetail 페이지에 item값을 props로 넘겨준다.
-            return <RequestList key={idx} item={item}/>
+            return <RequestList key={idx} item={item} />
           })}
         </RequestTable>
         <ReveiwButtonWrap>

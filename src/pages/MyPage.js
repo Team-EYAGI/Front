@@ -1,19 +1,17 @@
 import React, { useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import AudioPlayer from "react-h5-audio-player";
+import MyPageAudioBook from '../components/MyPageAudioBook';
+import { useParams } from 'react-router-dom';
+
 import { history } from '../redux/configureStore';
 import { actionCreators as libraryActions } from "../redux/modules/mypage";
-import AudioPlayer from "react-h5-audio-player";
-
-import MyPageAudioBook from '../components/MyPageAudioBook';
 import { useDispatch, useSelector } from 'react-redux';
 
 const MyPage = () => {
   const dispatch = useDispatch();
 
   const params = useParams();
-  // console.log(params)
-
   const category = params.category;
 
   const likeBook = useSelector((state) => state.mypage.library_likeBook);
@@ -21,16 +19,13 @@ const MyPage = () => {
   const listenAudio = useSelector((state) => state.mypage.library_listenAudio);
   const myFunding = useSelector((state) => state.mypage.library_registerFunding);
   const myAudio = useSelector((state) => state.mypage.library_registerAudioBook);
-  const seller = localStorage.getItem("seller");
-
-
+  const authority = localStorage.getItem("seller");
 
   const player = useRef();
 
   useEffect(() => {
     player.current.audio.current.pause();  // -3-
   }, [profile]);
-
 
   useEffect(() => {
     dispatch(libraryActions.getProfileAC());
@@ -54,7 +49,7 @@ const MyPage = () => {
           <Profile>
             <Box>
               <div id='img'>
-                <img src={profile.userImage ? profile.userImage : null} />
+                <img src={profile.userImage ? profile.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
               </div>
               <div id='username'>
                 <h4>{profile.userName}</h4>
@@ -90,7 +85,7 @@ const MyPage = () => {
             >
               프로필 편집
             </button>
-            {seller !== "ROLE_SELLER" ?
+            {authority !== "ROLE_SELLER" ?
               <span 
                 id='creatorform'
                 onClick={() => {
@@ -115,7 +110,7 @@ const MyPage = () => {
             }
           </Profile>
           <List>
-            {seller === "ROLE_SELLER" ?
+            {authority === "ROLE_SELLER" ?
               <ListBox>
                 <h2>| 크리에이터</h2>
                 <h3

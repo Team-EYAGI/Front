@@ -1,34 +1,50 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configureStore";
-import { BsXSquare } from "react-icons/bs";
+import { useParams } from "react-router-dom";
+import Spinner from "../elements/Spinner";
 
 const Loading = (props) => {
+  const params = useParams();
+
   return (
     <ModalBack>
       <ModalBox>
-        <div style={{ width: "700px" }}>
-          <GoBack>
-            <BsXSquare id="icon" onClick={() => history.goBack()} size="30px" />
-          </GoBack>
-        </div>
-        <ContentSt>
-          <p>등록이 완료되었습니다!</p>
-
-          <div>
-            <button
-            onClick={() => {
-              history.push('/mypage/listen')
-            }}
-            >마이페이지로 이동하기</button>
-          </div>
-
-        </ContentSt>
+        {params.result === "success" ?
+          <Content>
+            <p>등록이 완료되었습니다!</p>
+            <div>
+              <button
+                onClick={() => {
+                  history.push('/mypage/listen')
+                }}
+              >마이페이지로 이동하기</button>
+            </div>
+          </Content>
+          : params.result === "failed" ?
+          <Content>
+            <p>등록 실패!</p>
+            <span>파일 확장자를 다시 한 번 확인해주세요!</span>
+            <div>
+              <button
+                onClick={() => {
+                  history.push(`/addvoice`)
+                }}
+              >다시 등록하기</button>
+            </div>
+          </Content>
+          :
+          <Content>
+            <p>등록중이니 조금만 기다려주세요!</p>
+            <div id="spinner">
+              <Spinner/>
+            </div>
+          </Content>
+        }
       </ModalBox>
     </ModalBack>
   );
 };
-
 
 
 const ModalBox = styled.div`
@@ -64,7 +80,7 @@ const GoBack = styled.div`
   }
 `
 
-const ContentSt = styled.div`
+const Content = styled.div`
 
   width: 90%;
   height: 500px;
@@ -106,7 +122,6 @@ const ContentSt = styled.div`
   p {
       font-weight: 700;
       font-size: 25px;
-      /* margin: 0px 0px 23px 0px; */
 
       margin-bottom: 30px;
     }
@@ -120,7 +135,6 @@ const ContentSt = styled.div`
       border-radius: 10px;
       background-color: #000000;
       color: #FFFFFF;
-      /* box-shadow: 2px 2px 2px 2px gray; */
 
       font-size: 20px;
       font-family: Pretendard;
@@ -138,6 +152,12 @@ const ContentSt = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  #spinner {
+    width: 60px;
+    margin-bottom: 130px;
+    margin-top: -100px;
   }
 `
 

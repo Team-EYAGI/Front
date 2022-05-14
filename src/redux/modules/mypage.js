@@ -104,8 +104,6 @@ const getListenAudioAC = () => {
       .then((res) => {
         // console.log("듣고있는 오디오북 불러오기 성공", res)
         dispatch(getListenAudio(res.data))
-
-        // history.replace(`/request`)
       })
       .catch(error => {
         console.log("error", error)
@@ -121,7 +119,7 @@ const getRegisterAudioBookAC = () => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        console.log("등록한 오디오북 불러오기 성공", res)
+        // console.log("등록한 오디오북 불러오기 성공", res)
         dispatch(getRegisterAudioBook(res.data))
 
         // history.replace(`/request`)
@@ -140,7 +138,7 @@ const getRegisterFundingAC = () => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        console.log("등록한 펀딩 불러오기 성공", res)
+        // console.log("등록한 펀딩 불러오기 성공", res)
         dispatch(getRegisterFunding(res.data))
 
         // history.replace(`/request`)
@@ -264,7 +262,7 @@ const addVoiceAC = (payload) => {
     // FormData의 value 확인
     for (let value of formData.values()) { console.log(value); }
 
-    window.alert("등록중이니 조금만 기다려주세요!(시간이 쪼금.. 걸려요!!)")
+    history.push(`/loading`)
 
     axios.post(process.env.REACT_APP_BASE_URL + `/seller/new/voice`,
       formData,
@@ -278,11 +276,11 @@ const addVoiceAC = (payload) => {
       .then((res) => {
         console.log("오디오 등록 완료", res)
         // dispatch(uploadImg({userId, title, comment}))
-        history.push(`/loading`)
+        history.push(`/loading/success`)
       })
       .catch(error => {
         console.log("서버에러", error)
-        window.alert("파일 등록에 실패했습니다. 확장자를 다시한번 확인해주세요!")
+        history.push(`/loading/failed`)
       })
   }
 }
@@ -338,11 +336,11 @@ export default handleActions(
 
 const actionCreators = {
   // export 할 것들
-  addLibrary,
-  getListenAudio,
-  getLikeBook,
-  getProfile,
-  addProfile,
+  // addLibrary,
+  // getListenAudio,
+  // getLikeBook,
+  // getProfile,
+  // addProfile,
   addLibraryAC,
   getListenAudioAC,
   getLikeBookAC,

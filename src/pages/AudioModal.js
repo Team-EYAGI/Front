@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import React from "react";
 import styled from "styled-components";
 import AudioPlayer from "react-h5-audio-player";
+import { useBeforeunload } from "react-beforeunload";
+import { BsXSquare } from "react-icons/bs";
+
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as getActions } from "../redux/modules/book";
-import { useBeforeunload } from "react-beforeunload";
-import { BsXSquare } from "react-icons/bs";
 
 
 const AudioModal = (props) => {
@@ -26,7 +27,6 @@ const AudioModal = (props) => {
 
   // 책 상세페이지 가져오기
   const detail = useSelector((state) => state.book.detail_book);
-  console.log("디테일", detail)
 
   // 책 상세페이지 속 오디오북 리스트(배열)를 가져옴
   // 파람스의 audioBookId와 배열의 audioBookId가 같은 것을 찾아 preview에 넣어줌 
@@ -44,14 +44,12 @@ const AudioModal = (props) => {
         <ModalBox>
           <div style={{ width: "700px" }}>
             <GoBack>
-            <BsXSquare id="icon" onClick={() => history.goBack()} size="30px"/> 
-
+             <BsXSquare id="icon" onClick={() => history.goBack()} size="30px"/> 
             </GoBack>
-
             <PlayerImg style={{ backgroundImage: `url(${detail.bookImg})` }}>
             <div id='img_wrap'>
               <Img>
-                <img style={{ width: "100%", height: "100%" }}
+                <img style={{ width: "100%" }}
                   src={detail.bookImg}
                 />
               </Img>
@@ -65,11 +63,7 @@ const AudioModal = (props) => {
                 timeFormat={"mm:ss"}
                 defaultCurrentTime={"00:00"}
                 showJumpControls={false}
-                // progressUpdateInterval            
-                // onListen={()=>{}}
-                // ListenInterval
                 onPlay={e => console.log("onPlay")}
-              // other props here
               />
               </div>
             </PlayerImg>
@@ -93,7 +87,6 @@ const AudioModal = (props) => {
         :
         null
       }
-
     </ModalBack>
   );
 };
@@ -144,8 +137,6 @@ const ModalBack = styled.div`
   right: 0;
   background: rgba(0, 0, 0, 0.3);
 
-  font-family: Pretendard;
-  font-style: normal;
   font-weight: 400;
   color: white;
 `;
@@ -185,8 +176,6 @@ const PlayerImg = styled.div`
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    position: relative;
-    /* background-color: red; */
   }
 
   .audio {
@@ -224,8 +213,8 @@ const Img = styled.div`
   margin: 0 auto;
   margin-top: 20px;
 
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  img {
+    width: 100%;
+    border-radius: 2px 10px 10px 2px;
+  }
 `

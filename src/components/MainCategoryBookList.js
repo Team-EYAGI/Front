@@ -3,7 +3,6 @@ import React from 'react';
 import MainCategoryBookCard from '../components/MainCategoryBookCard';
 import { useHistory } from "react-router-dom";
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 const CategoryBookList = (props) => {
   const history = useHistory();
@@ -22,19 +21,19 @@ const CategoryBookList = (props) => {
 
   return (
     <React.Fragment>
-            <Wrap>
-        <span style={{fontSize: "20px", fontWeight: "700"}}>카테고리별 오디오북</span>
+      <Wrap>
+        <span style={{ fontSize: "20px", fontWeight: "700" }}>카테고리별 오디오북</span>
         <span
-          style={{fontSize: "16px"}}
+          style={{ fontSize: "16px" }}
           id="plus"
           onClick={() => {
-            history.push(`/funding`)
+            history.push(`/book/자기계발`)
           }}
         >카테고리 전체보기</span>
       </Wrap>
       <HeaderSt>
-         {genre.map((item, idx) => (
-           <GenreSt
+        {genre.map((item, idx) => (
+          <GenreSt
             // 카테고리 클릭 시 각 카테고리 페이지로 이동
             onClick={() => {
               history.push(`/book/${item}`);
@@ -45,11 +44,11 @@ const CategoryBookList = (props) => {
           >
             {item}
           </GenreSt>
-          ))}
-        </HeaderSt>
+        ))}
+      </HeaderSt>
       <Body>
         {selfBook && selfBook.map((item, idx) => (
-          <MainCategoryBookCard key={idx} item={item}/>
+          <MainCategoryBookCard key={idx} item={item} />
         ))}
       </Body>
     </React.Fragment>

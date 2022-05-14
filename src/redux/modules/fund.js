@@ -32,10 +32,8 @@ const getFundingAC = () => {
     axios.get(process.env.REACT_APP_BASE_URL + `/fund`, {
 
     },
-    // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      // console.log("펀딩리스트", res)
       dispatch(getFunding(res.data))
 
     })
@@ -48,7 +46,6 @@ const getFundingAC = () => {
 
 // 오디오북 파일 추가
 const addFundingAC = (payload) => {
-  // console.log(payload)
   let Token = getToken("Authorization");
   let bookId = payload.bookId
   return function (dispatch, getState, { history }) {
@@ -77,7 +74,6 @@ const addFundingAC = (payload) => {
     )
       .then((res) => {
         console.log("펀딩 등록 완료", res)
-        // dispatch(uploadImg({userId, title, comment}))
         history.replace(`/funding`);
       })
       .catch(error => {
@@ -88,9 +84,6 @@ const addFundingAC = (payload) => {
 
 //좋아요
 const addLikeDB = (fundHeartBool, fundId) => {
-  // console.log(fundId)
-  // console.log(fundHeartBool)
-
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     axios
@@ -99,13 +92,10 @@ const addLikeDB = (fundHeartBool, fundId) => {
       },
       { headers: { 'Authorization': `${Token}` } }
       )
-
-      .then((res) => {
-        console.log(res);       
+      .then((res) => {       
         dispatch(addLike(res.data, fundId)) 
       })
-      .catch((error) => {
-       
+      .catch((error) => {       
         console.log(error)
       });
   };
