@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import moment from "moment";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
+
 import { actionCreators as chatActions } from "../redux/modules/chat";
 import ChatList from '../components/ChatList';
 import { useParams } from 'react-router-dom';
@@ -11,18 +12,26 @@ import logo from '../src_assets/eyagiLogo1.png'
 import { useBeforeunload } from "react-beforeunload";
 
 const AdminChatList = (props) => {
-  const dispatch = useDispatch();
-  useBeforeunload((event) => event.preventDefault());
+    const dispatch = useDispatch();
+  // useBeforeunload((event) => event.preventDefault());
     const params = useParams();
     const roomId = params.roomId;
-
-    const beforeMessage = useSelector((state) => state.chat.setMessage); // 애는 잘됨
     
     const sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + `/chatting`);
     const stompClient = Stomp.over(sockjs);
     const Token = localStorage.getItem("token");
 
+    // 현재 방정보
+    // ChatRoomList에서 받아오는 정보
+    // 채팅 목록 조회시 받아온 정보로 특정 채팅방 입장
+    const roomName = props.history.location.state?.romName;
+    console.log(roomName);
+    // const room_id = props.history.location.state?.room_id;
+    // const post_id = props.history.location.state?.post_id;
+    // const own_user_id = props.history.location.state?.own_user_id;
+    // const order_time = props.history.location.state?.order_time;
 
+    const beforeMessage = useSelector((state) => state.chat.setMessage);
     const preview = useSelector((state) => state.chat.messages); //얘가 문젠데..
 
   
