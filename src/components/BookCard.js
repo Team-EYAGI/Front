@@ -32,16 +32,10 @@ const Wrap = styled.div`
 
   height: 360px;
   margin: 10px;
-  
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
 `
 
 const Body = styled.div`
   width: 100%;
-  
-
 
   h3 {
     width: 180px;
@@ -50,14 +44,13 @@ const Body = styled.div`
     white-space: nowrap;
     overflow:hidden;
     text-overflow: ellipsis;
+    margin: 12px 0px 5px 0px;
   }
 `
 
 const ImageBox = styled.div`
   width: 180px;
   height: 260px;
-
-  /* border-radius: 2px 10px 10px 2px; */
 
   display: flex;
   flex-direction: column;
@@ -68,7 +61,6 @@ const ImageBox = styled.div`
   img {
   border: 1px solid lightgray;
   border-radius: 2px 10px 10px 2px;
-  /* box-shadow: 0 0 2px gray; */
   cursor: pointer;
   }
 `

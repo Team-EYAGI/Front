@@ -69,6 +69,7 @@ const RequestWrite = (props) => {
               <div>
                 <button
                   id='uploadBtn'
+                  disabled={contents === ""}
                   onClick={() => {
                     if (contents.length < 10) {
                       window.alert("최소 10자 이상 입력해주세요!")
@@ -82,6 +83,7 @@ const RequestWrite = (props) => {
               <div>
                 <button
                   id='uploadBtn'
+                  disabled={contents === ""}
                   onClick={() => {
                     if (contents.length < 10) {
                       window.alert("최소 10자 이상 입력해주세요!")
@@ -227,6 +229,7 @@ const Content = styled.div`
       width: 464px;
       height: 60px;
 
+
       background: #0C0A0A;
       color: #FFFFFF;
       border-radius: 10px;
@@ -236,13 +239,13 @@ const Content = styled.div`
       font-weight: 400;
       font-size: 20px;
 
-      :hover {
-        cursor: pointer;
-        background: #0C0A0A;
-        color: #FFFFFF;
-        border: 1px solid #0C0A0A;
+      cursor: pointer;
 
-        box-shadow: 3px 3px 3px 3px gray;
+      :disabled {
+        background: #F4F4F4;
+        color: #8E8E8E;
+        border: 1px solid #E4E4E4;
+        cursor: auto;
       }
     }
   

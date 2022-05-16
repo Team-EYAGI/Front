@@ -121,9 +121,9 @@ const Header = (props) => {
 const HeaderWrap = styled.div`
   width: 1200px;
   height: 60px;
-  
-  
-  position: relative;
+  background-color: #FFFFFC;;
+
+  /* position: relative; */
   margin: 20px auto -5px auto;
 
   display: flex;
@@ -141,16 +141,21 @@ const BottomWrap = styled.div`
   max-width: 1440px;
   width: calc(100%-480px);
   /* min-width: 1200px; */
+  background-color: #FFFFFC;;
 
-  /* background-color: yellow; */
   height: 50px;
-  
-  position: relative;
+
+  position: sticky;
+  top: 0;
+  z-index: 4;
+
   margin: 0px auto;
   padding: 0.3vw 13.02vw;
 
-  border-radius: 20px;
-  border-bottom: 1px solid black;
+  /* border-radius: 20px; */
+  /* border-bottom: 1px solid black; */
+
+  background-color: #FFFFFC;;
 
   display: flex;
   flex-direction: row;
@@ -240,7 +245,7 @@ const BottomSt = styled.ul`
 
     cursor: pointer;
     :hover {
-      color: purple;
+      color: #D05943;
     }
   }
 `
@@ -252,6 +257,7 @@ const SearchWrap = styled.div`
    display: flex;
    justify-content: center;
    align-items: center;
+
 `;
 
 const Search = styled.input`
@@ -262,7 +268,7 @@ const Search = styled.input`
   border-radius: 10px;
   outline: none;
   width: 279px;
-  height: 48px;
+  height: 38px;
   padding: 0 60px 0 14px;
   margin-bottom: 2px;
   margin-left: -31px;
