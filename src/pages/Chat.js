@@ -214,7 +214,7 @@ const Chat = (props) => {
           </div>
           <div id="btm_area">
             <div>
-            <MessageWrite sendMessage={sendMessage} />
+              <MessageWrite sendMessage={sendMessage} />
               <Join
                 enterRoom={enterRoom}
                 click={click}

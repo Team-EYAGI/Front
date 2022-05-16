@@ -52,7 +52,6 @@ const Admin = () => {
       <Wrap>
         <div id="bd_top">
           <Card>1:1 문의 내역보기</Card>
-          <span>글 작성</span>
         </div>
         <div id='hello'>
           {/* //아래 맵에서 채팅방 목록 돌리면서 빼주기. */}
@@ -71,7 +70,7 @@ const Admin = () => {
           ))
           }
           {roomList.length === 0 && (
-            <div>"아직 데이터가 없습니다."</div>
+            <div id="empty">"아직 데이터가 없습니다."</div>
           )}
         </div>
       </Wrap>
@@ -108,6 +107,15 @@ const Wrap = styled.div`
     padding-bottom: 30px;
 
     & span {line-height: 1; font-size: 14px; font-weight: 500;}
+  }
+
+  #empty {
+    width: 100%;
+    height: 180px;
+    line-height: 180px;
+    text-align:center;
+    font-size: 18px;
+    font-weight: 500;
   }
 `
 

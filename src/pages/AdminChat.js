@@ -128,7 +128,7 @@ const AdminChatList = (props) => {
           {
             token: `${Token}`,
           }, JSON.stringify(data));
-        console.log("메세지보내기 상태", stompClient.ws.readyState);
+        // console.log("메세지보내기 상태", stompClient.ws.readyState);
       });
     } catch (e) {
       console.log("message 소켓 함수 에러", e);

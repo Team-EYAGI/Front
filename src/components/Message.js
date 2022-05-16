@@ -7,7 +7,6 @@ import { Grid, Text } from "../elements/Index";
 const Message = (props) => {
   const userId = localStorage.getItem("userId");
   const user_info = useSelector((state) => state.user.user);
-  console.log(user_info);
   // 메세지 타임
   let time = "";
   if (!(props.item.createdAt === null)) {
