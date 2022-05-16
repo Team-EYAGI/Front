@@ -1,58 +1,27 @@
 import React from 'react'
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { Grid, Text } from "../elements/Index";
-import moment from "moment";
-import Stomp from "stompjs";
-import SockJS from "sockjs-client";
-import Join from "../components/Join";
-import { actionCreators as chatActions } from "../redux/modules/chat";
-import { history } from '../redux/configureStore';
+
 const AdminChatList = (props) => {
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    return () => { };
+  }, []);
 
-// 채팅방 목록 한개 
-// 유저 닉네임, 날짜, 방번호 , 유저 롤 
-// const {
-    
-//   } = props;
-const dispatch = useDispatch();
-
-// const sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + "/chatting");
-// const stompClient = Stomp.over(sockjs);
-// const Token = localStorage.getItem("token");
-
-
-// React.useEffect(() => {
-
-//   connect();
-
-//   return () => { };
-// }, []);
-
-// const connect = () => {
-    
-//   stompClient.connect({
-//     token: `${Token}`
-//   }, onConnected);
-// };
-// const onConnected = () => { };
-
-
-
-return (
-    <React.Fragment>
-      <Wrap>
-        <div className="s_line" onClick={()=>{
-          history.push(`/AdminChat/${props.item.roomId}`);
-        }}>
-          <p className="s_list1">{props.item.userRole}</p>
-          <p className="s_list2">{props.item.nickname}님의 {props.item.romName}</p>
-          <p className="s_list3">{props.item.createdAt}</p>
-        </div>
-      </Wrap>
-    </React.Fragment>
-    )
-}
+  return (
+      <React.Fragment>
+        <Wrap>
+          <div className="s_line"
+            onClick={props._onClick}
+          >
+            <p className="s_list1">{props.item.userRole}</p>
+            <p className="s_list2">{props.item.own_user_id}님의 {props.item.romName}</p>
+            <p className="s_list3">{props.item.createdAt}</p>
+          </div>
+        </Wrap>
+      </React.Fragment>
+      )
+  }
 
 const Wrap = styled.div`
   width: 100%;
