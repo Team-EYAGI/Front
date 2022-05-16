@@ -1,11 +1,9 @@
 import React from 'react'
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { actionCreators as chatActions } from "../redux/modules/chat";
 
 const AdminChatList = (props) => {
   const dispatch = useDispatch();
-
   React.useEffect(() => {
     return () => { };
   }, []);
@@ -17,7 +15,7 @@ const AdminChatList = (props) => {
             onClick={props._onClick}
           >
             <p className="s_list1">{props.item.userRole}</p>
-            <p className="s_list2">{props.item.nickname}님의 {props.item.romName}</p>
+            <p className="s_list2">{props.item.own_user_id}님의 {props.item.romName}</p>
             <p className="s_list3">{props.item.createdAt}</p>
           </div>
         </Wrap>

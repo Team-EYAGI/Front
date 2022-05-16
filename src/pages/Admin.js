@@ -17,31 +17,29 @@ const Admin = () => {
 
   React.useEffect(() => {
     if(Token) {
-      // dispatch( chatActions.setChatListAX());
-      //새로 세팅
-      dispatch( chatActions.setNewChatListAX());
+      dispatch( chatActions.setChatListAX());
       dispatch( chatActions.clearChat());
     }
     return () => { };
   }, []);
   
   // 신규 작성 
-  const enterRoom = (roomId, romName, nickname) => {
+  const enterRoom = (room_id, romName, nickname) => {
     // 채팅방 들어갔다가 뒤로가기 누르면 자동으로 방나가기
     // room_id 리덕스에 저장된 걸로 실제 채팅 페이지 이동했을 때 서버연결 시켜서 보여줌
     // 현재 채팅방 정보 바꾸기
     dispatch(
       chatActions.moveChatRoom(
-        roomId,
+        room_id,
         romName,
         nickname,
       )
     );
     // 채팅방 이동하면서 방 정보 넣어주기
     history.push({
-      pathname:`/AdminChat/${roomId}`,
+      pathname:`/AdminChat/${room_id}`,
       state: {
-        room_id: roomId,
+        room_id: room_id,
         roomName: romName,
         own_user_id: nickname,
       },
@@ -64,7 +62,7 @@ const Admin = () => {
               item={item}
               _onClick={(e)=>{
                 enterRoom(
-                  item.roomId,
+                  item.room_id,
                   item.romName,
                   item.nickname,
                 );
@@ -72,6 +70,9 @@ const Admin = () => {
             />
           ))
           }
+          {roomList.length === 0 && (
+            <div>"아직 데이터가 없습니다."</div>
+          )}
         </div>
       </Wrap>
     </React.Fragment>
