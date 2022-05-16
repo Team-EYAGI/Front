@@ -115,6 +115,7 @@ const AudioWrite = () => {
               />
               <button
                 id='uploadBtn'
+                disabled={contents === "" || file === ""}
                 onClick={addAudio}
               >등록하기</button>
             </div>
@@ -298,13 +299,13 @@ const ContentSt = styled.div`
       font-weight: 400;
       font-size: 20px;
 
-      :hover {
-        cursor: pointer;
-        background: #0C0A0A;
-        color: #FFFFFF;
-        border: 1px solid #0C0A0A;
+      cursor: pointer;
 
-        box-shadow: 3px 3px 3px 3px gray;
+      :disabled {
+        background: #F4F4F4;
+        color: #8E8E8E;
+        border: 1px solid #E4E4E4;
+        cursor: auto;
       }
     }
 `

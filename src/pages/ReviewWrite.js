@@ -70,6 +70,7 @@ const ReviewWirte = (props) => {
           {is_edit ?
             <div>
               <button
+                disabled={title === "" || content === ""}
                 onClick={() => {
                   if (title === "" || content === "") {
                     window.alert("내용을 모두 입력해주세요!")
@@ -89,6 +90,7 @@ const ReviewWirte = (props) => {
             :
             <div>
               <button
+                disabled={title === "" || content === ""}
                 onClick={() => {
                   if (title === "" || content === "") {
                     window.alert("내용을 모두 입력해주세요!")
@@ -212,18 +214,22 @@ const Content = styled.div`
       height: 60px;
       margin: 40px 0px;
 
-      border-radius: 10px;
-      background-color: #000000;
+      background: #0C0A0A;
       color: #FFFFFF;
+      border-radius: 10px;
 
       font-size: 20px;
       font-family: Pretendard;
       font-weight: 700;
       font-style: normal;
 
-      :hover {
-        box-shadow: 2px 2px 2px 2px gray;
-        cursor: pointer;
+      cursor: pointer;
+
+      :disabled {
+        background: #F4F4F4;
+        color: #8E8E8E;
+        border: 1px solid #E4E4E4;
+        cursor: auto;
       }
     }
   }
