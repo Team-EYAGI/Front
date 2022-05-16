@@ -71,15 +71,15 @@ const Main = () => {
       <SliderWrap>
         <MainAdBanner/>
       </SliderWrap>
-      <SellerWrap>
-        <MainSellerList mainCreator={mainCreator}/>
-      </SellerWrap>
-      <Wrap>
-        <MainBookList main={main}/>
-      </Wrap>
       <FunddingWrap>
         <MainFundingList mainFunding={mainFunding}/>
       </FunddingWrap>
+      <Wrap>
+        <MainBookList main={main}/>
+      </Wrap>
+      <SellerWrap>
+        <MainSellerList mainCreator={mainCreator}/>
+      </SellerWrap>
       <CategoryWrap>
         <MainCategoryBookList mainCategory={mainCategory}/>
       </CategoryWrap>
@@ -97,6 +97,7 @@ const Main = () => {
 //   position: relative;
 //   margin: 0 auto;
 // `
+
 
 // 메인의 크기는 1100px로 고정
 const Wrap = styled.div`
@@ -161,6 +162,7 @@ const SliderWrap = styled.div`
   max-width: 1920px;
   width: 100%;
   max-height: 450px;
+  margin-top: 100px;
   height: 100%;
   position: relative;
   margin: 0 auto;

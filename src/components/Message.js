@@ -1,10 +1,13 @@
 import React from 'react'
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-// import { Grid, Text, Image } from "../elements";
+import { useSelector } from "react-redux";
+import { history } from "../redux/configureStore";
 import { Grid, Text } from "../elements/Index";
-const ChatList = (props) => {
+
+const Message = (props) => {
   const userId = localStorage.getItem("userId");
+  const user_info = useSelector((state) => state.user.user);
+  console.log(user_info);
   // 메세지 타임
   let time = "";
   if (!(props.item.createdAt === null)) {
@@ -13,8 +16,6 @@ const ChatList = (props) => {
 
   const DB_time = time?.split(":")[0] + ":" + time?.split(":")[1]; // DB에서 불러온 메세지 시간 정보
 
-  // 조건문 -> 사용자일때는 ~~이렇게 보여라, 아니라면(관리자) ~~이렇게 보여라 걸어주기.
-  //components/Message.js 참고. 
   if (props.item.type === "ENTER" || props.item.type === "QUIT") {
     return (
       <React.Fragment>
@@ -25,20 +26,20 @@ const ChatList = (props) => {
             backgroundColor: "#f4f4f4",
             maxWidth: "70%",
             borderRadius:"5px",
-            padding:"0",
-            margin:"0"
+            padding:"5px",
+            margin:"20px auto",
           }
         }>
-          {/* <Text>
+          <Text>
             {props.item.message}
-          </Text> */}
+          </Text>
         </Wrap>
       </React.Fragment>
     );
   }
   if (props.item.type === "TALK") {
     // 내가 보낸 메세지의 뷰
- 
+
     if ((props.item.sender_id) === parseInt(userId)) {
       return (
         <React.Fragment>
@@ -48,8 +49,6 @@ const ChatList = (props) => {
               justifyContent : "flex-end"
             }
           }>
-            {/* <Name>
-            </Name> */}
             <Card style={
               {
                 justifyContent : "flex-end"
@@ -70,9 +69,9 @@ const ChatList = (props) => {
               justifyContent : "flex-end"
             }
           }>
-            <Name>
+            {/* <Name>
               <p>{props.item.sender_id}</p>
-            </Name>
+            </Name> */}
             <Card style={
               {
                 justifyContent : "flex-start",
@@ -120,4 +119,4 @@ const Card = styled.div`
   & .another {margin: 0; padding: 12px 21px;border-radius:3px 20px 20px 20px ;  color:#222; font-size: 16px; line-height: 1.5; max-width: 427px; word-break: break-word; border: 1px solid #0c0a0a; background-color:#fffefc;}
 `
 
-export default ChatList;
+export default Message;

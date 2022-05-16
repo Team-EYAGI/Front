@@ -19,7 +19,7 @@ const Footer = () => {
 
 const FooterSt = styled.ul`
   background-color: #F2F2F2;
-  height: 50px;
+  height: 100px;
   text-align: center;
   padding: 30px;
   font-size: 10px;
