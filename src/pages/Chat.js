@@ -33,34 +33,15 @@ const Chat = (props) => {
   const [list, setList] = React.useState([
     { nick: "임시 사용자", text: "test message" },
   ]);
-
+ 
   const is_session = localStorage.getItem("is_login");
   const Token = localStorage.getItem("token");
   const userName = localStorage.getItem("username");
   const chatRoomName = "문의하기";
-
+  const roomId = localStorage.getItem("roomId");
+  const userId = localStorage.getItem("userId"); 
+  console.log(roomId + "/" + userId);
   const preview = useSelector((state) => state.chat.messages);
-  // console.log(preview);
-
-  //화면이 렌더 될때 서버와의 연결
-  React.useEffect(() => {
-
-    // createRoom(chatRoomName,userName);
-    connect();
-    // enterRoom();
-    return () => { };
-  }, []);
-
-
-  // connect 함수
-  const connect = () => {
-
-    stompClient.connect({
-      token: `${Token}`
-    }, onConnected);
-  };
-  const onConnected = () => { };
-
   //클릭이벤트 추가 join
   const [click ,setClick] = React.useState(true);
   // console.log(click);
@@ -86,29 +67,8 @@ const Chat = (props) => {
     );
 
   };
-  //연결된 서버와의 통신시 payloadData의 타입에 따른 정보들 //메세지 읽어오는부분
-  const onMessageReceived = (payload) => {
-    // console.log(payload)
-    var payloadData = JSON.parse(payload.body);
-    // console.log(payloadData);//서버에서 보내주는 정보
-    switch (payloadData.type) {
-      case "JOIN":
-        break;
-      case "MESSAGE":
-        break;
-      case "TALK":
-        setList((list) => [
-          ...list,
-          { nick: payloadData.sender, text: payloadData.message },
-        ]);
-        break;
-    }
-  };
-
+ 
   const sendMessage = (new_message) => {
-    const roomId = localStorage.getItem("roomId");
-    const userId = localStorage.getItem("userId");
-    console.log(roomId + "/" + userId);
     try {
       const data = {
         type: "TALK",
@@ -116,6 +76,7 @@ const Chat = (props) => {
         senderId: userId,
         message: new_message,
       };
+      
       waitForConnection(stompClient, () => {
         stompClient.debug = null;
 
@@ -140,9 +101,94 @@ const Chat = (props) => {
         waitForConnection(stompClient, callback);
       }
     }, 0.1);
-
   };
 
+   // 새로고침될때 방 정보 날아가지 않도록 함
+   React.useEffect(() => {
+    // 리덕스의 현재방 정보 변경
+    if (Token) {
+      dispatch(
+        chatActions.moveChatRoom(
+          roomId,
+          chatRoomName,
+          userId
+        )
+      );
+      // 이전 대화 기록 불러오기
+      dispatch(chatActions.getChatMessagesAX(roomId));
+    }
+  }, []);
+
+  // 방 정보가 바뀌면 소켓 연결 구독, 구독해제
+  React.useEffect(() => {
+    // 방 정보가 없는 경우 홈으로 돌려보내기
+    if (!roomId) {
+      console.log("room_id 내놔");
+    }
+    wsConnectSubscribe();
+    return () => {
+      wsDisConnectUnsubscribe();
+    };
+  }, [roomId ? roomId : null]);
+
+  // 채팅방시작하기, 채팅방 클릭 시 room_id에 해당하는 방을 구독
+  const wsConnectSubscribe = () => {
+    try {
+      stompClient.debug = null;
+      stompClient.connect(
+        {
+          token: Token,
+        },
+        () => {
+          stompClient.subscribe(
+            `/sub/api/chat/rooms/${roomId}`,
+            (data) => {
+              const newMessage = JSON.parse(data.body);
+              // 실시간 채팅 시간 넣어주는 부분
+              const now_time = moment().format("YYYY-MM-DD HH:mm:ss");
+              dispatch(
+                chatActions.getMessages({ ...newMessage, createdAt: now_time })
+              );
+            },
+            {
+              token: Token,
+            }
+          );
+        }
+      );
+    } catch (e) {
+      console.log("소켓 커넥트 에러", e);
+    }
+  };
+
+  // 다른 방을 클릭하거나 뒤로가기 버튼 클릭시 연결해제 및 구독해제
+  const wsDisConnectUnsubscribe = () => {
+    try {
+      stompClient.debug = null;
+      stompClient.disconnect(
+        () => {
+          stompClient.unsubscribe("sub-0");
+          clearTimeout(waitForConnection);
+        },
+        { token: Token }
+      );
+    } catch (e) {
+      console.log("연결 구독 해체 에러", e);
+    }
+  };
+
+
+  // 메세지가 변할 때마다 스크롤 이동시켜주기
+  const messages = useSelector((state) => state.chat.messages);
+  // 스크롤 대상
+  const messageEndRef = React.useRef();
+
+  // console.log(messages, messageEndRef);
+  const scrollTomBottom = () => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollTop = messageEndRef.current.scrollHeight;
+    }
+  };
   return (
     <React.Fragment>
       <div className="container"
@@ -163,7 +209,7 @@ const Chat = (props) => {
           <img src={logo} style={{maxWidth: "100%"}} alt="eyagi"/>
         </div>
         <Wrap>
-          <div id='hello'>
+          <div id='hello' ref={messageEndRef}>
           {preview.map((item, idx) => ( <ChatList key={idx} item={item}/> ))}
           </div>
           <div id="btm_area">
@@ -202,7 +248,7 @@ const Wrap = styled.div`
     
     width: 100%;
     overflow: hidden scroll;
-    max-height: 100%
+    max-height: 100%;
     display: flex;
     flex-flow: column;
     justify-content: flex-end;
