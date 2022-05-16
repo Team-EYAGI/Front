@@ -6,6 +6,8 @@ import { Grid, Text } from "../elements/Index";
 
 const Message = (props) => {
   const userId = localStorage.getItem("userId");
+  const user_info = useSelector((state) => state.user.user);
+  console.log(user_info);
   // 메세지 타임
   let time = "";
   if (!(props.item.createdAt === null)) {
@@ -26,20 +28,18 @@ const Message = (props) => {
             borderRadius:"5px",
             padding:"5px",
             margin:"20px auto",
-            margin:"0",
-            padding:"0",
           }
         }>
-          {/* <Text>
+          <Text>
             {props.item.message}
-          </Text> */}
+          </Text>
         </Wrap>
       </React.Fragment>
     );
   }
   if (props.item.type === "TALK") {
     // 내가 보낸 메세지의 뷰
- 
+
     if ((props.item.sender_id) === parseInt(userId)) {
       return (
         <React.Fragment>

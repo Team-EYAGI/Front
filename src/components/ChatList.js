@@ -25,13 +25,13 @@ const ChatList = (props) => {
             backgroundColor: "#f4f4f4",
             maxWidth: "70%",
             borderRadius:"5px",
-            padding:"5px",
-            margin:"20px auto"
+            padding:"0",
+            margin:"0"
           }
         }>
-          <Text>
+          {/* <Text>
             {props.item.message}
-          </Text>
+          </Text> */}
         </Wrap>
       </React.Fragment>
     );
@@ -39,7 +39,7 @@ const ChatList = (props) => {
   if (props.item.type === "TALK") {
     // 내가 보낸 메세지의 뷰
  
-    if ((props.item.sender_id) === parseInt(userId) || (props.item.senderId) === parseInt(userId)) {
+    if ((props.item.sender_id) === parseInt(userId)) {
       return (
         <React.Fragment>
           <Wrap style={

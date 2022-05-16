@@ -10,7 +10,8 @@ import axios from "axios";
 import Join from "../components/Join";
 import moment from "moment";
 import { useBeforeunload } from "react-beforeunload";
-import logo from '../src_assets/eyagiLogo1.png'
+import logo from '../src_assets/eyagiLogo1.png';
+import MessageWrite from '../components/MessageWrite';
 
 
 // var stompClient = null;
@@ -104,25 +105,16 @@ const Chat = (props) => {
     }
   };
 
-  const [message, setMessage] = React.useState("");
-  const changeMessage = (e) => {
-    setMessage(e.target.value);
-  };
-
-  const sendMessage = () => {
+  const sendMessage = (new_message) => {
     const roomId = localStorage.getItem("roomId");
     const userId = localStorage.getItem("userId");
+    console.log(roomId + "/" + userId);
     try {
-      // 토큰없으면 다시 로그인 시키기
-      // if (!token) {
-      //   customAlert.sweetNeedLogin();
-      // }
-      // send할 데이터
       const data = {
         type: "TALK",
         roomId: roomId,
         senderId: userId,
-        message: message,
+        message: new_message,
       };
       waitForConnection(stompClient, () => {
         stompClient.debug = null;
@@ -131,7 +123,7 @@ const Chat = (props) => {
           {
             token: `${Token}`,
           }, JSON.stringify(data));
-        // console.log("메세지보내기 상태", stompClient.ws.readyState);
+        console.log("메세지보내기 상태", stompClient.ws.readyState);
       });
     } catch (e) {
       console.log("message 소켓 함수 에러", e);
@@ -176,11 +168,7 @@ const Chat = (props) => {
           </div>
           <div id="btm_area">
             <div>
-              <textarea
-              onChange={changeMessage}
-              // onKeyDown={handleEvent}
-              />
-              <button className="set" onClick={sendMessage}>전송</button>
+            <MessageWrite sendMessage={sendMessage} />
               <Join
                 enterRoom={enterRoom}
                 click={click}
