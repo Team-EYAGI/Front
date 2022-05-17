@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as getActions } from "../redux/modules/audio";
+import { actionCreators as followActions } from "../redux/modules/audio";
 import { history } from '../redux/configureStore';
 
 
@@ -28,7 +29,12 @@ const AudioPlay = (props) => {
 
   // 오디오북 재생목록 불러오기
   const audioDetail = useSelector((state) => state.audio.audio_list);
-  const playList = audioDetail.audioFileDtoList
+  const followStatus = audioDetail.followStatus;
+  const audioBookDetail = audioDetail.audioBookDetail ? audioDetail.audioBookDetail : null;
+  const playList = audioDetail.audioBookDetail ? audioBookDetail.audioFileDtoList : null;
+  const sellerId = audioDetail.audioBookDetail ? audioDetail.audioBookDetail.sellerId : null;
+
+  console.log(sellerId)
 
   // 오디오북 리뷰 불러오기
   const audioReview = useSelector((state) => state.audio.review_list);
@@ -47,17 +53,21 @@ const AudioPlay = (props) => {
         <Player>
           <Header>
             <div>
-              {audioDetail.title}
+              {audioBookDetail && audioBookDetail.title}
             </div>
             <span>
-              저자: {audioDetail.author} / 크리에이터: {audioDetail.sellerName}
+              저자: {audioBookDetail && audioBookDetail.author} / 크리에이터: {audioBookDetail && audioBookDetail.sellerName}
             </span>
           </Header>
 
-          <ImgBox style={{ backgroundImage: `url(${audioDetail.bookImg})` }}>
+          <ImgBox style={{ backgroundImage: `url(${audioBookDetail && audioBookDetail.bookImg})` }}>
             <div id='img_wrap'>
               <div id='img'>
-                <img src={audioDetail.bookImg} />
+                <img
+                  onClick={() => {
+                    history.push(`/sellerProfile/2/audiobook`)
+                  }}
+                  src={audioBookDetail && audioBookDetail.bookImg} />
               </div>
               <AudioPlayer
                 showJumpControls={false}
@@ -70,24 +80,32 @@ const AudioPlay = (props) => {
             </div>
           </ImgBox>
           <div id='name'>
-            <span id='creatorname'>{audioDetail.sellerName}</span>&nbsp;&nbsp;
+            <span id='creatorname'>{audioBookDetail && audioBookDetail.sellerName}</span>&nbsp;&nbsp;
             <span id='fixname'>크리에이터</span>
           </div>
           <AudioCard>
             <SellerImg>
-              <img src={audioDetail.sellerImage ? audioDetail.sellerImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
+              <img src={audioBookDetail && audioBookDetail.sellerImage ? audioBookDetail.sellerImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
             </SellerImg>
             <Content>
               <div id='follow'>
-                <div>팔로잉 팔로우</div>
-                <button
+                <div>팔로잉&nbsp;{audioBookDetail && audioBookDetail.followingCnt}  팔로워&nbsp;{audioBookDetail && audioBookDetail.followerCnt} </div>
+                {followStatus === false ?
+                  <button
                   onClick={() => {
-                    // history.push(`/audioModal/${category}/${bookId}/${item.audioBookId}`)
+                    // dispatch(followActions.audiofollowAC(sellerId));
                   }}
-                >팔로우 +</button>
+                  >follow</button>
+                  :
+                  <button
+                  onClick={() => {
+                    // dispatch(followActions.audiofollowAC(sellerId));
+                  }}
+                  >unfollow</button>
+                }
               </div>
               <span id='contents'>
-                {audioDetail.audioInfo}
+                {audioBookDetail && audioBookDetail.audioInfo}
               </span>
             </Content>
           </AudioCard>

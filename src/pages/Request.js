@@ -142,18 +142,20 @@ const ReviewButton = styled.button`
   padding: 0;
   width: 200px;
   height: 30px;
-  font-size: 13px;
+
+  font-family: Pretendard;
   font-weight: 400;
+  font-style: normal;
+  font-size: 13px;
+
   line-height: 30px;
-  color: #fff;
-  background-color: #666666;
-  border: 1px solid #666666;
+  color: #FFFFFF;
+  background-color: #0C0A0A;
+  border: 1px solid #0C0A0A;
   cursor: pointer;
   box-sizing: content-box;
-  &:hover {
-    background-color: #fff;
-    color: #666666;
-  }
+  
+
 `
 
 export default Request;

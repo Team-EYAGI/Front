@@ -30,15 +30,15 @@ const BookCard = (props) => {
 
 const Wrap = styled.div`
 
-  height: 360px;
-  margin: 10px;
+  height: 380px;
+  margin: 12.5px;
 `
 
 const Body = styled.div`
   width: 100%;
 
   h3 {
-    width: 180px;
+    width: 195px;
 
     font-size: 14px;
     white-space: nowrap;
@@ -49,8 +49,8 @@ const Body = styled.div`
 `
 
 const ImageBox = styled.div`
-  width: 180px;
-  height: 260px;
+  width: 195px;
+  height: 280px;
 
   display: flex;
   flex-direction: column;

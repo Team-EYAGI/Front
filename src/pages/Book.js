@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { history } from '../redux/configureStore';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as getActions } from "../redux/modules/book";
-
+import InfinityScroll from "../shared/InfinityScroll";
 
 // 카테고리 북 페이지
 const Book = () => {
@@ -21,6 +21,9 @@ const Book = () => {
   const self = useSelector((state) => state.book.category_self);
   const economy = useSelector((state) => state.book.category_economy);
   const kids = useSelector((state) => state.book.category_kids);
+
+  const paging = useSelector((state) => state.book.paging);
+  const is_loading = useSelector((state) => state.book.is_loading);
   // console.log("소설", novel)
   // console.log("시", poem)
   // console.log("키즈", kids)
@@ -44,70 +47,70 @@ const Book = () => {
     "자기계발",
     "소설",
     "시･에세이",
-    "유･아동",
+    "아동･가정",
     "경제",
   ])
-
-
-  const [btn, setBtn] = React.useState([])
 
   return (
     <React.Fragment>
       <HeaderSt>
-         {category.map((item, idx) => (
-           <GenreSt
-
+        {category.map((item, idx) => (
+          <GenreSt
             key={idx}
-            onClick={(e) => {
+            onClick={() => {
               history.push(`/book/${item}`);
               if (item === "자기계발") {
-                setBtn("자기계발")
                 dispatch(getActions.getSelfAC());
               } else if (item === "소설") {
-                setBtn("소설")
                 dispatch(getActions.getNovelAC());
               } else if (item === "시･에세이") {
-                setBtn("시･에세이")
                 dispatch(getActions.getPoemAC());
-              } else if (item === "유･아동") {
-                setBtn("유･아동")
+              } else if (item === "아동･가정") {
                 dispatch(getActions.getKidsAC());
               } else {
-                setBtn("경제")
                 dispatch(getActions.getEconomyAC());
               }
             }}
-            size="20"
-            // style={{  color: (category.find((i) => i == btn))
-            //     ? "#E8E8E8"
-            //     : "#0361FB"
-            // }}
-            
-              value={item[0]}
+            style={{
+              backgroundColor: (categoryName === item) ? "#0C0A0A" : "#FFFFFF",
+              color: (categoryName === item) ? "#FFFFFF" : "#767676",
+              border: (categoryName === item) ? "1px solid #0C0A0A" : "1px solid #D3D3D3"
+            }}
           >
             {item}
           </GenreSt>
-          ))}
-        </HeaderSt>
+        ))}
+      </HeaderSt>
       <Wrap>
-      {categoryName === "소설" ? novel.map((item, idx) => (
-        <BookCard key={idx} item={item}/>
-      ))
-      :
-      categoryName === "시･에세이" ? poem.map((item, idx) => (
-        <BookCard key={idx} item={item}/>))
-      : 
-      categoryName === "자기계발" ? self.map((item, idx) => (
-        <BookCard key={idx} item={item}/>))
-      :
-      categoryName === "경제" ? economy.map((item, idx) => (
-        <BookCard key={idx} item={item}/>))
-      :
-      categoryName === "유･아동" ? kids.map((item, idx) => (
-        <BookCard key={idx} item={item}/>))
-      :
-      null
-      }
+        {categoryName === "소설" ?
+          <InfinityScroll
+            callNext={() => {
+              console.log("callnext제발");
+              dispatch(getActions.getNovelAC(paging.next));
+            }}
+            is_next={paging.next ? true : false}
+            loading={is_loading}
+          >
+            {novel.map((item, idx) => (
+              <BookCard key={idx} item={item} />
+            ))}
+          </InfinityScroll>
+
+          :
+          categoryName === "시･에세이" ? poem.map((item, idx) => (
+            <BookCard key={idx} item={item} />))
+            :
+            categoryName === "자기계발" ? self.map((item, idx) => (
+              <BookCard key={idx} item={item} />))
+              :
+              categoryName === "경제" ? economy.map((item, idx) => (
+                <BookCard key={idx} item={item} />))
+                :
+                categoryName === "아동･가정" ? kids.map((item, idx) => (
+                  <BookCard key={idx} item={item} />))
+                  :
+                  null
+        }
       </Wrap>
     </React.Fragment>
   )
@@ -116,9 +119,9 @@ const Book = () => {
 const Wrap = styled.div`
   width: 1100px;
   margin: 0 auto;
-
+  
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   flex-wrap: wrap;
 `
 
@@ -141,7 +144,6 @@ const GenreSt = styled.h3`
   margin: 20px 10px 0px 10px;
 
   padding-bottom: 9px;
-  background: #FFFFFF;
   border: 1px solid #D3D3D3;
   border-radius: 100px;
   
@@ -150,13 +152,8 @@ const GenreSt = styled.h3`
 
   text-align: center;
   line-height: 40px;
-  color: #767676;
 
   cursor: pointer;
-  :hover {
-    background: #0C0A0A;
-    color: #FFFFFF;
-  }
 `
 
 

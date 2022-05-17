@@ -32,6 +32,7 @@ import AdminChat from '../pages/AdminChat';
 import KakaoAuthHandler from '../pages/KakaoAuthHandler';
 import AddProfileVoice from '../pages/AddProfileVoice';
 import Loading from '../pages/Loading'
+import LoadingPage from '../pages/LoadingPage'
 
 function App() {
   return (
@@ -64,6 +65,8 @@ function App() {
           <Route path="/addvoice/:userId" exact component={AddProfileVoice} />
           <Route path="/loading" exact component={Loading} />
           <Route path="/loading/:result" exact component={Loading} />
+          <Route path="/loadingPage" exact component={LoadingPage} />
+          <Route path="/loadingPage/:result/:category/:bookId" exact component={LoadingPage} />
           <Route path="/request" exact component={Request} />
           <Route path="/requestWrite" exact component={RequestWrite} />
           <Route path="/requestWrite/:bookId" exact component={RequestWrite} />

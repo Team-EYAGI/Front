@@ -304,7 +304,13 @@ const ProfileEdit = (props) => {
             />
           </Body>
         </Wrap>
-        <button onClick={addImage}>프로필 수정하기</button>
+        <button
+                // disabled={contents === "" || file === ""}
+
+          onClick={addImage}
+        >
+          프로필 수정하기
+          </button>
       </ModalBox>
     </ModalBack>
   );
@@ -345,9 +351,10 @@ const AudioReviewNone = styled.div`
 
 const Wrap1 = styled.div`
   width: 1100px;
-  min-height: 700px;
+  min-height: 1500px;
   margin: 0 auto;
-  margin-top: 36px;
+  margin-top: 100px;
+  padding-bottom: 100px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

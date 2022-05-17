@@ -58,7 +58,7 @@ const RequestList = (props) => {
             textAlign: "center",
           }}
         >
-          {props.item.createdAt.split('오전')[0]}
+          {props.item.createdAt.split("T")[0]}
         </CommentData>
       </OneComment>
       {clickRequest && (
@@ -143,6 +143,9 @@ const CommentData = styled.div`
 const RequestDetail = styled.div`
   padding: 10px;
   background-color: #F6F6F6;
+
+  display: flex;
+  flex-direction: row;
 `
 
 const DetailWrap = styled.div`
@@ -150,8 +153,7 @@ const DetailWrap = styled.div`
 `
 
 const RequestComment = styled.p`
-  margin: 12px 0px 20px 210px;
-  line-height: 16px;
+  margin: 12px 0px 20px 205px;
   text-align: left;
 `
 
@@ -160,31 +162,45 @@ const ButtonWrap = styled.div`
 `
 
 const EditButton = styled.button`
-  padding: 0px 15px;
-  min-width: 105px;
-  margin-right: 2px;
-  height: 30px;
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 28px;
-  color: #5f0080;
-  border: 1px solid #5f0080;
+  padding: 0px;
+  min-width: 25px;
+  margin: 12px 15px 0px 0px;
+
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+
+  color: #000000;
+  border: none;
   background: none;
-  cursor: pointer;
+
+  :hover {
+    cursor: pointer;
+    color: #D05943;
+  }
 `
 
 const DeleteButton = styled.button`
-  padding: 0px 15px;
-  min-width: 105px;
-  margin-right: 2px;
-  height: 30px;
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 28px;
-  color: #5f0080;
-  border: 1px solid #5f0080;
+  padding: 0px;
+  min-width: 25px;
+  margin: 12px 37px 0px 0px;
+
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+
+  color: #000000;
+  border: none;
   background: none;
-  cursor: pointer;
+
+  :hover {
+    cursor: pointer;
+    color: #D05943;
+  }
 `
 
 const HelpWrap = styled.div`

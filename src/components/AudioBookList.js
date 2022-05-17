@@ -4,16 +4,41 @@ import { history } from '../redux/configureStore';
 import "../styles/modal.css"
 import { useParams } from 'react-router-dom';
 
+
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 const AudioBookList = (props) => {
   const params = useParams();
   const category = params.category
 
   const bookId = props.detail.bookId
+  const sellerId = props.detail.sellerId
   const audioBookList = props.detail ? props.detail.audio : null
-  // console.log("리스트", audioBookList)
+  console.log("리스트", audioBookList)
+
+  // const files = props.detail.audio;
+  // const preview = audioBookList ? audioBookList.find((p) => p.audioBookId == audioBookId) : null;
 
   // 로그인한 사용자인지 확인
   const is_login = localStorage.getItem("is_login");
+
+    // 팔로우, 팔로잉 모달창
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
   return (
     <React.Fragment>
@@ -44,7 +69,11 @@ const AudioBookList = (props) => {
           {audioBookList && audioBookList.map((item, idx) => (
             <AudioCardSt key={idx}>
               <ImgSt>
-                <img src={item.sellerImg ? item.sellerImg : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
+                <img
+                  onClick={() => {
+                    history.push(`/sellerProfile/${sellerId}/audiobook`)
+                  }}
+                  src={item.sellerImg ? item.sellerImg : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
               </ImgSt>
               <ContentSt>
                 <div id='preview'>
@@ -52,6 +81,7 @@ const AudioBookList = (props) => {
                     onClick={() => {
                       history.push(`/audioModal/${category}/${bookId}/${item.audioBookId}`)
                     }}
+                    // onClick={handleOpen}
                   >1분 미리듣기 ▶</button>
                 </div>
                 <span id="name">{item.sellerName}</span>
@@ -59,9 +89,20 @@ const AudioBookList = (props) => {
                   {item.contents}
                 </span>
                 <div id='preview'>
-                  <span>{item.createdAt.split("")}</span>
+                  <span>{item.createdAt.split("T")[0]}</span>
                 </div>
               </ContentSt>
+              <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <h2 style={{ width: "100%", textAlign: "center" }}>팔로잉</h2>
+                
+              </Box>
+            </Modal>
             </AudioCardSt>
           ))}
         </CardWrap>
@@ -161,14 +202,14 @@ const ImgSt = styled.div`
   border-radius: 15px;
   border: 1px solid #878787;
   
-  cursor: pointer;
-
   overflow: hidden;
 
     img {
       width:100%;
       height:100%;
       object-fit:cover;
+
+      cursor: pointer;
     }
 `
 
@@ -180,8 +221,6 @@ const ContentSt = styled.div`
   flex-direction: column;
   justify-content: left;
   align-items: center;
-
-  cursor: pointer;
 
   #name {
     width: 100%;
@@ -195,6 +234,8 @@ const ContentSt = styled.div`
     width: 100%;
     font-size: 12px;
     min-height: 64px;
+    cursor: pointer;
+
   }
 
   #preview {

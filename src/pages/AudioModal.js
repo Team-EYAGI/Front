@@ -105,6 +105,7 @@ const ModalBox = styled.div`
   width: 550px;
   height: 550px;
   flex-direction: column;
+  
 
   #morebtn {
     width: 200px;
@@ -139,6 +140,7 @@ const ModalBack = styled.div`
 
   font-weight: 400;
   color: white;
+  z-index: 5;
 `;
 
 const GoBack = styled.div`

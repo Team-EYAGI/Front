@@ -28,6 +28,7 @@ const AudioWrite = () => {
     fileInput.current.click();
   };
 
+  // 파일과 내용
   const [contents, setContents] = React.useState("")
   const [file, setFile] = React.useState("")
 
@@ -82,32 +83,35 @@ const AudioWrite = () => {
           </ImgSt>
           <ContentSt>
             <p>오디오 파일 업로드</p>
-            <div id='file'>
-              <span>{file ? file.name : "현재 서비스는 wav 파일만 등록 가능합니다!"}</span>
-              <BiSearch id='addbtn' onClick={handleClick} size="24px" />
-            </div>
-            <h5 onClick={() => {
-              window.open("https://online-audio-converter.com/ko/")
-            }}>wav로 파일 변환하기</h5>
             <div>
               {firstCheck === true ?
                 <>
+                  <div id='file'>
+                    <span>{file ? file.name : "첫 등록은 wav 파일만 등록 가능합니다!"}</span>
+                    <BiSearch id='addbtn' onClick={handleClick} size="24px" />
+                  </div>
+                  <h5 onClick={() => {
+                    window.open("https://online-audio-converter.com/ko/")
+                  }}>wav로 파일 변환하기</h5>
                   <p>오디오북 소개</p>
                   <textarea
                     type="text"
                     maxLength="100"
-                    placeholder='첫 등록이시네요! 오디오북에 대한 소개를 100자 내외로 작성해주세요!'
+                    placeholder='첫 등록이시네요! 오디오북에 대한 소개를 100자 내외로 작성해주세요! ex) 매주 월요일 연재 등 연재 주기를 포함해서 작성해주세요!'
                     onChange={(e) => {
                       setContents(e.target.value)
                     }}
                   />
                 </>
                 :
-                null
+                <div id='file'>
+                  <span>{file ? file.name : "mp3, m4a 파일 형식을 지원합니다."}</span>
+                  <BiSearch id='addbtn' onClick={handleClick} size="24px" />
+                </div>
               }
               <input
                 type="file"
-                accept="audio/wav"
+                accept={firstCheck === true ? "audio/wav" :"audio/mp3 audio/m4a"}
                 multiple
                 ref={fileInput}
                 style={{ display: 'none' }}
@@ -115,7 +119,7 @@ const AudioWrite = () => {
               />
               <button
                 id='uploadBtn'
-                disabled={contents === "" || file === ""}
+                disabled={firstCheck === true ? (contents === "" || file === "") : (file === "") }
                 onClick={addAudio}
               >등록하기</button>
             </div>

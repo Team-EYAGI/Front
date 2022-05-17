@@ -53,7 +53,7 @@ const CardSt = styled.div`
 `;
 
 const ImageSt = styled.div`
-
+  height: 110%;
   width: 200px;
 
   display: flex;
