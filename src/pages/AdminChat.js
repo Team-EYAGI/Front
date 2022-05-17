@@ -153,6 +153,12 @@ const AdminChatList = (props) => {
     }, [messages.length]);
 
 
+    // 방 나가기 - 사용자, 방장 구분 후 실행하는 함수
+    const get_out_chat = (room_id) => {
+      dispatch(chatActions.leaveChatAX(room_id));
+      console.log(room_id);
+    };
+
     return (
       <React.Fragment>
         <div className="container"
@@ -173,6 +179,10 @@ const AdminChatList = (props) => {
             <img src={logo} style={{maxWidth: "100%"}} alt="eyagi"/>
           </div>
           <Wrap>
+            <button id="exit" 
+              onClick={get_out_chat} //채팅방 나가기 함수.
+            >끝내기</button> 
+            
             <div id="lastest" ref={messageEndRef}>
               <MessageList />
             </div>
@@ -188,7 +198,6 @@ const AdminChatList = (props) => {
 const Wrap = styled.div`
 background-color: #fffefc;
 border: 1px solid #000;
-border-width: 0 1px 1px;
 width: 580px;
 height: calc(100vh - 270px);
 padding: 0 0 0;

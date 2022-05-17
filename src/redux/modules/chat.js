@@ -95,9 +95,9 @@ const setChatListAX = () => {
     { headers: { 'Authorization': `${Token}` } }
     )
     .then((res) => {
-      // console.log("채팅방 목록", res)
+      console.log("채팅방 목록", res)
       let my_chat_list = [];
-      res.data.forEach(c => {
+      res.data.data.forEach(c => {
         let one_chat_info = {
           room_id: c.roomId,
           own_user_id: c.nickname,
@@ -108,6 +108,7 @@ const setChatListAX = () => {
         };
         my_chat_list.push(one_chat_info);
       });
+      localStorage.setItem("userId",res.data.userId);
       dispatch(setChatList(my_chat_list))
     })
     .catch(error => {
@@ -197,6 +198,21 @@ const userQnAAX = (uuid) => {
   };
 };
 
+const leaveChatAX = (room_id) => {
+  return function (dispatch, getState, { history }) {
+    let Token = getToken("Authorization");
+    axios.delete(process.env.REACT_APP_BASE_URL + `/chat/${room_id}`, 
+    { headers: { 'Authorization': `${Token}` } })
+    .then((res) => {
+      history.replace("/Admin");
+      console.log("방 폭파 boom!", res);
+    })
+    .catch((e) => {
+      console.log("채팅방 나가기 요청 에러", e);
+    });
+  }
+}
+
 export default handleActions(
   {
     // setChatList - 나만의 채팅 목록
@@ -275,7 +291,8 @@ const actionCreators = {
   getMessages,
   getMSG,
   userQnAAX,
-  setUserChatListAX
+  setUserChatListAX,
+  leaveChatAX
 };
 
 export { actionCreators };
