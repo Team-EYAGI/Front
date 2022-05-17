@@ -4,12 +4,52 @@ import { history } from "../redux/configureStore";
 import { useParams } from "react-router-dom";
 import Spinner from "../elements/Spinner";
 
-const Loading = (props) => {
+const LoadingPage = () => {
+
   const params = useParams();
+  const result = params.result;
+  const bookId = params.bookId;
+  const category = params.category;
 
   return (
-    <ModalBack>
-      <ModalBox>
+    <React.Fragment>
+      <Wrap>
+        {result === "success" ?
+          <Content>
+            <p>등록이 완료되었습니다!</p>
+            <div>
+              <button
+                onClick={() => {
+                  history.push('/mypage/listen')
+                }}
+              >마이페이지로 이동하기</button>
+            </div>
+          </Content>
+          :
+          result === "failed" ?
+          <Content>
+            <p>등록 실패!</p>
+            <span>파일 확장자를 다시 한 번 확인해주세요!</span>
+            <div>
+              <button
+                onClick={() => {
+                  history.push(`/audioWrite/${category}/${bookId}`)
+                }}
+              >다시 등록하기</button>
+            </div>
+          </Content>
+          :
+          <Content>
+            <p>파일을 등록중입니다. 조금만 기다려주세요!</p>
+            <div id="spinner">
+              <Spinner/>
+            </div>
+          </Content>
+        }
+
+      </Wrap>
+
+      {/* <ModalBox>
         {params.result === "success" ?
           <Content>
             <p>등록이 완료되었습니다!</p>
@@ -24,7 +64,7 @@ const Loading = (props) => {
           : params.result === "failed" ?
           <Content>
             <p>등록 실패!</p>
-            <span> 잘못된 파일 형식입니다!</span>
+            <span>파일 확장자를 다시 한 번 확인해주세요!</span>
             <div>
               <button
                 onClick={() => {
@@ -41,34 +81,35 @@ const Loading = (props) => {
             </div>
           </Content>
         }
-      </ModalBox>
-    </ModalBack>
-  );
-};
+      </ModalBox> */}
+    </React.Fragment>
+  )
+}
 
 
-const ModalBox = styled.div`
-  position: absolute;
-  top: calc(25vh - 100px);
-  left: calc(40vw - 150px);
-  background-color: #FFFEFC;
+const Wrap = styled.div`
+  /* background-color: lightblue; */
+
+  width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 30px;
+
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  border-radius: 10px;
-  width: 550px;
-  height: 550px;
   flex-direction: column;
+  align-items: center;
 `
 
-const ModalBack = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: 5;
+const HeaderSt = styled.div`
+  width: 1200px;
+  margin: 80px 0px 60px 0px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: 700;
+  font-size: 26px;  
 `
 
 const Content = styled.div`
@@ -132,6 +173,10 @@ const Content = styled.div`
       font-weight: 700;
       font-style: normal;
       cursor: pointer;
+
+      :hover {
+        box-shadow: 2px 2px 2px 2px gray;
+      }
     }
 
   div {
@@ -148,4 +193,4 @@ const Content = styled.div`
   }
 `
 
-export default Loading;
+export default LoadingPage;

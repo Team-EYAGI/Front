@@ -52,7 +52,7 @@ const Wrap = styled.div`
 
   #plus:hover {
     cursor: pointer;
-    color: violet; 
+    color: #D05943;
   }
 `
 

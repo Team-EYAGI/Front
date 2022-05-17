@@ -2,17 +2,17 @@ const images = [
   {
       id: 1,
       // src: "https://img-cf.kurly.com/banner/main/pc/img/fa8ecd2d-b420-4805-9d9a-d158caa7c8a4",
-      src: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdHboyk%2FbtrBYD9oHg6%2FzfdO2QaxpyCDCZGsZM5BY1%2Fimg.png",
+      src: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FIAcJA%2FbtrCqpPR7NN%2FL2naWhGLXCp04bk3oxV6T1%2Fimg.png",
       alt: "Localtable"
   },
   {
       id: 2,
-      src: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FQzuT0%2FbtrB0EGh7iY%2F6wBwT6EG3Y5FUvwN12zTq0%2Fimg.png",
+      src: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FG8tLK%2FbtrCpR65VE2%2FkrggrnFMq29VeV5TtCHoN0%2Fimg.png",
       alt: "Friend"
   },
   {
       id: 3,
-      src: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbF6cHp%2FbtrBYqbqUKH%2FbDKbl2hsW72k1eVfBqk24k%2Fimg.png",
+      src: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbsvP0I%2FbtrCp6wbGZC%2FF8J0Nwzx2ivnagLY86twk1%2Fimg.png",
       alt: "Picnic"
   },
   {

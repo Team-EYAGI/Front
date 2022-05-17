@@ -1,17 +1,24 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import axios from "axios";
+import { getToken } from "../../shared/Token";
 
 // 액션
 const GET_CREATOR_PROFILE = "GET_CREATOR_PROFILE";
 const GET_CREATOR_FUNDING = "GET_CREATOR_FUNDING";
 const GET_CREATOR_AUDIO = "GET_CREATOR_AUDIO";
+const FOLLOW = "FOLLOW";
+const GET_FOLLOWER = "GET_FOLLOWER";
+const GET_FOLLOWING = "GET_FOLLOWING";
 
 // 초기값
 const initialState = {
   creator_profile : [],
   creator_funding : [],
   creator_audiobook : [],
+  creator_followStatus : [],
+  creator_follower : [],
+  creator_following : [],
 };
 
 // 액션 생성 함수
@@ -19,24 +26,62 @@ const getProfile = createAction(GET_CREATOR_PROFILE, (creator_profile) => ({crea
 const getFunding = createAction(GET_CREATOR_FUNDING, (creator_funding) => ({creator_funding}));
 const getAudio = createAction(GET_CREATOR_AUDIO, (creator_audiobook) => ({creator_audiobook}));
 
+const follow = createAction(FOLLOW, (followCount, followStatus) => ({followCount, followStatus}));
+const followerList = createAction(GET_FOLLOWER, (creator_follower) => ({creator_follower}));
+const followingList = createAction(GET_FOLLOWING, (creator_following) => ({creator_following}));
+
 // 셀러 프로필 정보 가져오기
-const getProfileAC = (sellerId) => {
-  return function (dispatch, getState, {history}) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/viewer/seller/${sellerId}`, {
+const getProfileAC = (sellerId, authority, username) => {
 
-    },
-    // {headers: { 'Authorization' : `Bearer ${myToken}`}}
-    )
-    .then((res) => {
-      console.log("셀러 프로필 정보", res)
-      dispatch(getProfile(res.data))
+    let Token = getToken("Authorization");
 
-    })
-    .catch(error => {
-      console.log("error", error)
-    })
+    return function (dispatch, getState, {history}) {
+
+      // 비회원일 경우
+      if(!authority) {
+        axios.get(process.env.REACT_APP_BASE_URL + `/viewer/seller/${sellerId}?username=none`)
+        .then((res) => {
+          console.log("(비회원)셀러 프로필 정보", res)
+          dispatch(getProfile(res.data))
+        })
+        .catch(error => {
+          console.log("error", error)
+        })
+      } else {
+        // 회원일 경우
+        axios.get(process.env.REACT_APP_BASE_URL + `/viewer/seller/${sellerId}?username=${username}`, 
+        {headers: {'Authorization' : `${Token}`}}
+        )
+        .then((res) => {
+          console.log("(회원)셀러 프로필 정보", res)
+          dispatch(getProfile(res.data))
+        })
+        .catch(error => {
+          console.log("error", error)
+        })
+      }  
   }
 }
+
+// // (회원)셀러 프로필 정보 가져오기
+// const getProfileAC = (sellerId) => {
+//   let Token = getToken("Authorization");
+//   return function (dispatch, getState, {history}) {
+//     axios.get(process.env.REACT_APP_BASE_URL + `/viewer/seller/${sellerId}`, {
+
+//     },
+//     {headers: { 'Authorization' : `Bearer ${Token}`}}
+//     )
+//     .then((res) => {
+//       // console.log("셀러 프로필 정보", res)
+//       dispatch(getProfile(res.data))
+
+//     })
+//     .catch(error => {
+//       console.log("error", error)
+//     })
+//   }
+// }
 
 // 셀러 펀딩정보 가져오기
 const getFundingAC = (sellerId) => {
@@ -47,7 +92,7 @@ const getFundingAC = (sellerId) => {
     // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      console.log("셀러 펀딩 정보", res)
+      // console.log("셀러 펀딩 정보", res)
       dispatch(getFunding(res.data))
     })
     .catch(error => {
@@ -65,8 +110,68 @@ const getAudioAC = (sellerId) => {
     // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      console.log("셀러 오디오북 정보", res)
+      // console.log("셀러 오디오북 정보", res)
       dispatch(getAudio(res.data))
+    })
+    .catch(error => {
+      console.log("error", error)
+    })
+  }
+}
+
+// 팔로우
+const followAC = (sellerId) => {
+  
+  let Token = getToken("Authorization");
+  return function (dispatch, getState, { history }) {
+    axios.put(process.env.REACT_APP_BASE_URL + `/user/follow?id=${sellerId}`, {
+
+    },
+      { headers: { 'Authorization': `${Token}` } }
+    )
+      .then((res) => {
+        console.log("팔로우 성공", res)
+        dispatch(follow(res.data.followCount, res.data.followStatus))
+      })
+      .catch(error => {
+        console.log("error", error)
+      })
+  }
+}
+
+// 팔로워 리스트 가져오기
+const followerListAC = (sellerId) => {
+  console.log(sellerId)
+  let Token = getToken("Authorization");
+  return function (dispatch, getState, {history}) {
+    axios.get(process.env.REACT_APP_BASE_URL + `/user/follower?id=${sellerId}`, {
+
+    },
+    {headers: { 'Authorization' : `Bearer ${Token}`}}
+    )
+    .then((res) => {
+      console.log("팔로워 리스트 가져오기", res)
+      dispatch(followerList(res.data))
+    })
+    .catch(error => {
+      console.log("error", error)
+    })
+  }
+}
+
+// 팔로잉 리스트 가져오기
+const followingListAC = (sellerId) => {
+
+  let Token = getToken("Authorization");
+  return function (dispatch, getState, {history}) {
+    axios.get(process.env.REACT_APP_BASE_URL + `/user/following?id=${sellerId}`, {
+
+    },
+    {headers: { 'Authorization' : `Bearer ${Token}`}}
+    )
+    .then((res) => {
+      console.log("팔로잉 리스트 가져오기", res)
+      dispatch(followingList(res.data))
     })
     .catch(error => {
       console.log("error", error)
@@ -89,6 +194,21 @@ export default handleActions(
     produce(state, (draft) => {
       draft.creator_audiobook = action.payload.creator_audiobook;
     }),
+    [FOLLOW]: (state, action) =>
+    produce(state, (draft) => {
+      console.log(action.payload.followCount)
+      console.log(action.payload.followStatus)
+      draft.creator_profile.sellerProfile.followerCnt = action.payload.followCount;
+      draft.creator_profile.followStatus = action.payload.followStatus;
+    }),
+    [GET_FOLLOWER]: (state, action) =>
+    produce(state, (draft) => {
+      draft.creator_follower = action.payload.creator_follower;
+    }),
+    [GET_FOLLOWING]: (state, action) =>
+    produce(state, (draft) => {
+      draft.creator_following = action.payload.creator_following;
+    }),
   },
   initialState
 );
@@ -99,6 +219,9 @@ const actionCreators = {
   getProfileAC,
   getFundingAC,
   getAudioAC,
+  followAC,
+  followerListAC,
+  followingListAC,
 };
 
 export { actionCreators };

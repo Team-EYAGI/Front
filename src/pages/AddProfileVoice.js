@@ -42,10 +42,19 @@ const AddProfileVoice = (props) => {
   // 오디오 추가하기
   const addVoice = () => {
     let file = fileInput.current.files[0];
+    let maxSize = 5 * 1024 * 1024;
+		let fileSize = file.size;
+
     if (file === null) {
       window.alert("파일을 추가해주세요.")
       return;
     }
+
+		if(fileSize > maxSize){
+			window.alert("첨부파일 사이즈는 5MB 이내로 등록 가능합니다.");
+			return;
+		}
+
     dispatch(voiceActions.addVoiceAC({ file })
     )
   }
@@ -55,7 +64,7 @@ const AddProfileVoice = (props) => {
       <ModalBox>
         <div style={{ width: "700px" }}>
           <GoBack>
-            <BsXSquare id="icon" onClick={() => history.goBack()} size="30px" />
+            <BsXSquare id="icon" onClick={() => history.push(`/mypage/listen`)} size="30px" />
           </GoBack>
         </div>
         <Content>
@@ -78,6 +87,7 @@ const AddProfileVoice = (props) => {
           </div>
           <div>
             <button
+              disabled={file === ""}
               onClick={addVoice}
             >등록하기</button>
           </div>
@@ -108,6 +118,7 @@ const ModalBack = styled.div`
   bottom: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.3);
+  z-index: 5;
 `
 
 const GoBack = styled.div`
@@ -179,10 +190,14 @@ const Content = styled.div`
       font-family: Pretendard;
       font-weight: 700;
       font-style: normal;
+      
+      cursor: pointer;
 
-      :hover {
-        box-shadow: 2px 2px 2px 2px gray;
-        cursor: pointer;
+      :disabled {
+        background: #F4F4F4;
+        color: #8E8E8E;
+        border: 1px solid #E4E4E4;
+        cursor: auto;
       }
     }
 

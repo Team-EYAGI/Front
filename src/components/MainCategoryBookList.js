@@ -11,11 +11,11 @@ const CategoryBookList = (props) => {
 
   const selfBook = props.mainCategory;
 
-  const [genre, setGenre] = React.useState([
+  const [category, setCategory] = React.useState([
     "자기계발",
     "소설",
     "시･에세이",
-    "유･아동",
+    "아동･가정",
     "경제",
   ])
 
@@ -32,15 +32,18 @@ const CategoryBookList = (props) => {
         >카테고리 전체보기</span>
       </Wrap>
       <HeaderSt>
-        {genre.map((item, idx) => (
+        {category.map((item, idx) => (
           <GenreSt
             // 카테고리 클릭 시 각 카테고리 페이지로 이동
             onClick={() => {
               history.push(`/book/${item}`);
             }}
             key={idx}
-            size="20"
-            color="white"
+            style={{ 
+              backgroundColor: idx === 0 ? "#0C0A0A" : "#FFFFFF",
+              color: idx === 0 ? "#FFFFFF" : "#767676",
+              border : idx === 0 ? "1px solid #0C0A0A" : "1px solid #D3D3D3"
+            }}
           >
             {item}
           </GenreSt>
@@ -76,7 +79,7 @@ const Wrap = styled.div`
 
   #plus:hover {
     cursor: pointer;
-    color: violet; 
+    color: #D05943;
   }
 `
 
@@ -115,20 +118,13 @@ const GenreSt = styled.h3`
   margin: 48px 7px 0px 0px;
 
   padding-bottom: 9px;
-  background: #FFFFFF;
-  border: 1px solid #D3D3D3;
   border-radius: 100px;
 
   text-align: center;
   line-height: 40px;
-  color: #333333;
 
   font-size: 16px;
   cursor: pointer;
-  :hover {
-    border: 1px solid gray;
-    box-shadow: 0 0 3px black;
-  }
 `
 
 

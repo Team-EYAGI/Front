@@ -55,21 +55,10 @@ const Wrap = styled.div`
 
   margin: 60px 0px 40px 0px;
 
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
-
   border-bottom: 2px solid #000000;
 
   span {
     margin: 0px 10px 15px 21px;
-    /* margin: 0px 20px; */
-    /* background-color: rebeccapurple; */     
-  }
-
-  #plus:hover {
-    cursor: pointer;
-    color: violet; 
   }
 `
 

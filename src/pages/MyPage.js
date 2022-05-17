@@ -6,7 +6,23 @@ import { useParams } from 'react-router-dom';
 
 import { history } from '../redux/configureStore';
 import { actionCreators as libraryActions } from "../redux/modules/mypage";
+import { actionCreators as followActions } from "../redux/modules/creator";
 import { useDispatch, useSelector } from 'react-redux';
+
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 const MyPage = () => {
   const dispatch = useDispatch();
@@ -14,19 +30,37 @@ const MyPage = () => {
   const params = useParams();
   const category = params.category;
 
-  const likeBook = useSelector((state) => state.mypage.library_likeBook);
+  // 개인 프로필 정보
   const profile = useSelector((state) => state.mypage.profile);
+  const following = useSelector((state) => state.creator.creator_following);
+  const follower = useSelector((state) => state.creator.creator_follower);
+  const authority = localStorage.getItem("seller");
+  const sellerId = profile.userId;
+
+  // 마이페이지 카테고리 정보
+  const likeBook = useSelector((state) => state.mypage.library_likeBook);
   const listenAudio = useSelector((state) => state.mypage.library_listenAudio);
   const myFunding = useSelector((state) => state.mypage.library_registerFunding);
   const myAudio = useSelector((state) => state.mypage.library_registerAudioBook);
-  const authority = localStorage.getItem("seller");
 
   const player = useRef();
 
+  // 팔로우, 팔로잉 모달창
+  const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleOpen2 = () => setOpen2(true);
+  const handleClose2 = () => setOpen2(false);
+
+  // 플레이어 자동재생 막기
   useEffect(() => {
-    player.current.audio.current.pause();  // -3-
+    if (authority === "ROLE_SELLER") {
+      player.current.audio.current.pause();  // -3-
+    }
   }, [profile]);
 
+  // 카테고리별 리스트 불러오기
   useEffect(() => {
     dispatch(libraryActions.getProfileAC());
 
@@ -41,28 +75,108 @@ const MyPage = () => {
     }
   }, []);
 
+  // 권한이 없는 사용자는 마이페이지에 접근할 수 없음
+  useEffect(() => {
+    if (!authority) {
+      history.push("/login")
+    }
+  }, []);
+
 
   return (
     <React.Fragment>
       <Wrap>
         <Menu>
           <Profile>
-            <Box>
+            <ProfileBox>
               <div id='img'>
                 <img src={profile.userImage ? profile.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
               </div>
               <div id='username'>
                 <h4>{profile.userName}</h4>
-                <h5>팔로잉 &nbsp;<span>1,529명</span></h5>
-                <h5>팔로워 &nbsp;<span>93명</span></h5>
+                <h5 onClick={() => {
+                  dispatch(followActions.followingListAC(sellerId));
+                  handleOpen();
+                }}>팔로잉 &nbsp;<span>{profile.followingCnt}명</span></h5>
+                {authority === "ROLE_SELLER" ?
+                  <h5
+                  onClick={() => {
+                    dispatch(followActions.followerListAC(sellerId));
+                    handleOpen2();
+                  }}
+                  >팔로워 &nbsp;<span>{profile.followerCnt}명</span></h5>
+                  :
+                  null
+                }
               </div>
-            </Box>
-            <Box>
+            </ProfileBox>
+            <ProfileBox>
               <h3>
                 {profile.introduce}
               </h3>
-            </Box>
-            <AudioPlayer
+            </ProfileBox>
+
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <h2 style={{ width: "100%", textAlign: "center" }}>팔로잉</h2>
+                <BoxSt>
+                  {following && following.map((item, idx) =>
+                  <FollowerList key={idx}>
+                  <div id='name'>
+                    <ImageBox>
+                      <img
+                        style={{ width: "100%" }}
+                        src={item.img ? item.img : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
+                      />
+                    </ImageBox>
+                    <h3 style={{ fontSize: "16px" }}>
+                      {item.name}
+                    </h3>
+                  </div>
+                  <button>unfollow</button>
+                </FollowerList>
+                  )
+                }
+                </BoxSt>
+              </Box>
+            </Modal>
+            <Modal
+              open={open2}
+              onClose={handleClose2}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <h2 style={{ width: "100%", textAlign: "center" }}>팔로워</h2>
+                <BoxSt>
+                  {follower && follower.map((item, idx) =>
+                  <FollowerList key={idx}>
+                  <div id='name'>
+                    <ImageBox>
+                      <img
+                        style={{ width: "100%" }}
+                        src={item.img ? item.img : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
+                      />
+                    </ImageBox>
+                    <h3 style={{ fontSize: "16px" }}>
+                      {item.name}
+                    </h3>
+                  </div>
+                  <button>unfollow</button>
+                </FollowerList>
+                  )
+                }
+                </BoxSt>
+              </Box>
+            </Modal>
+
+            {authority === "ROLE_SELLER" ?
+              <AudioPlayer
                 className='audio'
                 autoPlay={false}
                 src={profile.sellerVoice}
@@ -71,12 +185,13 @@ const MyPage = () => {
                 defaultCurrentTime={"00:00"}
                 showJumpControls={false}
                 ref={player}
-                // progressUpdateInterval            
-                // onListen={()=>{}}
-                // ListenInterval
                 onPlay={e => console.log("onPlay")}
-              // other props here
+
               />
+              :
+              null
+            }
+
             <button
               id='btn'
               onClick={() => {
@@ -86,26 +201,26 @@ const MyPage = () => {
               프로필 편집
             </button>
             {authority !== "ROLE_SELLER" ?
-              <span 
+              <span
                 id='creatorform'
                 onClick={() => {
                   window.open(`https://forms.gle/UR8cGG2YDWnc7f1y8`)
                 }}
-                >크리에이터 신청하기</span>
+              >크리에이터 신청하기</span>
               :
               profile.sellerVoice ?
-              <span
-                id='creatorform'
-                onClick={() => {
-                  history.push(`/addvoice`)
-                }}
+                <span
+                  id='creatorform'
+                  onClick={() => {
+                    history.push(`/addvoice`)
+                  }}
                 >내 목소리 다시 올리기</span>
                 :
                 <span
-                id='creatorform'
-                onClick={() => {
-                  history.push(`/addvoice`)
-                }}
+                  id='creatorform'
+                  onClick={() => {
+                    history.push(`/addvoice`)
+                  }}
                 >내 목소리 등록하기</span>
             }
           </Profile>
@@ -219,6 +334,84 @@ const MyPage = () => {
 }
 
 
+const FollowerList = styled.div`
+  width: 90%;
+  height: 60px;
+  margin: 10px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  border: 1px solid #000000;
+  border-radius: 5px;
+
+  #name {
+    /* width: 60%; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    margin-left: 10px;
+
+    h3 {
+      margin-left: 15px;
+    }
+  }
+
+  button {
+    border: none;
+    background: none;
+    color: #000000;
+    margin-right: 10px;
+
+    :hover {
+      cursor: pointer;
+      color: #D05943;
+    }
+  }
+`
+
+const BoxSt = styled.div`
+  height: 400px;
+
+  overflow-y: scroll;
+    ::-webkit-scrollbar {
+     /* 세로 스크롤 넓이 */  
+      width: 7px;
+      
+      border-radius: 6px;
+      background: #FFFFFC;
+      border: 1px solid #000000;
+    }
+    ::-webkit-scrollbar-thumb {
+      height: 17%;
+      background-color: #000000;
+      border-radius: 6px;
+    }
+`
+
+const ImageBox = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
+
+  overflow: hidden;
+  border: 1px solid #878787;
+  /* box-shadow: 0 0 2px gray; */
+
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* justify-content: flex-end; */
+
+  img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+`
 
 const AudioReviewNone = styled.div`
   width: 100%;
@@ -231,25 +424,6 @@ const AudioReviewNone = styled.div`
   justify-content: space-around;
   align-items: center;
 `
-
-// const SellerImg = styled.div`
-//   width: 130px;
-//   height: 130px;
-  
-//   border-radius: 15px;
-//   border: 1px solid #878787;
-  
-//   cursor: pointer;
-  
-
-//   overflow: hidden;
-
-// img {
-//   width:100%;
-//   height:100%;
-//   object-fit:cover;
-// }
-// `
 
 const Wrap = styled.div`
   width: 1100px;
@@ -403,7 +577,7 @@ const Profile = styled.div`
   }
 `
 
-const Box = styled.div`
+const ProfileBox = styled.div`
 
 /* background-color: yellow; */
   width: 290px;
@@ -433,8 +607,7 @@ const Box = styled.div`
 
   #username {
     width: 59%;
-    /* margin-top: 40px; */
-
+    
     h4 {
       font-weight: 700;
       font-size: 22px;
@@ -445,6 +618,11 @@ const Box = styled.div`
       font-weight: 300;
       font-size: 13px;
       margin: 2px 0px 0px 0px;
+
+      :hover {
+        color: #D05943;
+        cursor: pointer;
+      }
 
       span {
         font-weight: 500;

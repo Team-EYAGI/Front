@@ -14,6 +14,7 @@ const DELETE_REQUEST = "DELETE_REQUEST";
 const ADD_AUDIO = "ADD_AUDIO";
 const GET_AUDIO = "GET_AUDIO";
 const ADD_AUDIO_CHECK = "ADD_AUDIO_CHECK";
+// const ADD_FOLLOW = "FOLLOW";
 
 // 3. 리뷰 CRUD 부분
 const GET_REVIEW = "GET_REVIEW";
@@ -34,17 +35,18 @@ const initialState = {
 
 // 액션 생성 함수
 const getRequest = createAction(GET_REQUEST, (request_list) => ({ request_list }));
-const addRequest = createAction(ADD_REQUEST, (request_add) => ({ request_add }));
-const editRequest = createAction(EDIT_REQUEST, (bookRequestId, request_list) => ({ bookRequestId, request_list }));
+// const addRequest = createAction(ADD_REQUEST, (request_add) => ({ request_add }));
+// const editRequest = createAction(EDIT_REQUEST, (bookRequestId, request_list) => ({ bookRequestId, request_list }));
 const deleteRequest = createAction(DELETE_REQUEST, (bookRequestId) => ({ bookRequestId }));
 
-const addAudio = createAction(ADD_AUDIO, (audio_list) => ({ audio_list }));
+// const addAudio = createAction(ADD_AUDIO, (audio_list) => ({ audio_list }));
 const addAudioCheck = createAction(ADD_AUDIO_CHECK, (audio_check) => ({ audio_check }));
 const getAudio = createAction(GET_AUDIO, (audio_list) => ({ audio_list }));
+// const audiofollow = createAction(ADD_FOLLOW, (followCount, followStatus) => ({followCount, followStatus}));
 
 const getReview = createAction(GET_REVIEW, (review_list) => ({ review_list }));
-const addReview = createAction(ADD_REVIEW, (review_add) => ({ review_add }));
-const editReview = createAction(EDIT_REVIEW, (commentId, review_list) => ({ commentId, review_list }));
+// const addReview = createAction(ADD_REVIEW, (review_add) => ({ review_add }));
+// const editReview = createAction(EDIT_REVIEW, (commentId, review_list) => ({ commentId, review_list }));
 const deleteReview = createAction(DELETE_REVIEW, (commentId) => ({ commentId }));
 
 
@@ -149,6 +151,8 @@ const addAudioAC = (payload) => {
     // FormData의 value 확인
     for (let value of formData.values()) { console.log(value); }
 
+    history.push(`/loadingPage`)
+
     axios.post(process.env.REACT_APP_BASE_URL + `/book/detail/newAudio/${bookId}`,
       formData,
       {
@@ -161,10 +165,11 @@ const addAudioAC = (payload) => {
       .then((res) => {
         console.log("오디오 등록 완료", res)
         // dispatch(uploadImg({userId, title, comment}))
-        history.replace(`/bookdetail/${category}/${bookId}`);
+        history.push(`/bookdetail/${category}/${bookId}`);
       })
       .catch(error => {
         console.log("서버에러", error)
+        history.push(`/loadingPage/failed/${category}/${bookId}`)
       })
   }
 }
@@ -210,6 +215,26 @@ const getAudioAC = (audioBookId) => {
       })
   }
 }
+
+// 팔로우
+// const audiofollowAC = (sellerId) => {
+
+//   let Token = getToken("Authorization");
+//   return function (dispatch, getState, { history }) {
+//     axios.post(process.env.REACT_APP_BASE_URL + `/user/follow?id=${sellerId}`, {
+
+//     },
+//       { headers: { 'Authorization': `${Token}` } }
+//     )
+//       .then((res) => {
+//         console.log("팔로우 성공", res)
+//         dispatch(audiofollow(res.data.followCount, res.data.followStatus))
+//       })
+//       .catch(error => {
+//         console.log("error", error)
+//       })
+//   }
+// }
 
 // 오디오북 후기 겟
 const getReviewAC = (audioBookId) => {
@@ -316,6 +341,13 @@ export default handleActions(
       produce(state, (draft) => {
         draft.review_list = draft.review_list.filter((p) => p.commentId !== action.payload.commentId);
       }),
+      // [ADD_FOLLOW]: (state, action) =>
+      // produce(state, (draft) => {
+      //   console.log(action.payload.followCount)
+      //   console.log(action.payload.followStatus)
+      //   draft.audio_list.sellerProfile.followerCnt = action.payload.followCount;
+      //   draft.audio_list.followStatus = action.payload.followStatus;
+      // }),
   },
   initialState
 );
@@ -334,6 +366,7 @@ const actionCreators = {
   editReviewAC,
   deleteReviewAC,
   addAudioCheckAC,
+  // audiofollowAC,
 };
 
 export { actionCreators };
