@@ -5,7 +5,6 @@ import Message from './Message';
 
 const MessageList = (props) => {
   const messages = useSelector((state) => state.chat.messages);
-  console.log(localStorage.getItem("userId"));
 
   return (
     <React.Fragment>

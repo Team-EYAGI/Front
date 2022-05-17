@@ -29,7 +29,8 @@ const GET_MSG = "GET_MSG";
 const SET_MSG = "SET_MSG";
 
 const GET_MESSAGE= "GET_MESSAGE";
-
+// 삭제 메커니즘.
+const DELETE_ROOM = "DELETE_ROOM";
 
 // ActionCreator
 // 현재 채팅방 정보
@@ -59,10 +60,9 @@ const setChatList = createAction(SET_CHAT_LIST, (myChatList) => ({
 const getMSG = createAction(GET_MESSAGE, (newMessage) => ({
   newMessage,
 }));
-// // 채팅 참여중인 사용자 목록 조회
-// const getChatUser = createAction(GET_CHAT_USER, (user_in_chat_list) => ({
-//   user_in_chat_list,
-// }));
+const deleteRoom = createAction(DELETE_ROOM, (room_id) => ({
+  room_id,
+}));
 
 // initialState
 const initialState = {
@@ -199,17 +199,25 @@ const userQnAAX = (uuid) => {
 };
 
 const leaveChatAX = (room_id) => {
-  return function (dispatch, getState, { history }) {
-    let Token = getToken("Authorization");
-    axios.delete(process.env.REACT_APP_BASE_URL + `/chat/${room_id}`, 
-    { headers: { 'Authorization': `${Token}` } })
-    .then((res) => {
-      history.replace("/Admin");
-      console.log("방 폭파 boom!", res);
-    })
-    .catch((e) => {
-      console.log("채팅방 나가기 요청 에러", e);
-    });
+  const deleteP = window.confirm("alert 값확인하기");
+  if(deleteP) {
+    return function (dispatch, getState, { history }) {
+      let Token = getToken("Authorization");
+      axios.delete(process.env.REACT_APP_BASE_URL + `/chat/${room_id}`, 
+      { headers: { 'Authorization': `${Token}` } })
+      .then((res) => {
+        console.log("방 폭파 boom!", res);
+        dispatch(deleteRoom(room_id));
+        history.replace("/Admin");
+      })
+      .catch((e) => {
+        console.log("채팅방 나가기 요청 에러", e);
+      });
+    }
+  } else {
+    return function (dispatch, getState, { history }) {
+      console.log("방폭파를 취소하셨습니다.");
+    }
   }
 }
 
@@ -277,6 +285,11 @@ export default handleActions(
     [SET_MSG]: (state, action) =>
       produce(state, (draft) => {
         draft.messages = action.payload.chatMessageArray;
+      }),
+    [DELETE_ROOM]: (state, action) =>
+      produce(state, (draft) => {
+        console.log(draft);
+        // draft.room = draft.review_list.filter((p) => p.commentId !== action.payload.commentId);
       }),
     
   },

@@ -50,8 +50,8 @@ const Chat = (props) => {
   const enterRoom = () => {
     const Token = localStorage.getItem("token");
     const roomId = localStorage.getItem("roomId");
+    
     setClick(false);
-
     stompClient.connect()
     stompClient.subscribe(`/sub/api/chat/rooms/${roomId}`, (data) => {
       const onMessage = JSON.parse(data.body);

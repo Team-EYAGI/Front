@@ -154,9 +154,9 @@ const AdminChatList = (props) => {
 
 
     // 방 나가기 - 사용자, 방장 구분 후 실행하는 함수
-    const get_out_chat = (room_id) => {
-      dispatch(chatActions.leaveChatAX(room_id));
-      console.log(room_id);
+    const get_out_chat = () => {
+      console.log(roomId);
+      dispatch(chatActions.leaveChatAX(roomId));
     };
 
     return (
@@ -181,8 +181,7 @@ const AdminChatList = (props) => {
           <Wrap>
             <button id="exit" 
               onClick={get_out_chat} //채팅방 나가기 함수.
-            >끝내기</button> 
-            
+            >x</button> 
             <div id="lastest" ref={messageEndRef}>
               <MessageList />
             </div>
@@ -210,6 +209,20 @@ flex-wrap: nowrap;
 
 box-sizing: border-box;
 & * {box-sizing: border-box;}
+
+#exit {
+  position: absolute;
+  top: 20px; 
+  right: 20px;
+  z-index: 5;
+  background-color: #EBEBEB;
+  border: none;
+  width: 36px; 
+  height: 36px;
+  font-size: 20px;
+
+  :hover {color: #fff; background-color: #222;}
+}
 
 #lastest {
   width: 100%;
