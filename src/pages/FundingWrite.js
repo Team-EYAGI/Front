@@ -7,14 +7,12 @@ import { actionCreators as fundActions } from "../redux/modules/fund";
 import { actionCreators as getActions } from "../redux/modules/book";
 import { BiSearch } from "react-icons/bi";
 
+
 const FundingWrite = () => {
   const dispatch = useDispatch();
   const params = useParams();
-  console.log(params);
-
   const bookId = params.bookId;
 
-  console.log(bookId);
 
   const detail = useSelector((state) => state.book.detail_book);
   console.log(detail);
@@ -41,12 +39,18 @@ const FundingWrite = () => {
   // 오디오 추가하기
   const addFunding = () => {
     let file = fileInput.current.files[0];
-    console.log(file);
+    let maxSize = 5 * 1024 * 1024;
+		let fileSize = file.size;
 
     if (file === null) {
-      window.alert("파일을 추가해주세요.");
+      window.alert("파일을 추가해주세요.")
       return;
     }
+
+		if(fileSize > maxSize){
+			window.alert("첨부파일 사이즈는 5MB 이내로 등록 가능합니다.");
+			return;
+		}
     // 리뷰를 추가할 때 addReviewAc로 정보를 넘긴다.
     dispatch(
       fundActions.addFundingAC({
@@ -60,6 +64,8 @@ const FundingWrite = () => {
   React.useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));
   }, []);
+
+  
 
   return (
     <React.Fragment>
@@ -115,10 +121,13 @@ const FundingWrite = () => {
                 style={{ display: "none" }}
                 onChange={selectFile}
               />
-              <button id="uploadBtn" onClick={addFunding}>
+              <button
+              disabled={file === "" || fundingGoals === "" || content === ""}  //왜 파일넣으면 돼..>? 
+              id="uploadBtn" 
+              onClick={addFunding}>
                 등록하기
               </button>
-            </div>
+              </div>
           </ContentSt>
         </BookInfoSt>
       </Wrap>
@@ -242,6 +251,7 @@ const ContentSt = styled.div`
     #addbtn {
       margin: 8px 14px 8px 0px;
       cursor: pointer;
+     
     }
 
     span {
@@ -294,15 +304,20 @@ const ContentSt = styled.div`
     font-weight: 400;
     font-size: 20px;
     font-family: 'Pretendard';
+    cursor: pointer;
 
-    :hover {
-      cursor: pointer;
-      background: #0c0a0a;
-      color: #ffffff;
-      border: 1px solid #0c0a0a;
-      box-shadow: 3px 3px 3px 3px gray;
-    }
+    :disabled {
+        background: #F4F4F4;
+        color: #8E8E8E;
+        border: 1px solid #E4E4E4;
+        cursor: auto;
+      }
+
+   
   }
+
+  
 `;
+
 
 export default FundingWrite;

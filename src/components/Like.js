@@ -8,12 +8,11 @@ import { useParams } from "react-router-dom";
 
 const Like = (props) => {
     const likeCnt = props.fundingcard.likeCnt
-    console.log(likeCnt)
     const fundId = props.fundingcard.fundId
   const dispatch = useDispatch();
   const [fundHeartBool, setFundHeartBool] = useState(true);
   const like = useSelector((state)=> state.fund.likeCnt);
-  console.log(like)
+
 
 
   const addLike = () => {

@@ -48,6 +48,7 @@ const Wrap = styled.div`
   flex-wrap: wrap;
   justify-content: left;
   align-items: center;
+  /* background-color: red; */
 
   overflow-y: scroll;
     ::-webkit-scrollbar {
