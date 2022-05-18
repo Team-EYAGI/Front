@@ -34,6 +34,7 @@ const getFundingAC = () => {
     },
     )
     .then((res) => {
+      console.log(res)
       dispatch(getFunding(res.data))
 
     })

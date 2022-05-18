@@ -50,6 +50,7 @@ const Login = (props) => {
                 </div>
               </LoginBox>
               <button
+                disabled={email === "" || password === ""}
                 id="loginbtn"
                 onClick={login}
                 type="button"
@@ -100,6 +101,21 @@ const LoginContainer = styled.div`
   padding: 0px 50px 10px 37px;
   font-family: "Pretendard";
   font-style: normal;
+
+  #loginbtn {
+      background: #0C0A0A;
+      color: #FFFFFF;
+      border-radius: 10px;
+      cursor: pointer;
+
+      :disabled {
+        background: #F4F4F4;
+        color: #8E8E8E;
+        border: 1px solid #E4E4E4;
+        cursor: auto;
+      }
+    }
+
 
   button {
     font-family: "Pretendard";
@@ -169,13 +185,16 @@ const LoginBox = styled.div`
     input {
       border: 1px solid #c0c0c0;
       border-radius: 10px;
-      width: 298px;
+      width: 282px;
       height: 48px;
       margin-top: 10px;
       padding-top: 5px;
+      padding-left: 16px;
       margin-right: 20px;
     }
   }
 `;
+
+
 
 export default Login;

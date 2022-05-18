@@ -67,7 +67,7 @@ const Signup = (props) => {
                 id="Mail" 
                 type="button"
                 onClick={checkEmail}
-                disabled={!emailCHK}
+                disabled={!emailCHK || email === "" } // 이건왜안돼?
                 >
                   중복확인
                 </button>
@@ -98,7 +98,11 @@ const Signup = (props) => {
                 value={username}
                 placeholder="닉네임"
               ></input>
-              <button id="Name" type="button" onClick={checkUsername} disabled={username===""}>
+              <button 
+              id="Name" 
+              type="button" 
+              onClick={checkUsername} 
+              disabled={username===""}>
                 중복확인
               </button>
               </Nickbox>
@@ -106,13 +110,13 @@ const Signup = (props) => {
             {username.length < 1 ? null : !usernameCHK(username) ? (
                 <div>
                   <li style={{ color: "red" }}>
-                  ✖  2-8자의 한글 또는 영문
+                  ✖  2-8자의 한글 또는 영문, 숫자
                   </li>
                 </div>
               ) : (
                 <div>
                   <li style={{ color: "green" }}>
-                  ✔  2-8자의 한글 또는 영문
+                  ✔  2-8자의 한글 또는 영문, 숫자
                   </li>
                 </div>
               )}
@@ -167,7 +171,11 @@ const Signup = (props) => {
               )}
             </div>
 
-            <button id="signup" type="button" onClick={signup}>
+            <button
+             disabled={email === "" || password === "" || passwordCheck==="" || username===""} 
+            id="signup" 
+            type="button" 
+            onClick={signup}>
               가입하기
             </button>
           </center>
@@ -205,9 +213,10 @@ list-style: none;
     font-size: 18px;
     border: 1px solid #c0c0c0;
     border-radius: 5px;
-    width: 360px;
+    width: 344px;
     height: 48px;
     margin-top: 20px;
+    padding-left: 16px;
   }
 
   #signup {
@@ -223,6 +232,13 @@ list-style: none;
     background-color: #0c0a0a;
     margin-top: 50px;
     cursor: pointer;
+    
+    :disabled {
+        background: #F4F4F4;
+        color: #8E8E8E;
+        border: 1px solid #E4E4E4;
+        cursor: auto;
+      }
   }
 
   #Mail {
@@ -239,6 +255,13 @@ list-style: none;
     background-color: #0c0a0a;
     margin-top: 30px;
     cursor: pointer;
+
+    :disabled {
+        background: #F4F4F4;
+        color: #8E8E8E;
+        border: 1px solid #E4E4E4;
+        cursor: auto;
+      }
   }
 
   #Name {
@@ -255,6 +278,12 @@ list-style: none;
     background-color: #0c0a0a;
     margin-top: 30px;
     cursor: pointer;
+    :disabled {
+        background: #F4F4F4;
+        color: #8E8E8E;
+        border: 1px solid #E4E4E4;
+        cursor: auto;
+      }
   }
 `;
 
