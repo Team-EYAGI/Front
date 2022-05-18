@@ -33,8 +33,7 @@ const AudioPlay = (props) => {
   const audioBookDetail = audioDetail.audioBookDetail ? audioDetail.audioBookDetail : null;
   const playList = audioDetail.audioBookDetail ? audioBookDetail.audioFileDtoList : null;
   const sellerId = audioDetail.audioBookDetail ? audioDetail.audioBookDetail.sellerId : null;
-
-  console.log(sellerId)
+  const authority = localStorage.getItem("seller");
 
   // 오디오북 리뷰 불러오기
   const audioReview = useSelector((state) => state.audio.review_list);
@@ -45,6 +44,13 @@ const AudioPlay = (props) => {
   React.useEffect(() => {
     dispatch(getActions.getAudioAC(audioBookId));
     dispatch(getActions.getReviewAC(audioBookId));
+  }, []);
+
+  // 권한이 없는 사용자는 페이지 접근 불가
+  React.useEffect(() => {
+    if (!authority) {
+      history.push("/login")
+    }
   }, []);
 
   return (
@@ -64,9 +70,6 @@ const AudioPlay = (props) => {
             <div id='img_wrap'>
               <div id='img'>
                 <img
-                  onClick={() => {
-                    history.push(`/sellerProfile/2/audiobook`)
-                  }}
                   src={audioBookDetail && audioBookDetail.bookImg} />
               </div>
               <AudioPlayer
@@ -85,22 +88,27 @@ const AudioPlay = (props) => {
           </div>
           <AudioCard>
             <SellerImg>
-              <img src={audioBookDetail && audioBookDetail.sellerImage ? audioBookDetail.sellerImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
+              <img
+                onClick={() => {
+                  history.push(`/sellerProfile/${sellerId}/audiobook`)
+                }}
+                src={audioBookDetail && audioBookDetail.sellerImage ? audioBookDetail.sellerImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
+              />
             </SellerImg>
             <Content>
               <div id='follow'>
                 <div>팔로잉&nbsp;{audioBookDetail && audioBookDetail.followingCnt}  팔로워&nbsp;{audioBookDetail && audioBookDetail.followerCnt} </div>
                 {followStatus === false ?
                   <button
-                  onClick={() => {
-                    // dispatch(followActions.audiofollowAC(sellerId));
-                  }}
+                    onClick={() => {
+                      // dispatch(followActions.audiofollowAC(sellerId));
+                    }}
                   >follow</button>
                   :
                   <button
-                  onClick={() => {
-                    // dispatch(followActions.audiofollowAC(sellerId));
-                  }}
+                    onClick={() => {
+                      // dispatch(followActions.audiofollowAC(sellerId));
+                    }}
                   >unfollow</button>
                 }
               </div>
@@ -136,7 +144,7 @@ const AudioPlay = (props) => {
         <div id='reviewbox'>
           <div id='reviewHeader'>
             <h3>후기</h3>
-            <h4>2개</h4>
+            <h4>{audioReview.length}개</h4>
           </div>
           <span
             onClick={() => {

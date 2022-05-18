@@ -28,11 +28,11 @@ const MyPageAudioBook = (props) => {
               if (category === "likeBook") {
                 history.push(`/bookdetail/${props.item.category}/${props.item.bookId}`)
               } else if (category === "listen" || category === "myAudio" || category === "audiobook") {
-                if (category === "audiobook" && !is_session) {
-                  window.alert("로그인 후 이용 가능합니다!")
-                  history.push(`/login`)
-                  return;
-                }
+                // if (category === "audiobook" && !is_session) {
+                //   window.alert("로그인 후 이용 가능합니다!")
+                //   history.push(`/login`)
+                //   return;
+                // }
                 history.push(`/audioPlay/${props.item.category}/${props.item.bookId}/${props.item.audioBookId}`)
               } else if (category === "myFunding") {
                 history.push(`/funding`)

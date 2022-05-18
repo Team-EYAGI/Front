@@ -48,9 +48,7 @@ const Loading = (props) => {
 
 
 const ModalBox = styled.div`
-  position: absolute;
-  top: calc(25vh - 100px);
-  left: calc(40vw - 150px);
+  margin: 11vh auto;
   background-color: #FFFEFC;
   display: flex;
   justify-content: space-evenly;

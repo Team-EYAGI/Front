@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
@@ -14,12 +14,15 @@ const AudioReview = (props) => {
   const bookId = params.bookId
   const audioBookId = params.audioBookId
   const category = params.category
-
   const commentId = props.item.commentId
+
+  console.log(props.item)
 
   // 로그인한 유저네임과 리뷰를 작성한 유저네임을 비교하여 수정, 삭제 버튼 활성화
   const username = localStorage.getItem("username");
   const reviewUsername = props.item.username
+
+  const [clickRequest, setClickRequest] = useState(false);
 
   const deleteReview = () => {
     // 리뷰를 삭제할 때 commentId를 찾아 삭제할 예정
@@ -29,20 +32,24 @@ const AudioReview = (props) => {
 
   return (
     <React.Fragment>
-      <ListBox>
+      <ListBox
+      onClick={() => {
+        setClickRequest(!clickRequest);
+      }}
+      >
         <div id="listbox">
           <Body>
             <div id='bodytitle'>
               <h3 style={{ fontSize: "16px" }}>
-                {props.item.title}
-              </h3>
-              <h5>
                 {props.item.username}
-              </h5>
+              </h3>
+              <h4>
+                {props.item.createdAt.split("T")[0]}
+              </h4>
             </div>
             <div id='bodytitle'>
               <h4>
-                {props.item.content}
+                {props.item.title}
               </h4>
               {username == reviewUsername ?
                 <div>
@@ -55,11 +62,37 @@ const AudioReview = (props) => {
             </div>
           </Body>
         </div>
-
       </ListBox>
+      {clickRequest && (
+        <ReviewDetail>
+          <ReviewWrap>
+            <ReviewContent>
+              {props.item.content}
+            </ReviewContent>
+          </ReviewWrap>
+        </ReviewDetail>
+      )}
     </React.Fragment>
   )
 }
+
+const ReviewDetail = styled.div`
+  min-height: 80px;
+  padding: 10px;
+  background-color: #F6F6F6;
+
+  display: flex;
+  flex-direction: row;
+`
+
+const ReviewWrap = styled.div`
+  width: 1000px;
+`
+
+const ReviewContent = styled.p`
+  margin: 12px 0px 20px 0px;
+  text-align: left;
+`
 
 const ListBox = styled.div`
   display: flex;
@@ -73,6 +106,8 @@ const ListBox = styled.div`
     width: 100%;
     margin: 10px;
   }
+
+  cursor: pointer;
 `
 const Body = styled.div`
   width: 100%;

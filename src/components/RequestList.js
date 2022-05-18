@@ -92,20 +92,8 @@ const RequestList = (props) => {
             :
             null
           }
-
-
-          {/* <HelpWrap>
-            <HelpButton
-            //  onClick={() => {
-            //    dispatch(reviewActions.helpReviewAC(itemId, commentId))
-            //  }}
-           >
-              도움이 돼요&nbsp;1
-            </HelpButton>
-          </HelpWrap> */}
         </RequestDetail>
       )}
-
     </React.Fragment>
   );
 };

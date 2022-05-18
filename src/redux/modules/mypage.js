@@ -2,6 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import axios from "axios";
 import { getToken } from "../../shared/Token";
+import Swal from 'sweetalert2';
 
 
 // 액션
@@ -83,9 +84,14 @@ const addLibraryAC = (bookId) => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        // console.log("서재담기 성공", res)
-        window.alert(res.data)
-        // history.replace(`/request`)
+        Swal.fire({
+          position: 'center',
+          icon: `${res.data}` === "이미 등록된 도서입니다." ? 'warning' : 'success',
+          title: `${res.data}`,
+          showConfirmButton: false,
+          timer: 1500,
+          color: "#000000",
+        })
       })
       .catch(error => {
         console.log("error", error)
@@ -242,7 +248,14 @@ const addProfileAC = (payload) => {
         history.replace(`/mypage/likeAudio`);
       })
       .catch(error => {
-        console.log("서버에러", error)
+        if(error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `${payload.authority}` === "ROLE_SELLER" ? '프로필 이미지와 자기소개를 모두 입력해주세요!' : '프로필 이미지를 등록해주세요!',
+          })
+        }
+
       })
   }
 }

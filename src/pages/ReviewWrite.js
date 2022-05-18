@@ -72,10 +72,6 @@ const ReviewWirte = (props) => {
               <button
                 disabled={title === "" || content === ""}
                 onClick={() => {
-                  if (title === "" || content === "") {
-                    window.alert("내용을 모두 입력해주세요!")
-                    return;
-                  }
                   dispatch(reviewActions.editReviewAC(
                     category,
                     bookId,
@@ -92,10 +88,6 @@ const ReviewWirte = (props) => {
               <button
                 disabled={title === "" || content === ""}
                 onClick={() => {
-                  if (title === "" || content === "") {
-                    window.alert("내용을 모두 입력해주세요!")
-                    return;
-                  }
                   dispatch(reviewActions.addReviewAC(
                     category,
                     bookId,
@@ -136,6 +128,7 @@ const ModalBack = styled.div`
   bottom: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.3);
+  z-index: 5;
 `
 
 const GoBack = styled.div`

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as requestActions } from "../redux/modules/audio";
 import { actionCreators as getActions } from "../redux/modules/book";
 import { useBeforeunload } from "react-beforeunload";
+import Swal from 'sweetalert2';
 
 const RequestWrite = (props) => {
   const dispatch = useDispatch();
@@ -14,10 +15,8 @@ const RequestWrite = (props) => {
   useBeforeunload((event) => event.preventDefault());
 
   const params = useParams();
-  // console.log(params)
   const bookId = params.bookId
   const bookRequestId = params.bookRequestId
-  // console.log("북아이디",bookRequestId)
 
   // 리덕스에 저장된 책 상세페이지 정보 불러오기
   const detail = useSelector((state) => state.book.detail_book);
@@ -72,7 +71,13 @@ const RequestWrite = (props) => {
                   disabled={contents === ""}
                   onClick={() => {
                     if (contents.length < 10) {
-                      window.alert("최소 10자 이상 입력해주세요!")
+                      Swal.fire({
+                        position: 'center',
+                        icon: 'warning',
+                        title: '최소 10자 이상 입력해주세요!',
+                        showConfirmButton: false,
+                        timer: 1500
+                      })
                       return;
                     }
                     dispatch(requestActions.editRequestAC(bookRequestId, title, contents));
@@ -86,7 +91,14 @@ const RequestWrite = (props) => {
                   disabled={contents === ""}
                   onClick={() => {
                     if (contents.length < 10) {
-                      window.alert("최소 10자 이상 입력해주세요!")
+                      Swal.fire({
+                        position: 'center',
+                        icon: 'warning',
+                        text: '최소 10자 이상 입력해주세요!',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        color: "#000000",
+                      })
                       return;
                     }
                     dispatch(requestActions.addRequestAC(bookId, title, contents));
