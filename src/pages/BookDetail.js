@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import AudioBookList from '../components/AudioBookList';
 import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 import { history } from '../redux/configureStore';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,7 +58,7 @@ const BookDetail = () => {
                     내 펀딩 등록하기
                   </button>
                   <button
-                     onClick={() => {
+                    onClick={() => {
                       history.push(`/audioWrite/${category}/${bookId}`)
                     }}>
                     내 오디오 등록하기
@@ -69,9 +70,16 @@ const BookDetail = () => {
               <button
                 onClick={() => {
                   if (!is_login) {
-                    window.alert("로그인 후 이용 가능합니다!");
-                    history.push(`/login`)
-                    return;
+                    Swal.fire({
+                      text: "로그인 후 이용 가능합니다!",
+                      icon: "warning",
+                      confirmButtonText: "로그인하러가기",
+                      confirmButtonColor: '#0C0A0A',
+                    }).then(result => {
+                      if (result.isConfirmed) {
+                        history.push(`/login`)
+                      }
+                    })
                   } else {
                     dispatch(libraryActions.addLibraryAC(bookId));
                   }

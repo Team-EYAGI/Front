@@ -8,6 +8,7 @@ import { actionCreators as voiceActions } from "../redux/modules/mypage";
 import { useBeforeunload } from "react-beforeunload";
 import { BsXSquare } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
+import Swal from 'sweetalert2';
 
 
 const AddProfileVoice = (props) => {
@@ -45,13 +46,12 @@ const AddProfileVoice = (props) => {
     let maxSize = 5 * 1024 * 1024;
 		let fileSize = file.size;
 
-    if (file === null) {
-      window.alert("파일을 추가해주세요.")
-      return;
-    }
-
 		if(fileSize > maxSize){
-			window.alert("첨부파일 사이즈는 5MB 이내로 등록 가능합니다.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: '첨부파일 사이즈는 5MB 이내로 등록 가능합니다!',
+      })
 			return;
 		}
 
@@ -74,6 +74,7 @@ const AddProfileVoice = (props) => {
               <span>{file ? file.name : "가능한 파일 : wav, mp3, m4a"}</span>
               <BiSearch id='addbtn' onClick={handleClick} size="24px" />
             </div>
+            <h5>최대 5MB의 파일만 등록 가능합니다.</h5>
             <div>
               <input
                 type="file"
@@ -98,9 +99,7 @@ const AddProfileVoice = (props) => {
 };
 
 const ModalBox = styled.div`
-  position: absolute;
-  top: calc(25vh - 100px);
-  left: calc(40vw - 150px);
+  margin: 11vh auto;
   background-color: #FFFEFC;
   display: flex;
   justify-content: space-evenly;
@@ -206,6 +205,13 @@ const Content = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  h5 {
+    width: 85%;
+    margin: 10px 5px 3px 0px;
+    font-weight: 300;
+    text-align: right;
   }
 `
 

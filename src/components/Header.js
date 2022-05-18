@@ -11,6 +11,7 @@ import { actionCreators as searchActions } from "../redux/modules/search";
 import { actionCreators } from "../redux/modules/user";
 // import logo from '../src_assets/eyagiLogo1.png'
 import logo from '../src_assets/logo.svg';
+import Swal from 'sweetalert2';
 
 const Header = (props) => {
   const dispatch = useDispatch();
@@ -43,7 +44,13 @@ const Header = (props) => {
 
   const sendWord = () => {
     if (word === "") {
-      window.alert("검색어를 입력해주세요!")
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: '검색어를 입력해주세요!',
+        showConfirmButton: false,
+        timer: 1500
+      })
     } else {
       dispatch(searchActions.addSearchAC(word));
     }

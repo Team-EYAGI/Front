@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as getActions } from "../redux/modules/book";
+import Swal from 'sweetalert2';
 
 
 const AudioModal = (props) => {
@@ -44,27 +45,27 @@ const AudioModal = (props) => {
         <ModalBox>
           <div style={{ width: "700px" }}>
             <GoBack>
-             <BsXSquare id="icon" onClick={() => history.goBack()} size="30px"/> 
+              <BsXSquare id="icon" onClick={() => history.goBack()} size="30px" />
             </GoBack>
             <PlayerImg style={{ backgroundImage: `url(${detail.bookImg})` }}>
-            <div id='img_wrap'>
-              <Img>
-                <img style={{ width: "100%" }}
-                  src={detail.bookImg}
-                />
-              </Img>
+              <div id='img_wrap'>
+                <Img>
+                  <img style={{ width: "100%" }}
+                    src={detail.bookImg}
+                  />
+                </Img>
 
-              {detail.title} / {preview.audioBookId}번 오디오북
-              <AudioPlayer
-                className='audio'
-                autoPlay={false}
-                src={preview.previewFile}
-                volume={1}
-                timeFormat={"mm:ss"}
-                defaultCurrentTime={"00:00"}
-                showJumpControls={false}
-                onPlay={e => console.log("onPlay")}
-              />
+                {detail.title} / {preview.audioBookId}번 오디오북
+                <AudioPlayer
+                  className='audio'
+                  autoPlay={false}
+                  src={preview.previewFile}
+                  volume={1}
+                  timeFormat={"mm:ss"}
+                  defaultCurrentTime={"00:00"}
+                  showJumpControls={false}
+                  onPlay={e => console.log("onPlay")}
+                />
               </div>
             </PlayerImg>
 
@@ -75,9 +76,16 @@ const AudioModal = (props) => {
               id="morebtn"
               onClick={() => {
                 if (!is_login) {
-                  window.alert("로그인 후 이용 가능합니다!");
-                  history.push(`/login`)
-                  return;
+                  Swal.fire({
+                    text: "로그인 후 이용 가능합니다!",
+                    icon: "warning",
+                    confirmButtonText: "로그인하러가기",
+                    confirmButtonColor: '#0C0A0A',
+                  }).then(result => {
+                    if (result.isConfirmed) {
+                      history.push(`/login`)
+                    }
+                  })
                 } else {
                   history.push(`/audioPlay/${category}/${bookId}/${audioBookId}`)
                 }
@@ -94,9 +102,7 @@ const AudioModal = (props) => {
 export default AudioModal;
 
 const ModalBox = styled.div`
-  position: absolute;
-  top: calc(25vh - 100px);
-  left: calc(40vw - 150px);
+  margin: 11vh auto;
   background-color: #FFFEFC;
   display: flex;
   justify-content: space-evenly;

@@ -20,8 +20,6 @@ import MyPage from '../pages/MyPage';
 import Request from '../pages/Request';
 import RequestWrite from '../pages/RequestWrite';
 import Search from '../pages/Search';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import AudioModal from "../pages/AudioModal";
 import ReviewWirte from '../pages/ReviewWrite';
 import SellerProfile from '../pages/SellerProfile';
@@ -34,10 +32,16 @@ import AddProfileVoice from '../pages/AddProfileVoice';
 import Loading from '../pages/Loading'
 import LoadingPage from '../pages/LoadingPage'
 
+// 컴포넌트 목록
+import ScrollToTop from './ScrollToTop';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+
 function App() {
   return (
     <React.Fragment className="App">
       <ConnectedRouter history={history}>
+        <ScrollToTop/>
         <Header />
         <Wrap>
           <Route path="/Admin" exact component={Admin} />
@@ -55,7 +59,7 @@ function App() {
           <Route path="/bookDetail/:category/:bookId" exact component={BookDetail} />
           <Route path="/audioModal/:category/:bookId/:audiobookId" exact component={AudioModal} />
           <Route path="/funding" exact component={Funding} />
-          <Route path="/fundingDetail" exact component={FundingDetail} />
+          <Route path="/fundingDetail/:fundingId" exact component={FundingDetail} />
           <Route path="/fundingWrite/:bookId" exact component={FundingWrite} />
           <Route path="/mypage" exact component={MyPage} />
           <Route path="/mypage/:category" exact component={MyPage} />

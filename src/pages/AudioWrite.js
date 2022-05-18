@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { actionCreators as addActions } from "../redux/modules/audio";
 import { actionCreators as getActions } from "../redux/modules/book";
 import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 const AudioWrite = () => {
   const dispatch = useDispatch();
@@ -42,20 +43,28 @@ const AudioWrite = () => {
 
   // 오디오 추가하기
   const addAudio = () => {
-    let file = fileInput.current.files[0];
-    console.log(file)
-
-    if (file === null) {
-      window.alert("파일을 추가해주세요.")
-      return;
-    }
-    dispatch(addActions.addAudioAC({
-      information: { contents: contents },
-      file,
-      bookId,
-      category,
-    })
-    )
+    Swal.fire({
+      // title: "알림",
+      text: "업로드 후 수정이나 삭제가 불가능합니다. 업로드 하시겠습니까?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "네",
+      cancelButtonText: "아니오",
+      confirmButtonColor: '#0C0A0A',
+      cancelButtonColor: '#0C0A0A',
+    }).then(result => {
+      if (result.isConfirmed) {
+          dispatch(addActions.addAudioAC({
+            information: { contents: contents },
+            file,
+            bookId,
+            category,
+          })
+          )
+      } else {
+        return;
+      }
+    });
   }
 
   React.useEffect(() => {

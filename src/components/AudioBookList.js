@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 import "../styles/modal.css"
 import { useParams } from 'react-router-dom';
-
+import Swal from 'sweetalert2';
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -39,7 +39,7 @@ const AudioBookList = (props) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
+    
   return (
     <React.Fragment>
       <Wrap>
@@ -50,13 +50,20 @@ const AudioBookList = (props) => {
           <button
             onClick={() => {
               if (!is_login) {
-                window.alert("로그인 후 이용 가능합니다!");
-                history.push(`/login`)
-                return;
-              } else {
-                history.push(`/requestWrite/${bookId}`)
-              }
-            }}>새 오디오북 요청하러가기</button>
+                Swal.fire({
+                  text: "로그인 후 이용 가능합니다!",
+                  icon: "warning",
+                  confirmButtonText: "로그인하러가기",
+                  confirmButtonColor: '#0C0A0A',
+                }).then(result => {
+                  if (result.isConfirmed) {
+                    history.push(`/login`)
+                  }
+              })
+            } else {
+              history.push(`/requestWrite/${bookId}`)
+            }}}
+            >새 오디오북 요청하러가기</button>
         </AudioCardSt1>
         {audioBookList && audioBookList.length === 0 ?
           <CreatorNone>
