@@ -16,6 +16,7 @@ const initialState = {
   fund_add : [],
   list: [],
   likeCnt: [],
+  heart: [],
   paging: {page: 1, size: 20},
   is_loading: false,
 };
@@ -34,6 +35,8 @@ const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 const getFundingAC = (page = 1, size = 20) => {
   const username = localStorage.getItem("username");
   console.log(username)
+  let Token = getToken("Authorization");
+
 
   return function (dispatch, getState, {history}) {
     const _paging=getState().fund.paging;
@@ -42,11 +45,26 @@ const getFundingAC = (page = 1, size = 20) => {
     }
     dispatch(loading(true));
 
-    axios.get(process.env.REACT_APP_BASE_URL + `/fund?page=${page}&size=${size}`, {
-      username: username,
-    },
+    const formData = new FormData();
+    // formData.append("info", username)
+    formData.append("info",
+      new Blob([JSON.stringify(username)], {
+        type: "application/json",
+      })
+    )
+
+    axios.post(process.env.REACT_APP_BASE_URL + `/fund?size=${size}&page=${page}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          'Authorization': `${Token}`,
+        }
+      }
     )
     .then((res) => {
+      console.log(res)
+
         console.log(res.data.content)
 
         let paging={
@@ -143,12 +161,14 @@ export default handleActions(
     produce(state, (draft) => {
       draft.fund_add = action.payload.fund_add;
     }),    
-    // [ADD_LIKE]: (state, action) =>  
-    // produce(state, (draft) => {
-    //   console.log(action.payload.fundHeartBool)
-    //   draft.fund_list.myHeart = action.payload.fundHeartBool;
-    //   // draft.likeCnt = action.payload.like.fundHeartBool;
-    //   }),
+    [ADD_LIKE]: (state, action) =>  
+    produce(state, (draft) => {
+      console.log(action.payload.fundHeartBool)
+      console.log(action.payload.fundId)
+      draft.fund_list.find((p) => p.fundId !== action.payload.fundId).myHeart = action.payload.fundHeartBool;
+      // window.location.reload()
+      // draft.heart = draft.fund_list.find((p) => p.fundId !== action.payload.fundId)
+      }),
   },
   initialState
 );
