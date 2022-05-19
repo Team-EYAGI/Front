@@ -9,6 +9,7 @@ const GET_REQUEST = "GET_REQUEST";
 const ADD_REQUEST = "ADD_REQUEST";
 const EDIT_REQUEST = "EDIT_REQUEST";
 const DELETE_REQUEST = "DELETE_REQUEST";
+const LOADING = "LOADING"
 
 // 2. 크리에이터가 오디오북 등록하는 부분
 const ADD_AUDIO = "ADD_AUDIO";
@@ -31,13 +32,16 @@ const initialState = {
   audio_check: [],
   review_list: [],
   review_add: [],
+  paging: {page: 1, size: 20},
+  is_loading: false,
 };
 
 // 액션 생성 함수
-const getRequest = createAction(GET_REQUEST, (request_list) => ({ request_list }));
+const getRequest = createAction(GET_REQUEST, (request_list, paging) => ({ request_list, paging }));
 // const addRequest = createAction(ADD_REQUEST, (request_add) => ({ request_add }));
 // const editRequest = createAction(EDIT_REQUEST, (bookRequestId, request_list) => ({ bookRequestId, request_list }));
 const deleteRequest = createAction(DELETE_REQUEST, (bookRequestId) => ({ bookRequestId }));
+const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
 // const addAudio = createAction(ADD_AUDIO, (audio_list) => ({ audio_list }));
 const addAudioCheck = createAction(ADD_AUDIO_CHECK, (audio_check) => ({ audio_check }));
@@ -53,16 +57,28 @@ const deleteReview = createAction(DELETE_REVIEW, (commentId) => ({ commentId }))
 // 미들웨어
 
 // 오디오북 요청 겟
-const getRequestAC = () => {
+const getRequestAC = (page = 1, size = 1) => {
   return function (dispatch, getState, { history }) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/book/request`, {
-
+    const _paging=getState().fund.paging;
+    if (!_paging.page) {
+      return;
+    }
+    dispatch(loading(true));
+    axios.get(process.env.REACT_APP_BASE_URL + `/book/request?page=${page}&size=${size}`, {
+  
     },
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        console.log("요청 목록 불러오기", res)
-        dispatch(getRequest(res.data))
+        console.log(res.data.content)
+
+        let paging={
+          page : res.data.content.length === size ? page + 1 : null,
+          size : size,
+        };
+
+        console.log(paging)
+        dispatch(getRequest(res.data.content, paging));
 
       })
       .catch(error => {
@@ -318,8 +334,13 @@ export default handleActions(
   {
     [GET_REQUEST]: (state, action) =>
       produce(state, (draft) => {
-        draft.request_list = action.payload.request_list;
-        console.log("스테이스상태", state)
+        draft.request_list.push(...action.payload.request_list);
+        draft.is_loading = false;
+        if (action.payload.paging) {
+          draft.paging = action.payload.paging;
+        }
+        // draft.request_list = action.payload.request_list;
+        // console.log("스테이스상태", state)
       }),
     [ADD_AUDIO_CHECK]: (state, action) =>
       produce(state, (draft) => {

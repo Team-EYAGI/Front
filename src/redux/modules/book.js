@@ -29,10 +29,10 @@ const getMainCreator = createAction(GET_MAIN_CREATOR, (main_creator) => ({ main_
 const getBookDetail = createAction(GET_BOOKDETAIL, (detail_book) => ({ detail_book }));
 
 const getNovel = createAction(GET_NOVEL, (novel, paging) => ({ novel, paging }));
-const getPoem = createAction(GET_POEM, (poem) => ({ poem }));
-const getSelf = createAction(GET_SELF, (self) => ({ self }));
-const getEconomy = createAction(GET_ECONOMY, (economy) => ({ economy }));
-const getKids = createAction(GET_KIDS, (kids) => ({ kids }));
+const getPoem = createAction(GET_POEM, (poem, paging) => ({ poem, paging }));
+const getSelf = createAction(GET_SELF, (self, paging) => ({ self, paging }));
+const getEconomy = createAction(GET_ECONOMY, (economy, paging) => ({ economy, paging }));
+const getKids = createAction(GET_KIDS, (kids, paging) => ({ kids, paging }));
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
 // 초기값
@@ -47,7 +47,7 @@ const initialState = {
   category_economy: [],
   category_kids: [],
   category_self: [],
-  paging: {start: null, next: null, size: 3},
+  paging: {page: 1, size: 20},
   is_loading: false,
 };
 
@@ -150,45 +150,27 @@ const getBookDetailAC = (bookId) => {
 }
 
 // 카테고리별 도서 : 소설
-const getNovelAC = (start = null, size = 91) => {
+const getNovelAC = (page = 1, size = 20) => {
   return function (dispatch, getState, { history }) {
-    const _paging = getState().book.paging;
-    if(_paging.start && !_paging.next){
+    const _paging=getState().book.paging;
+    if (!_paging.page) {
       return;
     }
     dispatch(loading(true));
-
-    axios.get(process.env.REACT_APP_BASE_URL + `/category/novel`, {
+    axios.get(process.env.REACT_APP_BASE_URL + `/category/novel?page=${page}&size=${size}`, {
 
     },
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        console.log(res.data)
-        let post_list = [];
-        let paging = {
-          start: res.data[0],
-          next: res.data.length === size + 1 ? res.data[res.data.length - 1] : null,
+        console.log(res.data.content)
+        let paging={
+          page : res.data.content.length === size ? page + 1 : null,
           size : size,
         };
 
-        (res.data).forEach((doc) => {
-
-          let post = {
-            author: doc.author,
-            bookId: doc.bookId,
-            bookImg:doc.bookImg,
-            category: doc.category,
-            publisher: doc.publisher,
-            title: doc.title,
-          };
-
-        post_list.push(post);
-      })
-      
-      post_list.pop();
-        // console.log("소설 준비완료", res)
-        dispatch(getNovel(post_list, paging))
+        console.log(paging)
+        dispatch(getNovel(res.data.content, paging));
       })
       .catch(error => {
         console.log("error", error)
@@ -197,17 +179,28 @@ const getNovelAC = (start = null, size = 91) => {
 }
 
 // 카테고리별 도서 : 경제
-const getEconomyAC = () => {
+const getEconomyAC = (page = 1, size = 20) => {
   return function (dispatch, getState, { history }) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/category/economy`, {
+    const _paging=getState().book.paging;
+    if (!_paging.page) {
+      return;
+    }
+    dispatch(loading(true));
+    axios.get(process.env.REACT_APP_BASE_URL + `/category/economy?page=${page}&size=${size}`, {
 
     },
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
+        console.log(res.data.content)
         // console.log("경제 준비완료", res)
-        dispatch(getEconomy(res.data))
+        let paging={
+          page : res.data.content.length === size ? page + 1 : null,
+          size : size,
+        };
 
+        console.log(paging)
+        dispatch(getEconomy(res.data.content, paging));
       })
       .catch(error => {
         console.log("error", error)
@@ -216,17 +209,27 @@ const getEconomyAC = () => {
 }
 
 // 카테고리별 도서 : 시, 에세이
-const getPoemAC = () => {
+const getPoemAC = (page = 1, size = 20) => {
   return function (dispatch, getState, { history }) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/category/poem`, {
+    const _paging=getState().book.paging;
+    if (!_paging.page) {
+      return;
+    }
+    dispatch(loading(true));
+    axios.get(process.env.REACT_APP_BASE_URL + `/category/poem?page=${page}&size=${size}`, {
 
     },
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        // console.log("시 준비완료", res)
-        dispatch(getPoem(res.data))
+        console.log(res.data.content)
+        let paging={
+          page : res.data.content.length === size ? page + 1 : null,
+          size : size,
+        };
 
+        console.log(paging)
+        dispatch(getPoem(res.data.content, paging));
       })
       .catch(error => {
         console.log("error", error)
@@ -235,16 +238,27 @@ const getPoemAC = () => {
 }
 
 // 카테고리별 도서 : 유아동
-const getKidsAC = () => {
+const getKidsAC = (page = 1, size = 20) => {
   return function (dispatch, getState, { history }) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/category/kids`, {
+    const _paging=getState().book.paging;
+    if (!_paging.page) {
+      return;
+    }
+    dispatch(loading(true));
+    axios.get(process.env.REACT_APP_BASE_URL + `/category/kids?page=${page}&size=${size}`, {
 
     },
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        // console.log("유아동 준비완료", res)
-        dispatch(getKids(res.data))
+        console.log(res.data.content)
+        let paging={
+          page : res.data.content.length === size ? page + 1 : null,
+          size : size,
+        };
+
+        console.log(paging)
+        dispatch(getKids(res.data.content, paging));
       })
       .catch(error => {
         console.log("error", error)
@@ -253,17 +267,27 @@ const getKidsAC = () => {
 }
 
 // 카테고리별 도서 : 자기계발
-const getSelfAC = () => {
+const getSelfAC = (page = 1, size = 20) => {
   return function (dispatch, getState, { history }) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/category/self`, {
+    const _paging=getState().book.paging;
+    if (!_paging.page) {
+      return;
+    }
+    dispatch(loading(true));
+    axios.get(process.env.REACT_APP_BASE_URL + `/category/self?page=${page}&size=${size}`, {
 
     },
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        // console.log("자기계발 준비완료", res)
-        dispatch(getSelf(res.data))
+        console.log(res.data.content)
+        let paging={
+          page : res.data.content.length === size ? page + 1 : null,
+          size : size,
+        };
 
+        console.log(paging)
+        dispatch(getSelf(res.data.content, paging));
       })
       .catch(error => {
         console.log("error", error)
@@ -297,26 +321,43 @@ export default handleActions(
       }),
     [GET_NOVEL]: (state, action) =>
       produce(state, (draft) => {
-        // draft.category_novel = action.payload.novel;
         draft.category_novel.push(...action.payload.novel);
         draft.is_loading = false;
-        draft.paging = action.payload.paging;
+        if (action.payload.paging) {
+          draft.paging = action.payload.paging;
+        }
       }),
     [GET_POEM]: (state, action) =>
       produce(state, (draft) => {
-        draft.category_poem = action.payload.poem;
+        draft.category_poem.push(...action.payload.poem);
+        draft.is_loading = false;
+        if (action.payload.paging) {
+          draft.paging = action.payload.paging;
+        }
       }),
     [GET_SELF]: (state, action) =>
       produce(state, (draft) => {
-        draft.category_self = action.payload.self;
+        draft.category_self.push(...action.payload.self);
+        draft.is_loading = false;
+        if (action.payload.paging) {
+          draft.paging = action.payload.paging;
+        }
       }),
     [GET_KIDS]: (state, action) =>
       produce(state, (draft) => {
-        draft.category_kids = action.payload.kids;
+        draft.category_kids.push(...action.payload.kids);
+        draft.is_loading = false;
+        if (action.payload.paging) {
+          draft.paging = action.payload.paging;
+        }
       }),
     [GET_ECONOMY]: (state, action) =>
       produce(state, (draft) => {
-        draft.category_economy = action.payload.economy;
+        draft.category_economy.push(...action.payload.economy);
+        draft.is_loading = false;
+        if (action.payload.paging) {
+          draft.paging = action.payload.paging;
+        }
       }),
     [LOADING]: (state, action) => produce(state, (draft) => {
       console.log(action.payload);

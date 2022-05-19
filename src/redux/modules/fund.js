@@ -8,6 +8,7 @@ const GET_FUND = "GET_FUND";
 const ADD_FUND = "ADD_REQUEST";
 const ADD_LIKE = 'ADD_LIKE';
 const DEL_LIKE = 'DEL_LIKE';
+const LOADING = "LOADING"
 
 // 초기값
 const initialState = {
@@ -15,27 +16,47 @@ const initialState = {
   fund_add : [],
   list: [],
   likeCnt: [],
+  paging: {page: 1, size: 20},
+  is_loading: false,
 };
 
 // action creater
-const getFunding = createAction(GET_FUND, (fund_list) => ({fund_list}));
+const getFunding = createAction(GET_FUND, (fund_list, paging) => ({fund_list, paging}));
 const addFunding = createAction(ADD_FUND, (fund_add) => ({fund_add}));
-const addLike = createAction(ADD_LIKE, (like, fundId) => ({ like, fundId }))
+const addLike = createAction(ADD_LIKE, (fundHeartBool, fundId) => ({ fundHeartBool, fundId }))
 const delLike = createAction(DEL_LIKE, (like) => ({ like }))
+const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
 
 // 미들웨어
 
 // 펀딩페이지 가져오기
-const getFundingAC = () => {
-  return function (dispatch, getState, {history}) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/fund`, {
+const getFundingAC = (page = 1, size = 20) => {
+  const username = localStorage.getItem("username");
+  console.log(username)
 
+  return function (dispatch, getState, {history}) {
+    const _paging=getState().fund.paging;
+    if (!_paging.page) {
+      return;
+    }
+    dispatch(loading(true));
+
+    axios.get(process.env.REACT_APP_BASE_URL + `/fund?page=${page}&size=${size}`, {
+      username: username,
     },
     )
     .then((res) => {
-      console.log(res)
-      dispatch(getFunding(res.data))
+        console.log(res.data.content)
+
+        let paging={
+          page : res.data.content.length === size ? page + 1 : null,
+          size : size,
+        };
+
+        console.log(paging)
+        dispatch(getFunding(res.data.content, paging));
+
 
     })
     .catch(error => {
@@ -90,12 +111,14 @@ const addLikeDB = (fundHeartBool, fundId) => {
   return function (dispatch, getState, { history }) {
     axios
       .post(process.env.REACT_APP_BASE_URL + `/fund/like/${fundId}`, {
-        fundHeartBool : fundHeartBool
+        fundHeartBool : fundHeartBool,
       },
-      { headers: { 'Authorization': `${Token}` } }
+      { headers: { 'Authorization': `${Token}` } },
+
       )
-      .then((res) => {       
-        dispatch(addLike(res.data, fundId)) 
+      .then((res) => {     
+        console.log(res)  
+        dispatch(addLike(res.data.fundHeartBool, fundId)) 
       })
       .catch((error) => {       
         console.log(error)
@@ -109,17 +132,23 @@ export default handleActions(
   {
     [GET_FUND]: (state, action) =>
     produce(state, (draft) => {
-      draft.fund_list = action.payload.fund_list;
+      draft.fund_list.push(...action.payload.fund_list);
+      draft.is_loading = false;
+      if (action.payload.paging) {
+        draft.paging = action.payload.paging;
+      }
+      // draft.fund_list = action.payload.fund_list;
     }),
     [ADD_FUND]: (state, action) =>
     produce(state, (draft) => {
       draft.fund_add = action.payload.fund_add;
     }),    
-    [ADD_LIKE]: (state, action) =>  
-    produce(state, (draft) => {
-      console.log(action.payload)
-      draft.likeCnt = action.payload.like.fundHeartBool;
-      }),
+    // [ADD_LIKE]: (state, action) =>  
+    // produce(state, (draft) => {
+    //   console.log(action.payload.fundHeartBool)
+    //   draft.fund_list.myHeart = action.payload.fundHeartBool;
+    //   // draft.likeCnt = action.payload.like.fundHeartBool;
+    //   }),
   },
   initialState
 );

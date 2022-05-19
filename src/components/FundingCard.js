@@ -10,23 +10,26 @@ import { BsPlayCircle } from "react-icons/bs";
 import { Text } from "../elements/Index";
 
 const FundingCard = (props) => {
+  // console.log("펀딩카드 좋아요값" ,props)
   const dispatch = useDispatch();
-  const [fundHeartBool, setFundHeartBool] = useState(true);
   const myHeart = useSelector((state) => state.fund.likeCnt)
-  console.log(myHeart)
+  // console.log(myHeart)
 
-  const addLike = () => {
-    if (fundHeartBool == false) {
-      setFundHeartBool(true);
-      dispatch(getActions.addLikeDB(fundHeartBool, fundingcard.fundId));
-    } else {
-      setFundHeartBool(false);
-      dispatch(getActions.addLikeDB(fundHeartBool, fundingcard.fundId));
-    }
-  };
+  const fundingHeartState = props.fundcard.myHeart
+
+  // const addLike = () => {
+  //   if (fundHeartBool == false) {
+  //     setFundHeartBool(true);
+  //     dispatch(getActions.addLikeDB(fundHeartBool, fundingcard.fundId));
+  //   } else {
+  //     setFundHeartBool(false);
+  //     dispatch(getActions.addLikeDB(fundHeartBool, fundingcard.fundId));
+  //   }
+  // };
 
   const fundingcard = props.fundcard;
   const fundId = fundingcard.fundId;
+  const fundHeartBool = fundingHeartState === false ? true : false;
 
   return (
     <React.Fragment>
@@ -36,16 +39,26 @@ const FundingCard = (props) => {
           style={{ backgroundImage: `url(${fundingcard.bookImg})` }}>
             <div id='img_wrap'>
               <div id='img'>
-              <BsPlayCircle id='icon' color="#FFFFFF" size="30px"/>
+              <BsPlayCircle
+                id='icon'
+                color="#FFFFFF"
+                size="30px"
+                onClick={() => {
+                  history.push(`/fundingDetail/${fundId}`)
+                }}
+                />
                 <img src={fundingcard.bookImg}
                 onClick={() => {
                   history.push(`/fundingDetail/${fundId}`)
                 }}/>
-                {myHeart === false ?
+              {fundingHeartState === false ?
               <AiOutlineHeart id="heart" size="40px"               
                 onClick={() => {
-                  dispatch(getActions.addLikeDB(fundHeartBool, fundId));
-                  // setFundHeartBool(!fundHeartBool)
+                  if(fundingHeartState === false) {
+                    dispatch(getActions.addLikeDB(fundHeartBool, fundId));
+                  } else {
+                    dispatch(getActions.addLikeDB(fundHeartBool, fundId));
+                  }
                 }}
               />
               :
@@ -53,7 +66,11 @@ const FundingCard = (props) => {
                 id='fillHeart'
                 size="40px"
                 onClick={() => {
-                  dispatch(getActions.addLikeDB(fundHeartBool, fundId));
+                  if(fundingHeartState === false) {
+                    dispatch(getActions.addLikeDB(fundHeartBool, fundId));
+                  } else {
+                    dispatch(getActions.addLikeDB(fundHeartBool, fundId));
+                  }
                 }}
               />
             }
