@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "../redux/configureStore";
 import styled from 'styled-components';
+import axios from "axios";
 
 // 페이지 목록
 import AudioPlay from '../pages/AudioPlay';
@@ -36,8 +37,37 @@ import LoadingPage from '../pages/LoadingPage'
 import ScrollToTop from './ScrollToTop';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import SpeedDialOpen from '../elements/SpeedDial';
 
 function App() {
+
+  const createRoom = () => {       //방이름 => chatRoomName  /  uuid => 닉네임
+    // const formData = new FormData();
+    // formData.append("name", "임시 채팅방");  
+    const Token = localStorage.getItem("token");
+    const userName = localStorage.getItem("username");
+    const chatRoomName = "문의하기";
+
+    axios.post(process.env.REACT_APP_CHAT_URL + "/chat/rooms",{
+        chatRoomName : chatRoomName,
+        uuid :userName
+      }, {
+        headers: {'Authorization': `${Token}` }
+      })
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.roomId);
+        //scrollbarRef.current.scrollToBottom();
+        localStorage.setItem("roomId",res.data.roomId);
+        localStorage.setItem("userId",res.data.userId);
+        history.push('/Chat');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <React.Fragment className="App">
       <ConnectedRouter history={history}>
@@ -84,6 +114,9 @@ function App() {
           <Route path="/user/kakao/callback" component={KakaoAuthHandler} />
         </Wrap>
         <Footer />
+        <Icon>
+          <SpeedDialOpen createRoom={createRoom}/>
+        </Icon>
       </ConnectedRouter>
     </React.Fragment>
   );
@@ -92,4 +125,15 @@ function App() {
 const Wrap = styled.div`
   min-height: calc(100vh - 300px);
 `
+
+const Icon = styled.div`
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
+  z-index: 1;
+
+  cursor: pointer;
+
+`
+
 export default App;

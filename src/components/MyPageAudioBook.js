@@ -48,7 +48,7 @@ const MyPageAudioBook = (props) => {
             {props.item.title}
           </h3>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-            <Text margin="0px">{props.item.author}</Text>
+            <Text margin="0px">{props.item.author} ({props.item.sellerName})</Text>
             {category === "audiobook" || category === "funding" || category === "myFunding" || category === "myAudio" ?
               null
               :

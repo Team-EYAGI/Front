@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { emailCHK, passwordCHK, usernameCHK } from "../shared/Commons";
+import Swal from 'sweetalert2';
 
 const Signup = (props) => {
   const { history } = props;
@@ -26,24 +27,28 @@ const Signup = (props) => {
 
   const signup = () => {
     if (
-      email === "" ||
-      password === "" ||
-      username === "" ||
-      passwordCheck === ""
-    ) {
-      window.alert("모두 입력해주세요!");
-      return;
-    }
-    if (
       !emailCHK(email) ||
       !passwordCHK(password) ||
       password !== passwordCheck
     ) {
-      window.alert("회원가입 조건을 다시한번 확인해주세요.");
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 1500,
+        color: '#000000',
+        // timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      Toast.fire({
+        icon: 'error',
+        title: '회원가입 조건을 다시한번 확인해주세요!'
+      })
       return;
     }
-
-
     dispatch(userActions.signUpAC(email, username, password, passwordCheck));
   };
 
@@ -53,7 +58,6 @@ const Signup = (props) => {
         <form>
           <center>
             <h2>간편 가입</h2>
-
             <div>
               <MailBox>
                 <input
@@ -63,11 +67,11 @@ const Signup = (props) => {
                   value={email}
                   placeholder="이메일"
                 ></input>
-                <button 
-                id="Mail" 
-                type="button"
-                onClick={checkEmail}
-                disabled={!emailCHK || email === "" } // 이건왜안돼?
+                <button
+                  id="Mail"
+                  type="button"
+                  onClick={checkEmail}
+                  disabled={!emailCHK || email === ""}
                 >
                   중복확인
                 </button>
@@ -77,13 +81,13 @@ const Signup = (props) => {
               {email.length < 1 ? null : !emailCHK(email) ? (
                 <div>
                   <li style={{ color: "red" }}>
-                  ✖  6자 이상의 영문 혹은 영문과 숫자를 조합한 이메일형식
+                    ✖  6자 이상의 영문 혹은 영문과 숫자를 조합한 이메일형식
                   </li>
                 </div>
               ) : (
                 <div>
                   <li style={{ color: "green" }}>
-                  ✔  6자 이상의 영문 혹은 영문과 숫자를 조합한 이메일형식 
+                    ✔  6자 이상의 영문 혹은 영문과 숫자를 조합한 이메일형식
                   </li>
                 </div>
               )}
@@ -91,37 +95,37 @@ const Signup = (props) => {
 
             <div>
               <Nickbox>
-              <input
-                onChange={(e) => {
-                  setUser(e.target.value);
-                }}
-                value={username}
-                placeholder="닉네임"
-              ></input>
-              <button 
-              id="Name" 
-              type="button" 
-              onClick={checkUsername} 
-              disabled={username===""}>
-                중복확인
-              </button>
+                <input
+                  onChange={(e) => {
+                    setUser(e.target.value);
+                  }}
+                  value={username}
+                  placeholder="닉네임"
+                ></input>
+                <button
+                  id="Name"
+                  type="button"
+                  onClick={checkUsername}
+                  disabled={username === ""}>
+                  중복확인
+                </button>
               </Nickbox>
-              
-            {username.length < 1 ? null : !usernameCHK(username) ? (
+
+              {username.length < 1 ? null : !usernameCHK(username) ? (
                 <div>
                   <li style={{ color: "red" }}>
-                  ✖  2-8자의 한글 또는 영문, 숫자
+                    ✖  2-8자의 한글 또는 영문, 숫자
                   </li>
                 </div>
               ) : (
                 <div>
                   <li style={{ color: "green" }}>
-                  ✔  2-8자의 한글 또는 영문, 숫자
+                    ✔  2-8자의 한글 또는 영문, 숫자
                   </li>
                 </div>
               )}
             </div>
-            
+
             <div>
               <input
                 onChange={(e) => {
@@ -136,14 +140,14 @@ const Signup = (props) => {
                 <div className="checkPw">
                   <li style={{ color: "red" }}> ✖  8글자 이상 입력</li>
                   <li style={{ color: "red" }}>
-                  ✖  영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합
+                    ✖  영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합
                   </li>
                 </div>
               ) : (
                 <div className="checkPw">
                   <li style={{ color: "green" }}> ✔  8글자 이상 입력</li>
                   <li style={{ color: "green" }}>
-                  ✔  영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합
+                    ✔  영문/숫자/특수문자(공백 제외)만 허용, 2개 이상의 조합
                   </li>
                 </div>
               )}
@@ -172,10 +176,10 @@ const Signup = (props) => {
             </div>
 
             <button
-             disabled={email === "" || password === "" || passwordCheck==="" || username===""} 
-            id="signup" 
-            type="button" 
-            onClick={signup}>
+              disabled={email === "" || password === "" || passwordCheck === "" || username === ""}
+              id="signup"
+              type="button"
+              onClick={signup}>
               가입하기
             </button>
           </center>

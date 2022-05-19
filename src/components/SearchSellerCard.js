@@ -1,33 +1,32 @@
-import React from 'react';
-import styled from 'styled-components';
-import { history } from '../redux/configureStore';
+import React from "react";
+import styled from "styled-components";
+import { Text } from "../elements/Index";
+import { history } from "../redux/configureStore";
 
-const MainSellerCard = (props) => {
-
-  const creator = props.item;
-  console.log(creator)
-
+const SearchSellerCard = (props) => {
+  console.log(props.item)
   return (
     <React.Fragment>
-      <Wrap>
+         <Wrap>
         <Body
           onClick={() => {
-            history.push(`/sellerProfile/${creator.id}/audiobook`)
+            history.push(`/sellerProfile/${props.item.sellerId}/audiobook`)
           }}>
           <ImageBox>
             <img
               style={{ width: "100%" }}
-              src={creator.userImage ? creator.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
+              src={props.item.sellerImg ? props.item.sellerImg : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
             />
           </ImageBox>
           <h3 style={{ fontSize: "16px" }}>
-            {creator ? creator.username : "이름 없음"}
+            {props.item.username}
           </h3>
         </Body>
       </Wrap>
     </React.Fragment>
-  )
-}
+  );
+};
+
 
 const Wrap = styled.div`
   height: 200px;
@@ -51,8 +50,8 @@ const Body = styled.div`
 `
 
 const ImageBox = styled.div`
-  width: 190px;
-  height: 190px;
+  width: 170px;
+  height: 170px;
   border-radius: 100px;
 
   overflow: hidden;
@@ -70,5 +69,4 @@ const ImageBox = styled.div`
   }
 `
 
-
-export default MainSellerCard;
+export default SearchSellerCard;

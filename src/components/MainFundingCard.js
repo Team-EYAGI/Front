@@ -2,21 +2,27 @@ import React from 'react';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 import { BsPlayFill } from "react-icons/bs";
+import { BsPlayCircle } from "react-icons/bs";
 import { Text } from "../elements/Index";
 
 const MainFundingCard = (props) => {
 
   const mainFunding = props.item
-  // console.log("메인펀딩 프롭스", mainFunding)
+  console.log("메인펀딩 프롭스", mainFunding)
 
   return (
     <React.Fragment>
       <Wrap>
         <Body>
-          <ImgSt style={{ backgroundImage: `url(${mainFunding.bookImg})` }}>
+          <ImgSt
+            style={{ backgroundImage: `url(${mainFunding.bookImg})` }}
+            onClick={() => {
+              history.push(`/fundingDetail/${mainFunding.fundId}`)
+            }}
+          >
             <div id='img_wrap'>
               <div id='img'>
-                <BsPlayFill id='icon' color="white" size="20px"/>
+                <BsPlayCircle id='icon' color="#FFFFFF" size="30px"/>
                 <img src={mainFunding.bookImg}/>
               </div>
             </div>
@@ -33,7 +39,7 @@ const MainFundingCard = (props) => {
 
 const Wrap = styled.div`
   height: 200px;
-  margin: 10px;
+  margin: 10px 15px;
 `
 
 const Body = styled.div`
@@ -88,11 +94,12 @@ const ImgSt = styled.div`
 
     #icon {
       position : absolute;
-      left: 88px;
+      left: 81px;
       top: 80px;
-      background-color: #000000;
+      /* background: rgba(255, 255, 255, 0.2); */
+      background: rgba(76, 76, 76, 0.7);
       border-radius: 50px;
-      padding: 1px 1px 1px 2px;
+      padding: 0px;
       /* border: 1px solid black; */
     }
 
