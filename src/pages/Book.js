@@ -40,6 +40,7 @@ const Book = () => {
 
 
   React.useEffect(() => {
+    dispatch(getActions.clearBookCat());
     if (categoryName === "자기계발") {
       dispatch(getActions.getSelfAC());
     } else if (categoryName === "소설") {
@@ -61,6 +62,7 @@ const Book = () => {
           <GenreSt
             key={idx}
             onClick={() => {
+              dispatch(getActions.clearBookCat());
               history.push(`/book/${item}`);
               if (item === "자기계발") {
                 dispatch(getActions.getSelfAC());

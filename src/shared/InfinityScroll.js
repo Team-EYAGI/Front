@@ -29,7 +29,6 @@ const InfinityScroll = (props) => {
     if(loading) {
       return;
     }
-
     if(is_next) {
       window.addEventListener("scroll", handleScroll);
     } else {

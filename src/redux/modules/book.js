@@ -20,6 +20,9 @@ const GET_ECONOMY = "GET_ECONOMY";
 const GET_KIDS = "GET_KIDS";
 const LOADING = "LOADING"
 
+// 4. 카테고리 초기화 
+const CLEAR_CAT = "CLEAR_CAT";
+
 // 액션 생성 함수
 const getMain = createAction(GET_MAIN, (main) => ({ main }));
 const getMainCategory = createAction(GET_MAIN_CATEGORY, (main_category) => ({ main_category }));
@@ -34,6 +37,8 @@ const getSelf = createAction(GET_SELF, (self, paging) => ({ self, paging }));
 const getEconomy = createAction(GET_ECONOMY, (economy, paging) => ({ economy, paging }));
 const getKids = createAction(GET_KIDS, (kids, paging) => ({ kids, paging }));
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
+
+const clearBookCat = createAction(CLEAR_CAT, () => {});
 
 // 초기값
 const initialState = {
@@ -156,6 +161,7 @@ const getNovelAC = (page = 1, size = 20) => {
     if (!_paging.page) {
       return;
     }
+    console.log(page);
     dispatch(loading(true));
     axios.get(process.env.REACT_APP_BASE_URL + `/category/novel?page=${page}&size=${size}`, {
 
@@ -185,6 +191,7 @@ const getEconomyAC = (page = 1, size = 20) => {
     if (!_paging.page) {
       return;
     }
+    console.log(page);
     dispatch(loading(true));
     axios.get(process.env.REACT_APP_BASE_URL + `/category/economy?page=${page}&size=${size}`, {
 
@@ -244,6 +251,7 @@ const getKidsAC = (page = 1, size = 20) => {
     if (!_paging.page) {
       return;
     }
+    console.log(page);
     dispatch(loading(true));
     axios.get(process.env.REACT_APP_BASE_URL + `/category/kids?page=${page}&size=${size}`, {
 
@@ -362,7 +370,17 @@ export default handleActions(
     [LOADING]: (state, action) => produce(state, (draft) => {
       console.log(action.payload);
       draft.is_loading = action.payload.is_loading;
-    })
+    }),
+
+    [CLEAR_CAT]: (state, action) =>
+      produce(state, (draft) => {
+        draft.paging = {page: 1, size: 20};
+        draft.category_novel = [];
+        draft.category_poem= [];
+        draft.category_economy= [];
+        draft.category_kids= [];
+        draft.category_self= [];
+      }),
   },
   initialState
 );
@@ -380,6 +398,8 @@ const actionCreators = {
   getSelfAC,
   getEconomyAC,
   getKidsAC,
+
+  clearBookCat
 };
 
 export { actionCreators };
