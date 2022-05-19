@@ -8,28 +8,31 @@ import Like from "../components/Like";
 import { history } from '../redux/configureStore';
 import { BsPlayCircle } from "react-icons/bs";
 import { Text } from "../elements/Index";
+import FundHeart from "../components/FundHeart";
 
 const FundingCard = (props) => {
-  // console.log("펀딩카드 좋아요값" ,props)
+  console.log("펀딩카드 좋아요값" ,props.fundcard.myHeart) 
   const dispatch = useDispatch();
 
-  const fundingHeartState = props.fundcard.myHeart
-
-  // const addLike = () => {
-  //   if (fundHeartBool == false) {
-  //     setFundHeartBool(true);
-  //     dispatch(getActions.addLikeDB(fundHeartBool, fundingcard.fundId));
-  //   } else {
-  //     setFundHeartBool(false);
-  //     dispatch(getActions.addLikeDB(fundHeartBool, fundingcard.fundId));
-  //   }
-  // };
+  let fundingHeartState = props.fundcard.myHeart
+  // let fundHeartBool = fundingHeartState === false ? true : false;
+  let fundHeartBool2 = fundingHeartState === false ? true : false;
 
   const fundingcard = props.fundcard;
   const fundId = fundingcard.fundId;
-  const fundHeartBool = fundingHeartState === false ? true : false;
+  let [fundHeartBool ,setFundHeartBool] = React.useState(fundHeartBool2);
 
-  const [a, setA] = useState(fundingHeartState);
+  const ChangeLike = () => {
+    setFundHeartBool(fundHeartBool);
+    if (fundHeartBool == false) {
+      dispatch(getActions.addLikeDB(fundHeartBool, fundId))
+      fundHeartBool = true;
+    } else {
+      dispatch(getActions.addLikeDB(fundHeartBool, fundId))
+      fundHeartBool = false;
+    }
+  };
+  
 
   return (
     <React.Fragment>
@@ -51,36 +54,21 @@ const FundingCard = (props) => {
                 onClick={() => {
                   history.push(`/fundingDetail/${fundId}`)
                 }}/>
-              {a === false ?
+              <FundHeart
+                ChangeLike={ChangeLike}
+                fundHeartBool={fundHeartBool}
+              />
+              {/* {fundHeartBool === false ?
               <AiOutlineHeart id="heart" size="40px"               
-                onClick={() => {
-                  if(fundingHeartState === false) {
-                    setA(true)
-                    dispatch(getActions.addLikeDB(fundHeartBool, fundId));
-                  } else {
-                    setA(false)
-                    dispatch(getActions.addLikeDB(fundHeartBool, fundId));
-                  }
-
-
-                }}
+                onClick={ChangeLike}
               />
               :
               <AiFillHeart              
                 id='fillHeart'
                 size="40px"
-                onClick={() => {
-                  if(fundingHeartState === false) {
-                    setA(true)
-                    dispatch(getActions.addLikeDB(fundHeartBool, fundId));
-                  } else {
-                    setA(false)
-                    dispatch(getActions.addLikeDB(fundHeartBool, fundId));
-                  }
-                }}
+                onClick={ChangeLike}
               />
-            }
-
+            } */}
               </div>
             </div>
           </ImgSt>

@@ -244,6 +244,9 @@ const BookSum = styled.div`
 
     span {
       font-size: 16px;
+      white-space: pre-wrap;
+      word-break: keep-all;
+      line-height: 1.84;
     }
   }
 `
