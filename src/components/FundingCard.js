@@ -12,8 +12,6 @@ import { Text } from "../elements/Index";
 const FundingCard = (props) => {
   // console.log("펀딩카드 좋아요값" ,props)
   const dispatch = useDispatch();
-  const myHeart = useSelector((state) => state.fund.likeCnt)
-  // console.log(myHeart)
 
   const fundingHeartState = props.fundcard.myHeart
 
@@ -30,6 +28,8 @@ const FundingCard = (props) => {
   const fundingcard = props.fundcard;
   const fundId = fundingcard.fundId;
   const fundHeartBool = fundingHeartState === false ? true : false;
+
+  const [a, setA] = useState(fundingHeartState);
 
   return (
     <React.Fragment>
@@ -51,14 +51,18 @@ const FundingCard = (props) => {
                 onClick={() => {
                   history.push(`/fundingDetail/${fundId}`)
                 }}/>
-              {fundingHeartState === false ?
+              {a === false ?
               <AiOutlineHeart id="heart" size="40px"               
                 onClick={() => {
                   if(fundingHeartState === false) {
+                    setA(true)
                     dispatch(getActions.addLikeDB(fundHeartBool, fundId));
                   } else {
+                    setA(false)
                     dispatch(getActions.addLikeDB(fundHeartBool, fundId));
                   }
+
+
                 }}
               />
               :
@@ -67,8 +71,10 @@ const FundingCard = (props) => {
                 size="40px"
                 onClick={() => {
                   if(fundingHeartState === false) {
+                    setA(true)
                     dispatch(getActions.addLikeDB(fundHeartBool, fundId));
                   } else {
+                    setA(false)
                     dispatch(getActions.addLikeDB(fundHeartBool, fundId));
                   }
                 }}
