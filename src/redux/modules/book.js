@@ -150,7 +150,7 @@ const getBookDetailAC = (bookId) => {
 }
 
 // 카테고리별 도서 : 소설
-const getNovelAC = (start = null, size = 3) => {
+const getNovelAC = (start = null, size = 91) => {
   return function (dispatch, getState, { history }) {
     const _paging = getState().book.paging;
     if(_paging.start && !_paging.next){

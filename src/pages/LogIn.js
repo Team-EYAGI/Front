@@ -1,23 +1,20 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
+import { history } from "../redux/configureStore";
 
-const Login = (props) => {
-  const { history } = props;
+const Login = () => {
   const dispatch = useDispatch();
 
   const [email, setId] = useState("");
   const [password, setPwd] = useState("");
 
   const login = () => {
-    if (email === "" || password === "") {
-      window.alert("아이디와 비밀번호를 모두 입력해주세요!");
-      return;
-    }
-    dispatch(userActions.loginAC(email, password)); //유저네임? 이메일?
+    dispatch(userActions.loginAC(email, password));
   };
 
+  // 카카오 로그인
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
@@ -54,7 +51,6 @@ const Login = (props) => {
                 id="loginbtn"
                 onClick={login}
                 type="button"
-                // onClick={()=>{ history.push('/main')}}
               >
                 로그인
               </button>

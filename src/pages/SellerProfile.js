@@ -39,7 +39,7 @@ const SellerProfile = () => {
   const profileDetail = profile.sellerProfile
   const authority = localStorage.getItem("seller");
   const username = localStorage.getItem("username");
-  console.log(profileDetail)
+  console.log("profile", profile)
 
 
   // 셀러가 등록한 펀딩 정보 가져오기
@@ -75,7 +75,7 @@ const SellerProfile = () => {
       <Wrap>
         <Menu>
           <Profile>
-            {authority === "ROLE_USER" ?
+            {!authority ?
               <>
                 <ProfileBox>
                   <div id='img'>
@@ -183,7 +183,8 @@ const SellerProfile = () => {
                 </BoxSt>
               </Box>
             </Modal>
-            {followStatus === false ?
+            {authority &&
+            ( followStatus === false ?
               <button
                 id='follow'
                 onClick={() => {
@@ -201,7 +202,9 @@ const SellerProfile = () => {
               >
                 unFollow
               </button>
+            )
             }
+            
 
           </Profile>
           <List>

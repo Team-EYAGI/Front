@@ -75,8 +75,8 @@ const getProfileAC = () => {
 // 내 서재에 담기
 const addLibraryAC = (bookId) => {
   console.log(bookId)
-
   let Token = getToken("Authorization");
+
   return function (dispatch, getState, { history }) {
     axios.post(process.env.REACT_APP_BASE_URL + `/book/detail/${bookId}/heart`, {
 
@@ -349,11 +349,6 @@ export default handleActions(
 
 const actionCreators = {
   // export 할 것들
-  // addLibrary,
-  // getListenAudio,
-  // getLikeBook,
-  // getProfile,
-  // addProfile,
   addLibraryAC,
   getListenAudioAC,
   getLikeBookAC,

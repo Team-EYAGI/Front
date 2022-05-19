@@ -1,10 +1,10 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-// import api from "../../api/api";
 import { setToken } from "../../shared/Token";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
 import { emailCHK, passwordCHK, usernameCHK } from "../../shared/Commons";
+import Swal from 'sweetalert2';
 
 // action
 const LOGIN = "LOGIN";
@@ -22,9 +22,8 @@ const initialState = {
   is_login: false,
 };
 
-//------------------middleware------------------------------
-
-//-------------로그인-------------------
+// 미들웨어
+// 로그인
 const loginAC = (email, password) => {
   console.log(email)
   return function (dispatch, getState, { history }) {
@@ -40,8 +39,6 @@ const loginAC = (email, password) => {
         setToken(token);
 
         const DecodedToken = jwtDecode(token);
-        // console.log(DecodedToken);
-        // console.log(DecodedToken.sub);
 
         localStorage.setItem("email", email);
         localStorage.setItem("username", DecodedToken.USER_NIK);
@@ -53,15 +50,45 @@ const loginAC = (email, password) => {
 
             email: email,
             username: DecodedToken.USER_NIK,
-            //위치불확실 콘솔찍어서 확인
           })
         );
         history.replace("/");
-        console.log("로그인성공!!");
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top',
+          showConfirmButton: false,
+          timer: 1500,
+          color: '#000000',
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+
+        Toast.fire({
+          icon: 'success',
+          title: '로그인 성공!'
+        })
       })
       .catch((error) => {
-        window.alert("아이디와 비밀번호를 다시 확인해주세요!");
-        // console.log(error)
+        if(error) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timer: 1500,
+            color: '#000000',
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+  
+          Toast.fire({
+            icon: 'error',
+            title: '아이디와 비밀번호를 다시한번 확인해주세요!'
+          })
+        }
       });
   };
 };
@@ -80,7 +107,6 @@ const kakaoLoginAC = (code) => {
 
         const DecodedToken = jwtDecode(token);
         console.log(DecodedToken);
-        // console.log(DecodedToken.sub);
 
         localStorage.setItem("email", DecodedToken.USER_EMAIL);
         localStorage.setItem("username", DecodedToken.USER_NIK);
@@ -97,34 +123,47 @@ const kakaoLoginAC = (code) => {
           })
         );
         history.replace("/");
-        console.log("로그인성공!!");
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top',
+          showConfirmButton: false,
+          timer: 1500,
+          color: '#000000',
+          // timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+
+        Toast.fire({
+          icon: 'success',
+          title: '로그인 성공!'
+        })
       })
       .catch((error) => {
-        // alert(error.response.data.msg);
         console.log(error)
       });
   };
 };
 
 
-// const loginCheckDB = () => {
-//   return function (dispatch, getState, { history }) {
-//     const username = localStorage.getItem("username");
-//     const tokenCheck = document.cookie;
-//     if (tokenCheck) {
-//       dispatch(login({ username: username }));
-//     } else {
-//       dispatch(logOut());
-//     }
-//   };
-// };
-
-//------------회원가입-------------------
+// 회원가입
 const signUpAC = (email, username, password, passwordCheck) => {
-  console.log(email)
-  console.log(username)
-  console.log(password)
-  console.log(passwordCheck)
+  
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 1500,
+    color: '#000000',
+    // timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
   return function (dispatch, getState, { history }) {
     axios
       .post(process.env.REACT_APP_BASE_URL + `/user/join`, {        
@@ -135,14 +174,19 @@ const signUpAC = (email, username, password, passwordCheck) => {
       })
       
       .then((res) => {
-        console.log(res)
-        window.alert("회원가입이 완료되었습니다!");
+        Toast.fire({
+          icon: 'success',
+          title: '회원가입이 완료되었습니다!'
+        })
         history.replace("/login");
       })
-      
-      .catch((err) => {
-        // alert(error.response.data.msg);
-        console.log("에러",err);
+      .catch((error) => {
+        if(error) {
+          Toast.fire({
+            icon: 'error',
+            title: '회원가입 조건을 다시한번 확인해주세요!'
+          })
+        }
       });
   };
 };
@@ -151,23 +195,46 @@ const signUpAC = (email, username, password, passwordCheck) => {
 //이메일 중복확인
 const emailCheckAC = (email) => {
   console.log(email);
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 1500,
+    color: '#000000',
+    // timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
   if (!emailCHK(email)){
-    window.alert("이메일 조건을 다시 확인해주세요!")
+        Toast.fire({
+          icon: 'error',
+          title: '이메일 조건을 다시한번 확인해주세요!!',
+        })
     return;
   }
+
   return function (dispatch, getState) {
-    
-    axios
+        axios
       .post(process.env.REACT_APP_BASE_URL + `/user/email/check`, {        
         email: email,
       })
       .then((res) => {     
-        console.log(res);
-        window.alert("사용 가능한 이메일입니다!");       
+        Toast.fire({
+          icon: 'success',
+          title: '사용 가능한 이메일입니다!'
+        })
       })
-      .catch((err) => {
-        console.log("이메일 중복", err);
-        window.alert("이미 사용 중인 이메일입니다!");
+      .catch((error) => {
+        if(error) {
+          Toast.fire({
+            icon: 'error',
+            title: '이미 사용중인 이메일입니다!!'
+          })
+        }
       });
   };
 };
@@ -176,9 +243,25 @@ const emailCheckAC = (email) => {
 
 //닉네임 중복확인
 const usernameCheckAC = (username) => {
-  console.log(username);
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 1500,
+    color: '#000000',
+    // timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
   if (!usernameCHK(username)){
-    window.alert("닉네임 조건을 다시 확인해주세요!")
+    Toast.fire({
+      icon: 'error',
+      title: '닉네임 조건을 다시한번 확인해주세요!'
+    })   
     return;
   }
   return function (dispatch, getState) {    
@@ -187,12 +270,16 @@ const usernameCheckAC = (username) => {
         username: username,
     })
       .then((res) => {
-        console.log(res);        
-        window.alert("사용 가능한 닉네임입니다!");        
+        Toast.fire({
+          icon: 'success',
+          title: '사용 가능한 닉네임입니다!'
+        })     
       })
       .catch((err) => {
-        console.log("닉네임 중복", err);
-        window.alert("이미 사용 중인 닉네임입니다!");
+        Toast.fire({
+          icon: 'error',
+          title: '이미 사용중인 닉네임입니다!'
+        })   
       });
   };
 };

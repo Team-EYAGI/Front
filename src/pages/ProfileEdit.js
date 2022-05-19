@@ -1,9 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import styled from "styled-components";
 import { useBeforeunload } from "react-beforeunload";
-import AudioPlayer from "react-h5-audio-player";
-import MyPageAudioBook from '../components/MyPageAudioBook';
-import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as profileActions } from "../redux/modules/mypage";
@@ -12,13 +9,13 @@ import { actionCreators as libraryActions } from "../redux/modules/mypage";
 
 const ProfileEdit = (props) => {
   const dispatch = useDispatch();
+  
   // 새로고침 경고 알럿
   useBeforeunload((event) => event.preventDefault());
 
   const authority = localStorage.getItem("seller");
   const preview = useSelector((state) => state.mypage.preview);
   const profile = useSelector((state) => state.mypage.profile);
-  // console.log("프로필", profile)
 
   const [introduce, setIntroduce] = React.useState("")
 
@@ -71,7 +68,7 @@ const ProfileEdit = (props) => {
               <img
                 onClick={handleClick}
                 style={{ width: "100%" }}
-                src={preview ? preview : profile.userImage}
+                src={preview ? preview : profile.userImage ? profile.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png" }
               />
             </ImageBox>
             <h3 style={{ fontSize: "16px" }}>
@@ -205,7 +202,6 @@ const ImageBox = styled.div`
   width: 150px;
   height: 150px;
   border-radius: 30px;
-  background-color: azure;
   overflow: hidden;
   border: 1px solid #f4f4f4;
   box-shadow: 0 0 2px gray;

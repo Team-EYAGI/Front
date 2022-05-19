@@ -36,13 +36,8 @@ const Wrap = styled.div`
   align-items: center;
 
   margin: 60px 0px 40px 0px;
-
-  font-size: 30px;
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
-
   border-bottom: 2px solid #000000;
+
   span {
     margin: 0px 10px 15px 21px;
     font-weight: 400;
@@ -61,11 +56,7 @@ const Bottom = styled.div`
   margin: 0 auto;
   
   display: flex;
-  justify-content: space-around;
-
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
+  justify-content: left;
 `
 
 export default MainFundingList;

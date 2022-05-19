@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "../shared/Token";
 import { actionCreators as searchActions } from "../redux/modules/search";
 import { actionCreators } from "../redux/modules/user";
-// import logo from '../src_assets/eyagiLogo1.png'
 import logo from '../src_assets/logo.svg';
 import Swal from 'sweetalert2';
 
@@ -38,8 +37,7 @@ const Header = (props) => {
     if (e.key !== "Enter") {
       return;
     }
-
-    sendWord();
+    sendWord();  
   };
 
   const sendWord = () => {
@@ -145,9 +143,8 @@ const HeaderWrap = styled.div`
 `
 
 const BottomWrap = styled.div`
-  max-width: 1440px;
+  max-width: 1920px;
   width: calc(100%-480px);
-  /* min-width: 1200px; */
   background-color: #FFFFFC;;
 
   height: 50px;
@@ -159,10 +156,9 @@ const BottomWrap = styled.div`
   margin: 0px auto;
   padding: 0.3vw 13.02vw;
 
-  /* border-radius: 20px; */
-  /* border-bottom: 1px solid black; */
+  box-shadow: 0 3px 1.9px 0.1px rgb(80 80 80 / 30%);
 
-  background-color: #FFFFFC;;
+  background-color: #FFFFFC;
 
   display: flex;
   flex-direction: row;
