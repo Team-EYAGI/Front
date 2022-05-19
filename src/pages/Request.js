@@ -4,11 +4,14 @@ import RequestList from '../components/RequestList';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as requestActions } from "../redux/modules/audio";
 import { history } from '../redux/configureStore';
+import InfinityScroll from "../shared/InfinityScroll";
 
 const Request = () => {
   const dispatch = useDispatch();
 
   const requestList = useSelector((state) => state.audio.request_list);
+  const paging = useSelector((state) => state.book.paging);
+  const is_loading = useSelector((state) => state.book.is_loading);
 
   React.useEffect(() => {
     dispatch(requestActions.getRequestAC());
@@ -45,10 +48,18 @@ const Request = () => {
               작성일
             </InfoItem>
           </TableInfo>
+          <InfinityScroll
+            callNext={() => {
+              dispatch(requestActions.getRequestAC(paging.page));
+            }}
+            is_next={paging.page ? true : false}
+            loading={is_loading}
+          >
           {requestList && requestList.map((item, idx) => {
             // ReviewDetail 페이지에 item값을 props로 넘겨준다.
             return <RequestList key={idx} item={item} />
           })}
+          </InfinityScroll>
         </RequestTable>
         <ReveiwButtonWrap>
           <ReviewButton

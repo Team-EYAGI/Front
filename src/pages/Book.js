@@ -10,6 +10,7 @@ import InfinityScroll from "../shared/InfinityScroll";
 
 // 카테고리 북 페이지
 const Book = () => {
+
   const dispatch = useDispatch();
   const params = useParams();
   // console.log(params)
@@ -28,20 +29,6 @@ const Book = () => {
   // console.log("시", poem)
   // console.log("키즈", kids)
 
-  React.useEffect(() => {
-    if (categoryName === "자기계발") {
-      dispatch(getActions.getSelfAC());
-    } else if (categoryName === "소설") {
-      dispatch(getActions.getNovelAC());
-    } else if (categoryName === "시･에세이") {
-      dispatch(getActions.getPoemAC());
-    } else if (categoryName === "유･아동") {
-      dispatch(getActions.getKidsAC());
-    } else {
-      dispatch(getActions.getEconomyAC());
-    }
-  }, []);
-
   // 카테고리 버튼
   const [category, setCategory] = React.useState([
     "자기계발",
@@ -51,6 +38,23 @@ const Book = () => {
     "경제",
   ])
 
+
+  React.useEffect(() => {
+    dispatch(getActions.clearBookCat());
+    if (categoryName === "자기계발") {
+      dispatch(getActions.getSelfAC());
+    } else if (categoryName === "소설") {
+      dispatch(getActions.getNovelAC());
+    } else if (categoryName === "시･에세이") {
+      dispatch(getActions.getPoemAC());
+    } else if (categoryName === "아동･가정") {
+      dispatch(getActions.getKidsAC());
+    } else {
+      dispatch(getActions.getEconomyAC());
+    }
+
+  }, []);
+
   return (
     <React.Fragment>
       <HeaderSt>
@@ -58,6 +62,7 @@ const Book = () => {
           <GenreSt
             key={idx}
             onClick={() => {
+              dispatch(getActions.clearBookCat());
               history.push(`/book/${item}`);
               if (item === "자기계발") {
                 dispatch(getActions.getSelfAC());
@@ -85,29 +90,57 @@ const Book = () => {
         {categoryName === "소설" ?
           <InfinityScroll
             callNext={() => {
-              console.log("callnext제발");
-              dispatch(getActions.getNovelAC(paging.next));
+              dispatch(getActions.getNovelAC(paging.page));
             }}
-            is_next={paging.next ? true : false}
+            is_next={paging.page ? true : false}
             loading={is_loading}
           >
-            {novel.map((item, idx) => (
-              <BookCard key={idx} item={item} />
-            ))}
+            {novel.map((item, idx) => (<BookCard key={idx} item={item} />))}
           </InfinityScroll>
-
           :
-          categoryName === "시･에세이" ? poem.map((item, idx) => (
-            <BookCard key={idx} item={item} />))
+          categoryName === "시･에세이" ?
+            <InfinityScroll
+              callNext={() => {
+                dispatch(getActions.getPoemAC(paging.page));
+              }}
+              is_next={paging.page ? true : false}
+              loading={is_loading}
+            >
+              {poem.map((item, idx) => (<BookCard key={idx} item={item} />))}
+            </InfinityScroll>
             :
-            categoryName === "자기계발" ? self.map((item, idx) => (
-              <BookCard key={idx} item={item} />))
+            categoryName === "자기계발" ?
+              <InfinityScroll
+                callNext={() => {
+                  dispatch(getActions.getSelfAC(paging.page));
+                }}
+                is_next={paging.page ? true : false}
+                loading={is_loading}
+              >
+                {self.map((item, idx) => (<BookCard key={idx} item={item} />))}
+              </InfinityScroll>
               :
-              categoryName === "경제" ? economy.map((item, idx) => (
-                <BookCard key={idx} item={item} />))
+              categoryName === "경제" ?
+                <InfinityScroll
+                  callNext={() => {
+                    dispatch(getActions.getEconomyAC(paging.page));
+                  }}
+                  is_next={paging.page ? true : false}
+                  loading={is_loading}
+                >
+                  {economy.map((item, idx) => (<BookCard key={idx} item={item} />))}
+                </InfinityScroll>
                 :
-                categoryName === "아동･가정" ? kids.map((item, idx) => (
-                  <BookCard key={idx} item={item} />))
+                categoryName === "아동･가정" ?
+                  <InfinityScroll
+                    callNext={() => {
+                      dispatch(getActions.getKidsAC(paging.page));
+                    }}
+                    is_next={paging.page ? true : false}
+                    loading={is_loading}
+                  >
+                    {kids.map((item, idx) => (<BookCard key={idx} item={item} />))}
+                  </InfinityScroll>
                   :
                   null
         }
