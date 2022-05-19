@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as fundActions } from "../redux/modules/fund";
 import { actionCreators as getActions } from "../redux/modules/book";
 import { BiSearch } from "react-icons/bi";
-
+import Swal from 'sweetalert2';
 
 const FundingWrite = () => {
   const dispatch = useDispatch();
@@ -52,13 +52,28 @@ const FundingWrite = () => {
 			return;
 		}
     // 리뷰를 추가할 때 addReviewAc로 정보를 넘긴다.
-    dispatch(
+    Swal.fire({
+      // title: "알림",
+      text: "업로드 후 수정이나 삭제가 불가능합니다. 업로드 하시겠습니까?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "네",
+      cancelButtonText: "아니오",
+      confirmButtonColor: '#0C0A0A',
+      cancelButtonColor: '#0C0A0A',
+    }).then(result => {
+      if (result.isConfirmed) {
+        dispatch(
       fundActions.addFundingAC({
         information: { content: content, fundingGoals: fundingGoals },
         file,
         bookId,
       })
-    );
+        )
+    }else {
+      return;
+    }
+  });
   };
 
   React.useEffect(() => {
