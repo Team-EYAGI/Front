@@ -85,6 +85,7 @@ const addFundingAC = (payload) => {
 
 //좋아요
 const addLikeDB = (fundHeartBool, fundId) => {
+  console.log(fundHeartBool, fundId)
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     axios
@@ -117,7 +118,7 @@ export default handleActions(
     [ADD_LIKE]: (state, action) =>  
     produce(state, (draft) => {
       console.log(action.payload)
-      draft.likeCnt = action.payload.like;
+      draft.likeCnt = action.payload.like.fundHeartBool;
       }),
   },
   initialState

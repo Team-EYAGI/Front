@@ -47,7 +47,7 @@ const Wrap = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: left;
-  align-items: center;
+  /* align-items: center; */
   /* background-color: red; */
 
   overflow-y: scroll;

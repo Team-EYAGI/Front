@@ -6,12 +6,14 @@ import { actionCreators as getActions } from "../redux/modules/fund";
 import { useParams } from "react-router-dom";
 import Like from "../components/Like";
 import { history } from '../redux/configureStore';
-import { BsPlayFill } from "react-icons/bs";
+import { BsPlayCircle } from "react-icons/bs";
 import { Text } from "../elements/Index";
 
 const FundingCard = (props) => {
   const dispatch = useDispatch();
   const [fundHeartBool, setFundHeartBool] = useState(true);
+  const myHeart = useSelector((state) => state.fund.likeCnt)
+  console.log(myHeart)
 
   const addLike = () => {
     if (fundHeartBool == false) {
@@ -29,15 +31,33 @@ const FundingCard = (props) => {
   return (
     <React.Fragment>
       <Wrap>
-        <Body
-         onClick={() => {
-          history.push(`/fundingDetail/${fundId}`)
-        }}>
-          <ImgSt style={{ backgroundImage: `url(${fundingcard.bookImg})` }}>
+        <Body>
+          <ImgSt         
+          style={{ backgroundImage: `url(${fundingcard.bookImg})` }}>
             <div id='img_wrap'>
               <div id='img'>
-                <BsPlayFill id='icon' color="white" size="20px"/>
-                <img src={fundingcard.bookImg}/>
+              <BsPlayCircle id='icon' color="#FFFFFF" size="30px"/>
+                <img src={fundingcard.bookImg}
+                onClick={() => {
+                  history.push(`/fundingDetail/${fundId}`)
+                }}/>
+                {myHeart === false ?
+              <AiOutlineHeart id="heart" size="40px"               
+                onClick={() => {
+                  dispatch(getActions.addLikeDB(fundHeartBool, fundId));
+                  // setFundHeartBool(!fundHeartBool)
+                }}
+              />
+              :
+              <AiFillHeart              
+                id='fillHeart'
+                size="40px"
+                onClick={() => {
+                  dispatch(getActions.addLikeDB(fundHeartBool, fundId));
+                }}
+              />
+            }
+
               </div>
             </div>
           </ImgSt>
@@ -109,9 +129,9 @@ const ImgSt = styled.div`
 
     #icon {
       position : absolute;
-      left: 88px;
-      top: 80px;
-      background-color: #000000;
+      left: 108px;
+      top: 110px;
+      background: rgba(76, 76, 76, 0.7);
       border-radius: 50px;
       padding: 1px 1px 1px 2px;
       /* border: 1px solid black; */
@@ -121,7 +141,21 @@ const ImgSt = styled.div`
       width: 100%;
       height: 100%;    
     }
+
+    #heart {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      color: #EFEFEF;
   }
+
+  #fillHeart {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      color: #EFEFEF;
+  }
+}
 `
 
 export default FundingCard;
