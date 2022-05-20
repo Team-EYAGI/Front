@@ -1,14 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
-import { BsPlayFill } from "react-icons/bs";
 import { BsPlayCircle } from "react-icons/bs";
 import { Text } from "../elements/Index";
 
 const MainFundingCard = (props) => {
 
   const mainFunding = props.item
-  console.log("메인펀딩 프롭스", mainFunding)
 
   return (
     <React.Fragment>
@@ -44,7 +42,6 @@ const Wrap = styled.div`
 
 const Body = styled.div`
   width: 100%;
-  /* background-color: rebeccapurple; */
   
   cursor: pointer;
 
@@ -58,7 +55,6 @@ const Body = styled.div`
 
     margin-left: 10px;
     margin-bottom: 10px;
-
   }
 `
 
@@ -89,18 +85,14 @@ const ImgSt = styled.div`
   
   #img {
     width: 100px;
-    /* height: 162px; */
-    /* background-color: gray; */
 
     #icon {
       position : absolute;
       left: 81px;
       top: 80px;
-      /* background: rgba(255, 255, 255, 0.2); */
       background: rgba(76, 76, 76, 0.7);
       border-radius: 50px;
       padding: 0px;
-      /* border: 1px solid black; */
     }
 
     img {

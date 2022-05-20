@@ -41,8 +41,6 @@ const Wrap = styled.div`
   span {
     margin: 0px 10px 15px 21px;
     font-weight: 400;
-
-    /* background-color: rebeccapurple; */     
   }
 
   #plus:hover {

@@ -107,13 +107,13 @@ const AudioPlay = (props) => {
                 {followStatus === false ?
                   <button
                     onClick={() => {
-                      // dispatch(followActions.audiofollowAC(sellerId));
+                      dispatch(followActions.audiofollowAC(sellerId));
                     }}
                   >follow</button>
                   :
                   <button
                     onClick={() => {
-                      // dispatch(followActions.audiofollowAC(sellerId));
+                      dispatch(followActions.audiofollowAC(sellerId));
                     }}
                   >unfollow</button>
                 }

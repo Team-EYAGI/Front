@@ -5,7 +5,6 @@ import { history } from '../redux/configureStore';
 const MainSellerCard = (props) => {
 
   const creator = props.item;
-  console.log(creator)
 
   return (
     <React.Fragment>
