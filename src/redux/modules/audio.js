@@ -27,6 +27,7 @@ const DELETE_REVIEW = "DELETE_REVIEW";
 // 초기값
 const initialState = {
   request_list: [],
+  totalPages: [],
   request_add: [],
   audio_list: [],
   audio_check: [],
@@ -37,32 +38,24 @@ const initialState = {
 };
 
 // 액션 생성 함수
-const getRequest = createAction(GET_REQUEST, (request_list, paging) => ({ request_list, paging }));
-// const addRequest = createAction(ADD_REQUEST, (request_add) => ({ request_add }));
-// const editRequest = createAction(EDIT_REQUEST, (bookRequestId, request_list) => ({ bookRequestId, request_list }));
+const getRequest = createAction(GET_REQUEST, (request_list, totalPages) => ({ request_list, totalPages }));
 const deleteRequest = createAction(DELETE_REQUEST, (bookRequestId) => ({ bookRequestId }));
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
-// const addAudio = createAction(ADD_AUDIO, (audio_list) => ({ audio_list }));
 const addAudioCheck = createAction(ADD_AUDIO_CHECK, (audio_check) => ({ audio_check }));
 const getAudio = createAction(GET_AUDIO, (audio_list) => ({ audio_list }));
-// const audiofollow = createAction(ADD_FOLLOW, (followCount, followStatus) => ({followCount, followStatus}));
 
-const getReview = createAction(GET_REVIEW, (review_list) => ({ review_list }));
-// const addReview = createAction(ADD_REVIEW, (review_add) => ({ review_add }));
-// const editReview = createAction(EDIT_REVIEW, (commentId, review_list) => ({ commentId, review_list }));
+const getReview = createAction(GET_REVIEW, (review_list, totalPages) => ({ review_list, totalPages }));
 const deleteReview = createAction(DELETE_REVIEW, (commentId) => ({ commentId }));
 
 
 // 미들웨어
 
 // 오디오북 요청 겟
-const getRequestAC = (page = 1, size = 1) => {
+const getRequestAC = (page, size = 7) => {
+  console.log(page)
   return function (dispatch, getState, { history }) {
-    const _paging=getState().fund.paging;
-    if (!_paging.page) {
-      return;
-    }
+
     dispatch(loading(true));
     axios.get(process.env.REACT_APP_BASE_URL + `/book/request?page=${page}&size=${size}`, {
   
@@ -70,15 +63,10 @@ const getRequestAC = (page = 1, size = 1) => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
+        console.log(res.data)
         console.log(res.data.content)
 
-        let paging={
-          page : res.data.content.length === size ? page + 1 : null,
-          size : size,
-        };
-
-        console.log(paging)
-        dispatch(getRequest(res.data.content, paging));
+        dispatch(getRequest(res.data.content, res.data.totalPages));
 
       })
       .catch(error => {
@@ -253,16 +241,18 @@ const getAudioAC = (audioBookId) => {
 // }
 
 // 오디오북 후기 겟
-const getReviewAC = (audioBookId) => {
+const getReviewAC = (audioBookId, page, size = 5) => {
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/audio/detail/${audioBookId}/comment`,
+    axios.get(process.env.REACT_APP_BASE_URL + `/audio/detail/${audioBookId}/comment?page=${page}&size=${size}`,
       { headers: { 'Authorization': `${Token}` } }
     ,
     )
       .then((res) => {
-        console.log("오디오 후기 리스트", res)
-        dispatch(getReview(res.data))
+        console.log(res.data)
+        console.log(res.data.content)
+
+        dispatch(getReview(res.data.content, res.data.totalPages));
 
       })
       .catch(error => {
@@ -334,13 +324,9 @@ export default handleActions(
   {
     [GET_REQUEST]: (state, action) =>
       produce(state, (draft) => {
-        draft.request_list.push(...action.payload.request_list);
+        draft.request_list = action.payload.request_list;
+        draft.totalPages = action.payload.totalPages;
         draft.is_loading = false;
-        if (action.payload.paging) {
-          draft.paging = action.payload.paging;
-        }
-        // draft.request_list = action.payload.request_list;
-        // console.log("스테이스상태", state)
       }),
     [ADD_AUDIO_CHECK]: (state, action) =>
       produce(state, (draft) => {
@@ -357,6 +343,7 @@ export default handleActions(
     [GET_REVIEW]: (state, action) =>
       produce(state, (draft) => {
         draft.review_list = action.payload.review_list;
+        draft.totalPages = action.payload.totalPages;
       }),
     [DELETE_REVIEW]: (state, action) =>
       produce(state, (draft) => {

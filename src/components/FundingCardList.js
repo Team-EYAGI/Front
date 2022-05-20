@@ -10,6 +10,13 @@ import { actionCreators as getActions } from "../redux/modules/fund";
 const FundingCardList = (props) => {
   const dispatch = useDispatch();
   const fund = props.funding;
+  // const heart = useSelector((state) => state.fund.heart);
+
+  // const a = fund ? fund.find((p) => p.fundId !== heart.fund) : null
+  // console.log("funding", a ? a.myHeart : null);
+  // console.log(heart);
+
+  // let b = a ? a.myHeart : null;
 
   // 무한스크롤
   const paging = useSelector((state) => state.fund.paging);
@@ -27,7 +34,7 @@ const FundingCardList = (props) => {
           loading={is_loading}
         >
           {fund.map((item, idx) => (
-            <FundingCard key={idx} fundcard={item} />
+            <FundingCard key={idx} fundcard={item}/>
           ))}
         </InfinityScroll>
       </Wrap>

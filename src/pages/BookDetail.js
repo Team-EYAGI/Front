@@ -94,7 +94,7 @@ const BookDetail = () => {
             책 정보
           </span>
           <div>
-            <span>
+            <span style={{whiteSpace: "pre-wrap", wordBreak: 'keep-all', lineHeight: "1.5",}}>
               {detail.summary}
             </span>
           </div>

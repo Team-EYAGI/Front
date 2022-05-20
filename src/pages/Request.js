@@ -4,18 +4,22 @@ import RequestList from '../components/RequestList';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as requestActions } from "../redux/modules/audio";
 import { history } from '../redux/configureStore';
-import InfinityScroll from "../shared/InfinityScroll";
+// import InfinityScroll from "../shared/InfinityScroll";
+import Pagination from '../shared/Pagination';
 
 const Request = () => {
   const dispatch = useDispatch();
 
   const requestList = useSelector((state) => state.audio.request_list);
-  const paging = useSelector((state) => state.book.paging);
-  const is_loading = useSelector((state) => state.book.is_loading);
+  const totalPages = useSelector((state) => state.audio.totalPages);
+
+  console.log(requestList)
+  console.log(totalPages)
+  const [page, setPage] = React.useState(1)
 
   React.useEffect(() => {
-    dispatch(requestActions.getRequestAC());
-  }, [dispatch]);
+    dispatch(requestActions.getRequestAC(page));
+  }, [page]);
 
   return (
     <React.Fragment>
@@ -48,27 +52,28 @@ const Request = () => {
               작성일
             </InfoItem>
           </TableInfo>
-          <InfinityScroll
+          {/* <InfinityScroll
             callNext={() => {
               dispatch(requestActions.getRequestAC(paging.page));
             }}
             is_next={paging.page ? true : false}
             loading={is_loading}
-          >
+          > */}
           {requestList && requestList.map((item, idx) => {
             // ReviewDetail 페이지에 item값을 props로 넘겨준다.
             return <RequestList key={idx} item={item} />
           })}
-          </InfinityScroll>
+          {/* </InfinityScroll> */}
         </RequestTable>
         <ReveiwButtonWrap>
           <ReviewButton
             onClick={() => {
               history.push('/book/자기계발')
             }}>
-            오디오북 요청 책 선택하기
+            오디오북 요청 책 선택하ottom기
           </ReviewButton>
         </ReveiwButtonWrap>
+        <Pagination totalPages={totalPages} setPage={setPage}/>
       </Wrap>
     </React.Fragment>
   )
@@ -76,7 +81,7 @@ const Request = () => {
 const Wrap = styled.div`
   margin: 0 auto;
   margin-top: 100px;
-  margin-bottom: 80px;
+  margin-bottom: 70px;
   padding-right: 40px;
   width: 1100px;
 `

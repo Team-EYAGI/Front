@@ -11,7 +11,7 @@ import { Text } from "../elements/Index";
 import FundHeart from "../components/FundHeart";
 
 const FundingCard = (props) => {
-  console.log("펀딩카드 좋아요값" ,props.fundcard.myHeart) 
+  console.log("펀딩카드 좋아요값" ,props)
   const dispatch = useDispatch();
 
   let fundingHeartState = props.fundcard.myHeart

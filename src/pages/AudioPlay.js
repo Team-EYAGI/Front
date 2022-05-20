@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import AudioReview from '../components/AudioReview';
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
+import Pagination from '../shared/Pagination';
 
 import { BsFillPlayFill } from 'react-icons/bs';
 import { useBeforeunload } from "react-beforeunload";
@@ -37,14 +38,19 @@ const AudioPlay = (props) => {
 
   // 오디오북 리뷰 불러오기
   const audioReview = useSelector((state) => state.audio.review_list);
+  const totalPages = useSelector((state) => state.audio.totalPages);
 
   // 플레이리스트 상태변경
   const [play, setPlay] = React.useState("");
+  const [page, setPage] = React.useState(1)
 
   React.useEffect(() => {
     dispatch(getActions.getAudioAC(audioBookId));
-    dispatch(getActions.getReviewAC(audioBookId));
   }, []);
+
+  React.useEffect(() => {
+    dispatch(getActions.getReviewAC(audioBookId, page));
+  }, [page]);
 
   // 권한이 없는 사용자는 페이지 접근 불가
   React.useEffect(() => {
@@ -165,7 +171,7 @@ const AudioPlay = (props) => {
           )}
         </div>
       </ReviewBox>
-
+      <Pagination totalPages={totalPages} setPage={setPage}/>
     </React.Fragment>
   )
 }
@@ -346,8 +352,6 @@ const Content = styled.div`
   
   display: flex;
   flex-direction: column;
-  /* justify-content: left; */
-  /* align-items: center; */
 
   #contents {
     margin-top: 10px;
@@ -359,8 +363,6 @@ const Content = styled.div`
   #follow {
     width: 100%;
     height: 30px;
-    /* background: yellow; */
-    /* text-align: right; */
     
     display: flex;
     flex-direction: row;
@@ -495,17 +497,13 @@ const PlayerSt = styled.div`
 `
 
 const ReviewBox = styled.div`
-  min-height: 400px;
-  max-height: 570px;
-
+  /* min-height: 400px; */
+  /* max-height: 570px; */
   width: 1100px;
-  margin: 0 auto;
+  margin: auto;
   
   display: flex;
   flex-direction: column;
-
-  margin-bottom: 114px;
-
 
   #reviewbox {
     display: flex;
@@ -549,24 +547,6 @@ const ReviewBox = styled.div`
     }
   }
 
-  #reviewcard {
-    overflow-y: scroll;
-    ::-webkit-scrollbar {
-     /* 세로 스크롤 넓이 */  
-      width: 7px;
-      height: 100%;
-      
-      border-radius: 6px;
-      background: #FFFFFC;
-      border: 1px solid #000000;
-    }
-    ::-webkit-scrollbar-thumb {
-      height: 17%;
-      background-color: #000000;
-      border-radius: 6px;
-    }
-
-  }
 `
 
 export default AudioPlay;
