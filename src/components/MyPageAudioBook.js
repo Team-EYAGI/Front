@@ -8,13 +8,10 @@ import { history } from "../redux/configureStore";
 import { actionCreators as libraryActions } from "../redux/modules/mypage";
 
 const MyPageAudioBook = (props) => {
-  // console.log(props.item)
   const dispatch = useDispatch();
 
   const params = useParams();
   const category = params.category
-
-  const is_session = localStorage.getItem("is_login");
 
   const bookId = props.item.bookId;
   const audioBookId = props.item.audioBookId;
@@ -48,7 +45,7 @@ const MyPageAudioBook = (props) => {
             {props.item.title}
           </h3>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-            <Text margin="0px">{props.item.author} ({props.item.sellerName})</Text>
+            <Text margin="0px">{props.item.author} {props.item.sellerName ? `(${props.item.sellerName})` : null}</Text>
             {category === "audiobook" || category === "funding" || category === "myFunding" || category === "myAudio" ?
               null
               :

@@ -349,7 +349,6 @@ const FollowerList = styled.div`
   border-radius: 5px;
 
   #name {
-    /* width: 60%; */
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -401,11 +400,6 @@ const ImageBox = styled.div`
 
   overflow: hidden;
   border: 1px solid #878787;
-  /* box-shadow: 0 0 2px gray; */
-
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* justify-content: flex-end; */
 
   img {
     width:100%;
@@ -417,9 +411,6 @@ const ImageBox = styled.div`
 const AudioReviewNone = styled.div`
   width: 100%;
   min-height: 200px;
-  
-
-  /* background-color: purple; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -434,9 +425,7 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* align-items: center; */
   position: relative;
-  /* background-color: lightblue; */
   padding-top: 30px;
   padding-bottom: 30px;
   font-family: 'Pretendard';
@@ -451,21 +440,14 @@ const Wrap = styled.div`
 
 const Menu = styled.div`
   width: 290px;
-  /* margin: 0 auto; */
   min-height: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
   
-  /* background-color: white; */
   position: relative;
-  
   border-radius: 10px;
-
   padding-bottom: 30px;
-
-  /* font-family: 'Pretendard';
-  font-style: normal; */
 `
 
 const Body = styled.div`
@@ -479,8 +461,7 @@ const Body = styled.div`
       height: 100%;
       
       border-radius: 6px;
-      /* background: #FFFFFC; */
-      /* border: 1px solid #000000; */
+
     }
     ::-webkit-scrollbar-thumb {
       height: 17%;
@@ -492,9 +473,6 @@ const Body = styled.div`
   flex-wrap: wrap;
   display: flex;
   flex-direction: row;
-  /* align-items: center; */
-  /* position: relative; */
-  /* background-color: yellow; */
   padding-bottom: 30px;
 
 `
@@ -502,9 +480,7 @@ const Body = styled.div`
 const Profile = styled.div`
   width: 290px;
   min-height: 220px;
-  /* height: 100%; */
 
-  /* background-color: purple; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -515,7 +491,6 @@ const Profile = styled.div`
       border-radius: 5px;
       background: none;
       margin-bottom: 20px;
-      /* box-shadow: none; */
 
       .rhap_progress-indicator {
       background: #0C0A0A;;
@@ -527,7 +502,6 @@ const Profile = styled.div`
 
     }
       div {
-        /* background : black; */
         color : black;
       }
 
@@ -546,7 +520,6 @@ const Profile = styled.div`
     width: 290px;
     height: 48px;
 
-    /* box-sizing: border-box; */
     border-radius: 10px;
     background-color: #0C0A0A;;
 
@@ -560,7 +533,6 @@ const Profile = styled.div`
 
   #creatorform {
     width: 100%;
-    /* background-color: yellow; */
     margin-top: 13px;
     margin-left: 3px;
 
@@ -579,21 +551,15 @@ const Profile = styled.div`
 `
 
 const ProfileBox = styled.div`
-
-/* background-color: yellow; */
   width: 290px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* align-items: center; */
   margin: 5px 0px;
-
-  
 
   #img {
     width: 100px;
     height: 100px;
-    /* margin-top: 40px; */
 
     border-radius: 15px;
     border: 1px solid black;
@@ -634,7 +600,6 @@ const ProfileBox = styled.div`
 
   h3 {
     width: 100%;
-    /* min-height: 10px; */
     font-weight: 400;
     font-size: 13px;
     line-height: 150%;
@@ -649,15 +614,11 @@ const List = styled.div`
   width: 290px;
   height: 300px;
 
-  /* background-color: yellow; */
   margin-top: 20px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  /* border: 1px solid #EAEAEA; */
-  /* border-radius: 10px; */
 `
 
 const ListBox = styled.div`
@@ -666,8 +627,6 @@ const ListBox = styled.div`
   flex-direction: column;
 
   margin: 10px 0px;
-
-  /* background-color: red; */
 
   h3 {
     margin: 8px 0px;

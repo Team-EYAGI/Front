@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import MyPageAudioBook from '../components/MyPageAudioBook';
+import AudioPlayer from "react-h5-audio-player";
 
 import { history } from '../redux/configureStore';
 import { actionCreators as creatorActions } from "../redux/modules/creator";
@@ -47,12 +48,23 @@ const SellerProfile = () => {
   const follower = useSelector((state) => state.creator.creator_follower);
   const following = useSelector((state) => state.creator.creator_following);
 
+  // 팔로우, 팔로잉 모달창
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
+
+
+  // 플레이어 자동재생 막기
+  const player = useRef();
+
+  useEffect(() => {
+    if (authority === "ROLE_SELLER") {
+      player.current.audio.current.pause();  // -3-
+    }
+  }, [profile]);
 
   useEffect(() => {
     if (!authority) {
@@ -183,28 +195,55 @@ const SellerProfile = () => {
                 </BoxSt>
               </Box>
             </Modal>
-            {authority &&
-            ( followStatus === false ?
-              <button
-                id='follow'
-                onClick={() => {
-                  dispatch(followActions.followAC(sellerId));
-                }}
-              >
-                Follow
-              </button>
+
+            {authority ?
+              <AudioPlayer
+                className='audio'
+                autoPlay={false}
+                src={profileDetail && profileDetail.sellerVoice}
+                volume={1}
+                timeFormat={"mm:ss"}
+                defaultCurrentTime={"00:00"}
+                showJumpControls={false}
+                ref={player}
+                onPlay={e => console.log("onPlay")}
+              />
               :
-              <button 
-                id='unfollow'
-                onClick={() => {
-                  dispatch(followActions.followAC(sellerId));
-                }}
-              >
-                unFollow
-              </button>
-            )
+              <AudioPlayer
+                className='audio'
+                autoPlay={false}
+                src={profile.sellerVoice}
+                volume={1}
+                timeFormat={"mm:ss"}
+                defaultCurrentTime={"00:00"}
+                showJumpControls={false}
+                ref={player}
+                onPlay={e => console.log("onPlay")}
+              />
             }
-            
+
+            {authority &&
+              (followStatus === false ?
+                <button
+                  id='follow'
+                  onClick={() => {
+                    dispatch(followActions.followAC(sellerId));
+                  }}
+                >
+                  Follow
+                </button>
+                :
+                <button
+                  id='unfollow'
+                  onClick={() => {
+                    dispatch(followActions.followAC(sellerId));
+                  }}
+                >
+                  unFollow
+                </button>
+              )
+            }
+
 
           </Profile>
           <List>
@@ -287,7 +326,6 @@ const FollowerList = styled.div`
   border-radius: 5px;
 
   #name {
-    /* width: 60%; */
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -339,11 +377,6 @@ const ImageBox = styled.div`
 
   overflow: hidden;
   border: 1px solid #878787;
-  /* box-shadow: 0 0 2px gray; */
-
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* justify-content: flex-end; */
 
   img {
     width:100%;
@@ -356,9 +389,7 @@ const ImageBox = styled.div`
 const AudioReviewNone = styled.div`
   width: 100%;
   min-height: 200px;
-  
 
-  /* background-color: purple; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -373,9 +404,7 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* align-items: center; */
   position: relative;
-  /* background-color: lightblue; */
   padding-top: 30px;
   padding-bottom: 30px;
   font-family: 'Pretendard';
@@ -390,21 +419,13 @@ const Wrap = styled.div`
 
 const Menu = styled.div`
   width: 290px;
-  /* margin: 0 auto; */
   height: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  
-  /* background-color: white; */
   position: relative;
-  
   border-radius: 10px;
-
   padding-bottom: 30px;
-
-  /* font-family: 'Pretendard';
-  font-style: normal; */
 `
 
 const Body = styled.div`
@@ -432,9 +453,6 @@ const Body = styled.div`
   flex-wrap: wrap;
   display: flex;
   flex-direction: row;
-  /* align-items: center; */
-  /* position: relative; */
-  /* background-color: yellow; */
   padding-bottom: 30px;
 
 `
@@ -443,16 +461,45 @@ const Profile = styled.div`
   width: 290px;
   min-height: 220px;
 
-  /* background-color: purple; */
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .audio {
+    width: 100%;
+    height: 80px;
+    border-radius: 5px;
+    background: none;
+    margin-bottom: 20px;
+
+    .rhap_progress-indicator {
+      background: #0C0A0A;;
+
+    }
+  
+    .rhap_volume-indicator {
+      background: #0C0A0A;;
+
+    }
+    div {
+      color : black;
+    }
+
+    div.rhap_progress-filled {
+      background-color : #0C0A0A;;
+
+    }
+
+    button {
+      color : #0C0A0A;;
+
+    }
+  }
 
   #follow {
     width: 290px;
     height: 48px;
 
-    /* box-sizing: border-box; */
     border-radius: 10px;
     background-color: #0C0A0A;
 
@@ -468,12 +515,9 @@ const Profile = styled.div`
     width: 290px;
     height: 48px;
 
-    /* box-sizing: border-box; */
     border-radius: 10px;
     background-color: #FFFFFF;
-
     color: #0C0A0A;
-
     font-weight: 400;
     font-size: 14px;
 
@@ -482,7 +526,6 @@ const Profile = styled.div`
 
   #creatorform {
     width: 100%;
-    /* background-color: yellow; */
     margin-top: 13px;
 
     font-weight: 300;
@@ -500,21 +543,15 @@ const Profile = styled.div`
 `
 
 const ProfileBox = styled.div`
-
-/* background-color: yellow; */
   width: 290px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* align-items: center; */
   margin: 5px 0px;
-
-  
 
   #img {
     width: 100px;
     height: 100px;
-    /* margin-top: 40px; */
 
     border-radius: 15px;
     border: 1px solid black;
@@ -529,7 +566,6 @@ const ProfileBox = styled.div`
 
   #username {
     width: 59%;
-    /* margin-top: 40px; */
 
     h4 {
       font-weight: 700;
@@ -556,7 +592,6 @@ const ProfileBox = styled.div`
 
   h3 {
     width: 100%;
-    /* min-height: 10px; */
     font-weight: 400;
     font-size: 13px;
     line-height: 150%;
@@ -570,26 +605,18 @@ const ProfileBox = styled.div`
 const List = styled.div`
 width: 290px;
   height: 300px;
-
-  /* background-color: yellow; */
   margin-top: 20px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  /* border: 1px solid #EAEAEA; */
-  /* border-radius: 10px; */
 `
 
 const ListBox = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-
   margin: 10px 0px;
-
-  /* background-color: red; */
 
   h3 {
     margin: 8px 0px;
