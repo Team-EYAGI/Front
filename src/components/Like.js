@@ -28,7 +28,7 @@ const Like = (props) => {
     <React.Fragment>
       <Wrap
       onClick={addLike}
-      ><AiOutlineHeart id="icon"  size="40px"/>  <h4>{likeCnt}개</h4></Wrap>
+      ><AiOutlineHeart id="icon"  size="40px"/>  <h4>{likeCnt}</h4></Wrap>
     </React.Fragment>
   );
 };
@@ -36,8 +36,8 @@ const Like = (props) => {
 const Wrap = styled.div`
   border: 1px solid gray;
   border-radius: 10px;
-  width: 85px;
-  height: 60px;
+  width: 90px;
+  height: 90px;
   font-size: 15 px;
   text-align: center;
   vertical-align: middle;

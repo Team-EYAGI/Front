@@ -48,8 +48,24 @@ const FundingWrite = () => {
     }
 
 		if(fileSize > maxSize){
-			window.alert("첨부파일 사이즈는 5MB 이내로 등록 가능합니다.");
-			return;
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 1500,
+        color: '#000000',
+        // timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      Toast.fire({
+        icon: 'error',
+        title: '첨부파일 사이즈는 5MB 이내로 등록 가능합니다.'
+      })
+        return;
+
 		}
     // 리뷰를 추가할 때 addReviewAc로 정보를 넘긴다.
     Swal.fire({
@@ -111,7 +127,7 @@ const FundingWrite = () => {
             <div id="goal">
               <p>펀딩 목표</p>
               <input
-                placeholder="최소 목표치는 하트5개입니다."
+                placeholder="최소 목표치는 하트5개입니다.(숫자만 입력 ex : 5)"
                 onChange={(e) => {
                   setFundingGoals(e.target.value);
                 }}
