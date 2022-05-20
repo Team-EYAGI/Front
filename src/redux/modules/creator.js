@@ -63,25 +63,6 @@ const getProfileAC = (sellerId, authority, username) => {
   }
 }
 
-// // (회원)셀러 프로필 정보 가져오기
-// const getProfileAC = (sellerId) => {
-//   let Token = getToken("Authorization");
-//   return function (dispatch, getState, {history}) {
-//     axios.get(process.env.REACT_APP_BASE_URL + `/viewer/seller/${sellerId}`, {
-
-//     },
-//     {headers: { 'Authorization' : `Bearer ${Token}`}}
-//     )
-//     .then((res) => {
-//       // console.log("셀러 프로필 정보", res)
-//       dispatch(getProfile(res.data))
-
-//     })
-//     .catch(error => {
-//       console.log("error", error)
-//     })
-//   }
-// }
 
 // 셀러 펀딩정보 가져오기
 const getFundingAC = (sellerId) => {

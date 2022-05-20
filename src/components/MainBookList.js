@@ -12,13 +12,13 @@ import "swiper/css/pagination";
 import "../styles/slide.css";
 
 const BookList = (props) => {
-  console.log("메인 프롭스", props.main)
-  const bookList = props.main
+
+  const bookList = props.main;
 
   return (
     <React.Fragment>
       <Wrap>
-        <span style={{fontSize: "20px", fontWeight: "700"}}>추천도서</span>
+        <span style={{ fontSize: "20px", fontWeight: "700" }}>추천도서</span>
       </Wrap>
       <Swiper
         slidesPerView={5}
@@ -37,7 +37,7 @@ const BookList = (props) => {
         <DivSt>
           {/* bookList를 받아와 map 돌려 붙여넣기 */}
           {bookList && bookList.map((item, idx) => (
-          <SwiperSlide key={idx}><MainBookCard key={item.bookId} item={item}/></SwiperSlide>
+            <SwiperSlide key={idx}><MainBookCard key={item.bookId} item={item} /></SwiperSlide>
           ))}
         </DivSt>
       </Swiper>

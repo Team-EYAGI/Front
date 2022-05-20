@@ -12,8 +12,8 @@ const MainSellerList = (props) => {
         <span>오늘의 크리에이터</span>
       </Wrap>
       <Bottom>
-      {creator && creator.map((item, idx) => (
-          <MainSellerCard key={idx} item={item}/>
+        {creator && creator.map((item, idx) => (
+          <MainSellerCard key={idx} item={item} />
         ))}
       </Bottom>
     </React.Fragment>

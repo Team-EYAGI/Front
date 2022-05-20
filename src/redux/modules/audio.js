@@ -15,7 +15,7 @@ const LOADING = "LOADING"
 const ADD_AUDIO = "ADD_AUDIO";
 const GET_AUDIO = "GET_AUDIO";
 const ADD_AUDIO_CHECK = "ADD_AUDIO_CHECK";
-// const ADD_FOLLOW = "FOLLOW";
+const ADD_FOLLOW = "ADD_FOLLOW";
 
 // 3. 리뷰 CRUD 부분
 const GET_REVIEW = "GET_REVIEW";
@@ -44,6 +44,7 @@ const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
 const addAudioCheck = createAction(ADD_AUDIO_CHECK, (audio_check) => ({ audio_check }));
 const getAudio = createAction(GET_AUDIO, (audio_list) => ({ audio_list }));
+const addFollow = createAction(ADD_FOLLOW, (followCount, followStatus) => ({ followCount, followStatus }));
 
 const getReview = createAction(GET_REVIEW, (review_list, totalPages) => ({ review_list, totalPages }));
 const deleteReview = createAction(DELETE_REVIEW, (commentId) => ({ commentId }));
@@ -221,24 +222,24 @@ const getAudioAC = (audioBookId) => {
 }
 
 // 팔로우
-// const audiofollowAC = (sellerId) => {
+const audiofollowAC = (sellerId) => {
 
-//   let Token = getToken("Authorization");
-//   return function (dispatch, getState, { history }) {
-//     axios.post(process.env.REACT_APP_BASE_URL + `/user/follow?id=${sellerId}`, {
+  let Token = getToken("Authorization");
+  return function (dispatch, getState, { history }) {
+    axios.put(process.env.REACT_APP_BASE_URL + `/user/follow?id=${sellerId}`, {
 
-//     },
-//       { headers: { 'Authorization': `${Token}` } }
-//     )
-//       .then((res) => {
-//         console.log("팔로우 성공", res)
-//         dispatch(audiofollow(res.data.followCount, res.data.followStatus))
-//       })
-//       .catch(error => {
-//         console.log("error", error)
-//       })
-//   }
-// }
+    },
+      { headers: { 'Authorization': `${Token}` } }
+    )
+      .then((res) => {
+        console.log("팔로우 성공", res)
+        dispatch(addFollow(res.data.followCount, res.data.followStatus))
+      })
+      .catch(error => {
+        console.log("error", error)
+      })
+  }
+}
 
 // 오디오북 후기 겟
 const getReviewAC = (audioBookId, page, size = 5) => {
@@ -349,13 +350,13 @@ export default handleActions(
       produce(state, (draft) => {
         draft.review_list = draft.review_list.filter((p) => p.commentId !== action.payload.commentId);
       }),
-      // [ADD_FOLLOW]: (state, action) =>
-      // produce(state, (draft) => {
-      //   console.log(action.payload.followCount)
-      //   console.log(action.payload.followStatus)
-      //   draft.audio_list.sellerProfile.followerCnt = action.payload.followCount;
-      //   draft.audio_list.followStatus = action.payload.followStatus;
-      // }),
+      [ADD_FOLLOW]: (state, action) =>
+      produce(state, (draft) => {
+        console.log(action.payload.followCount)
+        console.log(action.payload.followStatus)
+        draft.audio_list.audioBookDetail.followerCnt = action.payload.followCount;
+        draft.audio_list.followStatus = action.payload.followStatus;
+      }),
   },
   initialState
 );
@@ -374,7 +375,7 @@ const actionCreators = {
   editReviewAC,
   deleteReviewAC,
   addAudioCheckAC,
-  // audiofollowAC,
+  audiofollowAC,
 };
 
 export { actionCreators };

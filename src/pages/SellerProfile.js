@@ -61,9 +61,7 @@ const SellerProfile = () => {
   const player = useRef();
 
   useEffect(() => {
-    if (authority === "ROLE_SELLER") {
       player.current.audio.current.pause();  // -3-
-    }
   }, [profile]);
 
   useEffect(() => {
@@ -221,9 +219,10 @@ const SellerProfile = () => {
                 onPlay={e => console.log("onPlay")}
               />
             }
-
-            {authority &&
-              (followStatus === false ?
+            {(username === profile.userName) || (username === (profileDetail ? profileDetail.userName : null)) ?
+              null
+              :
+              (authority && followStatus === false) ?
                 <button
                   id='follow'
                   onClick={() => {
@@ -241,9 +240,7 @@ const SellerProfile = () => {
                 >
                   unFollow
                 </button>
-              )
             }
-
 
           </Profile>
           <List>
