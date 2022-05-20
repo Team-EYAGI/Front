@@ -9,6 +9,7 @@ const ADD_FUND = "ADD_REQUEST";
 const ADD_LIKE = 'ADD_LIKE';
 const DEL_LIKE = 'DEL_LIKE';
 const LOADING = "LOADING"
+const GET_DETAIL = "GET_DETAIL"
 
 // 초기값
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
   heart: [],
   paging: {page: 1, size: 20},
   is_loading: false,
+  fund_detail: [],
 };
 
 // action creater
@@ -27,7 +29,7 @@ const addFunding = createAction(ADD_FUND, (fund_add) => ({fund_add}));
 const addLike = createAction(ADD_LIKE, (fundHeartBool, fundId) => ({ fundHeartBool, fundId }))
 const delLike = createAction(DEL_LIKE, (fundHeartBool, fundId) => ({ fundHeartBool, fundId }))
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
-
+const getDetail = createAction(GET_DETAIL, (fund_detail) => ({ fund_detail }));
 
 // 미들웨어
 
@@ -70,6 +72,25 @@ const getFundingAC = (page, size = 12) => {
       //   console.log(paging)
         dispatch(getFunding(res.data.content, res.data.totalPages));
 
+
+    })
+    .catch(error => {
+      console.log("error", error)
+    })
+  }
+}
+
+//펀딩상세페이지
+const getFundingDetailAC = (fundId) => {
+console.log(fundId)
+  let Token = getToken("Authorization");
+  return function (dispatch, getState, {history}) {
+    axios.get(process.env.REACT_APP_BASE_URL + `/fund/detail/${fundId}`,
+    {headers: { 'Authorization' : `${Token}`}}
+    )
+    .then((res) => {
+      console.log("팔로잉 리스트 가져오기", res)
+      dispatch(getDetail(res.data.content))
 
     })
     .catch(error => {
@@ -183,6 +204,10 @@ export default handleActions(
       // draft.heart = draft.fund_list.find((p) => p.fundId !== action.payload.fundId)
       draft.heart = action.payload  
     }),
+    [GET_DETAIL]: (state, action) =>
+    produce(state, (draft) => {
+      draft.fund_detail = action.payload.fund_detail;
+    }),
   },
   initialState
 );
@@ -193,6 +218,7 @@ const actionCreators = {
 getFundingAC,
 addFundingAC,
 addLikeDB,
+getFundingDetailAC,
 };
 
 export { actionCreators };
