@@ -22,7 +22,7 @@ const initialState = {
 };
 
 // action creater
-const getFunding = createAction(GET_FUND, (fund_list, paging) => ({fund_list, paging}));
+const getFunding = createAction(GET_FUND, (fund_list, totalPages) => ({fund_list, totalPages}));
 const addFunding = createAction(ADD_FUND, (fund_add) => ({fund_add}));
 const addLike = createAction(ADD_LIKE, (fundHeartBool, fundId) => ({ fundHeartBool, fundId }))
 const delLike = createAction(DEL_LIKE, (fundHeartBool, fundId) => ({ fundHeartBool, fundId }))
@@ -32,18 +32,13 @@ const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 // 미들웨어
 
 // 펀딩페이지 가져오기
-const getFundingAC = (page = 1, size = 20) => {
+const getFundingAC = (page, size = 12) => {
   const username = localStorage.getItem("username");
   console.log(username)
   let Token = getToken("Authorization");
 
 
   return function (dispatch, getState, {history}) {
-    const _paging=getState().fund.paging;
-    if (!_paging.page) {
-      return;
-    }
-    dispatch(loading(true));
 
     const formData = new FormData();
     // formData.append("info", username)
@@ -63,17 +58,17 @@ const getFundingAC = (page = 1, size = 20) => {
       }
     )
     .then((res) => {
-      console.log(res)
+      // console.log(res)
 
-        console.log(res.data.content)
+      //   console.log(res.data.content)
 
-        let paging={
-          page : res.data.content.length === size ? page + 1 : null,
-          size : size,
-        };
+      //   let paging={
+      //     page : res.data.content.length === size ? page + 1 : null,
+      //     size : size,
+      //   };
 
-        console.log(paging)
-        dispatch(getFunding(res.data.content, paging));
+      //   console.log(paging)
+        dispatch(getFunding(res.data.content, res.data.totalPages));
 
 
     })
@@ -171,12 +166,9 @@ export default handleActions(
   {
     [GET_FUND]: (state, action) =>
     produce(state, (draft) => {
-      draft.fund_list.push(...action.payload.fund_list);
+      draft.fund_list = action.payload.fund_list;
+      draft.totalPages = action.payload.totalPages;
       draft.is_loading = false;
-      if (action.payload.paging) {
-        draft.paging = action.payload.paging;
-      }
-      // draft.fund_list = action.payload.fund_list;
     }),
     [ADD_FUND]: (state, action) =>
     produce(state, (draft) => {
