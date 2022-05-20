@@ -144,7 +144,7 @@ const getBookDetailAC = (bookId) => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        // console.log("상세페이지 정보", res.data)
+        console.log("상세페이지 정보", res.data)
         dispatch(getBookDetail(res.data))
 
       })

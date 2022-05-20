@@ -8,6 +8,7 @@ import { history } from '../redux/configureStore';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as getActions } from "../redux/modules/book";
 import { actionCreators as libraryActions } from "../redux/modules/mypage";
+import { actionCreators as fundingActions } from "../redux/modules/fund";
 
 const BookDetail = () => {
 
@@ -22,6 +23,7 @@ const BookDetail = () => {
 
   // 책 상세페이지 정보 가져오기
   const detail = useSelector((state) => state.book.detail_book);
+  console.log(detail)
 
   React.useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));
@@ -59,7 +61,7 @@ const BookDetail = () => {
                   </button>
                   <button
                     onClick={() => {
-                      history.push(`/audioWrite/${category}/${bookId}`)
+                      dispatch(fundingActions.fundingSuccessAC(bookId, category));
                     }}>
                     내 오디오 등록하기
                   </button>

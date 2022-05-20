@@ -2,44 +2,31 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import { BsFillPlayFill } from "react-icons/bs";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as getActions } from "../redux/modules/fund";
-import FundingCard from "../components/FundingCard";
-import FundingWrite from "../pages/FundingWrite";
-import Like from "../components/Like";
+
 
 const FundingDetail = () => {
   const params = useParams();
   const fundId = params.fundingId;
-console.log(fundId)
   const dispatch = useDispatch();
-  // const [fundHeartBool, setFundHeartBool] = useState(true);
-
-  const addLike = () => {
-    if (fundHeartBool == false){
-      setFundHeartBool(true)
-      dispatch(getActions.addLikeDB(fundHeartBool, FundingDetail.fundId));
-    }else{
-      setFundHeartBool(false)
-      dispatch(getActions.addLikeDB(fundHeartBool, FundingDetail.fundId));
-    }
-  }
-
-  // const fundingcard = props.fundcard;
-  // const fundId = fundingcard.fundId;
 
   const fundingDetail = useSelector((state) => state.fund.fund_detail);
-  console.log(fundingDetail);
-  // const fundingDetail = funding
-  //   ? funding.find((p) => p.fundId == fundId)
-  //   : null;
-  // console.log(fundingDetail);
 
-  
+  const boolean = fundingDetail.myHeart === false ? false : true;
+  const [fundHeartBool, setFundHeartBool] = useState(boolean);
+
+  const addLike = () => {
+    if (fundHeartBool == false) {
+      setFundHeartBool(true)
+      dispatch(getActions.addLikeDB(fundHeartBool, fundId));
+    } else {
+      setFundHeartBool(false)
+      dispatch(getActions.addLikeDB(fundHeartBool, fundId));
+    }
+  }
 
   const player = useRef();
 
@@ -54,90 +41,143 @@ console.log(fundId)
   return (
     <React.Fragment>
       {/* {fundingDetail ? ( */}
-        <Wrap>
-          <Player>
-            <PlayerImg>
+      <Wrap>
+        <Player>
+          <PlayerImg>
             <AudioHeader>오디오 펀딩  >  펀딩 상세</AudioHeader>
-              <ImgSt
-                style={{ backgroundImage: `url(${fundingDetail.bookImg})` }}
-              >
-                <div id="img_wrap">
-                  <div id="img">
-                    <img src={fundingDetail.bookImg}/>
-                  </div>
-                  {/* 오디오 플레이어 */}
-                  <AudioPlayer
-                    className="audio"
-                    autoPlay={false}
-                    src={fundingDetail.fundFile}                   
-                    volume={1}
-                    showJumpControls={false}
-                    ref={player}
-                    onPlay={(e) => console.log("onPlay")}
-                  />
+            <ImgSt
+              style={{ backgroundImage: `url(${fundingDetail.bookImg})` }}
+            >
+              <div id="img_wrap">
+                <div id="img">
+                  <img src={fundingDetail.bookImg} />
                 </div>
-              </ImgSt>
+                {/* 오디오 플레이어 */}
+                <AudioPlayer
+                  className="audio"
+                  autoPlay={false}
+                  src={fundingDetail.fundFile}
+                  volume={1}
+                  showJumpControls={false}
+                  ref={player}
+                  onPlay={(e) => console.log("onPlay")}
+                />
+              </div>
+            </ImgSt>
 
-              <Profile>
-                <div id="name">
-                  <span id="creatorname">
-                    {fundingDetail.sellerName}
-                  </span>
-                  &nbsp;&nbsp;
-                  <span id="fixname">크리에이터</span>
+            <Profile>
+              <div id="name">
+                <span id="creatorname">
+                  {fundingDetail.sellerName}
+                </span>
+                &nbsp;&nbsp;
+                <span id="fixname">크리에이터</span>
+              </div>
+              <ProfileInfo>
+                <div id="profileImg">
+                  <img src={fundingDetail.sellerImg} />
                 </div>
-                <ProfileInfo>
-                  <div id="profileImg">
-                    <img src={fundingDetail.sellerImg}/>
-                  </div>
-                  <div id="profile">
-                    <span id="follower">
+                <div id="profile">
+                  {/* <div id="followdiv"> */}
+                  <span id="follower">
                     팔로워 {fundingDetail.followerCnt}명
                   </span>
-                  <br />
-                  <span id="introduce">
-                    {fundingDetail.introduce}
-                  </span></div>                  
-                </ProfileInfo>
-              </Profile>
-            </PlayerImg>
+                  {/* <div>
+                    {fundingDetail.myHeart === false ?
+                      <button
+                        onClick={() => {
+                          dispatch(followActions.audiofollowAC(sellerId));
+                        }}
+                      >follow</button>
+                      :
+                      <button
+                        onClick={() => {
+                          dispatch(followActions.audiofollowAC(sellerId));
+                        }}
+                      >unfollow</button>
+                    }
+                  </div> */}
+                {/* </div> */}
+                <br />
+                <span id="introduce">
+                  {fundingDetail.introduce}
+                </span></div>
+            </ProfileInfo>
+          </Profile>
+        </PlayerImg>
 
-            <Goal>
-              {/* 책 정보 */}
-              <h3>{fundingDetail.bookTitle}</h3>
-              <h4>
-                {" "}
-                저자 : {fundingDetail.author} / 크리에이터 : {fundingDetail.sellerName}               
-              </h4>
+        <Goal>
+          {/* 책 정보 */}
+          <h3>{fundingDetail.bookTitle}</h3>
+          <h4>
+            {" "}
+            저자 : {fundingDetail.author} / 크리에이터 : {fundingDetail.sellerName}
+          </h4>
 
-              {/* 펀딩정보 */}
-              <Info>
-                <div id="heart">
-                  <div className="goal">
-                    목표 좋아요
-                    <div>{fundingDetail.fundingGoals}개</div>
-                  </div>
-                  <br />
-                  <div className="finish">달성한 좋아요
-                    <div>{fundingDetail.likeCnt}개</div>
-                  </div>                  
-                </div>
-                <div id="heartBtn">
-                  {/* <Like 
-                   onClick={addLike}
-                  fundingDetail
-                  /> */}
-                </div>
-         
-              </Info>
-              <div id="creator">{fundingDetail.content}</div>
-            </Goal>
-          </Player>
-        </Wrap>
-      {/* ) : null} */}
-    </React.Fragment>
+          {/* 펀딩정보 */}
+          <Info>
+            <div id="heart">
+              <div className="goal">
+                목표 좋아요
+                <div>{fundingDetail.fundingGoals}개</div>
+              </div>
+              <br />
+              <div className="finish">달성한 좋아요
+                <div>{fundingDetail.likeCnt}개</div>
+              </div>
+            </div>
+            <div id="heartBtn">
+              {fundingDetail.myHeart === false ?
+                <Like
+                  onClick={addLike}
+                >
+                  <AiOutlineHeart id="icon" size="40px" />
+                  <h4>{ }</h4>
+                </Like>
+                :
+                <Like
+                  onClick={addLike}
+                >
+                  <AiFillHeart id="icon" size="40px" />
+                  <h4>{ }</h4>
+                </Like>
+              }
+            </div>
+
+          </Info>
+          <div id="creator">{fundingDetail.content}</div>
+        </Goal>
+      </Player>
+    </Wrap>
+      {/* ) : null} */ }
+    </React.Fragment >
   );
 };
+
+
+const Like = styled.div`
+  border: 1px solid gray;
+  border-radius: 10px;
+  width: 90px;
+  height: 90px;
+  font-size: 15 px;
+  text-align: center;
+  vertical-align: middle;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  cursor: pointer;
+
+  h4 {
+    width: 100%;
+  }
+
+  #icon {
+    margin-top: 15px;   
+  }
+`;
 
 const Wrap = styled.div`
   width: 1100px;
