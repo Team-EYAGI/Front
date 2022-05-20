@@ -10,11 +10,10 @@ import { BsPlayCircle } from "react-icons/bs";
 import { Text } from "../elements/Index";
 
 const FundingCard = (props) => {
-  // console.log("펀딩카드 좋아요값" ,props)
+  console.log("펀딩카드 좋아요값" ,props)
   const dispatch = useDispatch();
 
   const fundingHeartState = props.fundcard.myHeart
-
   // const addLike = () => {
   //   if (fundHeartBool == false) {
   //     setFundHeartBool(true);

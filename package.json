@@ -15,6 +15,7 @@
     "connected-react-router": "6.8.0",
     "global": "^4.4.0",
     "history": "4.10.1",
+    "html-react-parser": "^1.4.12",
     "immer": "^9.0.12",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",

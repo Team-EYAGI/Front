@@ -25,7 +25,7 @@ const initialState = {
 const getFunding = createAction(GET_FUND, (fund_list, paging) => ({fund_list, paging}));
 const addFunding = createAction(ADD_FUND, (fund_add) => ({fund_add}));
 const addLike = createAction(ADD_LIKE, (fundHeartBool, fundId) => ({ fundHeartBool, fundId }))
-const delLike = createAction(DEL_LIKE, (like) => ({ like }))
+const delLike = createAction(DEL_LIKE, (fundHeartBool, fundId) => ({ fundHeartBool, fundId }))
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
 
@@ -144,6 +144,27 @@ const addLikeDB = (fundHeartBool, fundId) => {
   };
 };
 
+// const delLikeDB = (fundHeartBool, fundId) => {
+//   console.log(fundHeartBool, fundId)
+//   let Token = getToken("Authorization");
+//   return function (dispatch, getState, { history }) {
+//     axios
+//       .post(process.env.REACT_APP_BASE_URL + `/fund/like/${fundId}`, {
+//         fundHeartBool : fundHeartBool,
+//       },
+//       { headers: { 'Authorization': `${Token}` } },
+
+//       )
+//       .then((res) => {     
+//         console.log(res)  
+//         dispatch(addLike(res.data.fundHeartBool, fundId)) 
+//       })
+//       .catch((error) => {       
+//         console.log(error)
+//       });
+//   };
+// };
+
 
 //리듀서
 export default handleActions(
@@ -168,7 +189,8 @@ export default handleActions(
       draft.fund_list.find((p) => p.fundId !== action.payload.fundId).myHeart = action.payload.fundHeartBool;
       // window.location.reload()
       // draft.heart = draft.fund_list.find((p) => p.fundId !== action.payload.fundId)
-      }),
+      draft.heart = action.payload  
+    }),
   },
   initialState
 );
