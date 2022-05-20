@@ -8,7 +8,7 @@ import { actionCreators as voiceActions } from "../redux/modules/mypage";
 import { useBeforeunload } from "react-beforeunload";
 import { BsXSquare } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
-import Swal from 'sweetalert2'; 
+import Swal from 'sweetalert2';
 
 
 const AddProfileVoice = (props) => {
