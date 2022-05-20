@@ -94,7 +94,7 @@ const BookDetail = () => {
             책 정보
           </span>
           <div>
-            <span>
+            <span style={{whiteSpace: "pre-wrap", wordBreak: 'keep-all', lineHeight: "1.5",}}>
               {detail.summary}
             </span>
           </div>
@@ -244,6 +244,9 @@ const BookSum = styled.div`
 
     span {
       font-size: 16px;
+      white-space: pre-wrap;
+      word-break: keep-all;
+      line-height: 1.84;
     }
   }
 `
