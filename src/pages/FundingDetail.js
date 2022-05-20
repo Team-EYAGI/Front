@@ -17,41 +17,43 @@ const FundingDetail = () => {
   const fundId = params.fundingId;
 console.log(fundId)
   const dispatch = useDispatch();
-  const [fundHeartBool, setFundHeartBool] = useState(true);
+  // const [fundHeartBool, setFundHeartBool] = useState(true);
 
-  // const addLike = () => {
-  //   if (fundHeartBool == false){
-  //     setFundHeartBool(true)
-  //     dispatch(getActions.addLikeDB(fundHeartBool, fundingcard.fundId));
-  //   }else{
-  //     setFundHeartBool(false)
-  //     dispatch(getActions.addLikeDB(fundHeartBool, fundingcard.fundId));
-  //   }
-  // }
+  const addLike = () => {
+    if (fundHeartBool == false){
+      setFundHeartBool(true)
+      dispatch(getActions.addLikeDB(fundHeartBool, FundingDetail.fundId));
+    }else{
+      setFundHeartBool(false)
+      dispatch(getActions.addLikeDB(fundHeartBool, FundingDetail.fundId));
+    }
+  }
 
   // const fundingcard = props.fundcard;
   // const fundId = fundingcard.fundId;
 
-  const funding = useSelector((state) => state.fund.fund_list);
-  console.log(funding);
-  const fundingDetail = funding
-    ? funding.find((p) => p.fundId == fundId)
-    : null;
+  const fundingDetail = useSelector((state) => state.fund.fund_detail);
   console.log(fundingDetail);
+  // const fundingDetail = funding
+  //   ? funding.find((p) => p.fundId == fundId)
+  //   : null;
+  // console.log(fundingDetail);
+
+  
 
   const player = useRef();
 
-  // useEffect(() => {
-  //   player.current.audio.current.pause();
-  // }, [fundingDetail]);
+  useEffect(() => {
+    player.current.audio.current.pause();
+  }, [fundingDetail]);
 
   useEffect(() => {
-    dispatch(getActions.getFundingAC(fundId));
+    dispatch(getActions.getFundingDetailAC(fundId));
   }, []);
 
   return (
     <React.Fragment>
-      {fundingDetail ? (
+      {/* {fundingDetail ? ( */}
         <Wrap>
           <Player>
             <PlayerImg>
@@ -61,13 +63,13 @@ console.log(fundId)
               >
                 <div id="img_wrap">
                   <div id="img">
-                    <img src={fundingDetail.bookImg} />
+                    <img src={fundingDetail.bookImg}/>
                   </div>
                   {/* 오디오 플레이어 */}
                   <AudioPlayer
                     className="audio"
                     autoPlay={false}
-                    src={fundingDetail.fundFile}
+                    src={fundingDetail.fundFile}                   
                     volume={1}
                     showJumpControls={false}
                     ref={player}
@@ -79,11 +81,24 @@ console.log(fundId)
               <Profile>
                 <div id="name">
                   <span id="creatorname">
-                    {fundingDetail && fundingDetail.sellerName}
+                    {fundingDetail.sellerName}
                   </span>
                   &nbsp;&nbsp;
                   <span id="fixname">크리에이터</span>
                 </div>
+                <ProfileInfo>
+                  <div id="profileImg">
+                    <img src={fundingDetail.sellerImg}/>
+                  </div>
+                  <div id="profile">
+                    <span id="follower">
+                    팔로워 {fundingDetail.followerCnt}명
+                  </span>
+                  <br />
+                  <span id="introduce">
+                    {fundingDetail.introduce}
+                  </span></div>                  
+                </ProfileInfo>
               </Profile>
             </PlayerImg>
 
@@ -92,7 +107,7 @@ console.log(fundId)
               <h3>{fundingDetail.bookTitle}</h3>
               <h4>
                 {" "}
-                저자 : {fundingDetail.author} / 크리에이터 : {fundingDetail.sellerName}                
+                저자 : {fundingDetail.author} / 크리에이터 : {fundingDetail.sellerName}               
               </h4>
 
               {/* 펀딩정보 */}
@@ -108,7 +123,10 @@ console.log(fundId)
                   </div>                  
                 </div>
                 <div id="heartBtn">
-                  <Like fundingcard="" />
+                  {/* <Like 
+                   onClick={addLike}
+                  fundingDetail
+                  /> */}
                 </div>
          
               </Info>
@@ -116,7 +134,7 @@ console.log(fundId)
             </Goal>
           </Player>
         </Wrap>
-      ) : null}
+      {/* ) : null} */}
     </React.Fragment>
   );
 };
@@ -190,7 +208,6 @@ const PlayerImg = styled.div`
   flex-direction: column;
   align-items: left;
   position: relative;
-  font-family: noto-sans-cjk-kr, sans-serif;
   font-weight: 400;
   font-style: normal;
 `;
@@ -238,12 +255,45 @@ const Profile = styled.div`
   width: 464px;
   height: 200px;
   margin-top: 30px;
+  font-family: 'Pretendard';
 
   #creatorname {
     font-family: 'Pretendard';
     font-size: 30px;
   }
 `;
+
+
+const ProfileInfo = styled.div`
+display: flex;
+flex-direction: row;
+/* margin: 16px 0px; */
+/* width: 100%; */
+justify-content: space-between;
+width: 464px;
+height: 199px;
+
+#profileImg {
+  width: 150px;
+  height: 150px;
+  border-radius: 30px; //이거왜안돼?
+
+  img{
+    width: 100%;
+    height: 100%;
+  }
+}
+
+#profile {
+  display: flex;
+  flex-direction: column;
+  width: 297px;
+  height: 150px;
+
+}
+
+`;
+
 
 const Goal = styled.div`
   /* background-color: orange; */
