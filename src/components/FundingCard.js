@@ -84,13 +84,13 @@ const FundingCard = (props) => {
 
 const Wrap = styled.div`
   height: 200px;
-  margin: 11px;
+  margin: 12px 12px 0px 12px;
   /* margin-right: 1px; */
+  background-color: yellow;
 `
 
 const Body = styled.div`
   width: 100%;
-  /* background-color: rebeccapurple; */
   
   cursor: pointer;
 
