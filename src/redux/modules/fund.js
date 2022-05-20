@@ -2,6 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import axios from "axios";
 import { getToken } from "../../shared/Token";
+import Swal from 'sweetalert2';
 
 // action
 const GET_FUND = "GET_FUND";
@@ -26,7 +27,7 @@ const initialState = {
 // action creater
 const getFunding = createAction(GET_FUND, (fund_list, totalPages) => ({fund_list, totalPages}));
 const addFunding = createAction(ADD_FUND, (fund_add) => ({fund_add}));
-const addLike = createAction(ADD_LIKE, (fundHeartBool, fundId) => ({ fundHeartBool, fundId }))
+const addLike = createAction(ADD_LIKE, (fundHeartBool, fundHeartCnt) => ({ fundHeartBool, fundHeartCnt }))
 const delLike = createAction(DEL_LIKE, (fundHeartBool, fundId) => ({ fundHeartBool, fundId }))
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 const getDetail = createAction(GET_DETAIL, (fund_detail) => ({ fund_detail }));
@@ -152,7 +153,7 @@ const addLikeDB = (fundHeartBool, fundId) => {
       )
       .then((res) => {     
         console.log(res)  
-        dispatch(addLike(res.data.fundHeartBool, fundId)) 
+        dispatch(addLike(res.data.fundHeartBool, res.data.fundHeartCnt)) 
       })
       .catch((error) => {       
         console.log(error)
@@ -160,26 +161,39 @@ const addLikeDB = (fundHeartBool, fundId) => {
   };
 };
 
-// const delLikeDB = (fundHeartBool, fundId) => {
-//   console.log(fundHeartBool, fundId)
-//   let Token = getToken("Authorization");
-//   return function (dispatch, getState, { history }) {
-//     axios
-//       .post(process.env.REACT_APP_BASE_URL + `/fund/like/${fundId}`, {
-//         fundHeartBool : fundHeartBool,
-//       },
-//       { headers: { 'Authorization': `${Token}` } },
-
-//       )
-//       .then((res) => {     
-//         console.log(res)  
-//         dispatch(addLike(res.data.fundHeartBool, fundId)) 
-//       })
-//       .catch((error) => {       
-//         console.log(error)
-//       });
-//   };
-// };
+// 오디오북 요청 추가
+  const fundingSuccessAC = (bookId, category) => {
+    console.log(bookId)
+    let Token = getToken("Authorization");
+  
+    return function (dispatch, getState, { history }) {
+      axios.post(process.env.REACT_APP_BASE_URL + `/book/detail/${bookId}/success`, {
+  
+      },
+        { headers: { 'Authorization': `${Token}` } }
+      )
+        .then((res) => {
+          console.log("펀딩달성 성공했니?", res)
+          if(res.data === false) {
+            Swal.fire({
+              position: 'center',
+              icon: 'warning',
+              title: `펀딩을 먼저 진행해주세요!`,
+              showConfirmButton: false,
+              timer: 1500,
+              color: "#000000",
+            })
+            return;
+          } else {
+            history.push(`/audioWrite/${category}/${bookId}`)
+          }
+        })
+        .catch(error => {
+          console.log("error", error)
+        })
+    }
+  }
+  
 
 
 //리듀서
@@ -197,12 +211,8 @@ export default handleActions(
     }),    
     [ADD_LIKE]: (state, action) =>  
     produce(state, (draft) => {
-      console.log(action.payload.fundHeartBool)
-      console.log(action.payload.fundId)
-      draft.fund_list.find((p) => p.fundId !== action.payload.fundId).myHeart = action.payload.fundHeartBool;
-      // window.location.reload()
-      // draft.heart = draft.fund_list.find((p) => p.fundId !== action.payload.fundId)
-      draft.heart = action.payload  
+      draft.fund_detail.myHeart = action.payload.fundHeartBool;
+      draft.fund_detail.likeCnt = action.payload.fundHeartCnt;
     }),
     [GET_DETAIL]: (state, action) =>
     produce(state, (draft) => {
@@ -219,6 +229,7 @@ getFundingAC,
 addFundingAC,
 addLikeDB,
 getFundingDetailAC,
+fundingSuccessAC,
 };
 
 export { actionCreators };

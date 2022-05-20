@@ -16,22 +16,22 @@ const FundingCard = (props) => {
 
   let fundingHeartState = props.fundcard.myHeart
   // let fundHeartBool = fundingHeartState === false ? true : false;
-  let fundHeartBool2 = fundingHeartState === false ? true : false;
+  // let fundHeartBool2 = fundingHeartState === false ? true : false;
 
   const fundingcard = props.fundcard;
   const fundId = fundingcard.fundId;
-  let [fundHeartBool ,setFundHeartBool] = React.useState(fundHeartBool2);
+  // let [fundHeartBool ,setFundHeartBool] = React.useState(fundHeartBool2);
 
-  const ChangeLike = () => {
-    setFundHeartBool(fundHeartBool);
-    if (fundHeartBool == false) {
-      dispatch(getActions.addLikeDB(fundHeartBool, fundId))
-      fundHeartBool = true;
-    } else {
-      dispatch(getActions.addLikeDB(fundHeartBool, fundId))
-      fundHeartBool = false;
-    }
-  };
+  // const ChangeLike = () => {
+  //   setFundHeartBool(fundHeartBool);
+  //   if (fundHeartBool == false) {
+  //     dispatch(getActions.addLikeDB(fundHeartBool, fundId))
+  //     fundHeartBool = true;
+  //   } else {
+  //     dispatch(getActions.addLikeDB(fundHeartBool, fundId))
+  //     fundHeartBool = false;
+  //   }
+  // };
   
 
   return (
@@ -54,21 +54,19 @@ const FundingCard = (props) => {
                 onClick={() => {
                   history.push(`/fundingDetail/${fundId}`)
                 }}/>
-              <FundHeart
+              {/* <FundHeart
                 ChangeLike={ChangeLike}
                 fundHeartBool={fundHeartBool}
-              />
-              {/* {fundHeartBool === false ?
+              /> */}
+              {fundingHeartState === false ?
               <AiOutlineHeart id="heart" size="40px"               
-                onClick={ChangeLike}
               />
               :
               <AiFillHeart              
                 id='fillHeart'
                 size="40px"
-                onClick={ChangeLike}
               />
-            } */}
+            }
               </div>
             </div>
           </ImgSt>
