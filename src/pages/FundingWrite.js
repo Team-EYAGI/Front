@@ -41,12 +41,13 @@ const FundingWrite = () => {
     let file = fileInput.current.files[0];
     let maxSize = 5 * 1024 * 1024;
 		let fileSize = file.size;
-
+    
     if (file === null) {
       window.alert("파일을 추가해주세요.")
       return;
     }
 
+    //오디오 파일 크기 얼럿
 		if(fileSize > maxSize){
       const Toast = Swal.mixin({
         toast: true,
@@ -67,6 +68,52 @@ const FundingWrite = () => {
         return;
 
 		}
+
+
+    // 목표 숫자 5 이하일시 얼럿
+    if (fundingGoals < 5 ){
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 1500,
+        color: '#000000',
+        // timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      Toast.fire({
+        icon: 'error',
+        title: '최소 목표치는 5입니다.'
+      })
+      return;
+    }
+
+
+    // content 글자 10자 이하일시 얼럿
+    if (content.length < 10 ){
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 1500,
+        color: '#000000',
+        // timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      Toast.fire({
+        icon: 'error',
+        title: '10자 이상 입력해주세요.'
+      })
+      return;
+    }
+
+
     // 리뷰를 추가할 때 addReviewAc로 정보를 넘긴다.
     Swal.fire({
       // title: "알림",
@@ -108,7 +155,7 @@ const FundingWrite = () => {
           <ImgSt>
             <div id="img_wrap">
               <div id="img">
-                <img src={detail.bookImg} />
+                <img alt= "책 이미지" src={detail.bookImg} />
               </div>
               <div>
                 <p>{detail.title}</p>
@@ -120,7 +167,7 @@ const FundingWrite = () => {
             {/* 오디오파일 등록 */}
             <p>샘플 오디오 파일</p>
             <div id="file">
-              <span>{file ? file.name : "파일을 선택해주세요!"}</span>
+              <span>{file ? file.name : "파일을 선택해주세요.(파일크기는 5MB까지 가능합니다)"}</span>
               <BiSearch id="addbtn" onClick={handleClick} size="24px" />
             </div>
             {/* 펀딩목표설정 */}
@@ -137,7 +184,8 @@ const FundingWrite = () => {
               <p>프로젝트에 대한 간단한 어필도 있으면 좋아요!</p>
               <textarea
                 type="text"
-                maxLength="100"
+                minLength="10"
+                maxLength="200"
                 placeholder="최소 10자 이상 입력해주세요!"
                 onChange={(e) => {
                   setContent(e.target.value);
@@ -146,7 +194,7 @@ const FundingWrite = () => {
               {/* 숨겨놓은 진짜 파일 등록 */}
               <input
                 type="file"
-                accept="audio/wav audio/mp3"
+                accept="audio/wav, audio/mp3"
                 multiple
                 ref={fileInput}
                 style={{ display: "none" }}

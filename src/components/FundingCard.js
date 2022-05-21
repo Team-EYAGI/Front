@@ -5,16 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as getActions } from "../redux/modules/fund";
 import { useParams } from "react-router-dom";
 import Like from "../components/Like";
-import { history } from '../redux/configureStore';
+import { history } from "../redux/configureStore";
 import { BsPlayCircle } from "react-icons/bs";
+import { FcApproval } from "react-icons/fc";
 import { Text } from "../elements/Index";
 import FundHeart from "../components/FundHeart";
 
 const FundingCard = (props) => {
-  console.log("펀딩카드 좋아요값" ,props)
+  console.log("펀딩카드 좋아요값", props);
   const dispatch = useDispatch();
 
-  let fundingHeartState = props.fundcard.myHeart
+  let fundingHeartState = props.fundcard.myHeart;
   // let fundHeartBool = fundingHeartState === false ? true : false;
   // let fundHeartBool2 = fundingHeartState === false ? true : false;
 
@@ -32,47 +33,45 @@ const FundingCard = (props) => {
   //     fundHeartBool = false;
   //   }
   // };
-  
 
   return (
     <React.Fragment>
       <Wrap>
         <Body>
-          <ImgSt         
-          style={{ backgroundImage: `url(${fundingcard.bookImg})` }}>
-            <div id='img_wrap'>
-              <div id='img'>
-              <BsPlayCircle
-                id='icon'
-                color="#FFFFFF"
-                size="30px"
-                onClick={() => {
-                  history.push(`/fundingDetail/${fundId}`)
-                }}
+          <ImgSt
+            onClick={() => {
+              history.push(`/fundingDetail/${fundId}`);
+            }}
+            style={{ backgroundImage: `url(${fundingcard.bookImg})` }}
+          >
+            <div id="img_wrap">
+              <div id="img">
+                {fundingcard.successFunding === true && (
+                  <FcApproval id="crown" size="40px" />
+                )}
+
+                <BsPlayCircle
+                  id="icon"
+                  color="#FFFFFF"
+                  size="30px"
+                  onClick={() => {
+                    history.push(`/fundingDetail/${fundId}`);
+                  }}
                 />
-                <img src={fundingcard.bookImg}
-                onClick={() => {
-                  history.push(`/fundingDetail/${fundId}`)
-                }}/>
-              {/* <FundHeart
+                <img alt="책 이미지" src={fundingcard.bookImg} />
+                {/* <FundHeart
                 ChangeLike={ChangeLike}
                 fundHeartBool={fundHeartBool}
               /> */}
-              {fundingHeartState === false ?
-              <AiOutlineHeart id="heart" size="40px"               
-              />
-              :
-              <AiFillHeart              
-                id='fillHeart'
-                size="40px"
-              />
-            }
+                {fundingHeartState === false ? (
+                  <AiOutlineHeart id="heart" size="40px" />
+                ) : (
+                  <AiFillHeart id="fillHeart" size="40px" />
+                )}
               </div>
             </div>
           </ImgSt>
-          <h3 style={{ fontSize: "16px" }}>
-           {fundingcard.bookTitle}
-          </h3>
+          <h3 style={{ fontSize: "16px" }}>{fundingcard.bookTitle}</h3>
           <Text margin="0px 0px 0px 10px">{fundingcard.sellerName}</Text>
         </Body>
       </Wrap>
@@ -83,13 +82,16 @@ const FundingCard = (props) => {
 const Wrap = styled.div`
   height: 200px;
   margin: 12px 12px 0px 12px;
+  :hover {
+    transform: scale(0.95);
+  }
   /* margin-right: 1px; */
-  background-color: yellow;
-`
+  /* background-color: yellow; */
+`;
 
 const Body = styled.div`
   width: 100%;
-  
+
   cursor: pointer;
 
   h3 {
@@ -97,14 +99,13 @@ const Body = styled.div`
 
     font-size: 14px;
     white-space: nowrap;
-    overflow:hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
 
     margin-left: 10px;
     margin-bottom: 10px;
-
   }
-`
+`;
 
 const ImgSt = styled.div`
   width: 250px;
@@ -114,9 +115,9 @@ const ImgSt = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-repeat : no-repeat;
-  background-size : cover;
-  background: #EFEFEF;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background: #efefef;
   border-radius: 10px;
 
   #img_wrap {
@@ -130,41 +131,48 @@ const ImgSt = styled.div`
     align-items: center;
     border-radius: 10px;
   }
-  
+
   #img {
     width: 130px;
     /* height: 162px; */
     /* background-color: gray; */
 
     #icon {
-      position : absolute;
+      position: absolute;
       left: 108px;
       top: 110px;
       background: rgba(76, 76, 76, 0.7);
       border-radius: 50px;
-      padding: 1px 1px 1px 2px;
+      padding: 1px;
       /* border: 1px solid black; */
+    }
+
+    #crown {
+      position: absolute;
+      left: 10px;
+      top: 10px;
     }
 
     img {
       width: 100%;
-      height: 100%;    
+      height: 100%;
+      border-radius: 2px 10px 10px 2px;
     }
 
     #heart {
       position: absolute;
       right: 10px;
       bottom: 10px;
-      color: #EFEFEF;
-  }
+      color: #efefef;
+    }
 
-  #fillHeart {
+    #fillHeart {
       position: absolute;
       right: 10px;
       bottom: 10px;
-      color: #EFEFEF;
+      color: #efefef;
+    }
   }
-}
-`
+`;
 
 export default FundingCard;
