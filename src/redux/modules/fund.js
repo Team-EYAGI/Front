@@ -11,6 +11,7 @@ const ADD_LIKE = 'ADD_LIKE';
 const DEL_LIKE = 'DEL_LIKE';
 const LOADING = "LOADING"
 const GET_DETAIL = "GET_DETAIL"
+const CLEAN = "CLEAN"
 
 // 초기값
 const initialState = {
@@ -31,6 +32,7 @@ const addLike = createAction(ADD_LIKE, (fundHeartBool, fundHeartCnt) => ({ fundH
 const delLike = createAction(DEL_LIKE, (fundHeartBool, fundId) => ({ fundHeartBool, fundId }))
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 const getDetail = createAction(GET_DETAIL, (fund_detail) => ({ fund_detail }));
+const clean = createAction(CLEAN, () => ({}));
 
 // 미들웨어
 
@@ -218,6 +220,10 @@ export default handleActions(
     produce(state, (draft) => {
       draft.fund_detail = action.payload.fund_detail;
     }),
+    [CLEAN]: (state, action) =>
+    produce(state, (draft) => {
+      draft.fund_detail = [];
+    }),
   },
   initialState
 );
@@ -230,6 +236,7 @@ addFundingAC,
 addLikeDB,
 getFundingDetailAC,
 fundingSuccessAC,
+clean,
 };
 
 export { actionCreators };
