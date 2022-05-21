@@ -45,9 +45,6 @@ const getProfile = createAction(GET_PROFILE, (profile) => ({ profile }));
 const deleteLikeBook = createAction(DELETE_LIKE_BOOK, (bookId) => ({ bookId }));
 const deleteAudioBook = createAction(DELETE_LISTEN_AUDIOBOOK, (audioBookId) => ({ audioBookId }));
 
-// const addListen = createAction(ADD_LISTEN, (library) => ({library}));
-const addProfile = createAction(ADD_PROFILE, (a) => ({ a }));
-
 const uploading = createAction(UPLODING, (uploading) => ({ uploading }));
 const uploadImg = createAction(UPLOAD_IMG, (image) => ({ image }));
 const setPreview = createAction(SET_PREVIEW, (preview) => ({ preview }));
@@ -61,7 +58,6 @@ const getProfileAC = () => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        // console.log("프로필 가져오기", res)
         dispatch(getProfile(res.data))
 
       })
@@ -74,9 +70,7 @@ const getProfileAC = () => {
 
 // 내 서재에 담기
 const addLibraryAC = (bookId) => {
-  console.log(bookId)
   let Token = getToken("Authorization");
-
   return function (dispatch, getState, { history }) {
     axios.post(process.env.REACT_APP_BASE_URL + `/book/detail/${bookId}/heart`, {
 
@@ -108,7 +102,6 @@ const getListenAudioAC = () => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        // console.log("듣고있는 오디오북 불러오기 성공", res)
         dispatch(getListenAudio(res.data))
       })
       .catch(error => {
@@ -125,10 +118,7 @@ const getRegisterAudioBookAC = () => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        // console.log("등록한 오디오북 불러오기 성공", res)
         dispatch(getRegisterAudioBook(res.data))
-
-        // history.replace(`/request`)
       })
       .catch(error => {
         console.log("error", error)
@@ -144,10 +134,7 @@ const getRegisterFundingAC = () => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        // console.log("등록한 펀딩 불러오기 성공", res)
         dispatch(getRegisterFunding(res.data))
-
-        // history.replace(`/request`)
       })
       .catch(error => {
         console.log("error", error)
@@ -163,10 +150,7 @@ const getLikeBookAC = () => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        // console.log("찜한 책 불러오기 성공", res)
         dispatch(getLikeBook(res.data))
-
-        // history.replace(`/request`)
       })
       .catch(error => {
         console.log("error", error)
@@ -176,14 +160,12 @@ const getLikeBookAC = () => {
 
 // 찜한 책 삭제
 const deleteLikeBookAC = (bookId) => {
-  console.log("삭제준비완료", bookId)
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     axios.delete(process.env.REACT_APP_BASE_URL + `/load/profiles/library/book/${bookId}/remove`,
       { headers: { 'Authorization': `${Token}` } },
     )
       .then((res) => {
-        // console.log("찜한 책 삭제완료", res)
         dispatch(deleteLikeBook(bookId))
       })
       .catch(error => {
@@ -194,14 +176,12 @@ const deleteLikeBookAC = (bookId) => {
 
 // 듣고있는 오디오북 삭제
 const deleteAudioBookAC = (audioBookId) => {
-  console.log("삭제준비완료", audioBookId)
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     axios.delete(process.env.REACT_APP_BASE_URL + `/load/profiles/library/audio/${audioBookId}/remove`,
       { headers: { 'Authorization': `${Token}` } },
     )
       .then((res) => {
-        // console.log("찜한 책 삭제완료", res)
         dispatch(deleteAudioBook(audioBookId))
       })
       .catch(error => {
@@ -214,8 +194,6 @@ const deleteAudioBookAC = (audioBookId) => {
 
 // 프로필 추가
 const addProfileAC = (payload) => {
-  console.log(payload)
-  console.log(payload.information)
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     // formData 형식으로 이미지 전송
@@ -225,13 +203,11 @@ const addProfileAC = (payload) => {
       new Blob([JSON.stringify(payload.information)], {
         type: "application/json",
       })
-
     )
-
     // FormData의 key 확인
-    for (let key of formData.keys()) { console.log(key); }
+    // for (let key of formData.keys()) { console.log(key); }
     // FormData의 value 확인
-    for (let value of formData.values()) { console.log(value); }
+    // for (let value of formData.values()) { console.log(value); }
 
     axios.post(process.env.REACT_APP_BASE_URL + `/user/new/profiles`,
       formData,
@@ -243,12 +219,11 @@ const addProfileAC = (payload) => {
       }
     )
       .then((res) => {
-        console.log("프로필 등록 완료", res)
         dispatch(uploadImg(res.data))
         history.replace(`/mypage/likeAudio`);
       })
       .catch(error => {
-        if(error) {
+        if (error) {
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
@@ -262,18 +237,16 @@ const addProfileAC = (payload) => {
 
 // 크리에이터 목소리 등록
 const addVoiceAC = (payload) => {
-  console.log(payload)
   let Token = getToken("Authorization");
-
   return function (dispatch, getState, { history }) {
     // formData 형식으로 이미지 전송
     const formData = new FormData();
     formData.append("audio", payload.file)
 
     // FormData의 key 확인
-    for (let key of formData.keys()) { console.log(key); }
+    // for (let key of formData.keys()) { console.log(key); }
     // FormData의 value 확인
-    for (let value of formData.values()) { console.log(value); }
+    // for (let value of formData.values()) { console.log(value); }
 
     history.push(`/loading`)
 
@@ -287,8 +260,6 @@ const addVoiceAC = (payload) => {
       }
     )
       .then((res) => {
-        console.log("오디오 등록 완료", res)
-        // dispatch(uploadImg({userId, title, comment}))
         history.push(`/loading/success`)
       })
       .catch(error => {
@@ -302,19 +273,15 @@ const addVoiceAC = (payload) => {
 // 리듀서
 export default handleActions(
   {
-    // [ADD_LIBRARY]: (state, action) =>
-    // produce(state, (draft) => {
-    //   draft.library = action.payload.library;
-    // }),
     [GET_LISTEN_AUDIO]: (state, action) =>
       produce(state, (draft) => {
         draft.library_listenAudio = action.payload.listenAudio;
       }),
-      [GET_REGISTER_AUDIOBOOK]: (state, action) =>
+    [GET_REGISTER_AUDIOBOOK]: (state, action) =>
       produce(state, (draft) => {
         draft.library_registerAudioBook = action.payload.registerAudioBook;
       }),
-      [GET_REGISTER_FUNDING]: (state, action) =>
+    [GET_REGISTER_FUNDING]: (state, action) =>
       produce(state, (draft) => {
         draft.library_registerFunding = action.payload.registerFunding;
       }),
@@ -338,7 +305,7 @@ export default handleActions(
       produce(state, (draft) => {
         draft.library_likeBook = draft.library_likeBook.filter((p) => p.bookId !== action.payload.bookId);
       }),
-      [DELETE_LISTEN_AUDIOBOOK]: (state, action) =>
+    [DELETE_LISTEN_AUDIOBOOK]: (state, action) =>
       produce(state, (draft) => {
         draft.library_listenAudio = draft.library_listenAudio.filter((p) => p.audioBookId !== action.payload.audioBookId);
       }),

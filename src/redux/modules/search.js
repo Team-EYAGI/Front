@@ -27,7 +27,6 @@ const getSearchAC = () => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        console.log("검색 목록 불러오기", res)
         dispatch(getSearch(res.data))
 
       })
@@ -39,13 +38,11 @@ const getSearchAC = () => {
 
 // 검색 시도
 const addSearchAC = (word) => {
-  console.log("검색어: ", word)
   return function (dispatch, getState, { history }) {
     axios.get(process.env.REACT_APP_BASE_URL + `/search?search=${word}`,
 
     )
       .then((res) => {
-        console.log("검색 목록 가져오기", res)
         dispatch(getSearch(res.data))
         history.replace(`/search`);
       })

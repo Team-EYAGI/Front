@@ -32,16 +32,12 @@ const followingList = createAction(GET_FOLLOWING, (creator_following) => ({creat
 
 // 셀러 프로필 정보 가져오기
 const getProfileAC = (sellerId, authority, username) => {
-
     let Token = getToken("Authorization");
-
     return function (dispatch, getState, {history}) {
-
       // 비회원일 경우
       if(!authority) {
         axios.get(process.env.REACT_APP_BASE_URL + `/viewer/seller/${sellerId}?username=none`)
         .then((res) => {
-          console.log("(비회원)셀러 프로필 정보", res)
           dispatch(getProfile(res.data))
         })
         .catch(error => {
@@ -53,7 +49,6 @@ const getProfileAC = (sellerId, authority, username) => {
         {headers: {'Authorization' : `${Token}`}}
         )
         .then((res) => {
-          console.log("(회원)셀러 프로필 정보", res)
           dispatch(getProfile(res.data))
         })
         .catch(error => {
@@ -73,7 +68,6 @@ const getFundingAC = (sellerId) => {
     // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      // console.log("셀러 펀딩 정보", res)
       dispatch(getFunding(res.data))
     })
     .catch(error => {
@@ -91,7 +85,6 @@ const getAudioAC = (sellerId) => {
     // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
     .then((res) => {
-      // console.log("셀러 오디오북 정보", res)
       dispatch(getAudio(res.data))
     })
     .catch(error => {
@@ -111,7 +104,6 @@ const followAC = (sellerId) => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        console.log("팔로우 성공", res)
         dispatch(follow(res.data.followCount, res.data.followStatus))
       })
       .catch(error => {
@@ -131,7 +123,6 @@ const followerListAC = (sellerId) => {
     {headers: { 'Authorization' : `Bearer ${Token}`}}
     )
     .then((res) => {
-      console.log("팔로워 리스트 가져오기", res)
       dispatch(followerList(res.data))
     })
     .catch(error => {
@@ -151,7 +142,6 @@ const followingListAC = (sellerId) => {
     {headers: { 'Authorization' : `Bearer ${Token}`}}
     )
     .then((res) => {
-      console.log("팔로잉 리스트 가져오기", res)
       dispatch(followingList(res.data))
     })
     .catch(error => {
@@ -177,8 +167,6 @@ export default handleActions(
     }),
     [FOLLOW]: (state, action) =>
     produce(state, (draft) => {
-      console.log(action.payload.followCount)
-      console.log(action.payload.followStatus)
       draft.creator_profile.sellerProfile.followerCnt = action.payload.followCount;
       draft.creator_profile.followStatus = action.payload.followStatus;
     }),

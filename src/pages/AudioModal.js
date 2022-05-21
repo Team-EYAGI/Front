@@ -52,6 +52,7 @@ const AudioModal = (props) => {
                 <Img>
                   <img style={{ width: "100%" }}
                     src={detail.bookImg}
+                    alt="책 이미지"
                   />
                 </Img>
 

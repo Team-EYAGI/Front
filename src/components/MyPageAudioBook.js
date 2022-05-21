@@ -6,15 +6,19 @@ import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as libraryActions } from "../redux/modules/mypage";
+import Swal from 'sweetalert2';
 
 const MyPageAudioBook = (props) => {
   const dispatch = useDispatch();
 
   const params = useParams();
-  const category = params.category
+    const category = params.category;
 
   const bookId = props.item.bookId;
   const audioBookId = props.item.audioBookId;
+  const fundId = props.item.fundId;
+
+  const is_session = localStorage.getItem("is_login");
 
   return (
     <React.Fragment>
@@ -25,18 +29,27 @@ const MyPageAudioBook = (props) => {
               if (category === "likeBook") {
                 history.push(`/bookdetail/${props.item.category}/${props.item.bookId}`)
               } else if (category === "listen" || category === "myAudio" || category === "audiobook") {
-                // if (category === "audiobook" && !is_session) {
-                //   window.alert("로그인 후 이용 가능합니다!")
-                //   history.push(`/login`)
-                //   return;
-                // }
+                if (category === "audiobook" && !is_session) {
+                  Swal.fire({
+                    text: "로그인 후 이용 가능합니다!",
+                    icon: "warning",
+                    confirmButtonText: "로그인하러가기",
+                    confirmButtonColor: '#0C0A0A',
+                  }).then(result => {
+                    if (result.isConfirmed) {
+                      history.push(`/login`)
+                    }
+                })
+                  return;
+                }
                 history.push(`/audioPlay/${props.item.category}/${props.item.bookId}/${props.item.audioBookId}`)
-              } else if (category === "myFunding") {
-                history.push(`/funding`)
+              } else if (category === "myFunding" || category === "funding") {
+                history.push(`/fundingDetail/${fundId}`)
               }
             }}
           >
             <img
+              alt="책 이미지"
               style={{ width: "100%" }}
               src={props.item.bookImg}
             />

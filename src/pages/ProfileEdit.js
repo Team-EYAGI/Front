@@ -40,7 +40,6 @@ const ProfileEdit = (props) => {
   // 프로필 이미지 추가하기
   const addImage = () => {
     let file = fileInput.current.files[0];
-    console.log(file)
 
     dispatch(profileActions.addProfileAC({
       information: { introduce: introduce },
@@ -68,6 +67,7 @@ const ProfileEdit = (props) => {
               <img
                 onClick={handleClick}
                 style={{ width: "100%" }}
+                alt="유저 이미지"
                 src={preview ? preview : profile.userImage ? profile.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png" }
               />
             </ImageBox>
@@ -91,7 +91,7 @@ const ProfileEdit = (props) => {
             }
             <input
               type="file"
-              accept="image/jpg image/jpeg image/png"
+              accept="image/jpg, image/jpeg, image/png"
               multiple
               ref={fileInput}
               style={{ display: 'none' }}
@@ -100,8 +100,6 @@ const ProfileEdit = (props) => {
           </Body>
         </Wrap>
         <button
-                // disabled={contents === "" || file === ""}
-
           onClick={addImage}
         >
           프로필 수정하기

@@ -54,7 +54,6 @@ const deleteReview = createAction(DELETE_REVIEW, (commentId) => ({ commentId }))
 
 // 오디오북 요청 겟
 const getRequestAC = (page, size = 7) => {
-  console.log(page)
   return function (dispatch, getState, { history }) {
 
     dispatch(loading(true));
@@ -64,9 +63,6 @@ const getRequestAC = (page, size = 7) => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        console.log(res.data)
-        console.log(res.data.content)
-
         dispatch(getRequest(res.data.content, res.data.totalPages));
 
       })
@@ -87,7 +83,6 @@ const addRequestAC = (bookId, title, contents) => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        console.log("성공", res)
         history.replace(`/request`)
       })
       .catch(error => {
@@ -98,7 +93,6 @@ const addRequestAC = (bookId, title, contents) => {
 
 // 오디오북 요청 수정
 const editRequestAC = (bookRequestId, title, contents) => {
-  console.log("수정하기준비", bookRequestId)
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     axios.put(process.env.REACT_APP_BASE_URL + `/book/request/edit/${bookRequestId}`, {
@@ -108,7 +102,6 @@ const editRequestAC = (bookRequestId, title, contents) => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        console.log("수정완료!", res)
         history.replace(`/request`)
       })
       .catch(error => {
@@ -119,14 +112,12 @@ const editRequestAC = (bookRequestId, title, contents) => {
 
 // 오디오북 요청 삭제
 const deleteRequestAC = (bookRequestId) => {
-  console.log("삭제준비완료", bookRequestId)
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     axios.delete(process.env.REACT_APP_BASE_URL + `/book/request/remove/${bookRequestId}`,
       { headers: { 'Authorization': `${Token}` } },
     )
       .then((res) => {
-        console.log("삭제완료", res)
         dispatch(deleteRequest(bookRequestId))
       })
       .catch(error => {
@@ -137,7 +128,6 @@ const deleteRequestAC = (bookRequestId) => {
 
 // 오디오북 파일 추가
 const addAudioAC = (payload) => {
-  console.log(payload)
   let Token = getToken("Authorization");
   let bookId = payload.bookId
   let category = payload.category
@@ -152,9 +142,9 @@ const addAudioAC = (payload) => {
     )
 
     // FormData의 key 확인
-    for (let key of formData.keys()) { console.log(key); }
+    // for (let key of formData.keys()) { console.log(key); }
     // FormData의 value 확인
-    for (let value of formData.values()) { console.log(value); }
+    // for (let value of formData.values()) { console.log(value); }
 
     history.push(`/loadingPage`)
 
@@ -168,8 +158,6 @@ const addAudioAC = (payload) => {
       }
     )
       .then((res) => {
-        console.log("오디오 등록 완료", res)
-        // dispatch(uploadImg({userId, title, comment}))
         history.push(`/bookdetail/${category}/${bookId}`);
       })
       .catch(error => {
@@ -181,8 +169,6 @@ const addAudioAC = (payload) => {
 
 // 오디오북 첫 등록인지 확인하기
 const addAudioCheckAC = (bookId) => {
-  // console.log(bookId)
-
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     axios.post(process.env.REACT_APP_BASE_URL + `/book/detail/newAudio/check/${bookId}`, {
@@ -191,7 +177,6 @@ const addAudioCheckAC = (bookId) => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        console.log("첫등록이니? 성공", res)
         dispatch(addAudioCheck(res.data))
       })
       .catch(error => {
@@ -202,18 +187,14 @@ const addAudioCheckAC = (bookId) => {
 
 // 오디오북 상세리스트 겟
 const getAudioAC = (audioBookId) => {
-  console.log(audioBookId)
   let Token = getToken("Authorization");
-  // console.log(Token)
   return function (dispatch, getState, { history }) {
     axios.get(process.env.REACT_APP_BASE_URL + `/audio/detail/${audioBookId}`,
       { headers: { 'Authorization': `${Token}` } }
     ,
     )
       .then((res) => {
-        console.log("오디오 상세 리스트", res)
         dispatch(getAudio(res.data))
-
       })
       .catch(error => {
         console.log("error", error.message)
@@ -232,7 +213,6 @@ const audiofollowAC = (sellerId) => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        console.log("팔로우 성공", res)
         dispatch(addFollow(res.data.followCount, res.data.followStatus))
       })
       .catch(error => {
@@ -250,11 +230,7 @@ const getReviewAC = (audioBookId, page, size = 5) => {
     ,
     )
       .then((res) => {
-        console.log(res.data)
-        console.log(res.data.content)
-
         dispatch(getReview(res.data.content, res.data.totalPages));
-
       })
       .catch(error => {
         console.log("error", error)
@@ -273,7 +249,6 @@ const addReviewAC = (category, bookId, audioBookId, title, content) => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        console.log("성공", res)
         history.replace(`/audioPlay/${category}/${bookId}/${audioBookId}`)
       })
       .catch(error => {
@@ -293,7 +268,6 @@ const editReviewAC = (category, bookId, audioBookId, title, content, commentId) 
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        console.log("성공", res)
         history.replace(`/audioPlay/${category}/${bookId}/${audioBookId}`)
       })
       .catch(error => {
@@ -310,7 +284,6 @@ const deleteReviewAC = (commentId) => {
       { headers: { 'Authorization': `${Token}` } },
     )
       .then((res) => {
-        // console.log("삭제완료", res)
         dispatch(deleteReview(commentId))
       })
       .catch(error => {
@@ -352,8 +325,6 @@ export default handleActions(
       }),
       [ADD_FOLLOW]: (state, action) =>
       produce(state, (draft) => {
-        console.log(action.payload.followCount)
-        console.log(action.payload.followStatus)
         draft.audio_list.audioBookDetail.followerCnt = action.payload.followCount;
         draft.audio_list.followStatus = action.payload.followStatus;
       }),

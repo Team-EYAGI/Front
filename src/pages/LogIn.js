@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { history } from "../redux/configureStore";
+import Kakao from "../src_assets/kakao.png"
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const Login = () => {
                     onChange={(e) => {
                       setId(e.target.value);
                     }}
+                    maxLength="30"
                     placeholder="이메일"
                     value={email}
                   ></input>
@@ -41,6 +43,7 @@ const Login = () => {
                       setPwd(e.target.value);
                     }}
                     placeholder="비밀번호"
+                    maxLength="25"
                     value={password}
                     type="password"
                   ></input>
@@ -55,8 +58,8 @@ const Login = () => {
                 로그인
               </button>
             </div>
-            <hr></hr>
-            <button
+            <hr/>
+            {/* <button
               id="kakaobtn"
               onClick={() => {
                 window.open(KAKAO_AUTH_URL);
@@ -64,7 +67,15 @@ const Login = () => {
               type="button"
             >
               카카오로 로그인
-            </button>
+            </button> */}
+
+            <img
+              src={Kakao}
+              alt="kakao"
+              onClick={() => {
+                window.open(KAKAO_AUTH_URL);
+              }}
+            />
 
             <button
               id="signupbtn"
@@ -141,9 +152,13 @@ const LoginContainer = styled.div`
     color: white;
     font-family: "Pretendard";
     font-style: normal;
+
+    :hover {
+      transform: scale(0.99);
+    }
   }
 
-  #kakaobtn {
+  /* #kakaobtn {
     box-shadow: none;
     border: 0px;
     width: 464px;
@@ -154,22 +169,30 @@ const LoginContainer = styled.div`
     font-family: "Pretendard";
     font-style: normal;
     font-weight: 600;
+  } */
+
+  img {
+    margin-top: 5px;
+    width: 464px;
+    :hover {
+      transform: scale(0.99);
+      cursor: pointer;
+    }
   }
 
   #signupbtn {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
     float: left;
-    box-shadow: none;
     width: 120px;
     height: 24px;
     background-color: #fff;
-    margin-top: 5px;
-    color: #0c0a0a;
+    margin-top: 10px;
     font-family: "Pretendard";
     font-style: normal;
     font-weight: 600;
+
+    :hover {
+      transform: scale(0.99);
+    }
   }
 `;
 

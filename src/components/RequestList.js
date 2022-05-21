@@ -113,7 +113,6 @@ const OneComment = styled.div`
 const CommentData = styled.div`
   padding: 25px 0px 23px 0;
 
-  cursor: pointer;
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -125,6 +124,11 @@ const CommentData = styled.div`
   font-size: 16px;
 
   color: #000000;
+
+  :hover {
+      transform: scale(0.99);
+      cursor: pointer;
+    }
 
 `;
 

@@ -1,35 +1,69 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 import { BsPlayCircle } from "react-icons/bs";
 import { Text } from "../elements/Index";
+import SkeletonLoading from './SkeletonLoading';
 
 const MainFundingCard = (props) => {
 
-  const mainFunding = props.item
+  const mainFunding = props.item;
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [])
 
   return (
     <React.Fragment>
       <Wrap>
-        <Body>
-          <ImgSt
-            style={{ backgroundImage: `url(${mainFunding.bookImg})` }}
-            onClick={() => {
-              history.push(`/fundingDetail/${mainFunding.fundId}`)
-            }}
-          >
-            <div id='img_wrap'>
-              <div id='img'>
-                <BsPlayCircle id='icon' color="#FFFFFF" size="30px"/>
-                <img src={mainFunding.bookImg}/>
+        {loading ?
+          <SkeletonLoading>
+            <Body>
+              <ImgSt
+                style={{ backgroundImage: `url(${mainFunding.bookImg})` }}
+                onClick={() => {
+                  history.push(`/fundingDetail/${mainFunding.fundId}`)
+                }}
+              >
+                <div id='img_wrap'>
+                  <div id='img'>
+                    <BsPlayCircle id='icon' color="#FFFFFF" size="30px" />
+                    <img src={mainFunding.bookImg} alt="책 이미지" />
+                  </div>
+                </div>
+              </ImgSt>
+              <h3 style={{ fontSize: "16px" }}>
+                {mainFunding.bookTitle}
+              </h3>
+              <Text margin="0px 0px 0px 10px">{mainFunding.sellerName}</Text>
+            </Body>
+          </SkeletonLoading>
+          :
+          <Body>
+            <ImgSt
+              style={{ backgroundImage: `url(${mainFunding.bookImg})` }}
+              onClick={() => {
+                history.push(`/fundingDetail/${mainFunding.fundId}`)
+              }}
+            >
+              <div id='img_wrap'>
+                <div id='img'>
+                  <BsPlayCircle id='icon' color="#FFFFFF" size="30px" />
+                  <img src={mainFunding.bookImg} alt="책 이미지" />
+                </div>
               </div>
-            </div>
-          </ImgSt>
-          <h3 style={{ fontSize: "16px" }}>
-           {mainFunding.bookTitle}
-          </h3>
-          <Text margin="0px 0px 0px 10px">{mainFunding.sellerName}</Text>
-        </Body>
+            </ImgSt>
+            <h3 style={{ fontSize: "16px" }}>
+              {mainFunding.bookTitle}
+            </h3>
+            <Text margin="0px 0px 0px 10px">{mainFunding.sellerName}</Text>
+          </Body>
+        }
+
       </Wrap>
     </React.Fragment>
   )
@@ -38,12 +72,15 @@ const MainFundingCard = (props) => {
 const Wrap = styled.div`
   height: 200px;
   margin: 10px 15px;
+
+  :hover {
+      transform: scale(0.95);
+      cursor: pointer;
+    }
 `
 
 const Body = styled.div`
   width: 100%;
-  
-  cursor: pointer;
 
   h3 {
     width: 175px;
@@ -97,10 +134,10 @@ const ImgSt = styled.div`
 
     img {
       width: 100%;
-      height: 100%;    
+      height: 100%;
+      border-radius: 2px 10px 10px 2px;    
     }
   }
 `
-
 
 export default MainFundingCard;

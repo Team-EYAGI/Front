@@ -95,7 +95,7 @@ const setChatListAX = () => {
     { headers: { 'Authorization': `${Token}` } }
     )
     .then((res) => {
-      console.log("채팅방 목록", res)
+      // console.log("채팅방 목록", res)
       let my_chat_list = [];
       res.data.data.forEach(c => {
         let one_chat_info = {
@@ -188,9 +188,9 @@ const userQnAAX = (uuid) => {
         uuid: uuid
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         dispatch(setUserChatListAX());
-        console.log("채팅방 생성 완료");
+        // console.log("채팅방 생성 완료");
       })
       .catch((e) => {
         console.log("모집글 작성 모듈 에러", e);
@@ -206,7 +206,7 @@ const leaveChatAX = (room_id) => {
       axios.delete(process.env.REACT_APP_BASE_URL + `/chat/${room_id}`, 
       { headers: { 'Authorization': `${Token}` } })
       .then((res) => {
-        console.log("방 폭파 boom!", res);
+        // console.log("방 폭파 boom!", res);
         dispatch(deleteRoom(room_id));
         history.replace("/Admin");
       })

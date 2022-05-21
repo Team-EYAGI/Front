@@ -13,7 +13,6 @@ const Book = () => {
 
   const dispatch = useDispatch();
   const params = useParams();
-  // console.log(params)
   const categoryName = params.category
 
   // 각 카테고리별 도서 목록 가져오기
@@ -25,9 +24,6 @@ const Book = () => {
 
   const paging = useSelector((state) => state.book.paging);
   const is_loading = useSelector((state) => state.book.is_loading);
-  // console.log("소설", novel)
-  // console.log("시", poem)
-  // console.log("키즈", kids)
 
   // 카테고리 버튼
   const [category, setCategory] = React.useState([
@@ -40,7 +36,6 @@ const Book = () => {
 
 
   React.useEffect(() => {
-    dispatch(getActions.clearBookCat());
     if (categoryName === "자기계발") {
       dispatch(getActions.getSelfAC());
     } else if (categoryName === "소설") {
@@ -52,7 +47,9 @@ const Book = () => {
     } else {
       dispatch(getActions.getEconomyAC());
     }
-
+    return () => {
+      dispatch(getActions.clearCategory());
+    }
   }, []);
 
   return (
@@ -62,7 +59,7 @@ const Book = () => {
           <GenreSt
             key={idx}
             onClick={() => {
-              dispatch(getActions.clearBookCat());
+              dispatch(getActions.clearCategory());
               history.push(`/book/${item}`);
               if (item === "자기계발") {
                 dispatch(getActions.getSelfAC());
@@ -186,7 +183,10 @@ const GenreSt = styled.h3`
   text-align: center;
   line-height: 40px;
 
-  cursor: pointer;
+  :hover {
+      transform: scale(0.95);
+      cursor: pointer;
+    }
 `
 
 
