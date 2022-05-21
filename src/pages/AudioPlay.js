@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import AudioReview from '../components/AudioReview';
 import AudioPlayer from 'react-h5-audio-player';
@@ -6,7 +6,6 @@ import 'react-h5-audio-player/lib/styles.css';
 import Pagination from '../shared/Pagination';
 
 import { BsFillPlayFill } from 'react-icons/bs';
-import { useBeforeunload } from "react-beforeunload";
 import { useParams } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +19,7 @@ const AudioPlay = (props) => {
   const dispatch = useDispatch();
 
   // 새로고침 경고 알럿
-  useBeforeunload((event) => event.preventDefault());
+  // useBeforeunload((event) => event.preventDefault());
 
   const params = useParams();
   const bookId = params.bookId
@@ -35,6 +34,7 @@ const AudioPlay = (props) => {
   const playList = audioDetail.audioBookDetail ? audioBookDetail.audioFileDtoList : null;
   const sellerId = audioDetail.audioBookDetail ? audioDetail.audioBookDetail.sellerId : null;
   const authority = localStorage.getItem("seller");
+  const username = localStorage.getItem("username");
 
   // 오디오북 리뷰 불러오기
   const audioReview = useSelector((state) => state.audio.review_list);
@@ -44,16 +44,16 @@ const AudioPlay = (props) => {
   const [play, setPlay] = React.useState("");
   const [page, setPage] = React.useState(1)
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(getActions.getAudioAC(audioBookId));
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(getActions.getReviewAC(audioBookId, page));
   }, [page]);
 
   // 권한이 없는 사용자는 페이지 접근 불가
-  React.useEffect(() => {
+  useEffect(() => {
     if (!authority) {
       history.push("/login")
     }
@@ -65,18 +65,19 @@ const AudioPlay = (props) => {
         <Player>
           <Header>
             <div>
-              {audioBookDetail && audioBookDetail.title}
+              {audioBookDetail?.title}
             </div>
             <span>
-              저자: {audioBookDetail && audioBookDetail.author} / 크리에이터: {audioBookDetail && audioBookDetail.sellerName}
+              저자: {audioBookDetail?.author} / 크리에이터: {audioBookDetail?.sellerName}
             </span>
           </Header>
 
-          <ImgBox style={{ backgroundImage: `url(${audioBookDetail && audioBookDetail.bookImg})` }}>
+          <ImgBox style={{ backgroundImage: `url(${audioBookDetail?.bookImg})` }}>
             <div id='img_wrap'>
               <div id='img'>
                 <img
-                  src={audioBookDetail && audioBookDetail.bookImg} />
+                  alt="책 이미지"
+                  src={audioBookDetail?.bookImg} />
               </div>
               <AudioPlayer
                 showJumpControls={false}
@@ -89,7 +90,7 @@ const AudioPlay = (props) => {
             </div>
           </ImgBox>
           <div id='name'>
-            <span id='creatorname'>{audioBookDetail && audioBookDetail.sellerName}</span>&nbsp;&nbsp;
+            <span id='creatorname'>{audioBookDetail?.sellerName}</span>&nbsp;&nbsp;
             <span id='fixname'>크리에이터</span>
           </div>
           <AudioCard>
@@ -98,28 +99,45 @@ const AudioPlay = (props) => {
                 onClick={() => {
                   history.push(`/sellerProfile/${sellerId}/audiobook`)
                 }}
-                src={audioBookDetail && audioBookDetail.sellerImage ? audioBookDetail.sellerImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
+                alt="크리에이터 이미지"
+                src={audioBookDetail?.sellerImage ? audioBookDetail?.sellerImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
               />
             </SellerImg>
             <Content>
               <div id='follow'>
-                <div>팔로잉&nbsp;{audioBookDetail && audioBookDetail.followingCnt}  팔로워&nbsp;{audioBookDetail && audioBookDetail.followerCnt} </div>
+                <div>팔로잉&nbsp;{audioBookDetail?.followingCnt}  팔로워&nbsp;{audioBookDetail?.followerCnt} </div>
                 {followStatus === false ?
                   <button
+                    style={{
+                      color: "#FFFFFF",
+                      background: "#0C0A0A",
+                      border: "1px solid #0C0A0A"
+                    }}
                     onClick={() => {
+                      if(username === audioBookDetail?.sellerName) {
+                        return;
+                      }
                       dispatch(followActions.audiofollowAC(sellerId));
                     }}
                   >follow</button>
                   :
                   <button
+                    style={{
+                      color: "#0C0A0A",
+                      background: "#FFFFFF",
+                      border: "1px solid #0C0A0A"
+                    }}
                     onClick={() => {
+                      if(username === audioBookDetail?.sellerName) {
+                        return;
+                      }
                       dispatch(followActions.audiofollowAC(sellerId));
                     }}
                   >unfollow</button>
                 }
               </div>
               <span id='contents'>
-                {audioBookDetail && audioBookDetail.audioInfo}
+                {audioBookDetail?.audioInfo}
               </span>
             </Content>
           </AudioCard>
@@ -137,7 +155,6 @@ const AudioPlay = (props) => {
                 {/* <h3>Chapter{idx + 1}</h3> */}
                 <PlayerSt onClick={() => {
                   setPlay(`${item.s3FileName}`)
-                  console.log("paly상태", play)
                 }}>
                   <BsFillPlayFill id='playbtn' />
                 </PlayerSt>
@@ -335,8 +352,6 @@ const SellerImg = styled.div`
   
   border-radius: 15px;
   border: 1px solid #878787;
-  
-  cursor: pointer;
 
   overflow: hidden;
 
@@ -344,6 +359,11 @@ const SellerImg = styled.div`
     width:100%;
     height:100%;
     object-fit: cover;
+  }
+
+  :hover {
+    transform: scale(0.99);
+    cursor: pointer;
   }
 `
 const Content = styled.div`
@@ -378,11 +398,12 @@ const Content = styled.div`
       font-weight: 500;
       font-size: 12px;
 
-      cursor: pointer;
-
-      background: #FFFEFC;
-      border: 1px solid #0C0A0A;
       border-radius: 10px;
+
+      :hover {
+        transform: scale(0.97);
+        cursor: pointer;
+      }
     }
   }
 `
@@ -497,8 +518,6 @@ const PlayerSt = styled.div`
 `
 
 const ReviewBox = styled.div`
-  /* min-height: 400px; */
-  /* max-height: 570px; */
   width: 1100px;
   margin: auto;
   
@@ -543,7 +562,10 @@ const ReviewBox = styled.div`
       font-size: 14px;
       color: #000000;
       
-      cursor: pointer;
+      :hover {
+        color: #D05943;
+        cursor: pointer;
+      }
     }
   }
 

@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const Pagination = ({ totalPages, setPage }) => {
-  console.log(totalPages, setPage);
-
   return (
     <PaginationDiv>
       <PageBtnContainer>

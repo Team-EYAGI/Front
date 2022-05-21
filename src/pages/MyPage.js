@@ -42,15 +42,15 @@ const MyPage = () => {
   const listenAudio = useSelector((state) => state.mypage.library_listenAudio);
   const myFunding = useSelector((state) => state.mypage.library_registerFunding);
   const myAudio = useSelector((state) => state.mypage.library_registerAudioBook);
-
-  console.log(listenAudio)
+  
   const player = useRef();
 
   // 팔로우, 팔로잉 모달창
   const [open, setOpen] = React.useState(false);
-  const [open2, setOpen2] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  
+  const [open2, setOpen2] = React.useState(false);
   const handleOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
 
@@ -91,7 +91,9 @@ const MyPage = () => {
           <Profile>
             <ProfileBox>
               <div id='img'>
-                <img src={profile.userImage ? profile.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
+                <img
+                  alt="유저 이미지"
+                  src={profile.userImage ? profile.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
               </div>
               <div id='username'>
                 <h4>{profile.userName}</h4>
@@ -132,6 +134,7 @@ const MyPage = () => {
                     <ImageBox>
                       <img
                         style={{ width: "100%" }}
+                        alt="유저 이미지"
                         src={item.img ? item.img : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
                       />
                     </ImageBox>
@@ -161,6 +164,7 @@ const MyPage = () => {
                     <ImageBox>
                       <img
                         style={{ width: "100%" }}
+                        alt="유저 이미지"
                         src={item.img ? item.img : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
                       />
                     </ImageBox>
@@ -187,7 +191,6 @@ const MyPage = () => {
                 showJumpControls={false}
                 ref={player}
                 onPlay={e => console.log("onPlay")}
-
               />
               :
               null

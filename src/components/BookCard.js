@@ -14,6 +14,7 @@ const BookCard = (props) => {
           }}>
           <ImageBox>
             <img
+              alt="책 이미지"
               style={{ width: "100%" }}
               src={props.item.bookImg}
             />
@@ -32,6 +33,11 @@ const Wrap = styled.div`
 
   height: 380px;
   margin: 12.5px;
+
+  :hover {
+      transform: scale(0.95);
+    }
+
 `
 
 const Body = styled.div`
@@ -59,9 +65,9 @@ const ImageBox = styled.div`
   
 
   img {
-  border: 1px solid lightgray;
-  border-radius: 2px 10px 10px 2px;
-  cursor: pointer;
+    border: 1px solid lightgray;
+    border-radius: 2px 10px 10px 2px;
+    cursor: pointer;
   }
 `
 

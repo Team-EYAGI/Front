@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import RequestList from '../components/RequestList';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as requestActions } from "../redux/modules/audio";
 import { history } from '../redux/configureStore';
-// import InfinityScroll from "../shared/InfinityScroll";
 import Pagination from '../shared/Pagination';
 
 const Request = () => {
@@ -13,11 +12,10 @@ const Request = () => {
   const requestList = useSelector((state) => state.audio.request_list);
   const totalPages = useSelector((state) => state.audio.totalPages);
 
-  console.log(requestList)
-  console.log(totalPages)
-  const [page, setPage] = React.useState(1)
+  // 페이지네이션
+  const [page, setPage] = useState(1)
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(requestActions.getRequestAC(page));
   }, [page]);
 
@@ -52,25 +50,17 @@ const Request = () => {
               작성일
             </InfoItem>
           </TableInfo>
-          {/* <InfinityScroll
-            callNext={() => {
-              dispatch(requestActions.getRequestAC(paging.page));
-            }}
-            is_next={paging.page ? true : false}
-            loading={is_loading}
-          > */}
           {requestList && requestList.map((item, idx) => {
             // ReviewDetail 페이지에 item값을 props로 넘겨준다.
             return <RequestList key={idx} item={item} />
           })}
-          {/* </InfinityScroll> */}
         </RequestTable>
         <ReveiwButtonWrap>
           <ReviewButton
             onClick={() => {
               history.push('/book/자기계발')
             }}>
-            오디오북 요청 책 선택하ottom기
+            오디오북 요청 책 선택하기
           </ReviewButton>
         </ReveiwButtonWrap>
         <Pagination totalPages={totalPages} setPage={setPage}/>
@@ -78,6 +68,7 @@ const Request = () => {
     </React.Fragment>
   )
 }
+
 const Wrap = styled.div`
   margin: 0 auto;
   margin-top: 100px;
@@ -168,10 +159,12 @@ const ReviewButton = styled.button`
   color: #FFFFFF;
   background-color: #0C0A0A;
   border: 1px solid #0C0A0A;
-  cursor: pointer;
   box-sizing: content-box;
   
-
+  :hover {
+      transform: scale(0.95);
+      cursor: pointer;
+    }
 `
 
 export default Request;

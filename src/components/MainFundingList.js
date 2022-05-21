@@ -2,18 +2,18 @@ import React from 'react';
 import MainFundingCard from './MainFundingCard';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
+import SkeletonLoading from '../components/SkeletonLoading';
 
 const MainFundingList = (props) => {
 
   const mainFunding = props.mainFunding
-  // console.log("메인펀딩 프롭스", mainFunding)
 
   return (
     <React.Fragment>
       <Wrap>
-        <span style={{fontSize: "20px", fontWeight: "700"}}>오디오 펀딩</span>
+        <span style={{ fontSize: "20px", fontWeight: "700" }}>오디오 펀딩</span>
         <span
-          style={{fontSize: "16px"}}
+          style={{ fontSize: "16px" }}
           id="plus"
           onClick={() => {
             history.push(`/funding`)
@@ -21,8 +21,9 @@ const MainFundingList = (props) => {
         >더 보러가기</span>
       </Wrap>
       <Bottom>
-      {mainFunding && mainFunding.map((item, idx) => (
-          <MainFundingCard key={idx} item={item}/>
+        
+        {mainFunding && mainFunding.map((item, idx) => (
+          <MainFundingCard key={idx} item={item} />
         ))}
       </Bottom>
     </React.Fragment>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import MainAdBanner from '../components/MainAdBanner';
 import MainBookList from '../components/MainBookList';
@@ -11,11 +11,14 @@ import MainFundingList from '../components/MainFundingList';
 const Main = () => {
   const dispatch = useDispatch();
   
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(getActions.getMainAC());
     dispatch(getActions.getMainCategoryAC());
     dispatch(getActions.getMainFundingAC());
     dispatch(getActions.getMainCreatorAC());
+    return () => {
+      dispatch(getActions.clearMain());
+    }
   }, []);
 
   const main = useSelector((state) => state.book.main);

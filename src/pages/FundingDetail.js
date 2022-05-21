@@ -6,19 +6,27 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as getActions } from "../redux/modules/fund";
+import { history } from "../redux/configureStore";
 
 
 const FundingDetail = () => {
   const params = useParams();
   const fundId = params.fundingId;
   const dispatch = useDispatch();
+  
 
   const fundingDetail = useSelector((state) => state.fund.fund_detail);
+  const sellerId = fundingDetail.sellerId
+  const username = localStorage.getItem("username");
+  console.log(username)
 
   const boolean = fundingDetail.myHeart === false ? false : true;
   const [fundHeartBool, setFundHeartBool] = useState(boolean);
 
   const addLike = () => {
+    if (username == fundingDetail.sellerName || fundingDetail.fundingGoals === fundingDetail.likeCnt) {
+      return;
+    }
     if (fundHeartBool == false) {
       setFundHeartBool(true)
       dispatch(getActions.addLikeDB(fundHeartBool, fundId));
@@ -36,6 +44,9 @@ const FundingDetail = () => {
 
   useEffect(() => {
     dispatch(getActions.getFundingDetailAC(fundId));
+    return () => {
+      dispatch(getActions.clean())
+    }
   }, []);
 
   return (
@@ -50,7 +61,7 @@ const FundingDetail = () => {
             >
               <div id="img_wrap">
                 <div id="img">
-                  <img src={fundingDetail.bookImg} />
+                  <img alt= "책 이미지" src={fundingDetail.bookImg} />
                 </div>
                 {/* 오디오 플레이어 */}
                 <AudioPlayer
@@ -75,40 +86,30 @@ const FundingDetail = () => {
               </div>
               <ProfileInfo>
                 <div id="profileImg">
-                  <img src={fundingDetail.sellerImg} />
+                  <img alt= "크리에이터 이미지" src={fundingDetail.sellerImg} 
+                  onClick={() => {
+                    history.push(`/sellerProfile/${sellerId}/audiobook`)
+                  }}
+                  />
+                      {/* ? fundingDetail.sellerImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png" } */}
                 </div>
                 <div id="profile">
                   {/* <div id="followdiv"> */}
                   <span id="follower">
                     팔로워 {fundingDetail.followerCnt}명
                   </span>
-                  {/* <div>
-                    {fundingDetail.myHeart === false ?
-                      <button
-                        onClick={() => {
-                          dispatch(followActions.audiofollowAC(sellerId));
-                        }}
-                      >follow</button>
-                      :
-                      <button
-                        onClick={() => {
-                          dispatch(followActions.audiofollowAC(sellerId));
-                        }}
-                      >unfollow</button>
-                    }
-                  </div> */}
-                {/* </div> */}
                 <br />
                 <span id="introduce">
                   {fundingDetail.introduce}
-                </span></div>
+                </span>
+                </div>
             </ProfileInfo>
           </Profile>
         </PlayerImg>
 
         <Goal>
           {/* 책 정보 */}
-          <h3>{fundingDetail.bookTitle}</h3>
+          <h2>{fundingDetail.bookTitle}</h2>
           <h4>
             {" "}
             저자 : {fundingDetail.author} / 크리에이터 : {fundingDetail.sellerName}
@@ -119,11 +120,11 @@ const FundingDetail = () => {
             <div id="heart">
               <div className="goal">
                 목표 좋아요
-                <div>{fundingDetail.fundingGoals}개</div>
+                <span>{fundingDetail.fundingGoals}개</span>
               </div>
-              <br />
-              <div className="finish">달성한 좋아요
-                <div>{fundingDetail.likeCnt}개</div>
+              
+              <div className="goal">달성한 좋아요
+                <span>{fundingDetail.likeCnt}개</span>
               </div>
             </div>
             <div id="heartBtn">
@@ -132,20 +133,26 @@ const FundingDetail = () => {
                   onClick={addLike}
                 >
                   <AiOutlineHeart id="icon" size="40px" />
-                  <h4>{ }</h4>
+                  
                 </Like>
                 :
                 <Like
                   onClick={addLike}
-                >
-                  <AiFillHeart id="icon" size="40px" />
-                  <h4>{ }</h4>
+                                  >
+                  <AiFillHeart id="icon" size="40px" color="red"/>
+                  
                 </Like>
               }
             </div>
 
           </Info>
-          <div id="creator">{fundingDetail.content}</div>
+          <div id="creator">
+             <span >
+                  {fundingDetail.content}
+                </span>
+          </div>
+         
+          
         </Goal>
       </Player>
     </Wrap>
@@ -156,13 +163,10 @@ const FundingDetail = () => {
 
 
 const Like = styled.div`
-  border: 1px solid gray;
+  border: 1px solid #c4c4c4;
   border-radius: 10px;
   width: 90px;
   height: 90px;
-  font-size: 15 px;
-  text-align: center;
-  vertical-align: middle;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -170,12 +174,8 @@ const Like = styled.div`
   
   cursor: pointer;
 
-  h4 {
-    width: 100%;
-  }
-
   #icon {
-    margin-top: 15px;   
+    /* margin-top: 15px;    */
   }
 `;
 
@@ -184,7 +184,6 @@ const Wrap = styled.div`
   height: 800px;
   position: relative;
   display: flex;
-  background: #ffffff;
   border: none;
   margin: auto;
   font-style: normal;
@@ -295,11 +294,16 @@ const Profile = styled.div`
   width: 464px;
   height: 200px;
   margin-top: 30px;
-  font-family: 'Pretendard';
+  /* font-family: 'Pretendard'; */
 
   #creatorname {
-    font-family: 'Pretendard';
+    /* font-family: 'Pretendard'; */
     font-size: 30px;
+    font-weight: bold;
+  }
+
+  #follower {
+    font-weight: bold;
   }
 `;
 
@@ -312,15 +316,20 @@ flex-direction: row;
 justify-content: space-between;
 width: 464px;
 height: 199px;
+margin-top: 20px;
 
 #profileImg {
   width: 150px;
   height: 150px;
-  border-radius: 30px; //이거왜안돼?
+  border-radius: 15px;
+
 
   img{
     width: 100%;
     height: 100%;
+    border-radius: 15px;
+    border: 1px solid gray;
+    cursor: pointer;
   }
 }
 
@@ -342,11 +351,11 @@ const Goal = styled.div`
   margin-left: 120px;
   margin-top: 160px;
   
-h3 {
+  
+h2 {
     width: 464px;
     height: 50px;
     float: left;
-    margin: 0px 0px 0px 0px;
     font-size: 30px;
     display: flex;
     flex-direction: column;
@@ -354,6 +363,8 @@ h3 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    /* background-color: red; */
+
   }
 
   h4 {
@@ -375,6 +386,13 @@ h3 {
     border: 1px solid #c4c4c4;
     padding: 10px;
     margin-top:  50px;
+    /* background-color: orange; */
+    flex-wrap: wrap;
+
+    span {
+      width: 100%;
+      word-break:break-all;
+    }
   }
 `;
 
@@ -382,33 +400,32 @@ const Info = styled.div`
   display: flex;
   flex-direction: row;
   margin: 16px 0px;
-  width: 100%;
   display: flex;
   justify-content: space-between;
   width: 480px;
   height: 90px;
-  /* border: 1px solid red; */
+  /* background-color: blue; */
 
 
   #heart {
-    border: 1px solid gray;
+    border: 1px solid #C4C4C4;
     border-radius: 10px;
 
-    width: 480px;
-    height: 75px;
+    width: 380px;
+    height: 90px;
 
     display: flex;
     flex-direction: column;
-    justify-content: left;
+    justify-content: center;
 
-    align-items: left;
+    align-items: space-around;
     text-align: left;
     vertical-align: middle;   
     font-size: 15 px;
     
-    margin-right: 5px;
-    padding-left: 10px;
-    padding-top: 15px;
+    /* margin-right: 5px;
+    padding-left: 10px; */
+    /* padding-top: 15px; */
     
     /* background-color: green; */
   }
@@ -417,15 +434,16 @@ const Info = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-right: 10px;
+    /* padding-right: 10px; */
+    margin: 9px 24px;
+
+    span {
+      font-weight: bold;
+      /* margin-right: 15px; */
+    }
   }
 
-  .finish {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding-right: 10px;
-  }
+  
   #heartBtn {
     /* background-color: yellowgreen; */
     width: 90px;

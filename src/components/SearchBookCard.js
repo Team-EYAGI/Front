@@ -4,7 +4,6 @@ import { Text } from "../elements/Index";
 import { history } from "../redux/configureStore";
 
 const BookCard = (props) => {
-  // console.log(props.item)
   return (
     <React.Fragment>
       <Wrap>
@@ -16,6 +15,7 @@ const BookCard = (props) => {
             <img
               style={{ width: "100%" }}
               src={props.item.bookImg}
+              alt="책 이미지"
             />
           </ImageBox>
           <h3 style={{ fontSize: "16px" }}>
@@ -36,10 +36,10 @@ const Wrap = styled.div`
   position: relative;
   margin: 10px 10px 20px 10px;
 
-  
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
+  :hover {
+      transform: scale(0.95);
+      cursor: pointer;
+    }
 `
 
 const Body = styled.div`

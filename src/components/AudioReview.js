@@ -16,8 +16,6 @@ const AudioReview = (props) => {
   const category = params.category
   const commentId = props.item.commentId
 
-  console.log(props.item)
-
   // 로그인한 유저네임과 리뷰를 작성한 유저네임을 비교하여 수정, 삭제 버튼 활성화
   const username = localStorage.getItem("username");
   const reviewUsername = props.item.username
@@ -111,6 +109,11 @@ const ListBox = styled.div`
 `
 const Body = styled.div`
   width: 100%;
+
+  :hover {
+      transform: scale(0.99);
+      cursor: pointer;
+    }
 
   h3 {
     font-weight: 500;

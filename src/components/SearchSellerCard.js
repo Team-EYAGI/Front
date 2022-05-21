@@ -4,7 +4,6 @@ import { Text } from "../elements/Index";
 import { history } from "../redux/configureStore";
 
 const SearchSellerCard = (props) => {
-  console.log(props.item)
   return (
     <React.Fragment>
          <Wrap>
@@ -15,6 +14,7 @@ const SearchSellerCard = (props) => {
           <ImageBox>
             <img
               style={{ width: "100%" }}
+              alt="크리에이터 이미지"
               src={props.item.sellerImg ? props.item.sellerImg : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
             />
           </ImageBox>
