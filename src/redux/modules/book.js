@@ -21,7 +21,8 @@ const GET_KIDS = "GET_KIDS";
 const LOADING = "LOADING"
 
 // 4. 카테고리 초기화 
-const CLEAR_CAT = "CLEAR_CAT";
+const CLEAR_CATEGORY = "CLEAR_CATEGORY";
+const CLEAR_MAIN = "CLEAR_MAIN";
 
 // 액션 생성 함수
 const getMain = createAction(GET_MAIN, (main) => ({ main }));
@@ -38,7 +39,8 @@ const getEconomy = createAction(GET_ECONOMY, (economy, paging) => ({ economy, pa
 const getKids = createAction(GET_KIDS, (kids, paging) => ({ kids, paging }));
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
-const clearBookCat = createAction(CLEAR_CAT, () => {});
+const clearCategory = createAction(CLEAR_CATEGORY, () => {});
+const clearMain = createAction(CLEAR_MAIN, () => {});
 
 // 초기값
 const initialState = {
@@ -66,9 +68,7 @@ const getMainAC = () => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        // console.log("메인페이지 리스트", res)
         dispatch(getMain(res.data))
-
       })
       .catch(error => {
         console.log("error", error)
@@ -85,9 +85,7 @@ const getMainCategoryAC = () => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        // console.log("메인 카테고리 리스트", res)
         dispatch(getMainCategory(res.data))
-
       })
       .catch(error => {
         console.log("error", error)
@@ -104,9 +102,7 @@ const getMainCreatorAC = () => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        // console.log("메인 크리에이터 리스트", res)
         dispatch(getMainCreator(res.data))
-
       })
       .catch(error => {
         console.log("error", error)
@@ -124,9 +120,7 @@ const getMainFundingAC = () => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        // console.log("메인 펀딩 리스트", res)
         dispatch(getMainFunding(res.data))
-
       })
       .catch(error => {
         console.log("error", error)
@@ -136,7 +130,6 @@ const getMainFundingAC = () => {
 
 // 책 상세페이지 겟
 const getBookDetailAC = (bookId) => {
-  console.log(bookId)
   return function (dispatch, getState, { history }) {
     axios.get(process.env.REACT_APP_BASE_URL + `/book/detail/${bookId}`, {
 
@@ -144,9 +137,7 @@ const getBookDetailAC = (bookId) => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        console.log("상세페이지 정보", res.data)
         dispatch(getBookDetail(res.data))
-
       })
       .catch(error => {
         console.log("error", error)
@@ -161,7 +152,6 @@ const getNovelAC = (page = 1, size = 20) => {
     if (!_paging.page) {
       return;
     }
-    console.log(page);
     dispatch(loading(true));
     axios.get(process.env.REACT_APP_BASE_URL + `/category/novel?page=${page}&size=${size}`, {
 
@@ -169,13 +159,10 @@ const getNovelAC = (page = 1, size = 20) => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        console.log(res.data.content)
         let paging={
           page : res.data.content.length === size ? page + 1 : null,
           size : size,
         };
-
-        console.log(paging)
         dispatch(getNovel(res.data.content, paging));
       })
       .catch(error => {
@@ -191,7 +178,6 @@ const getEconomyAC = (page = 1, size = 20) => {
     if (!_paging.page) {
       return;
     }
-    console.log(page);
     dispatch(loading(true));
     axios.get(process.env.REACT_APP_BASE_URL + `/category/economy?page=${page}&size=${size}`, {
 
@@ -199,14 +185,10 @@ const getEconomyAC = (page = 1, size = 20) => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        console.log(res.data.content)
-        // console.log("경제 준비완료", res)
         let paging={
           page : res.data.content.length === size ? page + 1 : null,
           size : size,
         };
-
-        console.log(paging)
         dispatch(getEconomy(res.data.content, paging));
       })
       .catch(error => {
@@ -229,13 +211,10 @@ const getPoemAC = (page = 1, size = 20) => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        console.log(res.data.content)
         let paging={
           page : res.data.content.length === size ? page + 1 : null,
           size : size,
         };
-
-        console.log(paging)
         dispatch(getPoem(res.data.content, paging));
       })
       .catch(error => {
@@ -251,7 +230,6 @@ const getKidsAC = (page = 1, size = 20) => {
     if (!_paging.page) {
       return;
     }
-    console.log(page);
     dispatch(loading(true));
     axios.get(process.env.REACT_APP_BASE_URL + `/category/kids?page=${page}&size=${size}`, {
 
@@ -259,13 +237,10 @@ const getKidsAC = (page = 1, size = 20) => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        console.log(res.data.content)
         let paging={
           page : res.data.content.length === size ? page + 1 : null,
           size : size,
         };
-
-        console.log(paging)
         dispatch(getKids(res.data.content, paging));
       })
       .catch(error => {
@@ -288,13 +263,10 @@ const getSelfAC = (page = 1, size = 20) => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        console.log(res.data.content)
         let paging={
           page : res.data.content.length === size ? page + 1 : null,
           size : size,
         };
-
-        console.log(paging)
         dispatch(getSelf(res.data.content, paging));
       })
       .catch(error => {
@@ -368,11 +340,10 @@ export default handleActions(
         }
       }),
     [LOADING]: (state, action) => produce(state, (draft) => {
-      console.log(action.payload);
       draft.is_loading = action.payload.is_loading;
     }),
 
-    [CLEAR_CAT]: (state, action) =>
+    [CLEAR_CATEGORY]: (state, action) =>
       produce(state, (draft) => {
         draft.paging = {page: 1, size: 20};
         draft.category_novel = [];
@@ -380,6 +351,14 @@ export default handleActions(
         draft.category_economy= [];
         draft.category_kids= [];
         draft.category_self= [];
+      }),
+    [CLEAR_MAIN]: (state, action) =>
+      produce(state, (draft) => {
+        draft.main = [];
+        draft.main_category = [];
+        draft.main_creator = [];
+        draft.main_funding = [];      
+        draft.detail_book = [];
       }),
   },
   initialState
@@ -398,8 +377,8 @@ const actionCreators = {
   getSelfAC,
   getEconomyAC,
   getKidsAC,
-
-  clearBookCat
+  clearCategory,
+  clearMain,
 };
 
 export { actionCreators };

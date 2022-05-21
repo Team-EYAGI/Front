@@ -18,9 +18,6 @@ const AddProfileVoice = (props) => {
   // 새로고침 경고 알럿
   useBeforeunload((event) => event.preventDefault());
 
-  const params = useParams();
-  console.log(params)
-
   // 인풋창 접근
   const fileInput = useRef();
 
@@ -36,7 +33,6 @@ const AddProfileVoice = (props) => {
     setFile(e.target.files[0])
     const reader = new FileReader();
     const file = fileInput.current.files[0];
-    console.log(setFile)
     reader.readAsDataURL(file);
   };
 
@@ -78,7 +74,7 @@ const AddProfileVoice = (props) => {
             <div>
               <input
                 type="file"
-                accept="audio/wav audio/mp3 audio/m4a"
+                accept="audio/wav, audio/mp3, audio/m4a"
                 multiple
                 ref={fileInput}
                 style={{ display: 'none' }}

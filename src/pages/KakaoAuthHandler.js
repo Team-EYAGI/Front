@@ -9,7 +9,6 @@ const KakaoAuthHandler = (props) => {
   const dispatch = useDispatch();
 
   let code = new URL(window.location.href).searchParams.get("code");
-  console.log(code)
 
   React.useEffect(() => {
     dispatch(userAction.kakaoLoginAC(code));

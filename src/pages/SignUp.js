@@ -64,6 +64,7 @@ const Signup = (props) => {
                   onChange={(e) => {
                     setId(e.target.value);
                   }}
+                  maxLength="30"
                   value={email}
                   placeholder="이메일"
                 ></input>
@@ -99,6 +100,7 @@ const Signup = (props) => {
                   onChange={(e) => {
                     setUser(e.target.value);
                   }}
+                  maxLength="8"
                   value={username}
                   placeholder="닉네임"
                 ></input>
@@ -132,6 +134,7 @@ const Signup = (props) => {
                   setPwd(e.target.value);
                 }}
                 value={password}
+                maxLength="25"
                 placeholder="비밀번호"
                 type="password"
               ></input>
@@ -158,6 +161,7 @@ const Signup = (props) => {
                 onChange={(e) => {
                   setPwdCheck(e.target.value);
                 }}
+                maxLength="25"
                 value={passwordCheck}
                 placeholder="비밀번호확인"
                 type="password"

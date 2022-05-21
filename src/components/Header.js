@@ -1,12 +1,10 @@
 import React from 'react';
-import { Grid, Text } from '../elements/Index';
 import { BsPerson } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { RiAdminLine } from "react-icons/ri";
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 import { useDispatch, useSelector } from "react-redux";
-import { getToken } from "../shared/Token";
 import { actionCreators as searchActions } from "../redux/modules/search";
 import { actionCreators } from "../redux/modules/user";
 import logo from '../src_assets/logo.svg';
@@ -16,17 +14,8 @@ const Header = (props) => {
   const dispatch = useDispatch();
 
   const is_login = useSelector((state) => state.user.is_login);
-  console.log(is_login)
-
-
   const is_session = localStorage.getItem("is_login");
   const seller = localStorage.getItem("seller");
-  // const is_token = localStorage.getItem("token");
-  const userName = localStorage.getItem("username");
-
-  React.useEffect(() => {
-
-  }, []);
 
   const [word, setWord] = React.useState("")
 
@@ -61,7 +50,6 @@ const Header = (props) => {
           <img
             onClick={() => { history.push('/') }}
             src={logo}
-          // src='https://blog.kakaocdn.net/dn/SJmxC/btqxeJAzjZA/UgEHLHzJlq9TZBpo7hyi5k/img.jpg'
           />
         </LogoBox>
         {is_session ?
@@ -127,8 +115,6 @@ const HeaderWrap = styled.div`
   width: 1200px;
   height: 60px;
   background-color: #FFFFFC;;
-
-  /* position: relative; */
   margin: 20px auto -5px auto;
 
   display: flex;
@@ -148,7 +134,6 @@ const BottomWrap = styled.div`
   background-color: #FFFFFC;;
 
   height: 50px;
-
   position: sticky;
   top: 0;
   z-index: 4;
@@ -156,7 +141,7 @@ const BottomWrap = styled.div`
   margin: 0px auto;
   padding: 0.3vw 13.02vw;
 
-  box-shadow: 0 3px 1.9px 0.1px rgb(80 80 80 / 30%);
+  box-shadow: 0px 3px 1.9px 0.1px rgb(80 80 80 / 30%);
 
   background-color: #FFFFFC;
 
@@ -205,6 +190,10 @@ const LoginBox = styled.div`
 
   span {
     text-align: center;
+
+    :hover {
+      transform: scale(0.95);
+    }
   }
 `
 

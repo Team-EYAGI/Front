@@ -22,24 +22,15 @@ const style = {
 
 const AudioBookList = (props) => {
   const params = useParams();
-  const category = params.category
+  const category = params.category;
 
-  const bookId = props.detail.bookId
-  const sellerId = props.detail.sellerId
-  const audioBookList = props.detail ? props.detail.audio : null
-  console.log("리스트", audioBookList)
-
-  // const files = props.detail.audio;
-  // const preview = audioBookList ? audioBookList.find((p) => p.audioBookId == audioBookId) : null;
+  const bookId = props.detail.bookId;
+  const sellerId = props.detail.sellerId;
+  const audioBookList = props.detail ? props.detail.audio : null;
 
   // 로그인한 사용자인지 확인
   const is_login = localStorage.getItem("is_login");
 
-    // 팔로우, 팔로잉 모달창
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    
   return (
     <React.Fragment>
       <Wrap>
@@ -80,6 +71,7 @@ const AudioBookList = (props) => {
                   onClick={() => {
                     history.push(`/sellerProfile/${sellerId}/audiobook`)
                   }}
+                  alt="크리에이터 이미지"
                   src={item.sellerImg ? item.sellerImg : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
               </ImgSt>
               <ContentSt>
@@ -88,7 +80,6 @@ const AudioBookList = (props) => {
                     onClick={() => {
                       history.push(`/audioModal/${category}/${bookId}/${item.audioBookId}`)
                     }}
-                    // onClick={handleOpen}
                   >1분 미리듣기 ▶</button>
                 </div>
                 <span id="name">{item.sellerName}</span>
@@ -99,17 +90,6 @@ const AudioBookList = (props) => {
                   <span>{item.createdAt.split("T")[0]}</span>
                 </div>
               </ContentSt>
-              <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={style}>
-                <h2 style={{ width: "100%", textAlign: "center" }}>팔로잉</h2>
-                
-              </Box>
-            </Modal>
             </AudioCardSt>
           ))}
         </CardWrap>

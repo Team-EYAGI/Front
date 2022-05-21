@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components';
 import AudioBookList from '../components/AudioBookList';
 import { useParams } from 'react-router-dom';
@@ -23,11 +23,14 @@ const BookDetail = () => {
 
   // 책 상세페이지 정보 가져오기
   const detail = useSelector((state) => state.book.detail_book);
-  console.log(detail)
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));
-    return () => dispatch;
+
+    // 클린업 함수 실행
+    return () => {
+      dispatch(getActions.clearMain());
+    }
   }, []);
 
   return (
@@ -41,7 +44,7 @@ const BookDetail = () => {
           <ImgBox style={{ backgroundImage: `url(${detail.bookImg})` }}>
             <div id='img_wrap'>
               <div id='img'>
-                <img src={detail.bookImg} />
+                <img src={detail.bookImg} alt="책 이미지" />
               </div>
             </div>
           </ImgBox>
@@ -90,18 +93,16 @@ const BookDetail = () => {
             </div>
           </Content>
         </BookInfo>
-
         <BookSum>
           <span id='bookinfo'>
             책 정보
           </span>
           <div>
-            <span style={{whiteSpace: "pre-wrap", wordBreak: 'keep-all', lineHeight: "1.5",}}>
+            <span style={{ whiteSpace: "pre-wrap", wordBreak: 'keep-all', lineHeight: "1.5", }}>
               {detail.summary}
             </span>
           </div>
         </BookSum>
-
         <AudioBookBox>
           <AudioBookList detail={detail} />
         </AudioBookBox>

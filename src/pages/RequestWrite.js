@@ -42,7 +42,7 @@ const RequestWrite = (props) => {
           <ImgBox>
             <div id='img_wrap'>
               <div id='img'>
-                <img src={detail.bookImg} />
+                <img src={detail.bookImg} alt="책 이미지"/>
               </div>
               <div>
                 <p>{detail.title}</p>

@@ -14,6 +14,7 @@ const BookCard = (props) => {
           <ImageSt>
             <img
               style={{ width: "100%" }}
+              alt="책 이미지"
               src={props.item.bookImg}
             />
           </ImageSt>
@@ -37,11 +38,10 @@ const DivSt = styled.div`
   flex-direction: row;
   justify-content: center;
 
-  cursor: pointer;
-
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
+  :hover {
+      transform: scale(0.95);
+      cursor: pointer;
+    }
 `;
 
 const CardSt = styled.div`

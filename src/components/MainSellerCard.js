@@ -16,6 +16,7 @@ const MainSellerCard = (props) => {
           <ImageBox>
             <img
               style={{ width: "100%" }}
+              alt="크리에이터 이미지"
               src={creator.userImage ? creator.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
             />
           </ImageBox>
@@ -31,6 +32,11 @@ const MainSellerCard = (props) => {
 const Wrap = styled.div`
   height: 200px;
   margin: 10px;
+
+  :hover {
+      transform: scale(0.95);
+      cursor: pointer;
+    }
 `
 
 const Body = styled.div`
@@ -39,8 +45,6 @@ const Body = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
-  cursor: pointer;
 
   h3 {
     white-space: nowrap;

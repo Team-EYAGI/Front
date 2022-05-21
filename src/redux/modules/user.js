@@ -25,7 +25,19 @@ const initialState = {
 // 미들웨어
 // 로그인
 const loginAC = (email, password) => {
-  console.log(email)
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 1500,
+    color: '#000000',
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
   return function (dispatch, getState, { history }) {
     axios
       .post(process.env.REACT_APP_BASE_URL + `/user/login`, {
@@ -33,9 +45,7 @@ const loginAC = (email, password) => {
         password: password,
       })
       .then((res) => {
-        console.log(res);
         const token = res.headers.authorization;
-        console.log(token);
         setToken(token);
 
         const DecodedToken = jwtDecode(token);
@@ -47,43 +57,18 @@ const loginAC = (email, password) => {
         dispatch(
           login({
             is_login: true,
-
             email: email,
             username: DecodedToken.USER_NIK,
           })
         );
-        history.replace("/");
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top',
-          showConfirmButton: false,
-          timer: 1500,
-          color: '#000000',
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        })
-
         Toast.fire({
           icon: 'success',
           title: '로그인 성공!'
         })
+        history.replace(`/serviceGuide`)
       })
       .catch((error) => {
         if(error) {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top',
-            showConfirmButton: false,
-            timer: 1500,
-            color: '#000000',
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer)
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-          })
-  
           Toast.fire({
             icon: 'error',
             title: '아이디와 비밀번호를 다시한번 확인해주세요!'
@@ -95,18 +80,26 @@ const loginAC = (email, password) => {
 
 // 카카오
 const kakaoLoginAC = (code) => {
-  console.log(code)
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 1500,
+    color: '#000000',
+    // timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
   return function (dispatch, getState, { history }) {
     axios
       .get(process.env.REACT_APP_BASE_URL + `/user/kakao/callback?code=${code}`)
       .then((res) => {        
-        console.log(res);
         const token = res.headers.authorization;
-        console.log(token);
         setToken(token);
 
         const DecodedToken = jwtDecode(token);
-        console.log(DecodedToken);
 
         localStorage.setItem("email", DecodedToken.USER_EMAIL);
         localStorage.setItem("username", DecodedToken.USER_NIK);
@@ -122,24 +115,11 @@ const kakaoLoginAC = (code) => {
             //위치불확실 콘솔찍어서 확인
           })
         );
-        history.replace("/");
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top',
-          showConfirmButton: false,
-          timer: 1500,
-          color: '#000000',
-          // timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        })
-
         Toast.fire({
           icon: 'success',
           title: '로그인 성공!'
         })
+        history.replace(`/serviceGuide`)
       })
       .catch((error) => {
         console.log(error)
@@ -194,8 +174,6 @@ const signUpAC = (email, username, password, passwordCheck) => {
 
 //이메일 중복확인
 const emailCheckAC = (email) => {
-  console.log(email);
-
   const Toast = Swal.mixin({
     toast: true,
     position: 'top',
@@ -293,8 +271,6 @@ export default handleActions(
         localStorage.setItem("is_login", "success");
         draft.user = action.payload.user;
         draft.is_login = true;
-
-        console.log("action.payload.user", action.payload.user);
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
@@ -309,7 +285,6 @@ export default handleActions(
 
         draft.is_login = false;
         window.location.replace("/");
-        console.log("로그아웃합니다")
       }),
     [GET_USER]: (state, action) => produce(state, (draft) => {}),
   },

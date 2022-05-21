@@ -19,7 +19,6 @@ const AudioWrite = () => {
 
   // 첫 등록인지 확인하기
   const firstCheck = useSelector((state) => state.audio.audio_check);
-  // console.log(firstCheck)
 
   // 인풋에 접근
   const fileInput = useRef();
@@ -82,7 +81,7 @@ const AudioWrite = () => {
           <ImgSt>
             <div id='img_wrap'>
               <div id='img'>
-                <img src={detail.bookImg} />
+                <img src={detail.bookImg} alt="책 이미지"/>
               </div>
               <div>
                 <p>{detail.title}</p>
@@ -120,7 +119,7 @@ const AudioWrite = () => {
               }
               <input
                 type="file"
-                accept={firstCheck === true ? "audio/wav" :"audio/mp3 audio/m4a"}
+                accept={firstCheck === true ? "audio/wav" : "audio/mp3, audio/m4a"}
                 multiple
                 ref={fileInput}
                 style={{ display: 'none' }}

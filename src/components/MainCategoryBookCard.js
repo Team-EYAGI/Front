@@ -12,6 +12,7 @@ const CategoryBookCard = (props) => {
             <img
               style={{ width: "100%" }}
               src={props.item.bookImg}
+              alt="책 이미지"
             />
           </ImageSt>
           <NameSt>
@@ -34,11 +35,10 @@ const DivSt = styled.div`
   flex-direction: row;
   justify-content: center;
 
-  cursor: pointer;
-
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
+  :hover {
+      transform: scale(0.95);
+      cursor: pointer;
+    }
 `;
 
 const CardSt = styled.div`

@@ -1,13 +1,9 @@
 import styled from 'styled-components';
 import React from 'react';
 import MainCategoryBookCard from '../components/MainCategoryBookCard';
-import { useHistory } from "react-router-dom";
-import { useParams } from 'react-router-dom';
+import { history } from '../redux/configureStore';
 
 const CategoryBookList = (props) => {
-  const history = useHistory();
-  const params = useParams();
-  console.log(params)
 
   const selfBook = props.mainCategory;
 
@@ -124,7 +120,10 @@ const GenreSt = styled.h3`
   line-height: 40px;
 
   font-size: 16px;
-  cursor: pointer;
+  :hover {
+      transform: scale(0.95);
+      cursor: pointer;
+    }
 `
 
 

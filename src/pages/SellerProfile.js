@@ -40,13 +40,12 @@ const SellerProfile = () => {
   const profileDetail = profile.sellerProfile
   const authority = localStorage.getItem("seller");
   const username = localStorage.getItem("username");
-  console.log("profile", profile)
-
 
   // 셀러가 등록한 펀딩 정보 가져오기
   const fundingList = useSelector((state) => state.creator.creator_funding);
   const follower = useSelector((state) => state.creator.creator_follower);
   const following = useSelector((state) => state.creator.creator_following);
+  console.log(fundingList)
 
   // 팔로우, 팔로잉 모달창
   const [open, setOpen] = React.useState(false);
@@ -89,7 +88,9 @@ const SellerProfile = () => {
               <>
                 <ProfileBox>
                   <div id='img'>
-                    <img src={profile.userImage ? profile.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
+                    <img
+                      alt="유저 이미지"
+                      src={profile.userImage ? profile.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
                   </div>
                   <div id='username'>
                     <h4>{profile.userName}</h4>
@@ -113,23 +114,25 @@ const SellerProfile = () => {
               <>
                 <ProfileBox>
                   <div id='img'>
-                    <img src={profileDetail && profileDetail.userImage ? profileDetail.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
+                    <img
+                      alt="유저 이미지"
+                      src={profileDetail && profileDetail.userImage ? profileDetail.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
                   </div>
                   <div id='username'>
-                    <h4>{profileDetail && profileDetail.userName}</h4>
+                    <h4>{profileDetail?.userName}</h4>
                     <h5 onClick={() => {
                       dispatch(followActions.followingListAC(sellerId));
                       handleOpen();
-                    }}>팔로잉 &nbsp;<span>{profileDetail && profileDetail.followingCnt}명</span></h5>
+                    }}>팔로잉 &nbsp;<span>{profileDetail?.followingCnt}명</span></h5>
                     <h5 onClick={() => {
                       dispatch(followActions.followerListAC(sellerId));
                       handleOpen2();
-                    }}>팔로워 &nbsp;<span>{profileDetail && profileDetail.followerCnt}명</span></h5>
+                    }}>팔로워 &nbsp;<span>{profileDetail?.followerCnt}명</span></h5>
                   </div>
                 </ProfileBox>
                 <ProfileBox>
                   <h3>
-                    {profileDetail && profileDetail.introduce}
+                    {profileDetail?.introduce}
                   </h3>
                 </ProfileBox>
               </>
@@ -151,6 +154,7 @@ const SellerProfile = () => {
                         <ImageBox>
                           <img
                             style={{ width: "100%" }}
+                            alt="유저 이미지"
                             src={item.img ? item.img : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
                           />
                         </ImageBox>
@@ -179,6 +183,7 @@ const SellerProfile = () => {
                         <ImageBox>
                           <img
                             style={{ width: "100%" }}
+                            alt="유저 이미지"
                             src={item.img ? item.img : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
                           />
                         </ImageBox>
@@ -600,7 +605,7 @@ const ProfileBox = styled.div`
 `
 
 const List = styled.div`
-width: 290px;
+  width: 290px;
   height: 300px;
   margin-top: 20px;
 
