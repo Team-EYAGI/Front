@@ -19,11 +19,24 @@ const FundingDetail = () => {
   const fundingDetail = useSelector((state) => state.fund.fund_detail);
   const sellerId = fundingDetail.sellerId
   const username = localStorage.getItem("username");
+  const is_login = localStorage.getItem("is_login");
 
   const boolean = fundingDetail.myHeart === false ? false : true;
   const [fundHeartBool, setFundHeartBool] = useState(boolean);
 
   const addLike = () => {
+    if (!is_login) {
+      Swal.fire({
+        text: "로그인 후 이용 가능합니다!",
+        icon: "warning",
+        confirmButtonText: "로그인하러가기",
+        confirmButtonColor: '#0C0A0A',
+      }).then(result => {
+        if (result.isConfirmed) {
+          history.push(`/login`)
+        }
+      })
+    }
     if (username == fundingDetail.sellerName || fundingDetail.fundingGoals === fundingDetail.likeCnt) {
       Swal.fire({
         position: 'center',
