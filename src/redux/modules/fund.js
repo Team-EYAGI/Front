@@ -28,7 +28,7 @@ const initialState = {
 // action creater
 const getFunding = createAction(GET_FUND, (fund_list, totalPages) => ({fund_list, totalPages}));
 const addFunding = createAction(ADD_FUND, (fund_add) => ({fund_add}));
-const addLike = createAction(ADD_LIKE, (fundHeartBool, fundHeartCnt) => ({ fundHeartBool, fundHeartCnt }))
+const addLike = createAction(ADD_LIKE, (fundHeartBool, fundHeartCnt, successFunding) => ({ fundHeartBool, fundHeartCnt, successFunding }))
 const delLike = createAction(DEL_LIKE, (fundHeartBool, fundId) => ({ fundHeartBool, fundId }))
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 const getDetail = createAction(GET_DETAIL, (fund_detail) => ({ fund_detail }));
@@ -39,14 +39,10 @@ const clean = createAction(CLEAN, () => ({}));
 // 펀딩페이지 가져오기
 const getFundingAC = (page, size = 12) => {
   const username = localStorage.getItem("username");
-  console.log(username)
   let Token = getToken("Authorization");
-
-
   return function (dispatch, getState, {history}) {
 
     const formData = new FormData();
-    // formData.append("info", username)
     formData.append("info",
       new Blob([JSON.stringify(username)], {
         type: "application/json",
@@ -63,41 +59,41 @@ const getFundingAC = (page, size = 12) => {
       }
     )
     .then((res) => {
-      // console.log(res)
-
-      //   console.log(res.data.content)
-
-      //   let paging={
-      //     page : res.data.content.length === size ? page + 1 : null,
-      //     size : size,
-      //   };
-
-      //   console.log(paging)
         dispatch(getFunding(res.data.content, res.data.totalPages));
-
-
     })
     .catch(error => {
-      console.log("error", error)
+      // console.log("error", error)
     })
   }
 }
 
 //펀딩상세페이지
 const getFundingDetailAC = (fundId) => {
-console.log(fundId)
+  const username = localStorage.getItem("username");
   let Token = getToken("Authorization");
   return function (dispatch, getState, {history}) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/fund/detail/${fundId}`,
-    {headers: { 'Authorization' : `${Token}`}}
+
+    const formData = new FormData();
+    formData.append("info",
+      new Blob([JSON.stringify(username)], {
+        type: "application/json",
+      })
+    )
+
+    axios.post(process.env.REACT_APP_BASE_URL + `/fund/detail/${fundId}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          'Authorization': `${Token}`,
+        }
+      }
     )
     .then((res) => {
-      console.log("팔로잉 리스트 가져오기", res)
       dispatch(getDetail(res.data.content))
-
     })
     .catch(error => {
-      console.log("error", error)
+      // console.log("error", error)
     })
   }
 }
@@ -118,9 +114,9 @@ const addFundingAC = (payload) => {
     )
 
     // FormData의 key 확인
-    for (let key of formData.keys()) { console.log(key); }
+    // for (let key of formData.keys()) { console.log(key); }
     // FormData의 value 확인
-    for (let value of formData.values()) { console.log(value); }
+    // for (let value of formData.values()) { console.log(value); }
 
     axios.post(process.env.REACT_APP_BASE_URL + `/fund/new/${bookId}`,
       formData,
@@ -132,18 +128,16 @@ const addFundingAC = (payload) => {
       }
     )
       .then((res) => {
-        console.log("펀딩 등록 완료", res)
         history.replace(`/funding`);
       })
       .catch(error => {
-        console.log("서버에러", error)
+                // console.log(error)
       })
   }
 }
 
 //좋아요
 const addLikeDB = (fundHeartBool, fundId) => {
-  console.log(fundHeartBool, fundId)
   let Token = getToken("Authorization");
   return function (dispatch, getState, { history }) {
     axios
@@ -154,18 +148,16 @@ const addLikeDB = (fundHeartBool, fundId) => {
 
       )
       .then((res) => {     
-        console.log(res)  
-        dispatch(addLike(res.data.fundHeartBool, res.data.fundHeartCnt)) 
+        dispatch(addLike(res.data.fundHeartBool, res.data.fundHeartCnt, res.data.successFunding)) 
       })
       .catch((error) => {       
-        console.log(error)
+        // console.log(error)
       });
   };
 };
 
 // 오디오북 요청 추가
   const fundingSuccessAC = (bookId, category) => {
-    console.log(bookId)
     let Token = getToken("Authorization");
   
     return function (dispatch, getState, { history }) {
@@ -175,7 +167,6 @@ const addLikeDB = (fundHeartBool, fundId) => {
         { headers: { 'Authorization': `${Token}` } }
       )
         .then((res) => {
-          console.log("펀딩달성 성공했니?", res)
           if(res.data === false) {
             Swal.fire({
               position: 'center',
@@ -191,7 +182,7 @@ const addLikeDB = (fundHeartBool, fundId) => {
           }
         })
         .catch(error => {
-          console.log("error", error)
+          // console.log("error", error)
         })
     }
   }
@@ -215,6 +206,7 @@ export default handleActions(
     produce(state, (draft) => {
       draft.fund_detail.myHeart = action.payload.fundHeartBool;
       draft.fund_detail.likeCnt = action.payload.fundHeartCnt;
+      draft.fund_detail.successFunding = action.payload.successFunding;
     }),
     [GET_DETAIL]: (state, action) =>
     produce(state, (draft) => {
