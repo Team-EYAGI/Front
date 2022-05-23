@@ -163,7 +163,7 @@ const kakaoLoginAC = (code) => {
         }
       })
       .catch((error) => {
-        // console.log(error)
+        console.log(error)
       });
   };
 };
