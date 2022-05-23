@@ -1,9 +1,10 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { setToken } from "../../shared/Token";
+import { emailCHK, usernameCHK } from "../../shared/Commons";
+
 import jwtDecode from "jwt-decode";
 import axios from "axios";
-import { emailCHK, passwordCHK, usernameCHK } from "../../shared/Commons";
 import Swal from 'sweetalert2';
 
 // action
@@ -18,7 +19,7 @@ const getUser = createAction(GET_USER, () => ({}));
 
 // initialState
 const initialState = {
-  user : [],
+  user: [],
   is_login: false,
 };
 
@@ -38,6 +39,8 @@ const loginAC = (email, password) => {
     }
   })
 
+  const firstCheck = localStorage.getItem("first");
+
   return function (dispatch, getState, { history }) {
     axios
       .post(process.env.REACT_APP_BASE_URL + `/user/login`, {
@@ -50,25 +53,41 @@ const loginAC = (email, password) => {
 
         const DecodedToken = jwtDecode(token);
 
-        localStorage.setItem("email", email);
-        localStorage.setItem("username", DecodedToken.USER_NIK);
-        localStorage.setItem("seller", DecodedToken.USER_ROLE);
-
-        dispatch(
-          login({
-            is_login: true,
-            email: email,
-            username: DecodedToken.USER_NIK,
+        if (!firstCheck) {
+          localStorage.setItem("first", true);
+          localStorage.setItem("username", DecodedToken.USER_NIK);
+          localStorage.setItem("seller", DecodedToken.USER_ROLE);
+          dispatch(
+            login({
+              is_login: true,
+              email: email,
+              username: DecodedToken.USER_NIK,
+            })
+          );
+          Toast.fire({
+            icon: 'success',
+            title: '로그인 성공!'
           })
-        );
-        Toast.fire({
-          icon: 'success',
-          title: '로그인 성공!'
-        })
-        history.replace(`/serviceGuide`)
+          history.replace(`/serviceGuide`)
+        } else {
+          localStorage.setItem("username", DecodedToken.USER_NIK);
+          localStorage.setItem("seller", DecodedToken.USER_ROLE);
+          dispatch(
+            login({
+              is_login: true,
+              email: email,
+              username: DecodedToken.USER_NIK,
+            })
+          );
+          Toast.fire({
+            icon: 'success',
+            title: '로그인 성공!'
+          })
+          history.replace(`/`)
+        }
       })
       .catch((error) => {
-        if(error) {
+        if (error) {
           Toast.fire({
             icon: 'error',
             title: '아이디와 비밀번호를 다시한번 확인해주세요!'
@@ -92,34 +111,55 @@ const kakaoLoginAC = (code) => {
       toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
   })
+
+  const firstCheck = localStorage.getItem("first");
+
   return function (dispatch, getState, { history }) {
     axios
       .get(process.env.REACT_APP_BASE_URL + `/user/kakao/callback?code=${code}`)
-      .then((res) => {        
+      .then((res) => {
         const token = res.headers.authorization;
         setToken(token);
 
         const DecodedToken = jwtDecode(token);
 
-        localStorage.setItem("email", DecodedToken.USER_EMAIL);
-        localStorage.setItem("username", DecodedToken.USER_NIK);
-        localStorage.setItem("seller", DecodedToken.USER_ROLE);
+        if (!firstCheck) {
+          localStorage.setItem("first", true);
+          localStorage.setItem("username", DecodedToken.USER_NIK);
+          localStorage.setItem("seller", DecodedToken.USER_ROLE);
 
-        dispatch(
-          login({
-            is_login: true,
-
-            email: DecodedToken.USER_EMAIL,
-            username: DecodedToken.USER_NIK,
-            seller: DecodedToken.USER_ROLE
-            //위치불확실 콘솔찍어서 확인
+          dispatch(
+            login({
+              is_login: true,
+              email: DecodedToken.USER_EMAIL,
+              username: DecodedToken.USER_NIK,
+              seller: DecodedToken.USER_ROLE,
+            })
+          );
+          Toast.fire({
+            icon: 'success',
+            title: '로그인 성공!'
           })
-        );
-        Toast.fire({
-          icon: 'success',
-          title: '로그인 성공!'
-        })
-        history.replace(`/serviceGuide`)
+          history.replace(`/serviceGuide`)
+        } else {
+          localStorage.setItem("username", DecodedToken.USER_NIK);
+          localStorage.setItem("seller", DecodedToken.USER_ROLE);
+          
+          dispatch(
+            login({
+              is_login: true,
+              email: DecodedToken.USER_EMAIL,
+              username: DecodedToken.USER_NIK,
+              seller: DecodedToken.USER_ROLE,
+            })
+          );
+
+          Toast.fire({
+            icon: 'success',
+            title: '로그인 성공!'
+          })
+          history.replace(`/`)
+        }
       })
       .catch((error) => {
         // console.log(error)
@@ -130,7 +170,6 @@ const kakaoLoginAC = (code) => {
 
 // 회원가입
 const signUpAC = (email, username, password, passwordCheck) => {
-  
   const Toast = Swal.mixin({
     toast: true,
     position: 'top',
@@ -146,13 +185,13 @@ const signUpAC = (email, username, password, passwordCheck) => {
 
   return function (dispatch, getState, { history }) {
     axios
-      .post(process.env.REACT_APP_BASE_URL + `/user/join`, {        
+      .post(process.env.REACT_APP_BASE_URL + `/user/join`, {
         username: username,
         password: password,
         passwordCheck: passwordCheck,
         email: email,
       })
-      
+
       .then((res) => {
         Toast.fire({
           icon: 'success',
@@ -161,7 +200,7 @@ const signUpAC = (email, username, password, passwordCheck) => {
         history.replace("/login");
       })
       .catch((error) => {
-        if(error) {
+        if (error) {
           Toast.fire({
             icon: 'error',
             title: '회원가입 조건을 다시한번 확인해주세요!'
@@ -187,27 +226,27 @@ const emailCheckAC = (email) => {
     }
   })
 
-  if (!emailCHK(email)){
-        Toast.fire({
-          icon: 'error',
-          title: '이메일 조건을 다시한번 확인해주세요!!',
-        })
+  if (!emailCHK(email)) {
+    Toast.fire({
+      icon: 'error',
+      title: '이메일 조건을 다시한번 확인해주세요!!',
+    })
     return;
   }
 
   return function (dispatch, getState) {
-        axios
-      .post(process.env.REACT_APP_BASE_URL + `/user/email/check`, {        
+    axios
+      .post(process.env.REACT_APP_BASE_URL + `/user/email/check`, {
         email: email,
       })
-      .then((res) => {     
+      .then((res) => {
         Toast.fire({
           icon: 'success',
           title: '사용 가능한 이메일입니다!'
         })
       })
       .catch((error) => {
-        if(error) {
+        if (error) {
           Toast.fire({
             icon: 'error',
             title: '이미 사용중인 이메일입니다!!'
@@ -235,29 +274,29 @@ const usernameCheckAC = (username) => {
     }
   })
 
-  if (!usernameCHK(username)){
+  if (!usernameCHK(username)) {
     Toast.fire({
       icon: 'error',
       title: '닉네임 조건을 다시한번 확인해주세요!'
-    })   
+    })
     return;
   }
-  return function (dispatch, getState) {    
+  return function (dispatch, getState) {
     axios
-      .post(process.env.REACT_APP_BASE_URL + `/user/userName/check`, {        
+      .post(process.env.REACT_APP_BASE_URL + `/user/userName/check`, {
         username: username,
-    })
+      })
       .then((res) => {
         Toast.fire({
           icon: 'success',
           title: '사용 가능한 닉네임입니다!'
-        })     
+        })
       })
       .catch((err) => {
         Toast.fire({
           icon: 'error',
           title: '이미 사용중인 닉네임입니다!'
-        })   
+        })
       });
   };
 };
@@ -281,12 +320,14 @@ export default handleActions(
         localStorage.removeItem("is_login");
         localStorage.removeItem("roomId");
         localStorage.removeItem("userId");
+        localStorage.setItem("first", false);
+
         draft.user = null;
 
         draft.is_login = false;
         window.location.replace("/");
       }),
-    [GET_USER]: (state, action) => produce(state, (draft) => {}),
+    [GET_USER]: (state, action) => produce(state, (draft) => { }),
   },
   initialState
 );
