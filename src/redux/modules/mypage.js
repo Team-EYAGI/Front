@@ -31,7 +31,6 @@ const initialState = {
   library_registerFunding: [],
   userImage: [],
   profile: [],
-  // sellorVoice: [],
 };
 
 // 액션 생성 함수
