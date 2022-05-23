@@ -123,7 +123,7 @@ function App() {
             <Route path="/requestWrite/:bookId/:bookRequestId" exact component={RequestWrite} />
             <Route path="/reviewWrite/:category/:bookId/:audioBookId" exact component={ReviewWirte} />
             <Route path="/reviewWrite/:category/:bookId/:audioBookId/:commentId" exact component={ReviewWirte} />
-            <Route path="/user/kakao/callback" component={KakaoAuthHandler} />
+            <Route path="/oauth/callback/kakao" component={KakaoAuthHandler} />
             <Route path="/search" exact component={Search} />
             <Route path="/serviceGuide" exact component={ServiceGuide} />
           </Suspense>
