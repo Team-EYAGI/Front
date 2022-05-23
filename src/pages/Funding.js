@@ -12,14 +12,12 @@ import Pagination from "../shared/Pagination"
 const Funding = () => {
   const dispatch = useDispatch();
   const params = useParams();
-  // console.log(params)
-  // const fundName = params.fund //?
 
   const [page, setPage] = React.useState(1)
 
   const funding = useSelector((state) => state.fund.fund_list);
   const totalPages = useSelector((state) => state.fund.totalPages);
-  console.log(funding)
+
 
   React.useEffect(() => {
     dispatch(getActions.getFundingAC(page));

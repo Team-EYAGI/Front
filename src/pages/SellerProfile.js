@@ -45,7 +45,6 @@ const SellerProfile = () => {
   const fundingList = useSelector((state) => state.creator.creator_funding);
   const follower = useSelector((state) => state.creator.creator_follower);
   const following = useSelector((state) => state.creator.creator_following);
-  console.log(fundingList)
 
   // 팔로우, 팔로잉 모달창
   const [open, setOpen] = React.useState(false);

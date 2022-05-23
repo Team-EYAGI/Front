@@ -31,7 +31,7 @@ const Request = () => {
           </li>
           <li>
             <div id='header' />
-            듣고 싶은 오디오북이 있다면 원하는 오디오북을 클릭하여 오디오북 요청서를 작성해주세요.
+            듣고 싶은 오디오북이 있다면 원하는 도서를 클릭하여 오디오북 요청서를 작성해주세요.
           </li>
         </RequestInfo>
         <RequestTable>

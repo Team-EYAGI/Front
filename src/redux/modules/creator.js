@@ -41,7 +41,7 @@ const getProfileAC = (sellerId, authority, username) => {
           dispatch(getProfile(res.data))
         })
         .catch(error => {
-          console.log("error", error)
+          // console.log("error", error)
         })
       } else {
         // 회원일 경우
@@ -52,7 +52,7 @@ const getProfileAC = (sellerId, authority, username) => {
           dispatch(getProfile(res.data))
         })
         .catch(error => {
-          console.log("error", error)
+          // console.log("error", error)
         })
       }  
   }
@@ -71,7 +71,7 @@ const getFundingAC = (sellerId) => {
       dispatch(getFunding(res.data))
     })
     .catch(error => {
-      console.log("error", error)
+      // console.log("error", error)
     })
   }
 }
@@ -88,7 +88,7 @@ const getAudioAC = (sellerId) => {
       dispatch(getAudio(res.data))
     })
     .catch(error => {
-      console.log("error", error)
+      // console.log("error", error)
     })
   }
 }
@@ -107,14 +107,13 @@ const followAC = (sellerId) => {
         dispatch(follow(res.data.followCount, res.data.followStatus))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
 
 // 팔로워 리스트 가져오기
 const followerListAC = (sellerId) => {
-  console.log(sellerId)
   let Token = getToken("Authorization");
   return function (dispatch, getState, {history}) {
     axios.get(process.env.REACT_APP_BASE_URL + `/user/follower?id=${sellerId}`, {
@@ -126,7 +125,7 @@ const followerListAC = (sellerId) => {
       dispatch(followerList(res.data))
     })
     .catch(error => {
-      console.log("error", error)
+      // console.log("error", error)
     })
   }
 }
@@ -145,7 +144,7 @@ const followingListAC = (sellerId) => {
       dispatch(followingList(res.data))
     })
     .catch(error => {
-      console.log("error", error)
+      // console.log("error", error)
     })
   }
 }
