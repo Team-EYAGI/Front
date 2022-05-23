@@ -15,7 +15,7 @@ const FundingWrite = () => {
 
 
   const detail = useSelector((state) => state.book.detail_book);
-  console.log(detail);
+  
   // upload라는 훅 생성
   const fileInput = useRef();
 

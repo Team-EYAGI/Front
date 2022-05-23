@@ -9,10 +9,8 @@ import { history } from "../redux/configureStore";
 import { BsPlayCircle } from "react-icons/bs";
 import { FcApproval } from "react-icons/fc";
 import { Text } from "../elements/Index";
-import FundHeart from "../components/FundHeart";
 
 const FundingCard = (props) => {
-  console.log("펀딩카드 좋아요값", props);
   const dispatch = useDispatch();
 
   let fundingHeartState = props.fundcard.myHeart;

@@ -7,7 +7,8 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as getActions } from "../redux/modules/fund";
 import { history } from "../redux/configureStore";
-
+import { FcApproval } from "react-icons/fc";
+import Swal from 'sweetalert2';
 
 const FundingDetail = () => {
   const params = useParams();
@@ -18,13 +19,20 @@ const FundingDetail = () => {
   const fundingDetail = useSelector((state) => state.fund.fund_detail);
   const sellerId = fundingDetail.sellerId
   const username = localStorage.getItem("username");
-  console.log(username)
 
   const boolean = fundingDetail.myHeart === false ? false : true;
   const [fundHeartBool, setFundHeartBool] = useState(boolean);
 
   const addLike = () => {
     if (username == fundingDetail.sellerName || fundingDetail.fundingGoals === fundingDetail.likeCnt) {
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: `이미 완료된 펀딩입니다`,
+        showConfirmButton: false,
+        timer: 1500,
+        color: "#000000",
+      })
       return;
     }
     if (fundHeartBool == false) {
@@ -51,16 +59,16 @@ const FundingDetail = () => {
 
   return (
     <React.Fragment>
-      {/* {fundingDetail ? ( */}
-      <Wrap>
+      <AudioHeader>오디오 펀딩  >  {fundingDetail.bookTitle && fundingDetail.bookTitle.split("(")[0]}</AudioHeader>
+      
         <Player>
-          <PlayerImg>
-            <AudioHeader>오디오 펀딩  >  펀딩 상세</AudioHeader>
+          <PlayerImg>            
             <ImgSt
               style={{ backgroundImage: `url(${fundingDetail.bookImg})` }}
             >
               <div id="img_wrap">
                 <div id="img">
+                
                   <img alt= "책 이미지" src={fundingDetail.bookImg} />
                 </div>
                 {/* 오디오 플레이어 */}
@@ -86,15 +94,15 @@ const FundingDetail = () => {
               </div>
               <ProfileInfo>
                 <div id="profileImg">
-                  <img alt= "크리에이터 이미지" src={fundingDetail.sellerImg} 
-                  onClick={() => {
-                    history.push(`/sellerProfile/${sellerId}/audiobook`)
-                  }}
+                   <img
+                    alt= "크리에이터 이미지"
+                    src={fundingDetail.sellerImg ? fundingDetail.sellerImg : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} 
+                    onClick={() => {
+                      history.push(`/sellerProfile/${sellerId}/audiobook`)
+                    }}
                   />
-                      {/* ? fundingDetail.sellerImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png" } */}
                 </div>
                 <div id="profile">
-                  {/* <div id="followdiv"> */}
                   <span id="follower">
                     팔로워 {fundingDetail.followerCnt}명
                   </span>
@@ -109,7 +117,12 @@ const FundingDetail = () => {
 
         <Goal>
           {/* 책 정보 */}
-          <h2>{fundingDetail.bookTitle}</h2>
+          <Success>
+          {fundingDetail.successFunding === true && (
+                  <FcApproval id="crown" size="40px" />
+                )}
+          <h2>{fundingDetail.bookTitle && fundingDetail.bookTitle.split("(")[0]}</h2>
+          </Success>
           <h4>
             {" "}
             저자 : {fundingDetail.author} / 크리에이터 : {fundingDetail.sellerName}
@@ -155,7 +168,7 @@ const FundingDetail = () => {
           
         </Goal>
       </Player>
-    </Wrap>
+ 
       {/* ) : null} */ }
     </React.Fragment >
   );
@@ -179,32 +192,20 @@ const Like = styled.div`
   }
 `;
 
-const Wrap = styled.div`
-  width: 1100px;
-  height: 800px;
-  position: relative;
-  display: flex;
-  border: none;
-  margin: auto;
-  font-style: normal;
-  font-size: 18px;
-  justify-content: space-between;
-  /* background-color: red; */
-`;
 
 const Player = styled.div`
-  width: 464px;
-  height: 100%;
+  width: 1100px;
+  height: 800px;
   display: flex;
 
-  justify-content: space-between;
+  justify-content: space-around;
   flex-direction: row;
   align-items: center;
   position: relative;
-  padding-bottom: 30px;
+  /* padding-bottom: 30px; */
   font-weight: 500;
   font-style: normal;
-  margin-left: 40px;
+ margin: 0 auto;
   /* background-color: purple; */
   
   h5 {
@@ -241,8 +242,10 @@ const Player = styled.div`
 `;
 
 const PlayerImg = styled.div`
+/* background-color: aqua; */
   width: 464px;
-  margin: 0 auto;
+  height: 100%;
+  /* margin: 0 auto; */
   display: flex;
   flex-direction: column;
   align-items: left;
@@ -348,11 +351,13 @@ const Goal = styled.div`
   /* background-color: orange; */
   width: 500px;
   height: 100%;
-  margin-left: 120px;
-  margin-top: 160px;
+  /* margin-left: 120px; */
+  /* margin-top: 160px; */
   
   
 h2 {
+  /* background-color: aqua; */
+  margin: 0px;
     width: 464px;
     height: 50px;
     float: left;
@@ -363,7 +368,6 @@ h2 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    /* background-color: red; */
 
   }
 
@@ -452,15 +456,20 @@ const Info = styled.div`
 `;
 
 const AudioHeader = styled.div`
-  width: 1100px;
+   width: 1100px;
   height: 60px;
-  
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin: 0 auto;
+
+  margin: 50px auto 10px auto;
   position: relative;
   display: flex;
   align-items: center;
+
+  /* background-color: yellow; */
   `
+
+const Success= styled.div`
+flex-direction: row;
+display: flex;
+`;
 
 export default FundingDetail;
