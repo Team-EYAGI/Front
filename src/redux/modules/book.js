@@ -270,7 +270,7 @@ const getSelfAC = (page = 1, size = 20) => {
         dispatch(getSelf(res.data.content, paging));
       })
       .catch(error => {
-        // console.log("error", error) 
+        // console.log("error", error)
       })
   }
 }
