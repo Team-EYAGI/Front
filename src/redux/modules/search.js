@@ -31,7 +31,7 @@ const getSearchAC = () => {
 
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -47,7 +47,7 @@ const addSearchAC = (word) => {
         history.replace(`/search`);
       })
       .catch(error => {
-        console.log("서버에러", error)
+        // console.log("서버에러", error)
       })
   }
 }

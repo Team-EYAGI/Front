@@ -235,8 +235,8 @@ const BottomSt = styled.ul`
     color: #333;
     line-height: 1.04vw;
 
-    cursor: pointer;
     :hover {
+      cursor: pointer;
       color: #D05943;
     }
   }

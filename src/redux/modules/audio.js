@@ -67,7 +67,7 @@ const getRequestAC = (page, size = 7) => {
 
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -86,7 +86,7 @@ const addRequestAC = (bookId, title, contents) => {
         history.replace(`/request`)
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -105,7 +105,7 @@ const editRequestAC = (bookRequestId, title, contents) => {
         history.replace(`/request`)
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -121,7 +121,7 @@ const deleteRequestAC = (bookRequestId) => {
         dispatch(deleteRequest(bookRequestId))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -161,7 +161,7 @@ const addAudioAC = (payload) => {
         history.push(`/bookdetail/${category}/${bookId}`);
       })
       .catch(error => {
-        console.log("서버에러", error)
+        // console.log("서버에러", error)
         history.push(`/loadingPage/failed/${category}/${bookId}`)
       })
   }
@@ -180,7 +180,7 @@ const addAudioCheckAC = (bookId) => {
         dispatch(addAudioCheck(res.data))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -197,7 +197,7 @@ const getAudioAC = (audioBookId) => {
         dispatch(getAudio(res.data))
       })
       .catch(error => {
-        console.log("error", error.message)
+        // console.log("error", error.message)
       })
   }
 }
@@ -216,7 +216,7 @@ const audiofollowAC = (sellerId) => {
         dispatch(addFollow(res.data.followCount, res.data.followStatus))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -233,7 +233,7 @@ const getReviewAC = (audioBookId, page, size = 5) => {
         dispatch(getReview(res.data.content, res.data.totalPages));
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -252,7 +252,7 @@ const addReviewAC = (category, bookId, audioBookId, title, content) => {
         history.replace(`/audioPlay/${category}/${bookId}/${audioBookId}`)
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -271,7 +271,7 @@ const editReviewAC = (category, bookId, audioBookId, title, content, commentId) 
         history.replace(`/audioPlay/${category}/${bookId}/${audioBookId}`)
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -287,7 +287,7 @@ const deleteReviewAC = (commentId) => {
         dispatch(deleteReview(commentId))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }

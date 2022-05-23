@@ -19,10 +19,11 @@ import MessageWrite from '../components/MessageWrite';
 const Chat = (props) => {
   const dispatch = useDispatch();
   useBeforeunload((event) => event.preventDefault());
-  const handleEvent = (e) => { 
-    if (e.nativeEvent.isComposing) { return; } 
-    if (e.key !== "Enter") { 
-      return; } sendMessage();
+  const handleEvent = (e) => {
+    if (e.nativeEvent.isComposing) { return; }
+    if (e.key !== "Enter") {
+      return;
+    } sendMessage();
   };
 
 
@@ -33,24 +34,24 @@ const Chat = (props) => {
   const [list, setList] = React.useState([
     { nick: "임시 사용자", text: "test message" },
   ]);
- 
+
   const is_session = localStorage.getItem("is_login");
   const Token = localStorage.getItem("token");
   const userName = localStorage.getItem("username");
   const chatRoomName = "문의하기";
   const roomId = localStorage.getItem("roomId");
-  const userId = localStorage.getItem("userId"); 
-  console.log(roomId + "/" + userId);
+  const userId = localStorage.getItem("userId");
+  // console.log(roomId + "/" + userId);
   const preview = useSelector((state) => state.chat.messages);
   //클릭이벤트 추가 join
-  const [click ,setClick] = React.useState(true);
+  const [click, setClick] = React.useState(true);
   // console.log(click);
 
   //채팅 룸에 접속한다음  소켓연결이 되야하는 라인  : 방 입장하는 버튼
   const enterRoom = () => {
     const Token = localStorage.getItem("token");
     const roomId = localStorage.getItem("roomId");
-    
+
     setClick(false);
     stompClient.connect()
     stompClient.subscribe(`/sub/api/chat/rooms/${roomId}`, (data) => {
@@ -67,7 +68,7 @@ const Chat = (props) => {
     );
 
   };
- 
+
   const sendMessage = (new_message) => {
     try {
       const data = {
@@ -76,7 +77,7 @@ const Chat = (props) => {
         senderId: userId,
         message: new_message,
       };
-      
+
       waitForConnection(stompClient, () => {
         stompClient.debug = null;
 
@@ -84,11 +85,11 @@ const Chat = (props) => {
           {
             token: `${Token}`,
           }, JSON.stringify(data));
-        console.log("메세지보내기 상태", stompClient.ws.readyState);
+        // console.log("메세지보내기 상태", stompClient.ws.readyState);
       });
     } catch (e) {
-      console.log("message 소켓 함수 에러", e);
-      console.log("메세지보내기 상태", stompClient.ws.readyState);
+      // console.log("message 소켓 함수 에러", e);
+      // console.log("메세지보내기 상태", stompClient.ws.readyState);
     }
   };
 
@@ -103,8 +104,8 @@ const Chat = (props) => {
     }, 0.1);
   };
 
-   // 새로고침될때 방 정보 날아가지 않도록 함
-   React.useEffect(() => {
+  // 새로고침될때 방 정보 날아가지 않도록 함
+  React.useEffect(() => {
     // 리덕스의 현재방 정보 변경
     if (Token) {
       dispatch(
@@ -123,7 +124,7 @@ const Chat = (props) => {
   React.useEffect(() => {
     // 방 정보가 없는 경우 홈으로 돌려보내기
     if (!roomId) {
-      console.log("room_id 내놔");
+      console.log("roomId가 없습니다.");
     }
     wsConnectSubscribe();
     return () => {
@@ -157,7 +158,7 @@ const Chat = (props) => {
         }
       );
     } catch (e) {
-      console.log("소켓 커넥트 에러", e);
+      // console.log("소켓 커넥트 에러", e);
     }
   };
 
@@ -173,7 +174,7 @@ const Chat = (props) => {
         { token: Token }
       );
     } catch (e) {
-      console.log("연결 구독 해체 에러", e);
+      // console.log("연결 구독 해체 에러", e);
     }
   };
 
@@ -195,22 +196,22 @@ const Chat = (props) => {
         style={{
           display: 'flex',
           justifyContent: "center",
-          alignItems:"center",
+          alignItems: "center",
         }}
       >
         <div className="logo_left"
-        style={{
-          maxWidth: "708px",
-          width: "calc(100% - 48px)",
-          boxSizing: "border-box",
-          marginRight: "24px"
-        }}
+          style={{
+            maxWidth: "708px",
+            width: "calc(100% - 48px)",
+            boxSizing: "border-box",
+            marginRight: "24px"
+          }}
         >
-          <img src={logo} style={{maxWidth: "100%"}} alt="eyagi"/>
+          <img src={logo} style={{ maxWidth: "100%" }} alt="eyagi" />
         </div>
         <Wrap>
           <div id='hello' ref={messageEndRef}>
-          {preview.map((item, idx) => ( <ChatList key={idx} item={item}/> ))}
+            {preview.map((item, idx) => (<ChatList key={idx} item={item} />))}
           </div>
           <div id="btm_area">
             <div>

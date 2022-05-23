@@ -83,14 +83,13 @@ const Header = styled.div`
   margin: 0 auto;
 
   margin-top: 60px;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 `
 
 const Wrap = styled.div`
   width: 1100px;
   min-height: 1000px;
 
-  margin-top: 20px;
   margin: 0 auto;
   flex-wrap: wrap;
 `
@@ -99,12 +98,9 @@ const Body = styled.div`
   width: 1000px;
   min-height: 250px;
 
-  margin-top: 20px;
   margin: 0 auto;
   flex-wrap: wrap;
-
   display: flex;
-
 `
 
 const Empty = styled.div`
@@ -122,7 +118,7 @@ const Empty = styled.div`
   span {
     background-color: #F4F4F4;
     text-align: center;
-    width: 200px;
+    width: 300px;
     padding: 10px 5px;
     border-radius: 5px;
   }

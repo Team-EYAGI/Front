@@ -48,7 +48,7 @@ const AdminChatList = (props) => {
   React.useEffect(() => {
     // 방 정보가 없는 경우 홈으로 돌려보내기
     if (!room_id) {
-      console.log("room_id 내놔");
+      console.log("roomId가 없습니다.");
     }
     wsConnectSubscribe();
     return () => {
@@ -82,7 +82,7 @@ const AdminChatList = (props) => {
         }
       );
     } catch (e) {
-      console.log("소켓 커넥트 에러", e);
+      // console.log("소켓 커넥트 에러", e);
     }
   };
 
@@ -98,7 +98,7 @@ const AdminChatList = (props) => {
         { token: Token }
       );
     } catch (e) {
-      console.log("연결 구독 해체 에러", e);
+      // console.log("연결 구독 해체 에러", e);
     }
   };
 
@@ -131,8 +131,8 @@ const AdminChatList = (props) => {
         // console.log("메세지보내기 상태", stompClient.ws.readyState);
       });
     } catch (e) {
-      console.log("message 소켓 함수 에러", e);
-      console.log("메세지보내기 상태", stompClient.ws.readyState);
+      // console.log("message 소켓 함수 에러", e);
+      // console.log("메세지보내기 상태", stompClient.ws.readyState);
     }
   };
   
@@ -155,7 +155,6 @@ const AdminChatList = (props) => {
 
     // 방 나가기 - 사용자, 방장 구분 후 실행하는 함수
     const get_out_chat = () => {
-      console.log(roomId);
       dispatch(chatActions.leaveChatAX(roomId));
     };
 
