@@ -146,9 +146,7 @@ const Icon = styled.div`
   right: 50px;
   bottom: 50px;
   z-index: 1;
-
   cursor: pointer;
-
 `
 
 export default App;
