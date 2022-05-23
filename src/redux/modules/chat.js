@@ -28,7 +28,7 @@ const GET_MSG = "GET_MSG";
 // 처음 방에 입장할때 이전 대화기록 DB에서 가져오기 (array)
 const SET_MSG = "SET_MSG";
 
-const GET_MESSAGE= "GET_MESSAGE";
+const GET_MESSAGE = "GET_MESSAGE";
 // 삭제 메커니즘.
 const DELETE_ROOM = "DELETE_ROOM";
 
@@ -44,7 +44,7 @@ const moveChatRoom = createAction(
 );
 
 // 현재 채팅방 정보 초기화
-const clearChat = createAction(CLEAR_CHAT, () => {});
+const clearChat = createAction(CLEAR_CHAT, () => { });
 // 채팅방 메세지
 const getMessages = createAction(GET_MSG, (newMessage) => ({
   newMessage,
@@ -82,97 +82,97 @@ const initialState = {
   now_time: null,
   userInList: [],
   setMessage: [],
-  msg : [],
+  msg: [],
 };
 
 // middleware
 // 채팅 탭 이동시 실행되는 함수
 // 사용자 개인의 참여중인 채팅 목록을 조회한다.
 const setChatListAX = () => {
-  return function (dispatch, getState, {history}) {
-  let Token = getToken("Authorization");
-    axios.get(process.env.REACT_APP_CHAT_URL + "/rooms", 
-    { headers: { 'Authorization': `${Token}` } }
+  return function (dispatch, getState, { history }) {
+    let Token = getToken("Authorization");
+    axios.get(process.env.REACT_APP_CHAT_URL + "/rooms",
+      { headers: { 'Authorization': `${Token}` } }
     )
-    .then((res) => {
-      // console.log("채팅방 목록", res)
-      let my_chat_list = [];
-      res.data.data.forEach(c => {
-        let one_chat_info = {
-          room_id: c.roomId,
-          own_user_id: c.nickname,
-          roomName: c.romName,
-          createdAt: c.createdAt,
-          userRole: c.userRole,
-          new_msg: c.newMessage
-        };
-        my_chat_list.push(one_chat_info);
-      });
-      localStorage.setItem("userId",res.data.userId);
-      dispatch(setChatList(my_chat_list))
-    })
-    .catch(error => {
-      console.log("error", error)
-    })
+      .then((res) => {
+        // console.log("채팅방 목록", res)
+        let my_chat_list = [];
+        res.data.data.forEach(c => {
+          let one_chat_info = {
+            room_id: c.roomId,
+            own_user_id: c.nickname,
+            roomName: c.romName,
+            createdAt: c.createdAt,
+            userRole: c.userRole,
+            new_msg: c.newMessage
+          };
+          my_chat_list.push(one_chat_info);
+        });
+        localStorage.setItem("userId", res.data.userId);
+        dispatch(setChatList(my_chat_list))
+      })
+      .catch(error => {
+        // console.log("error", error)
+      })
   }
 }
 
 const setUserChatListAX = () => {
-  return function (dispatch, getState, {history}) {
-  let Token = getToken("Authorization");
-    axios.get(process.env.REACT_APP_CHAT_URL + "/chat/rooms/mine", 
-    { headers: { 'Authorization': `${Token}` } }
+  return function (dispatch, getState, { history }) {
+    let Token = getToken("Authorization");
+    axios.get(process.env.REACT_APP_CHAT_URL + "/chat/rooms/mine",
+      { headers: { 'Authorization': `${Token}` } }
     )
-    .then((res) => {
-      // console.log("채팅방 목록", res)
-      let my_chat_list = [];
-      res.data.forEach(c => {
-        let one_chat_info = {
-          room_id: c.roomId,
-          own_user_id: c.nickname,
-          roomName: c.romName,
-          createdAt: c.createdAt,
-          userRole: c.userRole,
-          new_msg: c.newMessage
-        };
-        my_chat_list.push(one_chat_info);
-      });
-      dispatch(setChatList(my_chat_list))
-    })
-    .catch(error => {
-      console.log("error", error)
-    })
+      .then((res) => {
+        // console.log("채팅방 목록", res)
+        let my_chat_list = [];
+        res.data.forEach(c => {
+          let one_chat_info = {
+            room_id: c.roomId,
+            own_user_id: c.nickname,
+            roomName: c.romName,
+            createdAt: c.createdAt,
+            userRole: c.userRole,
+            new_msg: c.newMessage
+          };
+          my_chat_list.push(one_chat_info);
+        });
+        dispatch(setChatList(my_chat_list))
+      })
+      .catch(error => {
+        // console.log("error", error)
+      })
   }
 }
 
 const getChatMessagesAX = (roomId) => {
-  return function (dispatch, getState, {history}) {
+  return function (dispatch, getState, { history }) {
     let Token = getToken("Authorization");
     axios.get(process.env.REACT_APP_CHAT_URL + `/chat/${roomId}/messages`,
-    { headers: { 'Authorization': `${Token}` } }
+      { headers: { 'Authorization': `${Token}` } }
     )
-    .then((res) => {
-      let chatMassageArray = [];
-      // console.log(res);
-      res.data.forEach((m) => {
-        let one_msg_info = {
-          type: m.type,
-          room_id: m.roomId,
-          sender: m.nickname,
-          sender_id: m.senderId,
-          message: m.message,
-          createdAt: m.createdAt,
-          msg_id: m.id,
-        };
-        chatMassageArray.push(one_msg_info);
-      });
-      // console.log(chatMassageArray);
-      // console.log("이전 메세지 목록", res)
-      dispatch(setMessage(chatMassageArray))
-    })
-    .catch(error => {
-      console.log("error", error)
-    })
+      .then((res) => {
+        let chatMassageArray = [];
+        // console.log(res);
+        res.data.forEach((m) => {
+          let one_msg_info = {
+            type: m.type,
+            room_id: m.roomId,
+            sender: m.nickname,
+            sender_id: m.senderId,
+            message: m.message,
+            createdAt: m.createdAt,
+            msg_id: m.id,
+          };
+          chatMassageArray.push(one_msg_info);
+        });
+        // console.log(chatMassageArray);
+        // console.log("이전 메세지 목록", res)
+        dispatch(setMessage(chatMassageArray))
+      })
+      .catch(error => {
+        // console.log("error", error)
+      })
   }
 }
 
@@ -181,38 +181,38 @@ const userQnAAX = (uuid) => {
   return function (dispatch, getState, { history }) {
     let Token = getToken("Authorization");
     axios
-      .post(process.env.REACT_APP_BASE_URL + "/chat/rooms", 
-      { headers: { 'Authorization': `${Token}` } },
-      {
-        chatRoomName: "문의하기",
-        uuid: uuid
-      })
+      .post(process.env.REACT_APP_BASE_URL + "/chat/rooms",
+        { headers: { 'Authorization': `${Token}` } },
+        {
+          chatRoomName: "문의하기",
+          uuid: uuid
+        })
       .then((res) => {
         // console.log(res);
         dispatch(setUserChatListAX());
         // console.log("채팅방 생성 완료");
       })
       .catch((e) => {
-        console.log("모집글 작성 모듈 에러", e);
+        // console.log("모집글 작성 모듈 에러", e);
       });
   };
 };
 
 const leaveChatAX = (room_id) => {
   const deleteP = window.confirm("alert 값확인하기");
-  if(deleteP) {
+  if (deleteP) {
     return function (dispatch, getState, { history }) {
       let Token = getToken("Authorization");
-      axios.delete(process.env.REACT_APP_BASE_URL + `/chat/${room_id}`, 
-      { headers: { 'Authorization': `${Token}` } })
-      .then((res) => {
-        // console.log("방 폭파 boom!", res);
-        dispatch(deleteRoom(room_id));
-        history.replace("/Admin");
-      })
-      .catch((e) => {
-        console.log("채팅방 나가기 요청 에러", e);
-      });
+      axios.delete(process.env.REACT_APP_BASE_URL + `/chat/${room_id}`,
+        { headers: { 'Authorization': `${Token}` } })
+        .then((res) => {
+          // console.log("방 폭파 boom!", res);
+          dispatch(deleteRoom(room_id));
+          history.replace("/Admin");
+        })
+        .catch((e) => {
+          // console.log("채팅방 나가기 요청 에러", e);
+        });
     }
   } else {
     return function (dispatch, getState, { history }) {
@@ -228,7 +228,7 @@ export default handleActions(
       produce(state, (draft) => {
         draft.chatListInfo = action.payload.myChatList;
       }),
-    
+
     // moveChatRoom - 현재 채팅방 id, name
     [MOVE_CHAT_ROOM]: (state, action) =>
       produce(state, (draft) => {
@@ -252,16 +252,16 @@ export default handleActions(
       produce(state, (draft) => {
         // 들어온 메세지 안의 대상자 id 와 현재 사용자 id 비교
         const m = action.payload.newMessage;
-          const one_msg = {
-            type: m.type,
-            room_id: m.roomId,
-            sender_id: m.senderId,
-            message: m.message,
-            createdAt: m.createdAt,
-            msg_id: m.id,
-          };
-          draft.messages.push(one_msg);
-        }
+        const one_msg = {
+          type: m.type,
+          room_id: m.roomId,
+          sender_id: m.senderId,
+          message: m.message,
+          createdAt: m.createdAt,
+          msg_id: m.id,
+        };
+        draft.messages.push(one_msg);
+      }
       ),
 
     [GET_MESSAGE]: (state, action) =>
@@ -269,16 +269,16 @@ export default handleActions(
         // console.log(action.payload.newMessage);
         const m = action.payload.newMessage;
 
-          const one_msg = {
-            type: m.type,
-            room_id: m.roomId,
-            sender_id: m.senderId,
-            message: m.message,
-            createdAt: m.createdAt,
-            msg_id: m.id,
-          };
-          draft.msg.push(one_msg);
-        }
+        const one_msg = {
+          type: m.type,
+          room_id: m.roomId,
+          sender_id: m.senderId,
+          message: m.message,
+          createdAt: m.createdAt,
+          msg_id: m.id,
+        };
+        draft.msg.push(one_msg);
+      }
       ),
     // setMessage - 메세지 DB에서 조회할때 해당 방의 메세지 내역 불러옴
     // 이전 메세지 내역중 유형이 대화인 내용만 리덕스에 저장
@@ -288,10 +288,10 @@ export default handleActions(
       }),
     [DELETE_ROOM]: (state, action) =>
       produce(state, (draft) => {
-        console.log(draft);
+        // console.log(draft);
         // draft.room = draft.review_list.filter((p) => p.commentId !== action.payload.commentId);
       }),
-    
+
   },
   initialState,
 );

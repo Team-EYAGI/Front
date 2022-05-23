@@ -122,7 +122,7 @@ const kakaoLoginAC = (code) => {
         history.replace(`/serviceGuide`)
       })
       .catch((error) => {
-        console.log(error)
+        // console.log(error)
       });
   };
 };

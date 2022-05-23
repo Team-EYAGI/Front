@@ -6,6 +6,7 @@ import { history } from '../redux/configureStore';
 const Footer = () => {
   return (
     <React.Fragment>
+      <Wrap>
       <hr style={{ width: "98%", border: "1px solid lightgray" }} />
       <Grid>
         <FooterSt>
@@ -37,10 +38,17 @@ const Footer = () => {
           © TEAM EYAGI. ALL RIGHTS RESERVED
         </FooterSt>
       </Grid>
+      </Wrap>
+
     </React.Fragment>
   )
 }
 
+
+const Wrap = styled.div`
+  background-color: #FFFFFC;
+  margin-top: 100px;
+`
 const FooterSt = styled.ul`
   background-color: #FFFFFC;
   height: 120px;

@@ -45,6 +45,17 @@ const ServiceGuide = lazy(() => import('../pages/ServiceGuide'));
 
 function App() {
 
+  // 이미 방이 있는지 확인
+  const checkRoom = () => {
+    const roomId = localStorage.getItem("roomId");
+
+    if (roomId == null) {
+      createRoom();
+    } else {
+      history.push('/Chat');
+    }
+  };
+
   const createRoom = () => {
     //방이름 => chatRoomName  /  uuid => 닉네임
     // const formData = new FormData();
@@ -65,7 +76,7 @@ function App() {
         history.push('/Chat');
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -119,7 +130,7 @@ function App() {
         </Wrap>
         <Footer />
         <Icon>
-          <SpeedDialOpen createRoom={createRoom} />
+          <SpeedDialOpen createRoom={checkRoom} />
         </Icon>
       </ConnectedRouter>
     </React.Fragment>

@@ -37,16 +37,14 @@ const Wrap = styled.div`
   margin: 10px 10px 20px 10px;
 
   :hover {
-      transform: scale(0.95);
-      cursor: pointer;
-    }
+    transform: scale(0.95);
+    cursor: pointer;
+  }
 `
 
 const Body = styled.div`
   width: 180px;
-  
   cursor: pointer;
-
   h3 {
     white-space: nowrap;
     overflow:hidden;
@@ -57,16 +55,14 @@ const Body = styled.div`
 const ImageBox = styled.div`
   width: 180px;
   height: 260px;
-  /* box-shadow: 0 0 2px gray; */
 
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 
-  img {
-  border: 1px solid lightgray;
-  border-radius: 5px;
-
+    img {
+    border: 1px solid lightgray;
+    border-radius: 5px;
   }
 `
 

@@ -163,8 +163,14 @@ const AudioCardSt1 = styled.div`
 
   button {
     font-family: Pretendard;
-    font-weight: 400;
-    font-style: normal;   
+    font-weight: 700;
+    font-style: normal;
+    font-size: 17px;
+
+    :hover {
+      cursor: pointer;
+      color: #D05943;
+    } 
   }
 `
 

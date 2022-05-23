@@ -62,7 +62,7 @@ const getProfileAC = () => {
 
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -88,7 +88,7 @@ const addLibraryAC = (bookId) => {
         })
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -105,7 +105,7 @@ const getListenAudioAC = () => {
         dispatch(getListenAudio(res.data))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -121,7 +121,7 @@ const getRegisterAudioBookAC = () => {
         dispatch(getRegisterAudioBook(res.data))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -137,7 +137,7 @@ const getRegisterFundingAC = () => {
         dispatch(getRegisterFunding(res.data))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -153,7 +153,7 @@ const getLikeBookAC = () => {
         dispatch(getLikeBook(res.data))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -169,7 +169,7 @@ const deleteLikeBookAC = (bookId) => {
         dispatch(deleteLikeBook(bookId))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -185,7 +185,7 @@ const deleteAudioBookAC = (audioBookId) => {
         dispatch(deleteAudioBook(audioBookId))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -263,7 +263,7 @@ const addVoiceAC = (payload) => {
         history.push(`/loading/success`)
       })
       .catch(error => {
-        console.log("서버에러", error)
+        // console.log("서버에러", error)
         history.push(`/loading/failed`)
       })
   }

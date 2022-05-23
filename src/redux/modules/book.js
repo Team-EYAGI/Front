@@ -71,7 +71,7 @@ const getMainAC = () => {
         dispatch(getMain(res.data))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -88,7 +88,7 @@ const getMainCategoryAC = () => {
         dispatch(getMainCategory(res.data))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -105,7 +105,7 @@ const getMainCreatorAC = () => {
         dispatch(getMainCreator(res.data))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -123,7 +123,7 @@ const getMainFundingAC = () => {
         dispatch(getMainFunding(res.data))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -140,7 +140,7 @@ const getBookDetailAC = (bookId) => {
         dispatch(getBookDetail(res.data))
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -166,7 +166,7 @@ const getNovelAC = (page = 1, size = 20) => {
         dispatch(getNovel(res.data.content, paging));
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -192,7 +192,7 @@ const getEconomyAC = (page = 1, size = 20) => {
         dispatch(getEconomy(res.data.content, paging));
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -218,7 +218,7 @@ const getPoemAC = (page = 1, size = 20) => {
         dispatch(getPoem(res.data.content, paging));
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -244,7 +244,7 @@ const getKidsAC = (page = 1, size = 20) => {
         dispatch(getKids(res.data.content, paging));
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }
@@ -270,7 +270,7 @@ const getSelfAC = (page = 1, size = 20) => {
         dispatch(getSelf(res.data.content, paging));
       })
       .catch(error => {
-        console.log("error", error)
+        // console.log("error", error)
       })
   }
 }

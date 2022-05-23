@@ -31,16 +31,17 @@ const SearchSellerCard = (props) => {
 const Wrap = styled.div`
   height: 200px;
   margin: 10px;
+  :hover {
+    transform: scale(0.95);
+    cursor: pointer;
+  }
 `
 
 const Body = styled.div`
   width: 200px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  
-  cursor: pointer;
 
   h3 {
     white-space: nowrap;
