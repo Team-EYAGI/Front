@@ -16,6 +16,7 @@ const Main = () => {
     dispatch(getActions.getMainCategoryAC());
     dispatch(getActions.getMainFundingAC());
     dispatch(getActions.getMainCreatorAC());
+    dispatch(getActions.getCookieAC());
     return () => {
       dispatch(getActions.clearMain());
     }

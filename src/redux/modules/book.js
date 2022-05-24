@@ -8,6 +8,7 @@ const GET_MAIN = "GET_MAIN";
 const GET_MAIN_CATEGORY = "GET_MAIN_CATEGORY";
 const GET_MAIN_FUNDING = "GET_MAIN_FUNDING";
 const GET_MAIN_CREATOR = "GET_MAIN_CREATOR";
+const GET_COOKIE = "GET_COOKIE"
 
 // 2. 책 상세페이지 관련
 const GET_BOOKDETAIL = "GET_BOOKDETAIL";
@@ -29,6 +30,8 @@ const getMain = createAction(GET_MAIN, (main) => ({ main }));
 const getMainCategory = createAction(GET_MAIN_CATEGORY, (main_category) => ({ main_category }));
 const getMainFunding = createAction(GET_MAIN_FUNDING, (main_funding) => ({ main_funding }));
 const getMainCreator = createAction(GET_MAIN_CREATOR, (main_creator) => ({ main_creator }));
+const getCooKie = createAction(GET_COOKIE, () => ({  }));
+
 
 const getBookDetail = createAction(GET_BOOKDETAIL, (detail_book) => ({ detail_book }));
 
@@ -59,6 +62,24 @@ const initialState = {
 };
 
 // 미들웨어
+// 쿠키 저장
+const getCookieAC = () => {
+  return function (dispatch, getState, { history }) {
+    axios.get(process.env.REACT_APP_BASE_URL + `/cookie`, {
+
+    },
+      // {headers: { 'Authorization' : `Bearer ${myToken}`}}
+    )
+      .then((res) => {
+        console.log(res)
+        // dispatch(getMain(res.data))
+      })
+      .catch(error => {
+        // console.log("error", error)
+      })
+  }
+}
+
 // 메인페이지 추천도서 겟
 const getMainAC = () => {
   return function (dispatch, getState, { history }) {
@@ -68,6 +89,7 @@ const getMainAC = () => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
+        console.log(res)
         dispatch(getMain(res.data))
       })
       .catch(error => {
@@ -371,6 +393,7 @@ const actionCreators = {
   getMainCategoryAC,
   getMainCreatorAC,
   getMainFundingAC,
+  getCookieAC,
   getBookDetailAC,
   getNovelAC,
   getPoemAC,
