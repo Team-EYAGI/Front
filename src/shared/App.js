@@ -18,7 +18,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SpeedDialOpen from '../elements/SpeedDial';
 import Spinner from '../elements/Spinner'
-import KakaoAuthHandler from '../pages/KakaoAuthHandler'; 
+import KakaoAuthHandler from '../pages/KakaoAuthHandler';
 
 // 레이지 로딩
 const AudioWrite = lazy(() => import('../pages/AudioWrite'));
