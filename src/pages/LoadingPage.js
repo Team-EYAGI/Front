@@ -46,42 +46,7 @@ const LoadingPage = () => {
             </div>
           </Content>
         }
-
       </Wrap>
-
-      {/* <ModalBox>
-        {params.result === "success" ?
-          <Content>
-            <p>등록이 완료되었습니다!</p>
-            <div>
-              <button
-                onClick={() => {
-                  history.push('/mypage/listen')
-                }}
-              >마이페이지로 이동하기</button>
-            </div>
-          </Content>
-          : params.result === "failed" ?
-          <Content>
-            <p>등록 실패!</p>
-            <span>파일 확장자를 다시 한 번 확인해주세요!</span>
-            <div>
-              <button
-                onClick={() => {
-                  history.push(`/addvoice`)
-                }}
-              >다시 등록하기</button>
-            </div>
-          </Content>
-          :
-          <Content>
-            <p>등록중이니 조금만 기다려주세요!</p>
-            <div id="spinner">
-              <Spinner/>
-            </div>
-          </Content>
-        }
-      </ModalBox> */}
     </React.Fragment>
   )
 }

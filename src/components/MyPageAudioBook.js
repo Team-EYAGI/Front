@@ -20,6 +20,7 @@ const MyPageAudioBook = (props) => {
   const fundId = props.item.fundId;
 
   const is_session = localStorage.getItem("is_login");
+  const username = localStorage.getItem("username");
 
   return (
     <React.Fragment>
@@ -55,7 +56,6 @@ const MyPageAudioBook = (props) => {
               src={props.item.bookImg}
               className={props.item?.successFunding === true ? 'img' : 'none'}
             />
-
           </ImageBox>
           <h3 style={{ fontSize: "16px" }}>
             {category === `myFunding` || category === "myAudio" ? props.item.bookTitle : props.item.title}
@@ -83,13 +83,23 @@ const MyPageAudioBook = (props) => {
             }
           </div>
 
-          {props.item?.successFunding === true &&
+          {category === "myFunding" && props.item?.successFunding === true &&
             <Success>
               <span
                 onClick={() => {
                   history.push(`/audioWrite/${props.item?.category}/${props.item?.bookId}`)
                 }}
-              > 오디오북 등록하기&nbsp;<FcApproval id="success" size='20px'/> </span>
+              > 오디오북 등록하기&nbsp;<FcApproval id="success" size='20px' /> </span>
+            </Success>
+          }
+
+          {category === "funding" && props.item?.successFunding === true &&
+            <Success>
+              <span
+                onClick={() => {
+                  history.push(`/bookDetail/${props.item?.category}/${props.item?.bookId}`)
+                }}
+              > 오디오북 듣기&nbsp;<FcApproval id="success" size='20px' /> </span>
             </Success>
           }
         </Body>

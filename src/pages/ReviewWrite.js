@@ -8,11 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as reviewActions } from "../redux/modules/audio";
 
-
-
 const ReviewWirte = (props) => {
- 
-  const dispatch = useDispatch();
+   const dispatch = useDispatch();
 
   // 새로고침 경고 알럿
   useBeforeunload((event) => event.preventDefault());

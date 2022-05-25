@@ -48,6 +48,7 @@ const Footer = () => {
 const Wrap = styled.div`
   background-color: #FFFFFC;
   margin-top: 100px;
+  min-width: 1200px;
 `
 const FooterSt = styled.ul`
   background-color: #FFFFFC;

@@ -11,26 +11,9 @@ import { FcApproval } from "react-icons/fc";
 import { Text } from "../elements/Index";
 
 const FundingCard = (props) => {
-  const dispatch = useDispatch();
-
   let fundingHeartState = props.fundcard.myHeart;
-  // let fundHeartBool = fundingHeartState === false ? true : false;
-  // let fundHeartBool2 = fundingHeartState === false ? true : false;
-
   const fundingcard = props.fundcard;
   const fundId = fundingcard.fundId;
-  // let [fundHeartBool ,setFundHeartBool] = React.useState(fundHeartBool2);
-
-  // const ChangeLike = () => {
-  //   setFundHeartBool(fundHeartBool);
-  //   if (fundHeartBool == false) {
-  //     dispatch(getActions.addLikeDB(fundHeartBool, fundId))
-  //     fundHeartBool = true;
-  //   } else {
-  //     dispatch(getActions.addLikeDB(fundHeartBool, fundId))
-  //     fundHeartBool = false;
-  //   }
-  // };
 
   return (
     <React.Fragment>
@@ -78,13 +61,11 @@ const FundingCard = (props) => {
 };
 
 const Wrap = styled.div`
-  height: 200px;
+  height: 340px;
   margin: 12px 12px 0px 12px;
   :hover {
     transform: scale(0.95);
   }
-  /* margin-right: 1px; */
-  /* background-color: yellow; */
 `;
 
 const Body = styled.div`

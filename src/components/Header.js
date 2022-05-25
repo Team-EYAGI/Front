@@ -7,6 +7,7 @@ import { history } from '../redux/configureStore';
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as searchActions } from "../redux/modules/search";
 import { actionCreators } from "../redux/modules/user";
+import { actionCreators as getActions } from "../redux/modules/book";
 import logo from '../src_assets/logo.svg';
 import Swal from 'sweetalert2';
 
@@ -90,7 +91,10 @@ const Header = (props) => {
       <BottomWrap>
         <BottomSt>
           <div id='list'>
-            <li onClick={() => { history.push(`/book/자기계발`); }}>카테고리별 도서</li>
+            <li onClick={() => {
+              history.push(`/book/자기계발`);
+              dispatch(getActions.getSelfAC());
+            }}>카테고리별 도서</li>
             <li onClick={() => { history.push('/funding') }}>오디오 펀딩</li>
             <li onClick={() => { history.push('/request') }}>오디오북 요청 모아보기</li>
             {/* <li>ㅇㅇㅇ</li> */}
@@ -114,7 +118,7 @@ const Header = (props) => {
 const HeaderWrap = styled.div`
   width: 1200px;
   height: 60px;
-  background-color: #FFFFFC;;
+  background-color: #FFFFFC;
   margin: 20px auto -5px auto;
 
   display: flex;
@@ -129,17 +133,16 @@ const HeaderWrap = styled.div`
 `
 
 const BottomWrap = styled.div`
-  max-width: 1920px;
-  width: calc(100%-480px);
-  background-color: #FFFFFC;;
+  /* max-width: 1920px; */
+  /* width: 1920px; */
+  min-width: 1200px;
 
   height: 50px;
   position: sticky;
   top: 0;
   z-index: 4;
 
-  margin: 0px auto;
-  padding: 0.3vw 13.02vw;
+  /* margin: 0 auto; */
 
   box-shadow: 0px 3px 1.9px 0.1px rgb(80 80 80 / 30%);
 
@@ -198,11 +201,12 @@ const LoginBox = styled.div`
 `
 
 const BottomSt = styled.ul`
-
   width: 1200px;
   height: 30px;
 
   display: flex;
+  justify-content: center;
+  align-items: center;
 
   padding: 0px;
   padding-bottom: 2px;
@@ -212,12 +216,8 @@ const BottomSt = styled.ul`
 
   cursor: pointer;
 
-  font-family: Pretendard;
-  font-weight: 400;
-  font-style: normal;
-
   #list {
-    width: 1200px;
+    width: 1100px;
 
     display: flex;
     flex-direction: row;
@@ -233,7 +233,7 @@ const BottomSt = styled.ul`
     font-size: 15px;
     font-weight: bold;
     color: #333;
-    line-height: 1.04vw;
+    /* line-height: 1.04vw; */
 
     :hover {
       cursor: pointer;
@@ -279,7 +279,7 @@ const SearchIcon = styled.div`
   background-size: 30px;
   position: absolute;
   right: 5px;
-  top: -2px;
+  top: 4px;
   width: 30px;
   height: 30px;
 `;

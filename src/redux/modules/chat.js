@@ -216,7 +216,7 @@ const leaveChatAX = (room_id) => {
     }
   } else {
     return function (dispatch, getState, { history }) {
-      console.log("방폭파를 취소하셨습니다.");
+      // console.log("방폭파를 취소하셨습니다.");
     }
   }
 }

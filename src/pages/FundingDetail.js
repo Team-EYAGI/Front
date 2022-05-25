@@ -23,7 +23,6 @@ const FundingDetail = () => {
 
   const boolean = fundingDetail.myHeart === false ? false : true;
   const [fundHeartBool, setFundHeartBool] = useState(boolean);
-  console.log(fundingDetail)
 
   const addLike = () => {
     if (!is_login) {
@@ -192,6 +191,15 @@ const FundingDetail = () => {
                 history.push(`/audioWrite/${fundingDetail.category}/${fundingDetail.bookId}`)
               }}>
               내 오디오 등록하기
+            </button>
+          )}
+          
+          {fundingDetail.successFunding === true && (
+            <button
+              onClick={() => {
+                history.push(`/bookdetail/${fundingDetail.category}/${fundingDetail.bookId}`)
+              }}>
+              오디오북 들으러 가기
             </button>
           )}
 

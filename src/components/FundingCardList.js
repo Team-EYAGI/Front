@@ -1,17 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import FundingCard from "./FundingCard";
-import InfinityScroll from "../shared/InfinityScroll";
-
-import { useDispatch, useSelector } from "react-redux";
-import { actionCreators as getActions } from "../redux/modules/fund";
-
+import { useDispatch } from "react-redux";
 import { FcApproval } from "react-icons/fc";
 
 const FundingCardList = (props) => {
-  const dispatch = useDispatch();
-  const fund = props.funding;
 
+  const fund = props.funding;
   // 무한스크롤
   // const paging = useSelector((state) => state.fund.paging);
   // const is_loading = useSelector((state) => state.fund.is_loading);
@@ -19,12 +14,11 @@ const FundingCardList = (props) => {
     <React.Fragment>
       <AudioHeader>오디오 펀딩 > 펀딩 리스트</AudioHeader>
       <FundingInfo>
-        <li>▶ 원하는 펀딩이 있다면 펀딩 상세페이지에서 좋아요를 눌러주세요!</li>
-        <li>▶ 목표가 달성되면 해당 크리에이터의 오디오북을 들을 수 있어요.</li>
+        <li>▶&nbsp;&nbsp;원하는 펀딩이 있다면 펀딩 상세페이지에서 좋아요를 눌러주세요!</li>
+        <li>▶&nbsp;&nbsp;목표가 달성되면 해당 크리에이터의 오디오북을 들을 수 있어요.</li>
 
         <li>
-          ▶ <FcApproval size="20px" /> 표시가 있는 카드는 펀딩이 완료된
-          카드예요!
+          ▶&nbsp;&nbsp;<FcApproval size="20px" /> 표시가 있는 카드는 펀딩이 완료된 카드이고, 내가 참여한 펀딩엔 하트가 채워져있어요!
         </li>
       </FundingInfo>
       <Wrap>
@@ -70,11 +64,9 @@ const Wrap = styled.div`
   width: 1100px;
   margin-top: 20px;
   margin: 0 auto;
-  min-height: 1000px;
 
   display: flex;
   flex-wrap: wrap;
-  justify-content: left;
 `;
 
 export default FundingCardList;
