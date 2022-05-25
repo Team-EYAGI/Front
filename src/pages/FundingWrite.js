@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
-import { history } from "../redux/configureStore";
+import { useBeforeunload } from "react-beforeunload";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as fundActions } from "../redux/modules/fund";
@@ -9,11 +9,12 @@ import { BiSearch } from "react-icons/bi";
 import Swal from 'sweetalert2';
 
 const FundingWrite = () => {
+  // 새로고침 경고 알럿
+  useBeforeunload((event) => event.preventDefault());
+
   const dispatch = useDispatch();
   const params = useParams();
   const bookId = params.bookId;
-
-
   const detail = useSelector((state) => state.book.detail_book);
   
   // upload라는 훅 생성

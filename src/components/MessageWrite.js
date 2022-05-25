@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useState } from "react";
 import styled from "styled-components";
 import { useRef } from "react";
+import Swal from 'sweetalert2';
 
 const MessageWrite = (props) => {
   const { sendMessage } = props;  // 메세지 보내기 stomp 함수
@@ -18,8 +19,15 @@ const MessageWrite = (props) => {
   // 메세지 보내기 버튼 클릭 시 실행 될 함수
   const sendMessageBtn = () => {
     // 빈 문자열 일 경우
-    if (new_message === "") {
-      return alert("뭐라도 좀써라 ");
+    if (new_message === "" || new_message === " ") {
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: '문의 내용을 입력해주세요!',
+        showConfirmButton: false,
+        timer: 1000
+      })
+      return;
     }
     sendMessage(msg.defaultValue);  //메세지 실제로 보내기
     setMessage("");  // input 비우기

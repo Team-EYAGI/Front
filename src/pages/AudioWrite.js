@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { BiSearch } from "react-icons/bi";
 import { useParams } from 'react-router-dom';
+import { useBeforeunload } from "react-beforeunload";
 
 import { actionCreators as addActions } from "../redux/modules/audio";
 import { actionCreators as getActions } from "../redux/modules/book";
@@ -9,6 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 
 const AudioWrite = () => {
+  
+  // 새로고침 경고 알럿
+  useBeforeunload((event) => event.preventDefault());
   const dispatch = useDispatch();
   const params = useParams();
   const bookId = params.bookId
