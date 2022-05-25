@@ -34,6 +34,8 @@ const AudioModal = (props) => {
   // file 정보가 있을 때만 find 함수 실행
   const files = detail.audio;
   const preview = files ? files.find((p) => p.audioBookId == audioBookId) : null;
+  console.log(preview)
+
 
   React.useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));
@@ -56,7 +58,7 @@ const AudioModal = (props) => {
                   />
                 </Img>
 
-                {detail.title} / {preview.audioBookId}번 오디오북
+                {detail.title.split("(")[0]} / {preview.sellerName}
                 <AudioPlayer
                   className='audio'
                   autoPlay={false}
@@ -164,7 +166,7 @@ const GoBack = styled.div`
 
 const PlayerImg = styled.div`
   width: 350px;
-  height: 350px;
+  height: 360px;
   margin: 0 auto;
 
   background-color: #F4F4F4;
@@ -175,7 +177,7 @@ const PlayerImg = styled.div`
 
   #img_wrap {
     width: 350px;
-    height: 350px;
+    height: 360px;
 
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(26px);
