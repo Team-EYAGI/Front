@@ -186,7 +186,7 @@ const FundingDetail = () => {
               {fundingDetail.content}
             </span>
           </div>
-          {fundingDetail.successFunding === true && (
+          {is_login && fundingDetail.successFunding === true && username === fundingDetail.sellerName && (
             <button
               onClick={() => {
                 history.push(`/audioWrite/${fundingDetail.category}/${fundingDetail.bookId}`)
