@@ -71,7 +71,6 @@ const getCookieAC = () => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        console.log(res)
         // dispatch(getMain(res.data))
       })
       .catch(error => {
@@ -89,7 +88,6 @@ const getMainAC = () => {
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
       .then((res) => {
-        console.log(res)
         dispatch(getMain(res.data))
       })
       .catch(error => {

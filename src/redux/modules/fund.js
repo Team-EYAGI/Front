@@ -114,7 +114,6 @@ const getFundingDetailAC = (fundId) => {
   }
 }
 
-
 // 오디오북 파일 추가
 const addFundingAC = (payload) => {
   let Token = getToken("Authorization");

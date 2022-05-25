@@ -16,7 +16,7 @@ const actions = [
 ];
 
 const SpeedDialOpen = (props) => {
-  const { createRoom } = props;
+  const { checkRoom } = props;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -46,7 +46,7 @@ const SpeedDialOpen = (props) => {
             tooltipOpen
             onClick={() => {
               if(action.name === '1:1문의') {
-                createRoom()
+                checkRoom()
               } else {
                 scrollToTop()
                 handleClose()

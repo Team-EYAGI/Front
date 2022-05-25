@@ -131,7 +131,7 @@ function App() {
         </Wrap>
         <Footer />
         <Icon>
-          <SpeedDialOpen createRoom={checkRoom} />
+          <SpeedDialOpen checkRoom={checkRoom} />
         </Icon>
       </ConnectedRouter>
     </React.Fragment>
