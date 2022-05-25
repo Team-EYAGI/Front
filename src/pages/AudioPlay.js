@@ -36,7 +36,6 @@ const AudioPlay = (props) => {
   const authority = localStorage.getItem("seller");
   const username = localStorage.getItem("username");
   const sellerName = audioBookDetail?.sellerName;
-  console.log(sellerName)
 
   // 오디오북 리뷰 불러오기
   const audioReview = useSelector((state) => state.audio.review_list);
