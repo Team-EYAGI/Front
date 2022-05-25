@@ -35,6 +35,8 @@ const AudioPlay = (props) => {
   const sellerId = audioDetail.audioBookDetail ? audioDetail.audioBookDetail.sellerId : null;
   const authority = localStorage.getItem("seller");
   const username = localStorage.getItem("username");
+  const sellerName = audioBookDetail?.sellerName;
+  console.log(sellerName)
 
   // 오디오북 리뷰 불러오기
   const audioReview = useSelector((state) => state.audio.review_list);
@@ -106,7 +108,7 @@ const AudioPlay = (props) => {
             <Content>
               <div id='follow'>
                 <div>팔로잉&nbsp;{audioBookDetail?.followingCnt}  팔로워&nbsp;{audioBookDetail?.followerCnt} </div>
-                {followStatus === false ?
+                {followStatus === false && sellerName !== username ?
                   <button
                     style={{
                       color: "#FFFFFF",
@@ -114,26 +116,29 @@ const AudioPlay = (props) => {
                       border: "1px solid #0C0A0A"
                     }}
                     onClick={() => {
-                      if(username === audioBookDetail?.sellerName) {
+                      if (username === audioBookDetail?.sellerName) {
                         return;
                       }
                       dispatch(followActions.audiofollowAC(sellerId));
                     }}
                   >follow</button>
                   :
-                  <button
-                    style={{
-                      color: "#0C0A0A",
-                      background: "#FFFFFF",
-                      border: "1px solid #0C0A0A"
-                    }}
-                    onClick={() => {
-                      if(username === audioBookDetail?.sellerName) {
-                        return;
-                      }
-                      dispatch(followActions.audiofollowAC(sellerId));
-                    }}
-                  >unfollow</button>
+                  followStatus === true && sellerName !== username ?
+                    <button
+                      style={{
+                        color: "#0C0A0A",
+                        background: "#FFFFFF",
+                        border: "1px solid #0C0A0A"
+                      }}
+                      onClick={() => {
+                        if (username === audioBookDetail?.sellerName) {
+                          return;
+                        }
+                        dispatch(followActions.audiofollowAC(sellerId));
+                      }}
+                    >unfollow</button>
+                    :
+                    null
                 }
               </div>
               <span id='contents'>
@@ -188,7 +193,7 @@ const AudioPlay = (props) => {
           )}
         </div>
       </ReviewBox>
-      <Pagination totalPages={totalPages} setPage={setPage}/>
+      <Pagination totalPages={totalPages} setPage={setPage} />
     </React.Fragment>
   )
 }
