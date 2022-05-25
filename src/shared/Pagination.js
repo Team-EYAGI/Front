@@ -7,7 +7,7 @@ const Pagination = ({ totalPages, setPage }) => {
       <PageBtnContainer>
         <PrevPage />
         {[...Array(totalPages)].map((p, idx) => (
-          <PageBtn data-index={idx + 1} onClick={() => setPage(idx + 1)}>
+          <PageBtn key={idx} data-index={idx + 1} onClick={() => setPage(idx + 1)}>
             {idx + 1}
           </PageBtn>
         ))}

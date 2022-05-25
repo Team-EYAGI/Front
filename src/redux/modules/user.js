@@ -99,7 +99,6 @@ const loginAC = (email, password) => {
 
 // 카카오
 const kakaoLoginAC = (code) => {
-  console.log(code)
   const Toast = Swal.mixin({
     toast: true,
     position: 'top',
