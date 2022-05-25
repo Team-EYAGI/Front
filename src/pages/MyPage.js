@@ -42,7 +42,7 @@ const MyPage = () => {
   const listenAudio = useSelector((state) => state.mypage.library_listenAudio);
   const myFunding = useSelector((state) => state.mypage.library_registerFunding);
   const myAudio = useSelector((state) => state.mypage.library_registerAudioBook);
-  
+
   const player = useRef();
 
   // 팔로우, 팔로잉 모달창

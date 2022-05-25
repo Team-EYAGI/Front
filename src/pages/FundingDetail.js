@@ -14,7 +14,6 @@ const FundingDetail = () => {
   const params = useParams();
   const fundId = params.fundingId;
   const dispatch = useDispatch();
-  
 
   const fundingDetail = useSelector((state) => state.fund.fund_detail);
 
@@ -24,6 +23,7 @@ const FundingDetail = () => {
 
   const boolean = fundingDetail.myHeart === false ? false : true;
   const [fundHeartBool, setFundHeartBool] = useState(boolean);
+  console.log(fundingDetail)
 
   const addLike = () => {
     if (!is_login) {
@@ -37,19 +37,18 @@ const FundingDetail = () => {
           history.push(`/login`)
         }
       })
-    }
-    if (username == fundingDetail.sellerName) {
+      return;
+    } else if (username == fundingDetail.sellerName) {
       Swal.fire({
         position: 'center',
         icon: 'warning',
-        title: `내 펀딩엔 좋아요를 누를 수 없습니다!`,
+        title: `내가 등록한 펀딩입니다!`,
         showConfirmButton: false,
         timer: 1500,
         color: "#000000",
       })
       return;
-    }
-    if (fundingDetail.fundingGoals === fundingDetail.likeCnt) {
+    } else if (fundingDetail.fundingGoals === fundingDetail.likeCnt) {
       Swal.fire({
         position: 'center',
         icon: 'warning',
@@ -60,6 +59,7 @@ const FundingDetail = () => {
       })
       return;
     }
+
     if (fundHeartBool == false) {
       setFundHeartBool(true)
       dispatch(getActions.addLikeDB(fundHeartBool, fundId));
@@ -85,57 +85,57 @@ const FundingDetail = () => {
   return (
     <React.Fragment>
       <AudioHeader>오디오 펀딩  >  {fundingDetail.bookTitle && fundingDetail.bookTitle.split("(")[0]}</AudioHeader>
-      
-        <Player>
-          <PlayerImg>            
-            <ImgSt
-              style={{ backgroundImage: `url(${fundingDetail.bookImg})` }}
-            >
-              <div id="img_wrap">
-                <div id="img">
-                
-                  <img alt= "책 이미지" src={fundingDetail.bookImg} />
-                </div>
-                {/* 오디오 플레이어 */}
-                <AudioPlayer
-                  className="audio"
-                  autoPlay={false}
-                  src={fundingDetail.fundFile}
-                  volume={1}
-                  showJumpControls={false}
-                  ref={player}
-                  onPlay={(e) => console.log("onPlay")}
+
+      <Player>
+        <PlayerImg>
+          <ImgSt
+            style={{ backgroundImage: `url(${fundingDetail.bookImg})` }}
+          >
+            <div id="img_wrap">
+              <div id="img">
+
+                <img alt="책 이미지" src={fundingDetail.bookImg} />
+              </div>
+              {/* 오디오 플레이어 */}
+              <AudioPlayer
+                className="audio"
+                autoPlay={false}
+                src={fundingDetail.fundFile}
+                volume={1}
+                showJumpControls={false}
+                ref={player}
+                onPlay={(e) => console.log("onPlay")}
+              />
+            </div>
+          </ImgSt>
+
+          <Profile>
+            <div id="name">
+              <span id="creatorname">
+                {fundingDetail.sellerName}
+              </span>
+              &nbsp;&nbsp;
+              <span id="fixname">크리에이터</span>
+            </div>
+            <ProfileInfo>
+              <div id="profileImg">
+                <img
+                  alt="크리에이터 이미지"
+                  src={fundingDetail.sellerImg ? fundingDetail.sellerImg : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
+                  onClick={() => {
+                    history.push(`/sellerProfile/${sellerId}/audiobook`)
+                  }}
                 />
               </div>
-            </ImgSt>
-
-            <Profile>
-              <div id="name">
-                <span id="creatorname">
-                  {fundingDetail.sellerName}
+              <div id="profile">
+                <span id="follower">
+                  팔로워 {fundingDetail.followerCnt}명
                 </span>
-                &nbsp;&nbsp;
-                <span id="fixname">크리에이터</span>
-              </div>
-              <ProfileInfo>
-                <div id="profileImg">
-                   <img
-                    alt= "크리에이터 이미지"
-                    src={fundingDetail.sellerImg ? fundingDetail.sellerImg : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} 
-                    onClick={() => {
-                      history.push(`/sellerProfile/${sellerId}/audiobook`)
-                    }}
-                  />
-                </div>
-                <div id="profile">
-                  <span id="follower">
-                    팔로워 {fundingDetail.followerCnt}명
-                  </span>
                 <br />
                 <span id="introduce">
                   {fundingDetail.introduce}
                 </span>
-                </div>
+              </div>
             </ProfileInfo>
           </Profile>
         </PlayerImg>
@@ -143,13 +143,12 @@ const FundingDetail = () => {
         <Goal>
           {/* 책 정보 */}
           <Success>
-          {fundingDetail.successFunding === true && (
-                  <FcApproval id="crown" size="40px" />
-                )}
-          <h2>{fundingDetail.bookTitle && fundingDetail.bookTitle.split("(")[0]}</h2>
+            {fundingDetail.successFunding === true && (
+              <FcApproval id="crown" size="40px" />
+            )}
+            <h2>{fundingDetail.bookTitle && fundingDetail.bookTitle.split("(")[0]}</h2>
           </Success>
           <h4>
-            {" "}
             저자 : {fundingDetail.author} / 크리에이터 : {fundingDetail.sellerName}
           </h4>
 
@@ -160,7 +159,7 @@ const FundingDetail = () => {
                 목표 좋아요
                 <span>{fundingDetail.fundingGoals}개</span>
               </div>
-              
+
               <div className="goal">달성한 좋아요
                 <span>{fundingDetail.likeCnt}개</span>
               </div>
@@ -171,30 +170,33 @@ const FundingDetail = () => {
                   onClick={addLike}
                 >
                   <AiOutlineHeart id="icon" size="40px" />
-                  
                 </Like>
                 :
                 <Like
                   onClick={addLike}
-                                  >
-                  <AiFillHeart id="icon" size="40px" color="red"/>
-                  
+                >
+                  <AiFillHeart id="icon" size="40px" color="red" />
                 </Like>
               }
             </div>
-
           </Info>
+
           <div id="creator">
-             <span >
-                  {fundingDetail.content}
-                </span>
+            <span >
+              {fundingDetail.content}
+            </span>
           </div>
-         
-          
+          {fundingDetail.successFunding === true && (
+            <button
+              onClick={() => {
+                history.push(`/audioWrite/${fundingDetail.category}/${fundingDetail.bookId}`)
+              }}>
+              내 오디오 등록하기
+            </button>
+          )}
+
         </Goal>
       </Player>
- 
-      {/* ) : null} */ }
     </React.Fragment >
   );
 };
@@ -227,11 +229,10 @@ const Player = styled.div`
   flex-direction: row;
   align-items: center;
   position: relative;
-  /* padding-bottom: 30px; */
+  font-family: Pretendard;
   font-weight: 500;
   font-style: normal;
- margin: 0 auto;
-  /* background-color: purple; */
+  margin: 0 auto;
   
   h5 {
     width: 190px;
@@ -240,8 +241,6 @@ const Player = styled.div`
     font-size: 16px;
     font-weight: 300;
   }
-
-  
 
   /* 오디오 플레이어 커스텀 */
   .audio {
@@ -267,10 +266,8 @@ const Player = styled.div`
 `;
 
 const PlayerImg = styled.div`
-/* background-color: aqua; */
   width: 464px;
   height: 100%;
-  /* margin: 0 auto; */
   display: flex;
   flex-direction: column;
   align-items: left;
@@ -316,16 +313,11 @@ const ImgSt = styled.div`
 `;
 
 const Profile = styled.div`
-  /* background-color: blue; */
-  /* border: 1px solid gray;
-  border-radius: 10px; */
   width: 464px;
   height: 200px;
   margin-top: 30px;
-  /* font-family: 'Pretendard'; */
 
   #creatorname {
-    /* font-family: 'Pretendard'; */
     font-size: 30px;
     font-weight: bold;
   }
@@ -337,29 +329,27 @@ const Profile = styled.div`
 
 
 const ProfileInfo = styled.div`
-display: flex;
-flex-direction: row;
-/* margin: 16px 0px; */
-/* width: 100%; */
-justify-content: space-between;
-width: 464px;
-height: 199px;
-margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 464px;
+  height: 199px;
+  margin-top: 20px;
 
-#profileImg {
-  width: 150px;
-  height: 150px;
-  border-radius: 15px;
-
-
-  img{
-    width: 100%;
-    height: 100%;
+  #profileImg {
+    width: 150px;
+    height: 150px;
     border-radius: 15px;
-    border: 1px solid gray;
-    cursor: pointer;
+
+
+    img{
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
+      border: 1px solid gray;
+      cursor: pointer;
+    }
   }
-}
 
 #profile {
   display: flex;
@@ -373,16 +363,11 @@ margin-top: 20px;
 
 
 const Goal = styled.div`
-  /* background-color: orange; */
   width: 500px;
   height: 100%;
-  /* margin-left: 120px; */
-  /* margin-top: 160px; */
   
-  
-h2 {
-  /* background-color: aqua; */
-  margin: 0px;
+  h2 {
+    margin: 0px;
     width: 464px;
     height: 50px;
     float: left;
@@ -409,13 +394,12 @@ h2 {
   }
 
 #creator {
-    width: 460px;
-    height: 220px;
+    width: 440px;
+    height: 230px;
     border-radius: 10px;
     border: 1px solid #c4c4c4;
-    padding: 10px;
-    margin-top:  50px;
-    /* background-color: orange; */
+    padding: 20px;
+    margin-top: 10px;
     flex-wrap: wrap;
 
     span {
@@ -423,6 +407,26 @@ h2 {
       word-break:break-all;
     }
   }
+
+
+  button {
+      width: 480px;
+      height: 80px;
+      margin-top: 16px;
+      border-radius: 10px;
+      background: #0C0A0A;
+      border: none;
+      color: #FFFFFF;
+      font-size: 20px;
+      font-family: Pretendard;
+      font-weight: 400;
+      font-style: normal;
+
+      :hover {
+        cursor: pointer;
+        transform: scale(0.98);
+      }
+    }
 `;
 
 const Info = styled.div`
@@ -433,8 +437,6 @@ const Info = styled.div`
   justify-content: space-between;
   width: 480px;
   height: 90px;
-  /* background-color: blue; */
-
 
   #heart {
     border: 1px solid #C4C4C4;
@@ -451,37 +453,28 @@ const Info = styled.div`
     text-align: left;
     vertical-align: middle;   
     font-size: 15 px;
-    
-    /* margin-right: 5px;
-    padding-left: 10px; */
-    /* padding-top: 15px; */
-    
-    /* background-color: green; */
   }
   
   .goal {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    /* padding-right: 10px; */
     margin: 9px 24px;
 
     span {
       font-weight: bold;
-      /* margin-right: 15px; */
     }
   }
 
   
   #heartBtn {
-    /* background-color: yellowgreen; */
     width: 90px;
     height: 90px;
   }
 `;
 
 const AudioHeader = styled.div`
-   width: 1100px;
+  width: 1100px;
   height: 60px;
 
   margin: 50px auto 10px auto;
@@ -489,12 +482,14 @@ const AudioHeader = styled.div`
   display: flex;
   align-items: center;
 
-  /* background-color: yellow; */
-  `
+  font-family: Pretendard;
+  font-weight: 400;
+  font-style: normal;
+`
 
-const Success= styled.div`
-flex-direction: row;
-display: flex;
+const Success = styled.div`
+  flex-direction: row;
+  display: flex;
 `;
 
 export default FundingDetail;

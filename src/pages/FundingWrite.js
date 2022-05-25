@@ -194,7 +194,7 @@ const FundingWrite = () => {
               {/* 숨겨놓은 진짜 파일 등록 */}
               <input
                 type="file"
-                accept="audio/wav, audio/mp3"
+                accept="audio/wav, audio/mp3, audio/m4a"
                 multiple
                 ref={fileInput}
                 style={{ display: "none" }}

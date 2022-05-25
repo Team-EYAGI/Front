@@ -6,13 +6,14 @@ import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as libraryActions } from "../redux/modules/mypage";
+import { FcApproval } from "react-icons/fc";
 import Swal from 'sweetalert2';
 
 const MyPageAudioBook = (props) => {
   const dispatch = useDispatch();
 
   const params = useParams();
-    const category = params.category;
+  const category = params.category;
 
   const bookId = props.item.bookId;
   const audioBookId = props.item.audioBookId;
@@ -39,7 +40,7 @@ const MyPageAudioBook = (props) => {
                     if (result.isConfirmed) {
                       history.push(`/login`)
                     }
-                })
+                  })
                   return;
                 }
                 history.push(`/audioPlay/${props.item.category}/${props.item.bookId}/${props.item.audioBookId}`)
@@ -52,13 +53,18 @@ const MyPageAudioBook = (props) => {
               alt="책 이미지"
               style={{ width: "100%" }}
               src={props.item.bookImg}
+              className={props.item?.successFunding === true ? 'img' : 'none'}
             />
+
           </ImageBox>
           <h3 style={{ fontSize: "16px" }}>
-            {props.item.title}
+            {category === `myFunding` || category === "myAudio" ? props.item.bookTitle : props.item.title}
           </h3>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-            <Text margin="0px">{props.item.author} {props.item.sellerName ? `(${props.item.sellerName})` : null}</Text>
+            <Text margin="0px">
+              {props.item.author}
+              {props.item.sellerName ? `(${props.item.sellerName})` : null}
+            </Text>
             {category === "audiobook" || category === "funding" || category === "myFunding" || category === "myAudio" ?
               null
               :
@@ -76,6 +82,16 @@ const MyPageAudioBook = (props) => {
               >삭제</Text>
             }
           </div>
+
+          {props.item?.successFunding === true &&
+            <Success>
+              <span
+                onClick={() => {
+                  history.push(`/audioWrite/${props.item?.category}/${props.item?.bookId}`)
+                }}
+              > 오디오북 등록하기&nbsp;<FcApproval id="success" size='20px'/> </span>
+            </Success>
+          }
         </Body>
       </Wrap>
     </React.Fragment>
@@ -83,7 +99,6 @@ const MyPageAudioBook = (props) => {
 };
 
 const Wrap = styled.div`
-  /* height: 410px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -94,6 +109,7 @@ const Wrap = styled.div`
   font-family: Pretendard;
   font-weight: 400;
   font-style: normal;
+
 `
 
 const Body = styled.div`
@@ -116,7 +132,16 @@ const ImageBox = styled.div`
   justify-content: flex-end;
   border-radius: 2px 10px 10px 2px;
 
-  img {
+  .none {
+    border: 1px solid lightgray;
+    border-radius: 2px 10px 10px 2px;
+    cursor: pointer;
+  }
+
+  .img {
+    /* border: 5px solid yellowgreen;
+    border-radius: 2px 10px 10px 2px;
+    cursor: pointer; */
     border: 1px solid lightgray;
     border-radius: 2px 10px 10px 2px;
     cursor: pointer;
@@ -124,6 +149,28 @@ const ImageBox = styled.div`
 
   button {
     position: absolute;
+  }
+
+`
+
+const Success = styled.div`
+  display: flex;
+  flex-direction: row;
+  
+  margin-top: 10px;
+
+  span {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #0C0A0A;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 3px 0px;
+
+    cursor: pointer;
   }
 `
 
