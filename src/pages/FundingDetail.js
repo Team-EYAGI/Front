@@ -17,6 +17,7 @@ const FundingDetail = () => {
   
 
   const fundingDetail = useSelector((state) => state.fund.fund_detail);
+
   const sellerId = fundingDetail.sellerId
   const username = localStorage.getItem("username");
   const is_login = localStorage.getItem("is_login");
@@ -37,7 +38,18 @@ const FundingDetail = () => {
         }
       })
     }
-    if (username == fundingDetail.sellerName || fundingDetail.fundingGoals === fundingDetail.likeCnt) {
+    if (username == fundingDetail.sellerName) {
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: `내 펀딩엔 좋아요를 누를 수 없습니다!`,
+        showConfirmButton: false,
+        timer: 1500,
+        color: "#000000",
+      })
+      return;
+    }
+    if (fundingDetail.fundingGoals === fundingDetail.likeCnt) {
       Swal.fire({
         position: 'center',
         icon: 'warning',
