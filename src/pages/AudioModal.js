@@ -34,8 +34,6 @@ const AudioModal = (props) => {
   // file 정보가 있을 때만 find 함수 실행
   const files = detail.audio;
   const preview = files ? files.find((p) => p.audioBookId == audioBookId) : null;
-  console.log(preview)
-
 
   React.useEffect(() => {
     dispatch(getActions.getBookDetailAC(bookId));
