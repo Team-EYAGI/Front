@@ -10,6 +10,7 @@ const GET_CREATOR_AUDIO = "GET_CREATOR_AUDIO";
 const FOLLOW = "FOLLOW";
 const GET_FOLLOWER = "GET_FOLLOWER";
 const GET_FOLLOWING = "GET_FOLLOWING";
+const CLEAN_SELLER = "CLEAN_SELLER"
 
 // 초기값
 const initialState = {
@@ -29,6 +30,7 @@ const getAudio = createAction(GET_CREATOR_AUDIO, (creator_audiobook) => ({creato
 const follow = createAction(FOLLOW, (followCount, followStatus) => ({followCount, followStatus}));
 const followerList = createAction(GET_FOLLOWER, (creator_follower) => ({creator_follower}));
 const followingList = createAction(GET_FOLLOWING, (creator_following) => ({creator_following}));
+const cleanSeller = createAction(CLEAN_SELLER, () => ({ }));
 
 // 셀러 프로필 정보 가져오기
 const getProfileAC = (sellerId, authority, username) => {
@@ -177,6 +179,15 @@ export default handleActions(
     produce(state, (draft) => {
       draft.creator_following = action.payload.creator_following;
     }),
+    [CLEAN_SELLER]: (state, action) =>
+    produce(state, (draft) => {
+      draft.creator_profile = [];
+      draft.creator_funding = [];
+      draft.creator_audiobook = [];
+      draft.creator_followStatus = [];
+      draft.creator_follower = [];
+      draft.creator_following = [];
+    }),
   },
   initialState
 );
@@ -184,6 +195,7 @@ export default handleActions(
 
 const actionCreators = {
 // export 할 것들
+  cleanSeller,
   getProfileAC,
   getFundingAC,
   getAudioAC,

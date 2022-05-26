@@ -68,6 +68,10 @@ const SellerProfile = () => {
     } else {
       dispatch(creatorActions.getProfileAC(sellerId, authority, username));
     }
+
+    return () => {
+      dispatch(creatorActions.cleanSeller());
+    }
   }, []);
 
   useEffect(() => {
@@ -75,6 +79,9 @@ const SellerProfile = () => {
       dispatch(creatorActions.getAudioAC(sellerId));
     } else {
       dispatch(creatorActions.getFundingAC(sellerId));
+    }
+    return () => {
+      dispatch(creatorActions.cleanSeller());
     }
   }, []);
 

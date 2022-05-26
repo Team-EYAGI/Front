@@ -16,6 +16,7 @@ const ADD_AUDIO = "ADD_AUDIO";
 const GET_AUDIO = "GET_AUDIO";
 const ADD_AUDIO_CHECK = "ADD_AUDIO_CHECK";
 const ADD_FOLLOW = "ADD_FOLLOW";
+const CLEAN_AUDIO = "CLEAN_AUDIO";
 
 // 3. 리뷰 CRUD 부분
 const GET_REVIEW = "GET_REVIEW";
@@ -33,7 +34,7 @@ const initialState = {
   audio_check: [],
   review_list: [],
   review_add: [],
-  paging: {page: 1, size: 20},
+  paging: { page: 1, size: 20 },
   is_loading: false,
 };
 
@@ -45,6 +46,7 @@ const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 const addAudioCheck = createAction(ADD_AUDIO_CHECK, (audio_check) => ({ audio_check }));
 const getAudio = createAction(GET_AUDIO, (audio_list) => ({ audio_list }));
 const addFollow = createAction(ADD_FOLLOW, (followCount, followStatus) => ({ followCount, followStatus }));
+const cleanAudio = createAction(CLEAN_AUDIO, () => ({}));
 
 const getReview = createAction(GET_REVIEW, (review_list, totalPages) => ({ review_list, totalPages }));
 const deleteReview = createAction(DELETE_REVIEW, (commentId) => ({ commentId }));
@@ -58,7 +60,7 @@ const getRequestAC = (page, size = 7) => {
 
     dispatch(loading(true));
     axios.get(process.env.REACT_APP_BASE_URL + `/book/request?page=${page}&size=${size}`, {
-  
+
     },
       // {headers: { 'Authorization' : `Bearer ${myToken}`}}
     )
@@ -323,10 +325,15 @@ export default handleActions(
       produce(state, (draft) => {
         draft.review_list = draft.review_list.filter((p) => p.commentId !== action.payload.commentId);
       }),
-      [ADD_FOLLOW]: (state, action) =>
+    [ADD_FOLLOW]: (state, action) =>
       produce(state, (draft) => {
         draft.audio_list.audioBookDetail.followerCnt = action.payload.followCount;
         draft.audio_list.followStatus = action.payload.followStatus;
+      }),
+    [CLEAN_AUDIO]: (state, action) =>
+      produce(state, (draft) => {
+        draft.audio_list = [];
+        draft.review_list = [];
       }),
   },
   initialState
@@ -335,6 +342,7 @@ export default handleActions(
 
 const actionCreators = {
   // export 할 것들
+  cleanAudio,
   getRequestAC,
   addRequestAC,
   editRequestAC,

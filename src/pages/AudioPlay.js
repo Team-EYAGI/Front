@@ -18,14 +18,10 @@ const AudioPlay = (props) => {
 
   const dispatch = useDispatch();
 
-  // 새로고침 경고 알럿
-  // useBeforeunload((event) => event.preventDefault());
-
   const params = useParams();
   const bookId = params.bookId
   const audioBookId = params.audioBookId
   const category = params.category
-
 
   // 오디오북 재생목록 불러오기
   const audioDetail = useSelector((state) => state.audio.audio_list);
@@ -47,6 +43,9 @@ const AudioPlay = (props) => {
 
   useEffect(() => {
     dispatch(getActions.getAudioAC(audioBookId));
+    return () => {
+      dispatch(getActions.cleanAudio());
+    }
   }, []);
 
   useEffect(() => {
