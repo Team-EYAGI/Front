@@ -59,7 +59,7 @@ const SellerProfile = () => {
   const player = useRef();
 
   useEffect(() => {
-      player.current.audio.current.pause();  // -3-
+    player.current.audio.current.pause();  // -3-
   }, [profile]);
 
   useEffect(() => {
@@ -229,6 +229,17 @@ const SellerProfile = () => {
                 ref={player}
                 onPlay={e => console.log("onPlay")}
               />
+            }
+            {!(profileDetail && profileDetail?.sellerVoice || profile.sellerVoice) ?
+              <span
+                style={{
+                  fontSize: "13px",
+                  width: "100%",
+                  color: "#D05943",
+                  marginBottom: "12px",
+                }}> * 크리에이터가 목소리를 등록하지 않았습니다. </span>
+              :
+              null
             }
             {(username === profile.userName) || (username === (profileDetail ? profileDetail.userName : null)) ?
               null
