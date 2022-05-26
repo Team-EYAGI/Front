@@ -190,6 +190,12 @@ const Chat = (props) => {
       messageEndRef.current.scrollTop = messageEndRef.current.scrollHeight;
     }
   };
+    // 렌더링시 이동
+    React.useEffect(() => {
+      scrollTomBottom();
+    }, [messages.length]);
+
+
   return (
     <React.Fragment>
       <div className="container"
@@ -241,7 +247,7 @@ const Wrap = styled.div`
   justify-content: flex-end;
   align-items: center;
   flex-wrap: wrap;
-
+  padding-bottom: 160px;
   box-sizing: border-box;
   & * {box-sizing: border-box;}
 
@@ -252,8 +258,8 @@ const Wrap = styled.div`
     max-height: 100%;
     display: flex;
     flex-flow: column;
-    justify-content: flex-end;
-    padding-bottom: 160px;
+    // justify-content: flex-end;
+    
   }
 
   #hello::-webkit-scrollbar{

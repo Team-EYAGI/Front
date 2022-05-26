@@ -25,7 +25,6 @@ const AudioBookList = (props) => {
   const category = params.category;
 
   const bookId = props.detail.bookId;
-  const sellerId = props.detail.sellerId;
   const audioBookList = props.detail ? props.detail.audio : null;
 
   // 로그인한 사용자인지 확인
@@ -69,7 +68,7 @@ const AudioBookList = (props) => {
               <ImgSt>
                 <img
                   onClick={() => {
-                    history.push(`/sellerProfile/${sellerId}/audiobook`)
+                    history.push(`/sellerProfile/${item.sellerId}/audiobook`)
                   }}
                   alt="크리에이터 이미지"
                   src={item.sellerImg ? item.sellerImg : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"} />
