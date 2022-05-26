@@ -1,13 +1,13 @@
 const images = [
   {
       id: 1,
-      src: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FLJbrv%2FbtrC7eGWqfH%2F7W4HefLdxlxEHYSRSuZDwK%2Fimg.png",
+      src: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FKVlkC%2FbtrC9KsAOHh%2FsIzE8JQVU0IyLkvkbESWdk%2Fimg.png",
       alt: "event1",
       category: "event1",
   },
   {
       id: 2,
-      src: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FIhuWy%2FbtrC7eGWp90%2FQsFQyPf2OQaHk02Bg1PIa0%2Fimg.png",
+      src: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbcGOPs%2FbtrC9J1u84B%2Fo8idmrUZgAxlW4ffwyyPe1%2Fimg.png",
       alt: "event12",
       category: "event2",
   },
