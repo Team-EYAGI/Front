@@ -43,6 +43,7 @@ const AddProfileVoice = lazy(() => import('../pages/AddProfileVoice'));
 const Loading = lazy(() => import('../pages/Loading'));
 const LoadingPage = lazy(() => import('../pages/LoadingPage'));
 const ServiceGuide = lazy(() => import('../pages/ServiceGuide'));
+const SellerList = lazy(() => import('../pages/SellerList'));
 
 function App() {
 
@@ -127,6 +128,7 @@ function App() {
             <Route path="/user/kakao/callback" component={KakaoAuthHandler} />
             <Route path="/search" exact component={Search} />
             <Route path="/serviceGuide" exact component={ServiceGuide} />
+            <Route path="/sellerList" exact component={SellerList} />
           </Suspense>
         </Wrap>
         <Footer />

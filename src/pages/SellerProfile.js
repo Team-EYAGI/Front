@@ -215,7 +215,7 @@ const SellerProfile = () => {
                 defaultCurrentTime={"00:00"}
                 showJumpControls={false}
                 ref={player}
-                onPlay={e => console.log("onPlay")}
+                // onPlay={e => console.log("onPlay")}
               />
               :
               <AudioPlayer
@@ -227,7 +227,7 @@ const SellerProfile = () => {
                 defaultCurrentTime={"00:00"}
                 showJumpControls={false}
                 ref={player}
-                onPlay={e => console.log("onPlay")}
+                // onPlay={e => console.log("onPlay")}
               />
             }
             {!(profileDetail && profileDetail?.sellerVoice || profile.sellerVoice) ?

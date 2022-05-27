@@ -3,46 +3,14 @@ import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 import { BsPlayCircle } from "react-icons/bs";
 import { Text } from "../elements/Index";
-import SkeletonLoading from './SkeletonLoading';
 
 const MainFundingCard = (props) => {
 
   const mainFunding = props.item;
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false)
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, [])
 
   return (
     <React.Fragment>
       <Wrap>
-        {loading ?
-          <SkeletonLoading>
-            <Body>
-              <ImgSt
-                style={{ backgroundImage: `url(${mainFunding.bookImg})` }}
-                onClick={() => {
-                  history.push(`/fundingDetail/${mainFunding.fundId}`)
-                }}
-              >
-                <div id='img_wrap'>
-                  <div id='img'>
-                    <BsPlayCircle id='icon' color="#FFFFFF" size="30px" />
-                    <img src={mainFunding.bookImg} alt="책 이미지" />
-                  </div>
-                </div>
-              </ImgSt>
-              <h3 style={{ fontSize: "16px" }}>
-                {mainFunding.bookTitle}
-              </h3>
-              <Text margin="0px 0px 0px 10px">{mainFunding.sellerName}</Text>
-            </Body>
-          </SkeletonLoading>
-          :
           <Body>
             <ImgSt
               style={{ backgroundImage: `url(${mainFunding.bookImg})` }}
@@ -62,8 +30,6 @@ const MainFundingCard = (props) => {
             </h3>
             <Text margin="0px 0px 0px 10px">{mainFunding.sellerName}</Text>
           </Body>
-        }
-
       </Wrap>
     </React.Fragment>
   )
