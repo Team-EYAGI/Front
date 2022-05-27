@@ -66,7 +66,7 @@ const getProfileAC = (sellerId, authority, username) => {
 }
 
 // 셀러 목록 가져오기
-const getListAC = (page, size = 12) => {
+const getListAC = (page, size = 15) => {
   return function (dispatch, getState, { history }) {
     axios.get(process.env.REACT_APP_BASE_URL + `/sellerList?page=${page}&size=${size}`,
       // { headers: { 'Authorization': `${Token}` } }
