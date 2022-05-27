@@ -93,6 +93,9 @@ const BookDetail = () => {
             </div>
           </Content>
         </BookInfo>
+        <AudioBookBox>
+          <AudioBookList detail={detail} />
+        </AudioBookBox>
         <BookSum>
           <span id='bookinfo'>
             책 정보
@@ -103,9 +106,6 @@ const BookDetail = () => {
             </span>
           </div>
         </BookSum>
-        <AudioBookBox>
-          <AudioBookList detail={detail} />
-        </AudioBookBox>
       </Wrap>
     </React.Fragment>
   )
@@ -143,12 +143,11 @@ const Header = styled.div`
 
 const BookInfo = styled.div`
   width: 1100px;
-
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 80px;
+  padding-bottom: 40px;
 `
 
 const ImgBox = styled.div`
@@ -186,6 +185,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+
 
   div {
     display: flex;
@@ -227,7 +227,6 @@ const Content = styled.div`
 
 const BookSum = styled.div`
   width: 1100px;
-
   display: flex;
   flex-direction: column;
 
@@ -255,6 +254,7 @@ const BookSum = styled.div`
 `
 const AudioBookBox = styled.div`
   width: 1100px;
+  margin-bottom: 80px;
 `
 
 export default BookDetail;

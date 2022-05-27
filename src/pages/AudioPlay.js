@@ -85,7 +85,7 @@ const AudioPlay = (props) => {
                 autoPlay={false}
                 src={play}
                 volume={1}
-                onPlay={e => console.log("onPlay")}
+                // onPlay={e => console.log("onPlay")}
               />
             </div>
           </ImgBox>
@@ -154,8 +154,14 @@ const AudioPlay = (props) => {
             {/* 플레이리스트 목록 map */}
             {playList && playList.map((item, idx) => (
               <div key={idx} id='list'>
+                {authority === "ROLE_ADMIN" &&
+                  <button
+                    onClick={() => {
+                      dispatch(getActions.deleteAudioAC(item.id));
+                    }}
+                  >X</button>
+                }
                 <h4>{idx + 1}. Chapter{idx + 1}</h4>
-                {/* <h3>Chapter{idx + 1}</h3> */}
                 <PlayerSt onClick={() => {
                   setPlay(`${item.s3FileName}`)
                 }}>
@@ -470,6 +476,10 @@ const ListBox = styled.div`
       padding: 0px 20px;
       border-top: 1px solid gray;
       border-bottom: 1px solid gray;
+
+      button {
+        cursor: pointer;
+      }
 
       h4 {
         width: 400px;

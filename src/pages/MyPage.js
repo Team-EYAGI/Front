@@ -142,7 +142,6 @@ const MyPage = () => {
                       {item.name}
                     </h3>
                   </div>
-                  <button>unfollow</button>
                 </FollowerList>
                   )
                 }
@@ -172,7 +171,6 @@ const MyPage = () => {
                       {item.name}
                     </h3>
                   </div>
-                  <button>unfollow</button>
                 </FollowerList>
                   )
                 }
@@ -190,7 +188,7 @@ const MyPage = () => {
                 defaultCurrentTime={"00:00"}
                 showJumpControls={false}
                 ref={player}
-                onPlay={e => console.log("onPlay")}
+                // onPlay={e => console.log("onPlay")}
               />
               :
               null

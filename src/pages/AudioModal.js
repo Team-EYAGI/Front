@@ -65,7 +65,7 @@ const AudioModal = (props) => {
                   timeFormat={"mm:ss"}
                   defaultCurrentTime={"00:00"}
                   showJumpControls={false}
-                  onPlay={e => console.log("onPlay")}
+                  // onPlay={e => console.log("onPlay")}
                 />
               </div>
             </PlayerImg>

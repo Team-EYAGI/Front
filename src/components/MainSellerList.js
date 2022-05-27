@@ -1,6 +1,7 @@
 import React from 'react';
 import MainSellerCard from './MainSellerCard';
 import styled from 'styled-components';
+import { history } from '../redux/configureStore';
 
 const MainSellerList = (props) => {
 
@@ -9,7 +10,14 @@ const MainSellerList = (props) => {
   return (
     <React.Fragment>
       <Wrap>
-        <span>오늘의 크리에이터</span>
+        <span style={{ fontSize: "20px", fontWeight: "700" }}>오늘의 크리에이터</span>
+        <span
+          style={{ fontSize: "16px" }}
+          id="plus"
+          onClick={() => {
+            history.push(`/sellerList`)
+          }}
+        >더 보러가기</span>
       </Wrap>
       <Bottom>
         {creator && creator.map((item, idx) => (
@@ -37,14 +45,13 @@ const Wrap = styled.div`
   border-bottom: 2px solid #000000;
 
   span {
-    font-size: 20px;
-    font-weight: 700;
     margin: 0px 10px 15px 21px;
+    font-weight: 400;
   }
 
   #plus:hover {
     cursor: pointer;
-    color: violet; 
+    color: #D05943;
   }
 `
 
