@@ -12,6 +12,7 @@ const DEL_LIKE = 'DEL_LIKE';
 const LOADING = "LOADING"
 const GET_DETAIL = "GET_DETAIL"
 const CLEAN = "CLEAN"
+const DEL_FUND = "DEL_FUND"
 
 // 초기값
 const initialState = {
@@ -33,6 +34,8 @@ const delLike = createAction(DEL_LIKE, (fundHeartBool, fundId) => ({ fundHeartBo
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 const getDetail = createAction(GET_DETAIL, (fund_detail) => ({ fund_detail }));
 const clean = createAction(CLEAN, () => ({}));
+const delFund = createAction(DEL_FUND, (fundId) => ({fundId}));
+
 
 // 미들웨어
 
@@ -202,6 +205,22 @@ const fundingSuccessAC = (bookId, category) => {
 }
 
 
+// 관리자 펀딩 삭제
+const deleteFundingAC = (fundId) => {
+  let Token = getToken("Authorization");
+  return function (dispatch, getState, { history }) {
+    axios.delete(process.env.REACT_APP_BASE_URL + `/fund/detail/remove/${fundId}`,
+      { headers: { 'Authorization': `${Token}` } },
+    )
+      .then((res) => {
+        dispatch(delFund(fundId))
+      })
+      .catch(error => {
+        // console.log("error", error)
+      })
+  }
+}
+
 
 //리듀서
 export default handleActions(
@@ -230,6 +249,10 @@ export default handleActions(
       produce(state, (draft) => {
         draft.fund_detail = [];
       }),
+      [DEL_FUND]: (state, action) =>
+      produce(state, (draft) => {
+        draft.fund_list = draft.fund_list.filter((p) => p.fundId !== action.payload.fundId);
+      }),
   },
   initialState
 );
@@ -243,6 +266,7 @@ const actionCreators = {
   getFundingDetailAC,
   fundingSuccessAC,
   clean,
+  deleteFundingAC
 };
 
 export { actionCreators };
