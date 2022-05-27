@@ -11,7 +11,7 @@ import Pagination from "../shared/Pagination"
 const SellerList = () => {
   const dispatch = useDispatch();
   const creatorList = useSelector((state) => state.creator.creator_list);
-  const totalPages = useSelector((state) => state.fund.totalPages);
+  const totalPages = useSelector((state) => state.creator.totalPages);
 
   const [page, setPage] = React.useState(1)
 
