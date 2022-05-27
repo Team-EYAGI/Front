@@ -7,7 +7,6 @@ import Stomp from "stompjs";
 import SockJS from "sockjs-client";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
-import Join from "../components/Join";
 import moment from "moment";
 import { useBeforeunload } from "react-beforeunload";
 import logo from '../src_assets/eyagiLogo1.png';
@@ -41,33 +40,8 @@ const Chat = (props) => {
   const chatRoomName = "문의하기";
   const roomId = localStorage.getItem("roomId");
   const userId = localStorage.getItem("userId");
-  // console.log(roomId + "/" + userId);
   const preview = useSelector((state) => state.chat.messages);
-  //클릭이벤트 추가 join
-  const [click, setClick] = React.useState(true);
-  // console.log(click);
 
-  //채팅 룸에 접속한다음  소켓연결이 되야하는 라인  : 방 입장하는 버튼
-  const enterRoom = () => {
-    const Token = localStorage.getItem("token");
-    const roomId = localStorage.getItem("roomId");
-
-    setClick(false);
-    stompClient.connect()
-    stompClient.subscribe(`/sub/api/chat/rooms/${roomId}`, (data) => {
-      const onMessage = JSON.parse(data.body);
-      // console.log(onMessage);
-      const now_time = moment().format("YYYY-MM-DD HH:mm:ss");
-      dispatch(
-        chatActions.getMessages({ ...onMessage, createdAt: now_time })
-      );
-    },
-      {
-        token: `${Token}`,
-      }
-    );
-
-  };
 
   const sendMessage = (new_message) => {
     try {
@@ -84,12 +58,11 @@ const Chat = (props) => {
         stompClient.send("/pub/message",
           {
             token: `${Token}`,
-          }, JSON.stringify(data));
-        // console.log("메세지보내기 상태", stompClient.ws.readyState);
+          }, 
+          JSON.stringify(data)
+          );
       });
     } catch (e) {
-      // console.log("message 소켓 함수 에러", e);
-      // console.log("메세지보내기 상태", stompClient.ws.readyState);
     }
   };
 
@@ -124,7 +97,6 @@ const Chat = (props) => {
   React.useEffect(() => {
     // 방 정보가 없는 경우 홈으로 돌려보내기
     if (!roomId) {
-      console.log("roomId가 없습니다.");
     }
     wsConnectSubscribe();
     return () => {
@@ -158,7 +130,6 @@ const Chat = (props) => {
         }
       );
     } catch (e) {
-      // console.log("소켓 커넥트 에러", e);
     }
   };
 
@@ -174,7 +145,6 @@ const Chat = (props) => {
         { token: Token }
       );
     } catch (e) {
-      // console.log("연결 구독 해체 에러", e);
     }
   };
 
@@ -184,7 +154,6 @@ const Chat = (props) => {
   // 스크롤 대상
   const messageEndRef = React.useRef();
 
-  // console.log(messages, messageEndRef);
   const scrollTomBottom = () => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollTop = messageEndRef.current.scrollHeight;
@@ -222,10 +191,6 @@ const Chat = (props) => {
           <div id="btm_area">
             <div>
               <MessageWrite sendMessage={sendMessage} />
-              <Join
-                enterRoom={enterRoom}
-                click={click}
-              />
             </div>
           </div>
         </Wrap>
@@ -313,12 +278,7 @@ const Wrap = styled.div`
       background: #EBEBEB;
       transition: 0.35s all;
     }
-    
-    & .hide {
-      opacity:0;
-      z-index: -1;
-    }
-
+   
     & .set {
       position: static;
       width: 160px;

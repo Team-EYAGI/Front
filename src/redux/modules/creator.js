@@ -30,7 +30,7 @@ const initialState = {
 const getProfile = createAction(GET_CREATOR_PROFILE, (creator_profile) => ({creator_profile}));
 const getFunding = createAction(GET_CREATOR_FUNDING, (creator_funding) => ({creator_funding}));
 const getAudio = createAction(GET_CREATOR_AUDIO, (creator_audiobook) => ({creator_audiobook}));
-const getList = createAction(GET_CREATOR_LIST, (creator_list) => ({creator_list}));
+const getList = createAction(GET_CREATOR_LIST, (creator_list, totalPages) => ({creator_list, totalPages}));
 
 const follow = createAction(FOLLOW, (followCount, followStatus) => ({followCount, followStatus}));
 const followerList = createAction(GET_FOLLOWER, (creator_follower) => ({creator_follower}));
