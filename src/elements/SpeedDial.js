@@ -8,7 +8,10 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 import VerticalAlignTopIcon from '@mui/icons-material/VerticalAlignTop';
+import { history } from "../redux/configureStore";
 import axios from "axios";
+import Swal from 'sweetalert2';
+
 
 const actions = [
   { icon: <VerticalAlignTopIcon />, name: 'top' },
@@ -52,6 +55,8 @@ const SpeedDialOpen = (props) => {
     window.scrollTo(0, 0);
   }
 
+const is_login = localStorage.getItem("is_login");
+
   return (
     <BoxSt>
       <div id="newMessage">new</div>
@@ -72,8 +77,22 @@ const SpeedDialOpen = (props) => {
             tooltipTitle={action.name}
             tooltipOpen
             onClick={() => {
-              if(action.name === '1:1문의') {
-                checkRoom()
+              if(action.name === '1:1문의') {                
+                if (!is_login) {
+                  Swal.fire({
+                    text: "로그인 후 이용 가능합니다!",
+                    icon: "warning",
+                    confirmButtonText: "로그인하러가기",
+                    confirmButtonColor: '#0C0A0A',
+                  }).then(result => {
+                    if (result.isConfirmed) {
+                      history.push(`/login`)
+                    }
+                  })
+                 return;
+                } else {
+                  checkRoom()
+                }
               } else {
                 scrollToTop()
                 handleClose()
