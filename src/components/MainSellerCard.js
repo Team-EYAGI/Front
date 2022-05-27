@@ -30,7 +30,7 @@ const MainSellerCard = (props) => {
 }
 
 const Wrap = styled.div`
-  height: 200px;
+  height: 280px;
   margin: 10px;
 
   :hover {
