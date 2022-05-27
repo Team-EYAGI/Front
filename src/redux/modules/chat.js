@@ -95,7 +95,6 @@ const setChatListAX = () => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        // console.log("채팅방 목록", res)
         let my_chat_list = [];
         res.data.data.forEach(c => {
           let one_chat_info = {
@@ -112,7 +111,6 @@ const setChatListAX = () => {
         dispatch(setChatList(my_chat_list))
       })
       .catch(error => {
-        // console.log("error", error)
       })
   }
 }
@@ -124,7 +122,6 @@ const setUserChatListAX = () => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        // console.log("채팅방 목록", res)
         let my_chat_list = [];
         res.data.forEach(c => {
           let one_chat_info = {
@@ -140,7 +137,6 @@ const setUserChatListAX = () => {
         dispatch(setChatList(my_chat_list))
       })
       .catch(error => {
-        // console.log("error", error)
       })
   }
 }
@@ -153,7 +149,6 @@ const getChatMessagesAX = (roomId) => {
     )
       .then((res) => {
         let chatMassageArray = [];
-        // console.log(res);
         res.data.forEach((m) => {
           let one_msg_info = {
             type: m.type,
@@ -166,12 +161,9 @@ const getChatMessagesAX = (roomId) => {
           };
           chatMassageArray.push(one_msg_info);
         });
-        // console.log(chatMassageArray);
-        // console.log("이전 메세지 목록", res)
         dispatch(setMessage(chatMassageArray))
       })
       .catch(error => {
-        // console.log("error", error)
       })
   }
 }
@@ -188,12 +180,9 @@ const userQnAAX = (uuid) => {
           uuid: uuid
         })
       .then((res) => {
-        // console.log(res);
         dispatch(setUserChatListAX());
-        // console.log("채팅방 생성 완료");
       })
       .catch((e) => {
-        // console.log("모집글 작성 모듈 에러", e);
       });
   };
 };
@@ -206,17 +195,14 @@ const leaveChatAX = (room_id) => {
       axios.delete(process.env.REACT_APP_BASE_URL + `/chat/${room_id}`,
         { headers: { 'Authorization': `${Token}` } })
         .then((res) => {
-          // console.log("방 폭파 boom!", res);
           dispatch(deleteRoom(room_id));
           history.replace("/Admin");
         })
         .catch((e) => {
-          // console.log("채팅방 나가기 요청 에러", e);
         });
     }
   } else {
     return function (dispatch, getState, { history }) {
-      // console.log("방폭파를 취소하셨습니다.");
     }
   }
 }
@@ -266,7 +252,6 @@ export default handleActions(
 
     [GET_MESSAGE]: (state, action) =>
       produce(state, (draft) => {
-        // console.log(action.payload.newMessage);
         const m = action.payload.newMessage;
 
         const one_msg = {
@@ -288,7 +273,6 @@ export default handleActions(
       }),
     [DELETE_ROOM]: (state, action) =>
       produce(state, (draft) => {
-        // console.log(draft);
         // draft.room = draft.review_list.filter((p) => p.commentId !== action.payload.commentId);
       }),
 
