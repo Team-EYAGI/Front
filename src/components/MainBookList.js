@@ -1,6 +1,9 @@
 import React from 'react'
 import styled from 'styled-components';
 import MainBookCard from '../components/MainBookCard';
+import useSWR from "swr";
+import fetcher from "../shared/Fetcher";
+import Spinner from '../elements/Spinner';
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -13,12 +16,20 @@ import "../styles/slide.css";
 
 const BookList = (props) => {
 
-  const bookList = props.main;
+  // 메인 오디오북 리스트 가져오기
+  const { data, error } = useSWR(process.env.REACT_APP_BASE_URL, fetcher)
+    
+  if (error) {
+    return <div>ERROR...</div>
+  }
+  if (!data) {
+    return <Spinner/>
+  }
 
   return (
     <React.Fragment>
       <Wrap>
-        <span style={{ fontSize: "20px", fontWeight: "700" }}>추천도서</span>
+        <span style={{ fontSize: "20px", fontWeight: "700" }}>새로 등록된 오디오북</span>
       </Wrap>
       <Swiper
         slidesPerView={5}
@@ -36,7 +47,7 @@ const BookList = (props) => {
       >
         <DivSt>
           {/* bookList를 받아와 map 돌려 붙여넣기 */}
-          {bookList && bookList.map((item, idx) => (
+          {data.map((item, idx) => (
             <SwiperSlide key={idx}><MainBookCard key={item.bookId} item={item} /></SwiperSlide>
           ))}
         </DivSt>

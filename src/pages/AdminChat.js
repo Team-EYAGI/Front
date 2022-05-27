@@ -48,7 +48,7 @@ const AdminChatList = (props) => {
   React.useEffect(() => {
     // 방 정보가 없는 경우 홈으로 돌려보내기
     if (!room_id) {
-      console.log("roomId가 없습니다.");
+      // console.log("roomId가 없습니다.");
     }
     wsConnectSubscribe();
     return () => {
