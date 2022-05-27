@@ -40,7 +40,6 @@ const Chat = (props) => {
   const chatRoomName = "문의하기";
   const roomId = localStorage.getItem("roomId");
   const userId = localStorage.getItem("userId");
-  // console.log(roomId + "/" + userId);
   const preview = useSelector((state) => state.chat.messages);
 
 
@@ -98,7 +97,6 @@ const Chat = (props) => {
   React.useEffect(() => {
     // 방 정보가 없는 경우 홈으로 돌려보내기
     if (!roomId) {
-      console.log("roomId가 없습니다.");
     }
     wsConnectSubscribe();
     return () => {
@@ -132,7 +130,6 @@ const Chat = (props) => {
         }
       );
     } catch (e) {
-      // console.log("소켓 커넥트 에러", e);
     }
   };
 
@@ -148,7 +145,6 @@ const Chat = (props) => {
         { token: Token }
       );
     } catch (e) {
-      // console.log("연결 구독 해체 에러", e);
     }
   };
 
@@ -158,7 +154,6 @@ const Chat = (props) => {
   // 스크롤 대상
   const messageEndRef = React.useRef();
 
-  // console.log(messages, messageEndRef);
   const scrollTomBottom = () => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollTop = messageEndRef.current.scrollHeight;
