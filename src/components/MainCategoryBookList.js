@@ -2,10 +2,11 @@ import styled from 'styled-components';
 import React from 'react';
 import MainCategoryBookCard from '../components/MainCategoryBookCard';
 import { history } from '../redux/configureStore';
+import useSWR from "swr";
+import fetcher from "../shared/Fetcher";
+import Spinner from '../elements/Spinner';
 
-const CategoryBookList = (props) => {
-
-  const selfBook = props.mainCategory;
+const CategoryBookList = () => {
 
   const [category, setCategory] = React.useState([
     "자기계발",
@@ -15,10 +16,20 @@ const CategoryBookList = (props) => {
     "경제",
   ])
 
+  // 메인 카테고리별 도서 리스트 가져오기
+  const { data, error } = useSWR(process.env.REACT_APP_BASE_URL + `/category`, fetcher)
+    
+  if (error) {
+    return <div>ERROR...</div>
+  }
+  if (!data) {
+    return <Spinner/>
+  }
+
   return (
     <React.Fragment>
       <Wrap>
-        <span style={{ fontSize: "20px", fontWeight: "700" }}>카테고리별 오디오북</span>
+        <span style={{ fontSize: "20px", fontWeight: "700" }}>카테고리별 도서</span>
         <span
           style={{ fontSize: "16px" }}
           id="plus"
@@ -46,7 +57,7 @@ const CategoryBookList = (props) => {
         ))}
       </HeaderSt>
       <Body>
-        {selfBook && selfBook.map((item, idx) => (
+        {data.map((item, idx) => (
           <MainCategoryBookCard key={idx} item={item} />
         ))}
       </Body>

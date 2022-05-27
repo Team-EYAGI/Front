@@ -1,48 +1,28 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import MainAdBanner from '../components/MainAdBanner';
 import MainBookList from '../components/MainBookList';
 import MainCategoryBookList from '../components/MainCategoryBookList';
 import MainSellerList from '../components/MainSellerList';
-import { useDispatch, useSelector } from 'react-redux';
-import { actionCreators as getActions } from "../redux/modules/book";
 import MainFundingList from '../components/MainFundingList';
 
 const Main = () => {
-  const dispatch = useDispatch();
-  
-  useEffect(() => {
-    dispatch(getActions.getMainAC());
-    dispatch(getActions.getMainCategoryAC());
-    dispatch(getActions.getMainFundingAC());
-    dispatch(getActions.getMainCreatorAC());
-    dispatch(getActions.getCookieAC());
-    return () => {
-      dispatch(getActions.clearMain());
-    }
-  }, []);
-
-  const main = useSelector((state) => state.book.main);
-  const mainCategory = useSelector((state) => state.book.main_category);
-  const mainFunding = useSelector((state) => state.book.main_funding);
-  const mainCreator = useSelector((state) => state.book.main_creator);
-
   return (
     <React.Fragment>
       <SliderWrap>
         <MainAdBanner/>
       </SliderWrap>
       <FunddingWrap>
-        <MainFundingList mainFunding={mainFunding}/>
+        <MainFundingList/>
       </FunddingWrap>
       <BookListWrap>
-        <MainBookList main={main}/>
+        <MainBookList/>
       </BookListWrap>
       <SellerWrap>
-        <MainSellerList mainCreator={mainCreator}/>
+        <MainSellerList/>
       </SellerWrap>
       <CategoryWrap>
-        <MainCategoryBookList mainCategory={mainCategory}/>
+        <MainCategoryBookList/>
       </CategoryWrap>
     </React.Fragment>
   )

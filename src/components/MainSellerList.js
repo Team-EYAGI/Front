@@ -2,10 +2,21 @@ import React from 'react';
 import MainSellerCard from './MainSellerCard';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
+import useSWR from "swr";
+import fetcher from "../shared/Fetcher";
+import Spinner from '../elements/Spinner';
 
-const MainSellerList = (props) => {
+const MainSellerList = () => {
 
-  const creator = props.mainCreator
+  // 오늘의 크리에이터 가져오기
+  const { data, error } = useSWR(process.env.REACT_APP_BASE_URL + `/user/todayCreator`, fetcher)
+    
+  if (error) {
+    return <div>ERROR...</div>
+  }
+  if (!data) {
+    return <Spinner/>
+  }
 
   return (
     <React.Fragment>
@@ -20,7 +31,7 @@ const MainSellerList = (props) => {
         >더 보러가기</span>
       </Wrap>
       <Bottom>
-        {creator && creator.map((item, idx) => (
+        {data.map((item, idx) => (
           <MainSellerCard key={idx} item={item} />
         ))}
       </Bottom>
