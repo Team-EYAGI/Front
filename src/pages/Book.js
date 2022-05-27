@@ -37,6 +37,7 @@ const Book = () => {
 
   React.useEffect(() => {
     if (categoryName === "자기계발") {
+      dispatch(getActions.clearCategory());
       dispatch(getActions.getSelfAC());
     } else if (categoryName === "소설") {
       dispatch(getActions.getNovelAC());

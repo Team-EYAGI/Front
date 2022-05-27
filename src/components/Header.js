@@ -16,7 +16,7 @@ const Header = (props) => {
 
   const is_login = useSelector((state) => state.user.is_login);
   const is_session = localStorage.getItem("is_login");
-  const seller = localStorage.getItem("seller");
+  const authority = localStorage.getItem("seller");
 
   const [word, setWord] = React.useState("")
 
@@ -55,7 +55,7 @@ const Header = (props) => {
         </LogoBox>
         {is_session ?
           <div>
-            {seller === "ROLE_ADMIN" ?
+            {authority === "ROLE_ADMIN" ?
               <RiAdminLine
                 size="25px"
                 style={{ margin: "5px 0px 0px 0px", cursor: "pointer" }}
@@ -92,12 +92,17 @@ const Header = (props) => {
         <BottomSt>
           <div id='list'>
             <li onClick={() => {
+              dispatch(getActions.clearCategory());
               history.push(`/book/자기계발`);
               dispatch(getActions.getSelfAC());
             }}>카테고리별 도서</li>
             <li onClick={() => { history.push('/funding') }}>오디오 펀딩</li>
-            <li onClick={() => { history.push('/request') }}>오디오북 요청 모아보기</li>
-            {/* <li>ㅇㅇㅇ</li> */}
+            <li onClick={() => { history.push('/sellerList') }}>크리에이터</li>
+            <li onClick={() => { history.push('/request') }}>오디오북 요청</li>
+            <li onClick={() => { history.push('/serviceGuide') }}>이용안내</li>
+            {authority === "ROLE_USER" &&
+              <li onClick={() => { window.open(`https://forms.gle/UR8cGG2YDWnc7f1y8`) }}>크리에이터 전환신청</li>          
+            }
           </div>
           <SearchWrap>
             <Search
@@ -133,19 +138,13 @@ const HeaderWrap = styled.div`
 `
 
 const BottomWrap = styled.div`
-  /* max-width: 1920px; */
-  /* width: 1920px; */
   min-width: 1200px;
-
   height: 50px;
   position: sticky;
   top: 0;
   z-index: 4;
 
-  /* margin: 0 auto; */
-
   box-shadow: 0px 3px 1.9px 0.1px rgb(80 80 80 / 30%);
-
   background-color: #FFFFFC;
 
   display: flex;
@@ -157,8 +156,6 @@ const BottomWrap = styled.div`
 const LogoBox = styled.div`
   width: 200px;
   height: 60px;
-
-
   color: white;
 
   img {
@@ -166,6 +163,7 @@ const LogoBox = styled.div`
     height: 60px;
     cursor: pointer;
   }
+
   span {
     text-align: center;
     margin-bottom: 3px;

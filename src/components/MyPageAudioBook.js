@@ -73,10 +73,40 @@ const MyPageAudioBook = (props) => {
                 margin="0px"
                 onClick={() => {
                   if (bookId && audioBookId) {
-                    dispatch(libraryActions.deleteAudioBookAC(audioBookId));
+                    Swal.fire({
+                      // title: "알림",
+                      text: "삭제하면 되돌릴 수 없습니다. 삭제하시겠습니까?",
+                      icon: "question",
+                      showCancelButton: true,
+                      confirmButtonText: "네",
+                      cancelButtonText: "아니오",
+                      confirmButtonColor: '#0C0A0A',
+                      cancelButtonColor: '#0C0A0A',
+                    }).then(result => {
+                      if (result.isConfirmed) {
+                        dispatch(libraryActions.deleteAudioBookAC(audioBookId));
+                      } else {
+                        return;
+                      }
+                    });
                   }
                   if (bookId && !audioBookId) {
-                    dispatch(libraryActions.deleteLikeBookAC(bookId));
+                    Swal.fire({
+                      // title: "알림",
+                      text: "삭제하면 되돌릴 수 없습니다. 삭제하시겠습니까?",
+                      icon: "question",
+                      showCancelButton: true,
+                      confirmButtonText: "네",
+                      cancelButtonText: "아니오",
+                      confirmButtonColor: '#0C0A0A',
+                      cancelButtonColor: '#0C0A0A',
+                    }).then(result => {
+                      if (result.isConfirmed) {
+                        dispatch(libraryActions.deleteLikeBookAC(bookId));
+                      } else {
+                        return;
+                      }
+                    });
                   }
                 }}
               >삭제</Text>

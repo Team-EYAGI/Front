@@ -1,26 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { history } from '../redux/configureStore';
 import "../styles/modal.css"
-import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
+import { history } from '../redux/configureStore';
+import { useParams } from 'react-router-dom';
+import { actionCreators as deleteActions } from "../redux/modules/book";
+import { useDispatch } from 'react-redux';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
 
 const AudioBookList = (props) => {
+  const dispatch = useDispatch();
   const params = useParams();
   const category = params.category;
 
@@ -29,13 +19,14 @@ const AudioBookList = (props) => {
 
   // 로그인한 사용자인지 확인
   const is_login = localStorage.getItem("is_login");
+  const authority = localStorage.getItem("seller");
 
   return (
     <React.Fragment>
       <Wrap>
         <AudioCardSt1>
           <span id="title">
-            참여한 크리에이터
+            참여한 크리에이터(오디오북 목록)
           </span>
           <button
             onClick={() => {
@@ -49,11 +40,12 @@ const AudioBookList = (props) => {
                   if (result.isConfirmed) {
                     history.push(`/login`)
                   }
-              })
-            } else {
-              history.push(`/requestWrite/${bookId}`)
-            }}}
-            >새 오디오북 요청하러가기</button>
+                })
+              } else {
+                history.push(`/requestWrite/${bookId}`)
+              }
+            }}
+          >새 오디오북 요청하러가기</button>
         </AudioCardSt1>
         {audioBookList && audioBookList.length === 0 ?
           <CreatorNone>
@@ -75,11 +67,41 @@ const AudioBookList = (props) => {
               </ImgSt>
               <ContentSt>
                 <div id='preview'>
+                  {authority === "ROLE_ADMIN" &&
+                    <button
+                      id="delete"
+                      onClick={() => {
+                        dispatch(deleteActions.deleteAudioBookAC(item.audioBookId));
+                      }}
+                    >X</button>
+                  }
                   <button
+                    id="listen"
+                    onClick={() => {
+                      if (!is_login) {
+                        Swal.fire({
+                          text: "로그인 후 이용 가능합니다!",
+                          icon: "warning",
+                          confirmButtonText: "로그인하러가기",
+                          confirmButtonColor: '#0C0A0A',
+                        }).then(result => {
+                          if (result.isConfirmed) {
+                            history.push(`/login`)
+                          }
+                        })
+                      } else {
+                        history.push(`/audioPlay/self/${bookId}/${item.audioBookId}`)
+                      }
+                    }}
+                  >오디오북 바로가기
+                  </button>
+                  <button
+                    id="listen"
                     onClick={() => {
                       history.push(`/audioModal/${category}/${bookId}/${item.audioBookId}`)
                     }}
-                  >1분 미리듣기 ▶</button>
+                  >1분 미리듣기 ▶
+                  </button>
                 </div>
                 <span id="name">{item.sellerName}</span>
                 <span id='contents'>
@@ -149,7 +171,6 @@ const CardWrap = styled.div`
 
 const AudioCardSt1 = styled.div`
   width: 100%;
-  
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -176,7 +197,7 @@ const AudioCardSt1 = styled.div`
 const AudioCardSt = styled.div`
   width: 536px;
   height: 130px;
-  
+
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -214,6 +235,27 @@ const ContentSt = styled.div`
   justify-content: left;
   align-items: center;
 
+  #delete {
+    width: 34px;
+    height: 34px;
+    margin-right: 5px;
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+
+    background: #F9F7F4;
+    border: 1px solid #000000;
+    border-radius: 10px;
+
+    :hover {
+      background: #0C0A0A;
+      border: 1px solid #000000;
+      color: #FFFFFF;
+    }
+  }
+
   #name {
     width: 100%;
     font-size: 16px;
@@ -234,9 +276,10 @@ const ContentSt = styled.div`
     width: 100%;
     text-align: right;
 
-    button {
+    #listen {
       width: 104px;
       height: 34px;
+      margin-right: 2px;
 
       font-family: 'Pretendard';
       font-style: normal;

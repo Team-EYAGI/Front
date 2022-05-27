@@ -7,25 +7,30 @@ import { getToken } from "../../shared/Token";
 const GET_CREATOR_PROFILE = "GET_CREATOR_PROFILE";
 const GET_CREATOR_FUNDING = "GET_CREATOR_FUNDING";
 const GET_CREATOR_AUDIO = "GET_CREATOR_AUDIO";
+const GET_CREATOR_LIST = "GET_CREATOR_LIST";
 const FOLLOW = "FOLLOW";
 const GET_FOLLOWER = "GET_FOLLOWER";
 const GET_FOLLOWING = "GET_FOLLOWING";
 const CLEAN_SELLER = "CLEAN_SELLER"
+
 
 // 초기값
 const initialState = {
   creator_profile : [],
   creator_funding : [],
   creator_audiobook : [],
+  creator_list : [],
   creator_followStatus : [],
   creator_follower : [],
   creator_following : [],
+  totalPages: [],
 };
 
 // 액션 생성 함수
 const getProfile = createAction(GET_CREATOR_PROFILE, (creator_profile) => ({creator_profile}));
 const getFunding = createAction(GET_CREATOR_FUNDING, (creator_funding) => ({creator_funding}));
 const getAudio = createAction(GET_CREATOR_AUDIO, (creator_audiobook) => ({creator_audiobook}));
+const getList = createAction(GET_CREATOR_LIST, (creator_list) => ({creator_list}));
 
 const follow = createAction(FOLLOW, (followCount, followStatus) => ({followCount, followStatus}));
 const followerList = createAction(GET_FOLLOWER, (creator_follower) => ({creator_follower}));
@@ -60,6 +65,21 @@ const getProfileAC = (sellerId, authority, username) => {
   }
 }
 
+// 셀러 목록 가져오기
+const getListAC = (page, size = 12) => {
+  return function (dispatch, getState, { history }) {
+    axios.get(process.env.REACT_APP_BASE_URL + `/sellerList?page=${page}&size=${size}`,
+      // { headers: { 'Authorization': `${Token}` } }
+    
+    )
+      .then((res) => {
+        dispatch(getList(res.data.content, res.data.totalPages));
+      })
+      .catch(error => {
+        // console.log("error", error)
+      })
+  }
+}
 
 // 셀러 펀딩정보 가져오기
 const getFundingAC = (sellerId) => {
@@ -166,6 +186,11 @@ export default handleActions(
     produce(state, (draft) => {
       draft.creator_audiobook = action.payload.creator_audiobook;
     }),
+    [GET_CREATOR_LIST]: (state, action) =>
+    produce(state, (draft) => {
+      draft.creator_list = action.payload.creator_list;
+      draft.totalPages = action.payload.totalPages;
+    }),
     [FOLLOW]: (state, action) =>
     produce(state, (draft) => {
       draft.creator_profile.sellerProfile.followerCnt = action.payload.followCount;
@@ -202,6 +227,7 @@ const actionCreators = {
   followAC,
   followerListAC,
   followingListAC,
+  getListAC,
 };
 
 export { actionCreators };

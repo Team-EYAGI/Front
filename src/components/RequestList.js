@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import Swal from 'sweetalert2';
 
 // 리덕스 관련
 import { history } from "../redux/configureStore";
@@ -20,7 +21,22 @@ const RequestList = (props) => {
   const [clickRequest, setClickRequest] = useState(false);
 
   const deleteRequest = () => {
-    dispatch(requestActions.deleteRequestAC(bookRequestId))
+    Swal.fire({
+      // title: "알림",
+      text: "삭제하면 되돌릴 수 없습니다. 삭제하시겠습니까?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "네",
+      cancelButtonText: "아니오",
+      confirmButtonColor: '#0C0A0A',
+      cancelButtonColor: '#0C0A0A',
+    }).then(result => {
+      if (result.isConfirmed) {
+        dispatch(requestActions.deleteRequestAC(bookRequestId))
+      } else {
+        return;
+      }
+    });
     history.replace(`/request`)
   }
 

@@ -103,7 +103,7 @@ const FundingDetail = () => {
                 volume={1}
                 showJumpControls={false}
                 ref={player}
-                onPlay={(e) => console.log("onPlay")}
+                // onPlay={(e) => console.log("onPlay")}
               />
             </div>
           </ImgSt>
@@ -169,12 +169,18 @@ const FundingDetail = () => {
                   onClick={addLike}
                 >
                   <AiOutlineHeart id="icon" size="40px" />
+                  {fundingDetail.successFunding === true &&
+                    <span>success</span>                  
+                  }
                 </Like>
                 :
                 <Like
                   onClick={addLike}
                 >
                   <AiFillHeart id="icon" size="40px" color="red" />
+                  {fundingDetail.successFunding === true &&
+                    <span>success</span>                  
+                  }
                 </Like>
               }
             </div>
@@ -219,12 +225,7 @@ const Like = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
   cursor: pointer;
-
-  #icon {
-    /* margin-top: 15px;    */
-  }
 `;
 
 

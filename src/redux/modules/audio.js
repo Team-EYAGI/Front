@@ -6,22 +6,20 @@ import { getToken } from "../../shared/Token";
 // 액션
 // 1. 듣고 싶은 오디오북 요청하기
 const GET_REQUEST = "GET_REQUEST";
-const ADD_REQUEST = "ADD_REQUEST";
-const EDIT_REQUEST = "EDIT_REQUEST";
 const DELETE_REQUEST = "DELETE_REQUEST";
 const LOADING = "LOADING"
 
 // 2. 크리에이터가 오디오북 등록하는 부분
-const ADD_AUDIO = "ADD_AUDIO";
 const GET_AUDIO = "GET_AUDIO";
 const ADD_AUDIO_CHECK = "ADD_AUDIO_CHECK";
 const ADD_FOLLOW = "ADD_FOLLOW";
 const CLEAN_AUDIO = "CLEAN_AUDIO";
 
-// 3. 리뷰 CRUD 부분
+// 3. 관리자가 오디오북 삭제하는 부분
+const DELETE_AUDIO = "DELETE_AUDIO";
+
+// 4. 리뷰 CRUD 부분
 const GET_REVIEW = "GET_REVIEW";
-const ADD_REVIEW = "ADD_REVIEW";
-const EDIT_REVIEW = "EDIT_REVIEW";
 const DELETE_REVIEW = "DELETE_REVIEW";
 
 
@@ -48,8 +46,12 @@ const getAudio = createAction(GET_AUDIO, (audio_list) => ({ audio_list }));
 const addFollow = createAction(ADD_FOLLOW, (followCount, followStatus) => ({ followCount, followStatus }));
 const cleanAudio = createAction(CLEAN_AUDIO, () => ({}));
 
+const deleteAudio = createAction(DELETE_AUDIO, (audioFileId) => ({ audioFileId }));
+
 const getReview = createAction(GET_REVIEW, (review_list, totalPages) => ({ review_list, totalPages }));
 const deleteReview = createAction(DELETE_REVIEW, (commentId) => ({ commentId }));
+
+
 
 
 // 미들웨어
@@ -204,6 +206,22 @@ const getAudioAC = (audioBookId) => {
   }
 }
 
+// 오디오북 챕터 삭제(관리자)
+const deleteAudioAC = (audioFileId) => {
+  let Token = getToken("Authorization");
+  return function (dispatch, getState, { history }) {
+    axios.delete(process.env.REACT_APP_BASE_URL + `/audio/detail/audiofile/remove/${audioFileId}`,
+      { headers: { 'Authorization': `${Token}` } },
+    )
+      .then((res) => {
+        dispatch(deleteAudio(audioFileId))
+      })
+      .catch(error => {
+        // console.log("error", error)
+      })
+  }
+}
+
 // 팔로우
 const audiofollowAC = (sellerId) => {
 
@@ -316,6 +334,10 @@ export default handleActions(
       produce(state, (draft) => {
         draft.audio_list = action.payload.audio_list;
       }),
+      [DELETE_AUDIO]: (state, action) =>
+      produce(state, (draft) => {
+        draft.audio_list.audioBookDetail.audioFileDtoList = draft.audio_list.audioBookDetail.audioFileDtoList.filter((p) => p.id !== action.payload.audioFileId);
+      }),
     [GET_REVIEW]: (state, action) =>
       produce(state, (draft) => {
         draft.review_list = action.payload.review_list;
@@ -355,6 +377,7 @@ const actionCreators = {
   deleteReviewAC,
   addAudioCheckAC,
   audiofollowAC,
+  deleteAudioAC,
 };
 
 export { actionCreators };
