@@ -95,7 +95,7 @@ const setChatListAX = () => {
       { headers: { 'Authorization': `${Token}` } }
     )
       .then((res) => {
-        // console.log("채팅방 목록", res)
+        console.log("채팅방 목록", res)
         let my_chat_list = [];
         res.data.data.forEach(c => {
           let one_chat_info = {
