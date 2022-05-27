@@ -3,10 +3,21 @@ import MainFundingCard from './MainFundingCard';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 import SkeletonLoading from '../components/SkeletonLoading';
+import useSWR from "swr";
+import fetcher from "../shared/Fetcher";
+import Spinner from '../elements/Spinner';
 
-const MainFundingList = (props) => {
+const MainFundingList = () => {
 
-  const mainFunding = props.mainFunding
+  // 메인 펀딩 리스트 가져오기
+  const { data, error } = useSWR(process.env.REACT_APP_BASE_URL + `/main/fund`, fetcher)
+    
+  if (error) {
+    return <div>ERROR...</div>
+  }
+  if (!data) {
+    return <Spinner/>
+  }
 
   return (
     <React.Fragment>
@@ -22,7 +33,7 @@ const MainFundingList = (props) => {
       </Wrap>
       <Bottom>
         
-        {mainFunding && mainFunding.map((item, idx) => (
+        {data.map((item, idx) => (
           <MainFundingCard key={idx} item={item} />
         ))}
       </Bottom>

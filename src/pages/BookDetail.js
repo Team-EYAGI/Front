@@ -1,14 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react';
 import styled from 'styled-components';
 import AudioBookList from '../components/AudioBookList';
 import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import useSWR from "swr";
+import fetcher from "../shared/Fetcher";
+import Spinner from '../elements/Spinner';
 
 import { history } from '../redux/configureStore';
-import { useDispatch, useSelector } from 'react-redux';
-import { actionCreators as getActions } from "../redux/modules/book";
+import { useDispatch } from 'react-redux';
 import { actionCreators as libraryActions } from "../redux/modules/mypage";
 import { actionCreators as fundingActions } from "../redux/modules/fund";
+
 
 const BookDetail = () => {
 
@@ -22,36 +25,34 @@ const BookDetail = () => {
   const authority = localStorage.getItem("seller");
 
   // 책 상세페이지 정보 가져오기
-  const detail = useSelector((state) => state.book.detail_book);
-
-  useEffect(() => {
-    dispatch(getActions.getBookDetailAC(bookId));
-
-    // 클린업 함수 실행
-    return () => {
-      dispatch(getActions.clearMain());
-    }
-  }, []);
+  const { data, error } = useSWR(process.env.REACT_APP_BASE_URL + `/book/detail/${bookId}`, fetcher)
+  
+  if (error) {
+    return <div>ERROR...</div>
+  }
+  if (!data) {
+    return <Spinner/>
+  }
 
   return (
     <React.Fragment>
       <Wrap>
         <Header>
-          <p>{detail.title}</p>
-          <span>{detail.author}</span>
+          <p>{data.title}</p>
+          <span>{data.author}</span>
         </Header>
         <BookInfo>
-          <ImgBox style={{ backgroundImage: `url(${detail.bookImg})` }}>
+          <ImgBox style={{ backgroundImage: `url(${data.bookImg})` }}>
             <div id='img_wrap'>
               <div id='img'>
-                <img src={detail.bookImg} alt="책 이미지" />
+                <img src={data.bookImg} alt="책 이미지" />
               </div>
             </div>
           </ImgBox>
           <Content>
             <div>
               <p>이 오디오북에 참여한 크리에이터</p>
-              <p><span>{detail.audio ? detail.audio.length : 0}&nbsp;</span>명</p>
+              <p><span>{data.audio ? data.audio.length : 0}&nbsp;</span>명</p>
             </div>
             <div>
               {authority === "ROLE_SELLER" ?
@@ -94,7 +95,7 @@ const BookDetail = () => {
           </Content>
         </BookInfo>
         <AudioBookBox>
-          <AudioBookList detail={detail} />
+          <AudioBookList detail={data} />
         </AudioBookBox>
         <BookSum>
           <span id='bookinfo'>
@@ -102,7 +103,7 @@ const BookDetail = () => {
           </span>
           <div>
             <span style={{ whiteSpace: "pre-wrap", wordBreak: 'keep-all', lineHeight: "1.5", }}>
-              {detail.summary}
+              {data.summary}
             </span>
           </div>
         </BookSum>
