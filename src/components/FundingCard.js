@@ -14,6 +14,11 @@ const FundingCard = (props) => {
   let fundingHeartState = props.fundcard.myHeart;
   const fundingcard = props.fundcard;
   const fundId = fundingcard.fundId;
+  const dispatch = useDispatch();
+
+
+  const authority = localStorage.getItem("seller");
+
 
   return (
     <React.Fragment>
@@ -53,7 +58,21 @@ const FundingCard = (props) => {
             </div>
           </ImgSt>
           <h3 style={{ fontSize: "16px" }}>{fundingcard.bookTitle}</h3>
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
           <Text margin="0px 0px 0px 10px">{fundingcard.sellerName}</Text>
+          {authority === "ROLE_ADMIN" &&
+
+          <Text
+                color="gray"
+                margin="0px"
+                onClick={() => {
+                  if (fundId) {
+                    dispatch(getActions.deleteFundingAC(fundId));
+                  }
+                }}
+              >삭제</Text>
+}
+              </div>
         </Body>
       </Wrap>
     </React.Fragment>
