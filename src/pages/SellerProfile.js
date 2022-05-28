@@ -3,7 +3,9 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import MyPageAudioBook from '../components/MyPageAudioBook';
 import AudioPlayer from "react-h5-audio-player";
-
+import useSWR from "swr";
+import fetcher1 from "../shared/Fetcher1";
+import Spinner from '../elements/Spinner';
 import { history } from '../redux/configureStore';
 import { actionCreators as creatorActions } from "../redux/modules/creator";
 import { actionCreators as followActions } from "../redux/modules/creator";
@@ -26,13 +28,9 @@ const style = {
 
 const SellerProfile = () => {
   const dispatch = useDispatch();
-
   const params = useParams();
   const sellerId = params.sellerName;
   const category = params.category;
-
-  // 셀러가 등록한 오디오북 가져오기
-  const audioBookList = useSelector((state) => state.creator.creator_audiobook);
 
   // 셀러 프로필 정보 가져오기
   const profile = useSelector((state) => state.creator.creator_profile);
@@ -41,8 +39,7 @@ const SellerProfile = () => {
   const authority = localStorage.getItem("seller");
   const username = localStorage.getItem("username");
 
-  // 셀러가 등록한 펀딩 정보 가져오기
-  const fundingList = useSelector((state) => state.creator.creator_funding);
+  // 클릭시 요청 : 팔로우, 팔로잉 리스트
   const follower = useSelector((state) => state.creator.creator_follower);
   const following = useSelector((state) => state.creator.creator_following);
 
@@ -54,12 +51,17 @@ const SellerProfile = () => {
   const handleOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
 
+  // 목록별 조건부 리스트 가져오기
+  const { data, error } = useSWR(category === "audiobook" ? process.env.REACT_APP_BASE_URL + `/viewer/sellerAudioBook/${sellerId}` :
+    category === "funding" ? process.env.REACT_APP_BASE_URL + `/viewer/sellerFund/${sellerId}` :
+      null,
+    fetcher1)
 
   // 플레이어 자동재생 막기
   const player = useRef();
 
   useEffect(() => {
-    player.current.audio.current.pause();  // -3-
+    player?.current?.audio?.current.pause();  // -3-
   }, [profile]);
 
   useEffect(() => {
@@ -74,16 +76,12 @@ const SellerProfile = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (category === "audiobook") {
-      dispatch(creatorActions.getAudioAC(sellerId));
-    } else {
-      dispatch(creatorActions.getFundingAC(sellerId));
-    }
-    return () => {
-      dispatch(creatorActions.cleanSeller());
-    }
-  }, []);
+  if (error) {
+    return <div>ERROR...</div>
+  }
+  if (!data) {
+    return <Spinner />
+  };
 
   return (
     <React.Fragment>
@@ -215,7 +213,7 @@ const SellerProfile = () => {
                 defaultCurrentTime={"00:00"}
                 showJumpControls={false}
                 ref={player}
-                // onPlay={e => console.log("onPlay")}
+              // onPlay={e => console.log("onPlay")}
               />
               :
               <AudioPlayer
@@ -227,7 +225,7 @@ const SellerProfile = () => {
                 defaultCurrentTime={"00:00"}
                 showJumpControls={false}
                 ref={player}
-                // onPlay={e => console.log("onPlay")}
+              // onPlay={e => console.log("onPlay")}
               />
             }
             {!(profileDetail && profileDetail?.sellerVoice || profile.sellerVoice) ?
@@ -272,7 +270,7 @@ const SellerProfile = () => {
                 style={{ textDecoration: (category === "audiobook" ? "underline" : null) }}
                 onClick={() => {
                   history.push(`/sellerProfile/${sellerId}/audiobook`)
-                  dispatch(creatorActions.getAudioAC(sellerId));
+                  // dispatch(creatorActions.getAudioAC(sellerId));
                 }}>
                 업로드한 오디오북
               </h3>
@@ -280,7 +278,7 @@ const SellerProfile = () => {
                 style={{ textDecoration: (category === "funding" ? "underline" : null) }}
                 onClick={() => {
                   history.push(`/sellerProfile/${sellerId}/funding`)
-                  dispatch(creatorActions.getFundingAC(sellerId));
+                  // dispatch(creatorActions.getFundingAC(sellerId));
                 }}>
                 등록한 펀딩
               </h3>
@@ -290,22 +288,22 @@ const SellerProfile = () => {
         </Menu>
         <div>
           {
-            category === "funding" && fundingList ?
-              <span>총 {fundingList.length}개</span>
+            category === "funding" && data ?
+              <span>총 {data.length}개</span>
               :
-              category === "audiobook" && audioBookList ?
-                <span>총 {audioBookList.length}개</span>
+              category === "audiobook" && data ?
+                <span>총 {data.length}개</span>
                 :
                 null
           }
 
           {
-            (category === "audiobook") && (audioBookList && audioBookList.length === 0) ?
+            (category === "audiobook") && (data && data.length === 0) ?
               <AudioReviewNone>
                 아직 크리에이터가 오디오북을 등록하지 않았습니다!
               </AudioReviewNone>
               :
-              (category === "funding") && (fundingList && fundingList.length === 0) ?
+              (category === "funding") && (data && data.length === 0) ?
                 <AudioReviewNone>
                   아직 크리에이터가 펀딩을 진행하지 않았습니다!
                 </AudioReviewNone>
@@ -314,11 +312,11 @@ const SellerProfile = () => {
           }
           <Body>
 
-            {category === "funding" ? fundingList.map((item, idx) => (
+            {category === "funding" ? data.map((item, idx) => (
               <MyPageAudioBook key={idx} item={item} />
             ))
               :
-              category === "audiobook" ? audioBookList.map((item, idx) => (
+              category === "audiobook" ? data.map((item, idx) => (
                 <MyPageAudioBook key={idx} item={item} />
               ))
                 :

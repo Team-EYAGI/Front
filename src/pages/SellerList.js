@@ -1,7 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
 import SellerCardList from '../components/SellerCardList';
-import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as getListActions } from "../redux/modules/creator";
 import Pagination from "../shared/Pagination"
@@ -15,11 +13,9 @@ const SellerList = () => {
 
   const [page, setPage] = React.useState(1)
 
-
   React.useEffect(() => {
     dispatch(getListActions.getListAC(page));
   }, [page]);
-
 
   return (
     <React.Fragment>

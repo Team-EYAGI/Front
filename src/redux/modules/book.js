@@ -4,13 +4,10 @@ import axios from "axios";
 import { getToken } from "../../shared/Token";
 
 // 액션
-// 1. 메인페이지 관련
-const GET_COOKIE = "GET_COOKIE"
-
-// 2. 책 상세페이지 관련
+// 1. 책 상세페이지 관련
 const DELETE_AUDIOBOOK = "DELETE_AUDIOBOOK";
 
-// 3. 카테고리별 도서 목록 관련
+// 2. 카테고리별 도서 목록 관련
 const GET_NOVEL = "GET_NOVEL";
 const GET_POEM = "GET_POEM";
 const GET_SELF = "GET_SELF";
@@ -18,12 +15,11 @@ const GET_ECONOMY = "GET_ECONOMY";
 const GET_KIDS = "GET_KIDS";
 const LOADING = "LOADING"
 
-// 4. 카테고리 초기화 
+// 3. 카테고리 초기화 
 const CLEAR_CATEGORY = "CLEAR_CATEGORY";
 const CLEAR_MAIN = "CLEAR_MAIN";
 
 // 액션 생성 함수
-const getCooKie = createAction(GET_COOKIE, () => ({}));
 const deleteAudioBook = createAction(DELETE_AUDIOBOOK, (audioBookId) => ({ audioBookId }));
 
 const getNovel = createAction(GET_NOVEL, (novel, paging) => ({ novel, paging }));
@@ -48,24 +44,6 @@ const initialState = {
 };
 
 // 미들웨어
-// 쿠키 저장
-const getCookieAC = () => {
-  return function (dispatch, getState, { history }) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/cookie`, {
-
-    },
-      // {headers: { 'Authorization' : `Bearer ${myToken}`}}
-    )
-      .then((res) => {
-        // dispatch(getMain(res.data))
-      })
-      .catch(error => {
-        // console.log("error", error)
-      })
-  }
-}
-
-
 // 오디오북 챕터 삭제(관리자)
 const deleteAudioBookAC = (audioBookId) => {
   let Token = getToken("Authorization");
@@ -212,7 +190,6 @@ const getSelfAC = (page = 1, size = 20) => {
   }
 }
 
-
 // 리듀서
 export default handleActions(
   {
@@ -263,7 +240,6 @@ export default handleActions(
     [LOADING]: (state, action) => produce(state, (draft) => {
       draft.is_loading = action.payload.is_loading;
     }),
-
     [CLEAR_CATEGORY]: (state, action) =>
       produce(state, (draft) => {
         draft.paging = { page: 1, size: 20 };
@@ -275,10 +251,6 @@ export default handleActions(
       }),
     [CLEAR_MAIN]: (state, action) =>
       produce(state, (draft) => {
-        draft.main = [];
-        draft.main_category = [];
-        draft.main_creator = [];
-        draft.main_funding = [];
         draft.detail_book = [];
       }),
   },
@@ -288,7 +260,6 @@ export default handleActions(
 
 const actionCreators = {
   // export 할 것들
-  getCookieAC,
   deleteAudioBookAC,
   getNovelAC,
   getPoemAC,

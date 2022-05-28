@@ -2,11 +2,13 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import { useBeforeunload } from "react-beforeunload";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators as fundActions } from "../redux/modules/fund";
-import { actionCreators as getActions } from "../redux/modules/book";
 import { BiSearch } from "react-icons/bi";
 import Swal from 'sweetalert2';
+import useSWR from "swr";
+import fetcher1 from "../shared/Fetcher1";
+import Spinner from '../elements/Spinner';
 
 const FundingWrite = () => {
   // 새로고침 경고 알럿
@@ -15,8 +17,8 @@ const FundingWrite = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const bookId = params.bookId;
-  const detail = useSelector((state) => state.book.detail_book);
-  
+  const { data, error } = useSWR(process.env.REACT_APP_BASE_URL + `/book/detail/${bookId}`, fetcher1)
+
   // upload라는 훅 생성
   const fileInput = useRef();
 
@@ -41,15 +43,15 @@ const FundingWrite = () => {
   const addFunding = () => {
     let file = fileInput.current.files[0];
     let maxSize = 5 * 1024 * 1024;
-		let fileSize = file.size;
-    
+    let fileSize = file.size;
+
     if (file === null) {
       window.alert("파일을 추가해주세요.")
       return;
     }
 
     //오디오 파일 크기 얼럿
-		if(fileSize > maxSize){
+    if (fileSize > maxSize) {
       const Toast = Swal.mixin({
         toast: true,
         position: 'top',
@@ -66,13 +68,18 @@ const FundingWrite = () => {
         icon: 'error',
         title: '첨부파일 사이즈는 5MB 이내로 등록 가능합니다.'
       })
-        return;
+      return;
+    }
 
-		}
-
+    if (error) {
+      return <div>ERROR...</div>
+    }
+    if (!data) {
+      return <Spinner />
+    }
 
     // 목표 숫자 5 이하일시 얼럿
-    if (fundingGoals < 5 ){
+    if (fundingGoals < 5) {
       const Toast = Swal.mixin({
         toast: true,
         position: 'top',
@@ -94,7 +101,7 @@ const FundingWrite = () => {
 
 
     // content 글자 10자 이하일시 얼럿
-    if (content.length < 10 ){
+    if (content.length < 10) {
       const Toast = Swal.mixin({
         toast: true,
         position: 'top',
@@ -128,23 +135,17 @@ const FundingWrite = () => {
     }).then(result => {
       if (result.isConfirmed) {
         dispatch(
-      fundActions.addFundingAC({
-        information: { content: content, fundingGoals: fundingGoals },
-        file,
-        bookId,
-      })
+          fundActions.addFundingAC({
+            information: { content: content, fundingGoals: fundingGoals },
+            file,
+            bookId,
+          })
         )
-    }else {
-      return;
-    }
-  });
+      } else {
+        return;
+      }
+    });
   };
-
-  React.useEffect(() => {
-    dispatch(getActions.getBookDetailAC(bookId));
-  }, []);
-
-  
 
   return (
     <React.Fragment>
@@ -156,11 +157,11 @@ const FundingWrite = () => {
           <ImgSt>
             <div id="img_wrap">
               <div id="img">
-                <img alt= "책 이미지" src={detail.bookImg} />
+                <img alt="책 이미지" src={data?.bookImg} />
               </div>
               <div>
-                <p>{detail.title}</p>
-                <h3>{detail.author}</h3>
+                <p>{data?.title}</p>
+                <h3>{data?.author}</h3>
               </div>
             </div>
           </ImgSt>
@@ -202,12 +203,12 @@ const FundingWrite = () => {
                 onChange={selectFile}
               />
               <button
-              disabled={file === "" || fundingGoals === "" || content === ""}  //왜 파일넣으면 돼..>? 
-              id="uploadBtn" 
-              onClick={addFunding}>
+                disabled={file === "" || fundingGoals === "" || content === ""}
+                id="uploadBtn"
+                onClick={addFunding}>
                 등록하기
               </button>
-              </div>
+            </div>
           </ContentSt>
         </BookInfoSt>
       </Wrap>
@@ -263,7 +264,7 @@ const ImgSt = styled.div`
 
     p {
       font-weight: 700;
-      font-size: 18px;
+      font-size: 16px;
       margin-bottom: 10px;
       color: #000000;
     }
@@ -271,7 +272,7 @@ const ImgSt = styled.div`
     h3 {
       text-align: center;
       font-weight: 400;
-      font-size: 14px;
+      font-size: 13px;
       color: #525252;
       margin: 10px 0px 40px 0px;
     }

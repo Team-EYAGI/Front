@@ -5,17 +5,8 @@ import { getToken } from "../../shared/Token";
 import Swal from 'sweetalert2';
 
 // 액션
-const ADD_LIBRARY = "ADD_LIBRARY";
-const GET_REGISTER_AUDIOBOOK = "GET_REGISTER_AUDIOBOOK";
-const GET_REGISTER_FUNDING = "GET_REGISTER_FUNDING";
-const GET_LISTEN_AUDIO = "GET_LISTEN_AUDIO";
-const GET_LIKE_BOOK = "GET_LIKE_BOOK";
 const DELETE_LIKE_BOOK = "DELETE_LIKE_BOOK";
 const DELETE_LISTEN_AUDIOBOOK = "DELETE_LISTEN_AUDIOBOOK";
-
-// const ADD_LISTEN = "ADD_LISTEN";
-const ADD_PROFILE = "ADD_PROFILE";
-const ADD_VOICE = "ADD_VOICE";
 const GET_PROFILE = "GET_PROFILE";
 
 // 이미지 액션
@@ -34,11 +25,6 @@ const initialState = {
 };
 
 // 액션 생성 함수
-const addLibrary = createAction(ADD_LIBRARY, (library) => ({ library }));
-const getListenAudio = createAction(GET_LISTEN_AUDIO, (listenAudio) => ({ listenAudio }));
-const getLikeBook = createAction(GET_LIKE_BOOK, (likeBook) => ({ likeBook }));
-const getRegisterAudioBook = createAction(GET_REGISTER_AUDIOBOOK, (registerAudioBook) => ({ registerAudioBook }));
-const getRegisterFunding = createAction(GET_REGISTER_FUNDING, (registerFunding) => ({ registerFunding }));
 const getProfile = createAction(GET_PROFILE, (profile) => ({ profile }));
 const deleteLikeBook = createAction(DELETE_LIKE_BOOK, (bookId) => ({ bookId }));
 const deleteAudioBook = createAction(DELETE_LISTEN_AUDIOBOOK, (audioBookId) => ({ audioBookId }));
@@ -91,71 +77,6 @@ const addLibraryAC = (bookId) => {
   }
 }
 
-
-// 듣고 있는 오디오북 겟
-const getListenAudioAC = () => {
-  let Token = getToken("Authorization");
-  return function (dispatch, getState, { history }) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/load/profiles/library/audio`,
-      { headers: { 'Authorization': `${Token}` } }
-    )
-      .then((res) => {
-        dispatch(getListenAudio(res.data))
-      })
-      .catch(error => {
-        // console.log("error", error)
-      })
-  }
-}
-
-// 등록한 오디오북 겟
-const getRegisterAudioBookAC = () => {
-  let Token = getToken("Authorization");
-  return function (dispatch, getState, { history }) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/load/profiles/seller/audioBook`,
-      { headers: { 'Authorization': `${Token}` } }
-    )
-      .then((res) => {
-        dispatch(getRegisterAudioBook(res.data))
-      })
-      .catch(error => {
-        // console.log("error", error)
-      })
-  }
-}
-
-// 등록한 펀딩 겟
-const getRegisterFundingAC = () => {
-  let Token = getToken("Authorization");
-  return function (dispatch, getState, { history }) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/load/profiles/seller/fund`,
-      { headers: { 'Authorization': `${Token}` } }
-    )
-      .then((res) => {
-        dispatch(getRegisterFunding(res.data))
-      })
-      .catch(error => {
-        // console.log("error", error)
-      })
-  }
-}
-
-// 찜한 책 겟
-const getLikeBookAC = () => {
-  let Token = getToken("Authorization");
-  return function (dispatch, getState, { history }) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/load/profiles/library/book`,
-      { headers: { 'Authorization': `${Token}` } }
-    )
-      .then((res) => {
-        dispatch(getLikeBook(res.data))
-      })
-      .catch(error => {
-        // console.log("error", error)
-      })
-  }
-}
-
 // 찜한 책 삭제
 const deleteLikeBookAC = (bookId) => {
   let Token = getToken("Authorization");
@@ -187,8 +108,6 @@ const deleteAudioBookAC = (audioBookId) => {
       })
   }
 }
-
-
 
 // 프로필 추가
 const addProfileAC = (payload) => {
@@ -271,25 +190,9 @@ const addVoiceAC = (payload) => {
 // 리듀서
 export default handleActions(
   {
-    [GET_LISTEN_AUDIO]: (state, action) =>
-      produce(state, (draft) => {
-        draft.library_listenAudio = action.payload.listenAudio;
-      }),
-    [GET_REGISTER_AUDIOBOOK]: (state, action) =>
-      produce(state, (draft) => {
-        draft.library_registerAudioBook = action.payload.registerAudioBook;
-      }),
-    [GET_REGISTER_FUNDING]: (state, action) =>
-      produce(state, (draft) => {
-        draft.library_registerFunding = action.payload.registerFunding;
-      }),
     [GET_PROFILE]: (state, action) =>
       produce(state, (draft) => {
         draft.profile = action.payload.profile;
-      }),
-    [GET_LIKE_BOOK]: (state, action) =>
-      produce(state, (draft) => {
-        draft.library_likeBook = action.payload.likeBook;
       }),
     [SET_PREVIEW]: (state, action) =>
       produce(state, (draft) => {
@@ -315,10 +218,6 @@ export default handleActions(
 const actionCreators = {
   // export 할 것들
   addLibraryAC,
-  getListenAudioAC,
-  getLikeBookAC,
-  getRegisterAudioBookAC,
-  getRegisterFundingAC,
   deleteLikeBookAC,
   deleteAudioBookAC,
   addProfileAC,
