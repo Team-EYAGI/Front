@@ -1,8 +1,6 @@
-import React, { useState, useRef } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import React, { useRef } from "react";
 import styled from "styled-components";
-import AudioPlayer from "react-h5-audio-player";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as voiceActions } from "../redux/modules/mypage";
 import { useBeforeunload } from "react-beforeunload";
@@ -50,7 +48,6 @@ const AddProfileVoice = (props) => {
       })
 			return;
 		}
-
     dispatch(voiceActions.addVoiceAC({ file })
     )
   }

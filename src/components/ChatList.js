@@ -1,8 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-// import { Grid, Text, Image } from "../elements";
-import { Grid, Text } from "../elements/Index";
+
 const ChatList = (props) => {
   const userId = localStorage.getItem("userId");
   // 메세지 타임

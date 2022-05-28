@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import AudioPlayer from "react-h5-audio-player";
 import MyPageAudioBook from '../components/MyPageAudioBook';
 import { useParams } from 'react-router-dom';
+import useSWR from "swr";
+import fetcher1 from "../shared/Fetcher1";
+import Spinner from '../elements/Spinner';
 
 import { history } from '../redux/configureStore';
 import { actionCreators as libraryActions } from "../redux/modules/mypage";
@@ -26,7 +29,6 @@ const style = {
 
 const MyPage = () => {
   const dispatch = useDispatch();
-
   const params = useParams();
   const category = params.category;
 
@@ -37,43 +39,26 @@ const MyPage = () => {
   const authority = localStorage.getItem("seller");
   const sellerId = profile.userId;
 
-  // 마이페이지 카테고리 정보
-  const likeBook = useSelector((state) => state.mypage.library_likeBook);
-  const listenAudio = useSelector((state) => state.mypage.library_listenAudio);
-  const myFunding = useSelector((state) => state.mypage.library_registerFunding);
-  const myAudio = useSelector((state) => state.mypage.library_registerAudioBook);
-
-  const player = useRef();
-
   // 팔로우, 팔로잉 모달창
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  
+
   const [open2, setOpen2] = React.useState(false);
   const handleOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
 
-  // 플레이어 자동재생 막기
-  useEffect(() => {
-    if (authority === "ROLE_SELLER") {
-      player.current.audio.current.pause();  // -3-
-    }
-  }, [profile]);
+  // 목록별 조건부 리스트 가져오기
+  const { data, error } = useSWR(category === "likeBook" ? process.env.REACT_APP_BASE_URL + `/load/profiles/library/book` :
+    category === "listen" ? process.env.REACT_APP_BASE_URL + `/load/profiles/library/audio` :
+      category === "myAudio" ? process.env.REACT_APP_BASE_URL + `/load/profiles/seller/audioBook` :
+        category === "myFunding" ? process.env.REACT_APP_BASE_URL + `/load/profiles/seller/fund` :
+          null,
+    fetcher1)
 
-  // 카테고리별 리스트 불러오기
+  // 프로필 정보 가져오기
   useEffect(() => {
     dispatch(libraryActions.getProfileAC());
-
-    if (category === "likeBook") {
-      dispatch(libraryActions.getLikeBookAC());
-    } else if (category === "listen") {
-      dispatch(libraryActions.getListenAudioAC());
-    } else if (category === "myAudio") {
-      dispatch(libraryActions.getRegisterAudioBookAC());
-    } else {
-      dispatch(libraryActions.getRegisterFundingAC());
-    }
   }, []);
 
   // 권한이 없는 사용자는 마이페이지에 접근할 수 없음
@@ -83,6 +68,21 @@ const MyPage = () => {
     }
   }, []);
 
+  // 플레이어 자동재생 막기
+  const player = useRef();
+
+  useEffect(() => {
+    if (authority === "ROLE_SELLER") {
+      player?.current?.audio?.current.pause();  // -3-
+    }
+  }, [profile]);
+
+  if (error) {
+    return <div>ERROR...</div>
+  }
+  if (!data) {
+    return <Spinner />
+  };
 
   return (
     <React.Fragment>
@@ -103,10 +103,10 @@ const MyPage = () => {
                 }}>팔로잉 &nbsp;<span>{profile.followingCnt}명</span></h5>
                 {authority === "ROLE_SELLER" ?
                   <h5
-                  onClick={() => {
-                    dispatch(followActions.followerListAC(sellerId));
-                    handleOpen2();
-                  }}
+                    onClick={() => {
+                      dispatch(followActions.followerListAC(sellerId));
+                      handleOpen2();
+                    }}
                   >팔로워 &nbsp;<span>{profile.followerCnt}명</span></h5>
                   :
                   null
@@ -129,22 +129,22 @@ const MyPage = () => {
                 <h2 style={{ width: "100%", textAlign: "center" }}>팔로잉</h2>
                 <BoxSt>
                   {following && following.map((item, idx) =>
-                  <FollowerList key={idx}>
-                  <div id='name'>
-                    <ImageBox>
-                      <img
-                        style={{ width: "100%" }}
-                        alt="유저 이미지"
-                        src={item.img ? item.img : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
-                      />
-                    </ImageBox>
-                    <h3 style={{ fontSize: "16px" }}>
-                      {item.name}
-                    </h3>
-                  </div>
-                </FollowerList>
+                    <FollowerList key={idx}>
+                      <div id='name'>
+                        <ImageBox>
+                          <img
+                            style={{ width: "100%" }}
+                            alt="유저 이미지"
+                            src={item.img ? item.img : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
+                          />
+                        </ImageBox>
+                        <h3 style={{ fontSize: "16px" }}>
+                          {item.name}
+                        </h3>
+                      </div>
+                    </FollowerList>
                   )
-                }
+                  }
                 </BoxSt>
               </Box>
             </Modal>
@@ -158,22 +158,22 @@ const MyPage = () => {
                 <h2 style={{ width: "100%", textAlign: "center" }}>팔로워</h2>
                 <BoxSt>
                   {follower && follower.map((item, idx) =>
-                  <FollowerList key={idx}>
-                  <div id='name'>
-                    <ImageBox>
-                      <img
-                        style={{ width: "100%" }}
-                        alt="유저 이미지"
-                        src={item.img ? item.img : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
-                      />
-                    </ImageBox>
-                    <h3 style={{ fontSize: "16px" }}>
-                      {item.name}
-                    </h3>
-                  </div>
-                </FollowerList>
+                    <FollowerList key={idx}>
+                      <div id='name'>
+                        <ImageBox>
+                          <img
+                            style={{ width: "100%" }}
+                            alt="유저 이미지"
+                            src={item.img ? item.img : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png"}
+                          />
+                        </ImageBox>
+                        <h3 style={{ fontSize: "16px" }}>
+                          {item.name}
+                        </h3>
+                      </div>
+                    </FollowerList>
                   )
-                }
+                  }
                 </BoxSt>
               </Box>
             </Modal>
@@ -188,7 +188,7 @@ const MyPage = () => {
                 defaultCurrentTime={"00:00"}
                 showJumpControls={false}
                 ref={player}
-                // onPlay={e => console.log("onPlay")}
+              // onPlay={e => console.log("onPlay")}
               />
               :
               null
@@ -270,38 +270,38 @@ const MyPage = () => {
         </Menu>
         <div>
           {
-            category === "myAudio" && myAudio ?
-              <span>총 {myAudio.length}개</span>
+            category === "myAudio" && data ?
+              <span>총 {data.length}개</span>
               :
-              category === "myFunding" && myFunding ?
-                <span>총 {myFunding.length}개</span>
+              category === "myFunding" && data ?
+                <span>총 {data.length}개</span>
                 :
-                category === "listen" && listenAudio ?
-                  <span id='num'>총 {listenAudio.length}개</span>
+                category === "listen" && data ?
+                  <span id='num'>총 {data.length}개</span>
                   :
-                  category === "likeBook" && likeBook ?
-                    <span id='num'>총 {likeBook.length}개</span>
+                  category === "likeBook" && data ?
+                    <span id='num'>총 {data.length}개</span>
                     :
                     null
           }
 
           {
-            (category === "myAudio") && (myAudio && myAudio.length === 0) ?
+            (category === "myAudio") && (data && data.length === 0) ?
               <AudioReviewNone>
                 아직 등록한 오디오북이 없네요! 오디오북을 등록해볼까요?
               </AudioReviewNone>
               :
-              (category === "myFunding") && (myFunding && myFunding.length === 0) ?
+              (category === "myFunding") && (data && data.length === 0) ?
                 <AudioReviewNone>
                   아직 펀딩을 시도하지 않았어요! 펀딩을 시작해볼까요?
                 </AudioReviewNone>
                 :
-                (category === "listen") && (listenAudio && listenAudio.length === 0) ?
+                (category === "listen") && (data && data.length === 0) ?
                   <AudioReviewNone>
                     아직 듣고 있는 오디오북이 없어요! 들으러 가볼까요?
                   </AudioReviewNone>
                   :
-                  (category === "likeBook") && (likeBook && likeBook.length === 0) ?
+                  (category === "likeBook") && (data && data.length === 0) ?
                     <AudioReviewNone>
                       아직 찜한 책이 없어요! 책을 둘러보러 가볼까요?
                     </AudioReviewNone>
@@ -310,19 +310,19 @@ const MyPage = () => {
           }
           <Body>
 
-            {category === "myAudio" ? myAudio.map((item, idx) => (
+            {category === "myAudio" ? data.map((item, idx) => (
               <MyPageAudioBook key={idx} item={item} />
             ))
               :
-              category === "myFunding" ? myFunding.map((item, idx) => (
+              category === "myFunding" ? data.map((item, idx) => (
                 <MyPageAudioBook key={idx} item={item} />
               ))
                 :
-                category === "listen" ? listenAudio.map((item, idx) => (
+                category === "listen" ? data.map((item, idx) => (
                   <MyPageAudioBook key={idx} item={item} />
                 ))
                   :
-                  category === "likeBook" ? likeBook.map((item, idx) => (
+                  category === "likeBook" ? data.map((item, idx) => (
                     <MyPageAudioBook key={idx} item={item} />
                   ))
                     :

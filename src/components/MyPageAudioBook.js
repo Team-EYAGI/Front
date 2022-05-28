@@ -20,7 +20,6 @@ const MyPageAudioBook = (props) => {
   const fundId = props.item.fundId;
 
   const is_session = localStorage.getItem("is_login");
-  const username = localStorage.getItem("username");
 
   return (
     <React.Fragment>

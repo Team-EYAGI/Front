@@ -1,12 +1,10 @@
 import { getToken } from "../shared/Token";
+import axios from 'axios';
+let Token = getToken("Authorization");
 
+const fetcher1 = url => axios.get(url, {
+  headers: { 'Authorization': `${Token}` }
+})
+  .then(res => res.data);
 
-const Fetcher1 = async (...args) => {
-  let Token = getToken("Authorization");
-  const response = await fetch(...args, {
-    headers: { 'Authorization': `${Token}` }
-  })
-  return response.json()
-}
-
-export default Fetcher1;
+export default fetcher1;

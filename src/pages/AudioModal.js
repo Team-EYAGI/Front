@@ -34,8 +34,6 @@ const AudioModal = (props) => {
     return <Spinner />
   }
 
-  console.log(data)
-
   // 책 상세페이지 속 오디오북 리스트(배열)를 가져옴
   // 파람스의 audioBookId와 배열의 audioBookId가 같은 것을 찾아 preview에 넣어줌 
   // file 정보가 있을 때만 find 함수 실행

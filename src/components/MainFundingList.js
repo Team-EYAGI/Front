@@ -2,7 +2,6 @@ import React from 'react';
 import MainFundingCard from './MainFundingCard';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
-import SkeletonLoading from '../components/SkeletonLoading';
 import useSWR from "swr";
 import fetcher from "../shared/Fetcher";
 import Spinner from '../elements/Spinner';

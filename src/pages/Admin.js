@@ -54,7 +54,7 @@ const Admin = () => {
           <Card>1:1 문의 내역보기</Card>
         </div>
         <div id='hello'>
-          {/* //아래 맵에서 채팅방 목록 돌리면서 빼주기. */}
+          {/* 아래 맵에서 채팅방 목록 돌리면서 빼주기. */}
           {roomList.map((item, idx) => (
             <AdminChatList 
               key={idx}

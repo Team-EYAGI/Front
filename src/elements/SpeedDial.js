@@ -47,6 +47,8 @@ const SpeedDialOpen = (props) => {
   const { checkRoom } = props;
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
+    const Token = localStorage.getItem("token");
+
     setOpen(true);
     if(Token != null) {
       findNewMessage();
