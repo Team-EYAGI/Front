@@ -29,7 +29,7 @@ const findNewMessage = () => {
         localStorage.setItem("userId", res.data[res.data.length-1].ownUserId);
         localStorage.setItem("roomId", res.data[res.data.length-1].roomId);
       }
-      if(res.data[res.data.length-1].newMessage == true) {
+      if(res.data[res.data.length-1].newMessage === true) {
         new_one.classList.add("show");
       } else {
         new_one.classList.remove("show");
@@ -45,7 +45,9 @@ const SpeedDialOpen = (props) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
-    findNewMessage();
+    if(Token != null) {
+      findNewMessage();
+    }
   }
   const handleClose = () => setOpen(false); 
   const scrollToTop = () => {
