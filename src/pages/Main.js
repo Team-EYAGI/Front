@@ -5,8 +5,15 @@ import MainBookList from '../components/MainBookList';
 import MainCategoryBookList from '../components/MainCategoryBookList';
 import MainSellerList from '../components/MainSellerList';
 import MainFundingList from '../components/MainFundingList';
+import useSWR from "swr";
+import fetcher from "../shared/Fetcher";
+
 
 const Main = () => {
+
+  // 쿠키
+  const { data } = useSWR(process.env.REACT_APP_BASE_URL + `/cookie`, fetcher)
+
   return (
     <React.Fragment>
       <SliderWrap>
