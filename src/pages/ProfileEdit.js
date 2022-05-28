@@ -4,8 +4,9 @@ import { useBeforeunload } from "react-beforeunload";
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
 import { actionCreators as profileActions } from "../redux/modules/mypage";
-import { actionCreators as libraryActions } from "../redux/modules/mypage";
-
+import useSWR from "swr";
+import fetcher1 from "../shared/Fetcher1";
+import Spinner from '../elements/Spinner';
 
 const ProfileEdit = (props) => {
   const dispatch = useDispatch();
@@ -13,9 +14,10 @@ const ProfileEdit = (props) => {
   // 새로고침 경고 알럿
   useBeforeunload((event) => event.preventDefault());
 
-  const authority = localStorage.getItem("seller");
+  // 프로필 정보 가져오기
+  const { data, error } = useSWR(process.env.REACT_APP_BASE_URL + `/load/profiles` , fetcher1)
   const preview = useSelector((state) => state.mypage.preview);
-  const profile = useSelector((state) => state.mypage.profile);
+  const authority = localStorage.getItem("seller");
 
   const [introduce, setIntroduce] = React.useState("")
 
@@ -49,10 +51,12 @@ const ProfileEdit = (props) => {
     )
   }
 
-  useEffect(() => {
-    dispatch(libraryActions.getProfileAC());
-  }, []);
-
+  if (error) {
+    return <div>ERROR...</div>
+  }
+  if (!data) {
+    return <Spinner />
+  };
 
   return (
     <ModalBack>
@@ -68,11 +72,11 @@ const ProfileEdit = (props) => {
                 onClick={handleClick}
                 style={{ width: "100%" }}
                 alt="유저 이미지"
-                src={preview ? preview : profile.userImage ? profile.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png" }
+                src={preview ? preview : data.userImage ? data.userImage : "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FTB2Sn%2FbtrB4PINn6v%2FpPKEkCp0WIdi5JI9NGvzrk%2Fimg.png" }
               />
             </ImageBox>
             <h3 style={{ fontSize: "16px" }}>
-              {profile.userName}
+              {data.userName}
             </h3>
             {authority === "ROLE_SELLER" ?
               <>
@@ -83,7 +87,7 @@ const ProfileEdit = (props) => {
                   onChange={(e) => {
                     setIntroduce(e.target.value)
                   }}
-                  defaultValue={profile ? profile.introduce : null}
+                  defaultValue={data ? data.introduce : null}
                 ></textarea>
               </>
               :

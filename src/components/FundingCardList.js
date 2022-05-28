@@ -1,15 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import FundingCard from "./FundingCard";
-import { useDispatch } from "react-redux";
 import { FcApproval } from "react-icons/fc";
 
 const FundingCardList = (props) => {
-
   const fund = props.funding;
-  // 무한스크롤
-  // const paging = useSelector((state) => state.fund.paging);
-  // const is_loading = useSelector((state) => state.fund.is_loading);
+
   return (
     <React.Fragment>
       <AudioHeader>오디오 펀딩 > 펀딩 리스트</AudioHeader>

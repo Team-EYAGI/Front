@@ -1,24 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators as getActions } from "../redux/modules/fund";
-import { useParams } from "react-router-dom";
-import Like from "../components/Like";
 import { history } from "../redux/configureStore";
 import { BsPlayCircle } from "react-icons/bs";
 import { FcApproval } from "react-icons/fc";
 import { Text } from "../elements/Index";
 
 const FundingCard = (props) => {
+  const dispatch = useDispatch();
+
   let fundingHeartState = props.fundcard.myHeart;
   const fundingcard = props.fundcard;
   const fundId = fundingcard.fundId;
-  const dispatch = useDispatch();
-
-
   const authority = localStorage.getItem("seller");
-
 
   return (
     <React.Fragment>
@@ -45,10 +41,6 @@ const FundingCard = (props) => {
                   }}
                 />
                 <img alt="책 이미지" src={fundingcard.bookImg} />
-                {/* <FundHeart
-                ChangeLike={ChangeLike}
-                fundHeartBool={fundHeartBool}
-              /> */}
                 {fundingHeartState === false ? (
                   <AiOutlineHeart id="heart" size="40px" />
                 ) : (
@@ -59,10 +51,10 @@ const FundingCard = (props) => {
           </ImgSt>
           <h3 style={{ fontSize: "16px" }}>{fundingcard.bookTitle}</h3>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-          <Text margin="0px 0px 0px 10px">{fundingcard.sellerName}</Text>
-          {authority === "ROLE_ADMIN" &&
+            <Text margin="0px 0px 0px 10px">{fundingcard.sellerName}</Text>
+            {authority === "ROLE_ADMIN" &&
 
-          <Text
+              <Text
                 color="gray"
                 margin="0px"
                 onClick={() => {
@@ -71,8 +63,8 @@ const FundingCard = (props) => {
                   }
                 }}
               >삭제</Text>
-}
-              </div>
+            }
+          </div>
         </Body>
       </Wrap>
     </React.Fragment>

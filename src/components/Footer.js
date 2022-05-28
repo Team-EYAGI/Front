@@ -39,7 +39,6 @@ const Footer = () => {
         </FooterSt>
       </Grid>
       </Wrap>
-
     </React.Fragment>
   )
 }

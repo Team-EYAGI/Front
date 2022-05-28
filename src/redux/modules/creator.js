@@ -5,8 +5,6 @@ import { getToken } from "../../shared/Token";
 
 // 액션
 const GET_CREATOR_PROFILE = "GET_CREATOR_PROFILE";
-const GET_CREATOR_FUNDING = "GET_CREATOR_FUNDING";
-const GET_CREATOR_AUDIO = "GET_CREATOR_AUDIO";
 const GET_CREATOR_LIST = "GET_CREATOR_LIST";
 const FOLLOW = "FOLLOW";
 const GET_FOLLOWER = "GET_FOLLOWER";
@@ -17,8 +15,6 @@ const CLEAN_SELLER = "CLEAN_SELLER"
 // 초기값
 const initialState = {
   creator_profile : [],
-  creator_funding : [],
-  creator_audiobook : [],
   creator_list : [],
   creator_followStatus : [],
   creator_follower : [],
@@ -28,8 +24,6 @@ const initialState = {
 
 // 액션 생성 함수
 const getProfile = createAction(GET_CREATOR_PROFILE, (creator_profile) => ({creator_profile}));
-const getFunding = createAction(GET_CREATOR_FUNDING, (creator_funding) => ({creator_funding}));
-const getAudio = createAction(GET_CREATOR_AUDIO, (creator_audiobook) => ({creator_audiobook}));
 const getList = createAction(GET_CREATOR_LIST, (creator_list, totalPages) => ({creator_list, totalPages}));
 
 const follow = createAction(FOLLOW, (followCount, followStatus) => ({followCount, followStatus}));
@@ -78,40 +72,6 @@ const getListAC = (page, size = 15) => {
       .catch(error => {
         // console.log("error", error)
       })
-  }
-}
-
-// 셀러 펀딩정보 가져오기
-const getFundingAC = (sellerId) => {
-  return function (dispatch, getState, {history}) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/viewer/sellerFund/${sellerId}`, {
-
-    },
-    // {headers: { 'Authorization' : `Bearer ${myToken}`}}
-    )
-    .then((res) => {
-      dispatch(getFunding(res.data))
-    })
-    .catch(error => {
-      // console.log("error", error)
-    })
-  }
-}
-
-// 셀러 오디오북 정보 가져오기
-const getAudioAC = (sellerId) => {
-  return function (dispatch, getState, {history}) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/viewer/sellerAudioBook/${sellerId}`, {
-
-    },
-    // {headers: { 'Authorization' : `Bearer ${myToken}`}}
-    )
-    .then((res) => {
-      dispatch(getAudio(res.data))
-    })
-    .catch(error => {
-      // console.log("error", error)
-    })
   }
 }
 
@@ -178,14 +138,6 @@ export default handleActions(
     produce(state, (draft) => {
       draft.creator_profile = action.payload.creator_profile;
     }),
-    [GET_CREATOR_FUNDING]: (state, action) =>
-    produce(state, (draft) => {
-      draft.creator_funding = action.payload.creator_funding;
-    }),
-    [GET_CREATOR_AUDIO]: (state, action) =>
-    produce(state, (draft) => {
-      draft.creator_audiobook = action.payload.creator_audiobook;
-    }),
     [GET_CREATOR_LIST]: (state, action) =>
     produce(state, (draft) => {
       draft.creator_list = action.payload.creator_list;
@@ -207,8 +159,6 @@ export default handleActions(
     [CLEAN_SELLER]: (state, action) =>
     produce(state, (draft) => {
       draft.creator_profile = [];
-      draft.creator_funding = [];
-      draft.creator_audiobook = [];
       draft.creator_followStatus = [];
       draft.creator_follower = [];
       draft.creator_following = [];
@@ -222,8 +172,6 @@ const actionCreators = {
 // export 할 것들
   cleanSeller,
   getProfileAC,
-  getFundingAC,
-  getAudioAC,
   followAC,
   followerListAC,
   followingListAC,

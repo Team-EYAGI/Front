@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { history } from '../redux/configureStore';
 import { BsPlayCircle } from "react-icons/bs";
 import { Text } from "../elements/Index";
 
 const MainFundingCard = (props) => {
-
   const mainFunding = props.item;
 
   return (

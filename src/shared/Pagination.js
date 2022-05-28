@@ -10,7 +10,7 @@ const PaginationSize = ({ totalPages, setPage }) => {
         <Pagination
           count={totalPages}
           onChange={(e, page) => setPage(page)}
-          size="small"
+          shape="rounded"
         />
       </Stack>
     </Page>

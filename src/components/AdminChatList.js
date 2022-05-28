@@ -1,9 +1,8 @@
 import React from 'react'
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const AdminChatList = (props) => {
-  const dispatch = useDispatch();
   React.useEffect(() => {
     return () => { };
   }, []);
