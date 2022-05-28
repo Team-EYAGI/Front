@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { history } from '../redux/configureStore';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { actionCreators as requestActions } from "../redux/modules/audio";
-import { actionCreators as getActions } from "../redux/modules/book";
 import { useBeforeunload } from "react-beforeunload";
 import Swal from 'sweetalert2';
+import useSWR from "swr"
+import fetcher from "../shared/Fetcher"
+import Spinner from '../elements/Spinner';
 
 const RequestWrite = (props) => {
   const dispatch = useDispatch();
@@ -18,19 +19,23 @@ const RequestWrite = (props) => {
   const bookId = params.bookId
   const bookRequestId = params.bookRequestId
 
-  // 리덕스에 저장된 책 상세페이지 정보 불러오기
-  const detail = useSelector((state) => state.book.detail_book);
-
   // 수정페이지인지 아닌지 확인
   const is_edit = bookRequestId ? true : false;
 
   // 오디오북 Post 요청을 보내기 위해 필요한 정보 (제목, 이유)
-  const title = `"${detail.title}" 오디오북을 요청합니다.`
   const [contents, setContents] = React.useState(is_edit ? "요청 이유를 수정해주세요" : "");
 
-  React.useEffect(() => {
-    dispatch(getActions.getBookDetailAC(bookId));
-  }, []);
+  // 책 상세페이지 정보 가져오기
+  const { data, error } = useSWR(process.env.REACT_APP_BASE_URL + `/book/detail/${bookId}`, fetcher)
+
+  if (error) {
+    return <div>ERROR...</div>
+  }
+  if (!data) {
+    return <Spinner/>
+  }
+
+  const title = `"${data.title}" 오디오북을 요청합니다.`
 
   return (
     <React.Fragment>
@@ -42,11 +47,11 @@ const RequestWrite = (props) => {
           <ImgBox>
             <div id='img_wrap'>
               <div id='img'>
-                <img src={detail.bookImg} alt="책 이미지"/>
+                <img src={data.bookImg} alt="책 이미지"/>
               </div>
               <div>
-                <p>{detail.title}</p>
-                <h3>{detail.author}</h3>
+                <p>{data.title}</p>
+                <h3>{data.author}</h3>
               </div>
             </div>
           </ImgBox>

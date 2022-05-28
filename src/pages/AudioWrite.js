@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import { BiSearch } from "react-icons/bi";
 import { useParams } from 'react-router-dom';
 import { useBeforeunload } from "react-beforeunload";
+import useSWR from "swr";
+import fetcher from "../shared/Fetcher";
+import Spinner from '../elements/Spinner';
 
 import { actionCreators as addActions } from "../redux/modules/audio";
-import { actionCreators as getActions } from "../redux/modules/book";
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 
@@ -17,9 +19,6 @@ const AudioWrite = () => {
   const params = useParams();
   const bookId = params.bookId
   const category = params.category
-
-  // 책 상세정보 가져오기
-  const detail = useSelector((state) => state.book.detail_book);
 
   // 첫 등록인지 확인하기
   const firstCheck = useSelector((state) => state.audio.audio_check);
@@ -71,9 +70,18 @@ const AudioWrite = () => {
   }
 
   React.useEffect(() => {
-    dispatch(getActions.getBookDetailAC(bookId));
     dispatch(addActions.addAudioCheckAC(bookId));
   }, []);
+
+  // 책 상세정보 가져오기
+  const { data, error } = useSWR(process.env.REACT_APP_BASE_URL + `/book/detail/${bookId}`, fetcher)
+    
+  if (error) {
+    return <div>ERROR...</div>
+  }
+  if (!data) {
+    return <Spinner/>
+  }
 
   return (
     <React.Fragment>
@@ -85,11 +93,11 @@ const AudioWrite = () => {
           <ImgSt>
             <div id='img_wrap'>
               <div id='img'>
-                <img src={detail.bookImg} alt="책 이미지"/>
+                <img src={data.bookImg} alt="책 이미지"/>
               </div>
               <div>
-                <p>{detail.title}</p>
-                <h3>{detail.author}</h3>
+                <p>{data.title}</p>
+                <h3>{data.author}</h3>
               </div>
             </div>
           </ImgSt>
