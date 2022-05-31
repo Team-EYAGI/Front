@@ -13,7 +13,7 @@ const BookCard = (props) => {
         <CardSt>
           <ImageSt>
             <img
-              style={{ width: "100%" }}
+              style={{ width: "100%", height: "100%"  }}
               alt="책 이미지"
               src={props.item.bookImg}
             />
