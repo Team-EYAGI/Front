@@ -92,7 +92,7 @@
 <a href="https://github.com/akrwkdrrr99" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Spring&message=김승균 &color=08CE5D&style=for-the-badge&>"/></a>
 <a href="https://github.com/yunju2" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Spring&message=권윤주 &color=08CE5D&style=for-the-badge&>"/></a>
 
- **[(Back-end github)](https://https://github.com/Team-EYAGI/BE)** 
+ **[(Back-end github)](https://github.com/Team-EYAGI/BE)** 
 <br>
 
 
