@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import Swal from 'sweetalert2';
 
-// 리덕스 관련
 import { history } from "../redux/configureStore";
 import { actionCreators as requestActions } from "../redux/modules/audio";
 

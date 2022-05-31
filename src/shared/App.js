@@ -38,7 +38,6 @@ const ProfileEdit = lazy(() => import('../pages/ProfileEdit'));
 const Chat = lazy(() => import('../pages/Chat'));
 const Admin = lazy(() => import('../pages/Admin'));
 const AdminChat = lazy(() => import('../pages/AdminChat'));
-// const KakaoAuthHandler = lazy(() => import('../pages/KakaoAuthHandler'));
 const AddProfileVoice = lazy(() => import('../pages/AddProfileVoice'));
 const Loading = lazy(() => import('../pages/Loading'));
 const LoadingPage = lazy(() => import('../pages/LoadingPage'));

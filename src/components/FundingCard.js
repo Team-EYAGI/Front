@@ -124,8 +124,6 @@ const ImgSt = styled.div`
 
   #img {
     width: 130px;
-    /* height: 162px; */
-    /* background-color: gray; */
 
     #icon {
       position: absolute;
@@ -134,7 +132,6 @@ const ImgSt = styled.div`
       background: rgba(76, 76, 76, 0.7);
       border-radius: 50px;
       padding: 1px;
-      /* border: 1px solid black; */
     }
 
     #crown {

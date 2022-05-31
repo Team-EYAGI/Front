@@ -5,22 +5,20 @@ import Stomp from "stompjs";
 import SockJS from "sockjs-client";
 
 import { actionCreators as chatActions } from "../redux/modules/chat";
-import ChatList from '../components/ChatList';
 import MessageList from '../components/MessageList';
 import MessageWrite from '../components/MessageWrite';
 import { useParams } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import logo from '../src_assets/eyagiLogo1.png'
-import { useBeforeunload } from "react-beforeunload";
 
 const AdminChatList = (props) => {
   const dispatch = useDispatch();
-  // useBeforeunload((event) => event.preventDefault());
   const params = useParams();
   const roomId = params.roomId;
   const sockjs = new SockJS(process.env.REACT_APP_CHAT_URL + `/chatting`);
   const stompClient = Stomp.over(sockjs);
   const Token = localStorage.getItem("token");
+  
   // 현재 방정보
   // ChatRoomList에서 받아오는 정보
   // 채팅 목록 조회시 받아온 정보로 특정 채팅방 입장

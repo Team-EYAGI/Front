@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import RequestList from '../components/RequestList';
+import Pagination from '../shared/Pagination';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators as requestActions } from "../redux/modules/audio";
 import { history } from '../redux/configureStore';
-import Pagination from '../shared/Pagination';
 
 const Request = () => {
   const dispatch = useDispatch();
