@@ -1,19 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import AudioPlayer from "react-h5-audio-player";
-import MyPageAudioBook from '../components/MyPageAudioBook';
 import { useParams } from 'react-router-dom';
 import useSWR from "swr";
 import fetcher1 from "../shared/Fetcher1";
 import Spinner from '../elements/Spinner';
-
+import { getToken } from "../shared/Token";
 import { history } from '../redux/configureStore';
-import { actionCreators as libraryActions } from "../redux/modules/mypage";
-import { actionCreators as followActions } from "../redux/modules/creator";
-import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import MyPageList from '../components/MyPageList';
 
 const style = {
   position: 'absolute',
@@ -28,16 +25,9 @@ const style = {
 };
 
 const MyPage = () => {
-  const dispatch = useDispatch();
   const params = useParams();
   const category = params.category;
-
-  // 개인 프로필 정보
-  const profile = useSelector((state) => state.mypage.profile);
-  const following = useSelector((state) => state.creator.creator_following);
-  const follower = useSelector((state) => state.creator.creator_follower);
   const authority = localStorage.getItem("seller");
-  const sellerId = profile.userId;
 
   // 팔로우, 팔로잉 모달창
   const [open, setOpen] = React.useState(false);
@@ -48,19 +38,6 @@ const MyPage = () => {
   const handleOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
 
-  // 목록별 조건부 리스트 가져오기
-  const { data, error } = useSWR(category === "likeBook" ? process.env.REACT_APP_BASE_URL + `/load/profiles/library/book` :
-    category === "listen" ? process.env.REACT_APP_BASE_URL + `/load/profiles/library/audio` :
-      category === "myAudio" ? process.env.REACT_APP_BASE_URL + `/load/profiles/seller/audioBook` :
-        category === "myFunding" ? process.env.REACT_APP_BASE_URL + `/load/profiles/seller/fund` :
-          null,
-    fetcher1)
-
-  // 프로필 정보 가져오기
-  useEffect(() => {
-    dispatch(libraryActions.getProfileAC());
-  }, []);
-
   // 권한이 없는 사용자는 마이페이지에 접근할 수 없음
   useEffect(() => {
     if (!authority) {
@@ -70,6 +47,13 @@ const MyPage = () => {
 
   // 플레이어 자동재생 막기
   const player = useRef();
+  let Token = getToken("Authorization");
+
+  // 프로필 정보와 팔로잉, 팔로우 리스트 가져오기
+  const { data: profile, error : error1 } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles`, Token], fetcher1)
+  const sellerId = profile?.userId;
+  const { data: following, error : error2 } = useSWR([process.env.REACT_APP_BASE_URL + `/user/following?id=${sellerId}`, Token], fetcher1)
+  const { data: follower, error : error3 } = useSWR([process.env.REACT_APP_BASE_URL + `/user/follower?id=${sellerId}`, Token], fetcher1)
 
   useEffect(() => {
     if (authority === "ROLE_SELLER") {
@@ -77,10 +61,10 @@ const MyPage = () => {
     }
   }, [profile]);
 
-  if (error) {
+  if (error1 || error2 || error3) {
     return <div>ERROR...</div>
   }
-  if (!data) {
+  if (!profile) {
     return <Spinner />
   };
 
@@ -98,13 +82,11 @@ const MyPage = () => {
               <div id='username'>
                 <h4>{profile.userName}</h4>
                 <h5 onClick={() => {
-                  dispatch(followActions.followingListAC(sellerId));
                   handleOpen();
                 }}>팔로잉 &nbsp;<span>{profile.followingCnt}명</span></h5>
                 {authority === "ROLE_SELLER" ?
                   <h5
                     onClick={() => {
-                      dispatch(followActions.followerListAC(sellerId));
                       handleOpen2();
                     }}
                   >팔로워 &nbsp;<span>{profile.followerCnt}명</span></h5>
@@ -234,14 +216,14 @@ const MyPage = () => {
                   style={{ textDecoration: (category === "myAudio" ? "underline" : null) }}
                   onClick={() => {
                     history.push(`/mypage/myAudio`)
-                    dispatch(libraryActions.getRegisterAudioBookAC());
+                    // dispatch(libraryActions.getRegisterAudioBookAC());
                   }}>업로드한 오디오북
                 </h3>
                 <h3
                   style={{ textDecoration: (category === "myFunding" ? "underline" : null) }}
                   onClick={() => {
                     history.push(`/mypage/myFunding`)
-                    dispatch(libraryActions.getRegisterFundingAC());
+                    // dispatch(libraryActions.getRegisterFundingAC());
                   }}>등록한 펀딩
                 </h3>
               </ListBox>
@@ -254,82 +236,21 @@ const MyPage = () => {
                 style={{ textDecoration: (category === "listen" ? "underline" : null) }}
                 onClick={() => {
                   history.push(`/mypage/listen`)
-                  dispatch(libraryActions.getListenAudioAC());
+                  // dispatch(libraryActions.getListenAudioAC());
                 }}>듣고 있는 오디오북
               </h3>
               <h3
                 style={{ textDecoration: (category === "likeBook" ? "underline" : null) }}
                 onClick={() => {
                   history.push(`/mypage/likeBook`)
-                  dispatch(libraryActions.getLikeBookAC());
+                  // dispatch(libraryActions.getLikeBookAC());
                 }}>찜한 책
               </h3>
             </ListBox>
           </List>
 
         </Menu>
-        <div>
-          {
-            category === "myAudio" && data ?
-              <span>총 {data.length}개</span>
-              :
-              category === "myFunding" && data ?
-                <span>총 {data.length}개</span>
-                :
-                category === "listen" && data ?
-                  <span id='num'>총 {data.length}개</span>
-                  :
-                  category === "likeBook" && data ?
-                    <span id='num'>총 {data.length}개</span>
-                    :
-                    null
-          }
-
-          {
-            (category === "myAudio") && (data && data.length === 0) ?
-              <AudioReviewNone>
-                아직 등록한 오디오북이 없네요! 오디오북을 등록해볼까요?
-              </AudioReviewNone>
-              :
-              (category === "myFunding") && (data && data.length === 0) ?
-                <AudioReviewNone>
-                  아직 펀딩을 시도하지 않았어요! 펀딩을 시작해볼까요?
-                </AudioReviewNone>
-                :
-                (category === "listen") && (data && data.length === 0) ?
-                  <AudioReviewNone>
-                    아직 듣고 있는 오디오북이 없어요! 들으러 가볼까요?
-                  </AudioReviewNone>
-                  :
-                  (category === "likeBook") && (data && data.length === 0) ?
-                    <AudioReviewNone>
-                      아직 찜한 책이 없어요! 책을 둘러보러 가볼까요?
-                    </AudioReviewNone>
-                    :
-                    null
-          }
-          <Body>
-
-            {category === "myAudio" ? data.map((item, idx) => (
-              <MyPageAudioBook key={idx} item={item} />
-            ))
-              :
-              category === "myFunding" ? data.map((item, idx) => (
-                <MyPageAudioBook key={idx} item={item} />
-              ))
-                :
-                category === "listen" ? data.map((item, idx) => (
-                  <MyPageAudioBook key={idx} item={item} />
-                ))
-                  :
-                  category === "likeBook" ? data.map((item, idx) => (
-                    <MyPageAudioBook key={idx} item={item} />
-                  ))
-                    :
-                    null
-            }
-          </Body>
-        </div>
+        <MyPageList Token={Token} />
       </Wrap>
     </React.Fragment>
   )
@@ -449,33 +370,6 @@ const Menu = styled.div`
   position: relative;
   border-radius: 10px;
   padding-bottom: 30px;
-`
-
-const Body = styled.div`
-  width: 750px;
-  height: 700px;
-
-  overflow-y: scroll;
-    ::-webkit-scrollbar {
-     /* 세로 스크롤 넓이 */  
-      width: 7px;
-      height: 100%;
-      
-      border-radius: 6px;
-
-    }
-    ::-webkit-scrollbar-thumb {
-      height: 17%;
-      background-color: #000000;
-      border-radius: 6px;
-    }
-
-
-  flex-wrap: wrap;
-  display: flex;
-  flex-direction: row;
-  padding-bottom: 30px;
-
 `
 
 const Profile = styled.div`
