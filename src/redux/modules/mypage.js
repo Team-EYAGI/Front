@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 // 액션
 const DELETE_LIKE_BOOK = "DELETE_LIKE_BOOK";
 const DELETE_LISTEN_AUDIOBOOK = "DELETE_LISTEN_AUDIOBOOK";
-const GET_PROFILE = "GET_PROFILE";
+// const GET_PROFILE = "GET_PROFILE";
 
 // 이미지 액션
 const UPLODING = "UPLODING";
@@ -21,7 +21,7 @@ const initialState = {
 };
 
 // 액션 생성 함수
-const getProfile = createAction(GET_PROFILE, (profile) => ({ profile }));
+// const getProfile = createAction(GET_PROFILE, (profile) => ({ profile }));
 const deleteLikeBook = createAction(DELETE_LIKE_BOOK, (bookId) => ({ bookId }));
 const deleteAudioBook = createAction(DELETE_LISTEN_AUDIOBOOK, (audioBookId) => ({ audioBookId }));
 
@@ -31,21 +31,21 @@ const setPreview = createAction(SET_PREVIEW, (preview) => ({ preview }));
 
 // 미들웨어
 // 프로필 가져오기
-const getProfileAC = () => {
-  let Token = getToken("Authorization");
-  return function (dispatch, getState, { history }) {
-    axios.get(process.env.REACT_APP_BASE_URL + `/load/profiles`,
-      { headers: { 'Authorization': `${Token}` } }
-    )
-      .then((res) => {
-        dispatch(getProfile(res.data))
+// const getProfileAC = () => {
+//   let Token = getToken("Authorization");
+//   return function (dispatch, getState, { history }) {
+//     axios.get(process.env.REACT_APP_BASE_URL + `/load/profiles`,
+//       { headers: { 'Authorization': `${Token}` } }
+//     )
+//       .then((res) => {
+//         dispatch(getProfile(res.data))
 
-      })
-      .catch(error => {
-        // console.log("error", error)
-      })
-  }
-}
+//       })
+//       .catch(error => {
+//         // console.log("error", error)
+//       })
+//   }
+// }
 
 
 // 내 서재에 담기
@@ -187,10 +187,10 @@ const addVoiceAC = (payload) => {
 // 리듀서
 export default handleActions(
   {
-    [GET_PROFILE]: (state, action) =>
-      produce(state, (draft) => {
-        draft.profile = action.payload.profile;
-      }),
+    // [GET_PROFILE]: (state, action) =>
+    //   produce(state, (draft) => {
+    //     draft.profile = action.payload.profile;
+    //   }),
     [SET_PREVIEW]: (state, action) =>
       produce(state, (draft) => {
         draft.preview = action.payload.preview;
@@ -218,7 +218,7 @@ const actionCreators = {
   deleteLikeBookAC,
   deleteAudioBookAC,
   addProfileAC,
-  getProfileAC,
+  // getProfileAC,
   addVoiceAC,
   uploading,
   uploadImg,

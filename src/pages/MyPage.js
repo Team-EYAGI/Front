@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import AudioPlayer from "react-h5-audio-player";
-import { useParams } from 'react-router-dom';
 import useSWR from "swr";
 import fetcher1 from "../shared/Fetcher1";
 import Spinner from '../elements/Spinner';
+import AudioPlayer from "react-h5-audio-player";
+
 import { getToken } from "../shared/Token";
 import { history } from '../redux/configureStore';
+import { useParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -28,6 +29,7 @@ const MyPage = () => {
   const params = useParams();
   const category = params.category;
   const authority = localStorage.getItem("seller");
+  let Token = getToken("Authorization");
 
   // 팔로우, 팔로잉 모달창
   const [open, setOpen] = React.useState(false);
@@ -38,6 +40,12 @@ const MyPage = () => {
   const handleOpen2 = () => setOpen2(true);
   const handleClose2 = () => setOpen2(false);
 
+  // 프로필 정보와 팔로잉, 팔로우 리스트 가져오기
+  const { data: profile, error : error1 } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles`, Token], fetcher1)
+  const sellerId = profile?.userId;
+  const { data: following, error : error2 } = useSWR([process.env.REACT_APP_BASE_URL + `/user/following?id=${sellerId}`, Token], fetcher1)
+  const { data: follower, error : error3 } = useSWR([process.env.REACT_APP_BASE_URL + `/user/follower?id=${sellerId}`, Token], fetcher1)
+
   // 권한이 없는 사용자는 마이페이지에 접근할 수 없음
   useEffect(() => {
     if (!authority) {
@@ -47,13 +55,6 @@ const MyPage = () => {
 
   // 플레이어 자동재생 막기
   const player = useRef();
-  let Token = getToken("Authorization");
-
-  // 프로필 정보와 팔로잉, 팔로우 리스트 가져오기
-  const { data: profile, error : error1 } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles`, Token], fetcher1)
-  const sellerId = profile?.userId;
-  const { data: following, error : error2 } = useSWR([process.env.REACT_APP_BASE_URL + `/user/following?id=${sellerId}`, Token], fetcher1)
-  const { data: follower, error : error3 } = useSWR([process.env.REACT_APP_BASE_URL + `/user/follower?id=${sellerId}`, Token], fetcher1)
 
   useEffect(() => {
     if (authority === "ROLE_SELLER") {
