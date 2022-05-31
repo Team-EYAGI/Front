@@ -10,15 +10,20 @@ import { useParams } from 'react-router-dom';
 const MyPageList = ({ Token }) => {
   const params = useParams();
   const category = params.category;
+  const authority = localStorage.getItem("seller");
+
 
   const { data: audio } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles/library/audio`, Token], fetcher1)
   const { data: likebook } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles/library/book`, Token], fetcher1)
-  const { data: myAudio } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles/seller/audioBook`, Token], fetcher1)
-  const { data: myFunding } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles/seller/fund`, Token], fetcher1)
+  const { data: myAudio } = useSWR(authority === "ROLE_SELLER" ? [process.env.REACT_APP_BASE_URL + `/load/profiles/seller/audioBook`, Token] : null, fetcher1)
+  const { data: myFunding } = useSWR(authority === "ROLE_SELLER" ? [process.env.REACT_APP_BASE_URL + `/load/profiles/seller/fund`, Token] : null, fetcher1)
 
   if (!audio || !likebook || !myAudio || !myFunding) {
     return <Spinner />
   };
+
+console.log(audio)
+console.log(likebook)
 
   return (
     <React.Fragment>
