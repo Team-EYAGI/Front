@@ -11,7 +11,7 @@ import fetcher from "../shared/Fetcher";
 
 const Main = () => {
 
-  // 쿠키
+  // 방문자 숫자 세기
   const { data } = useSWR(process.env.REACT_APP_BASE_URL + `/cookie`, fetcher)
 
   return (

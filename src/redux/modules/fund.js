@@ -8,8 +8,6 @@ import Swal from 'sweetalert2';
 const GET_FUND = "GET_FUND";
 const ADD_FUND = "ADD_REQUEST";
 const ADD_LIKE = 'ADD_LIKE';
-const DEL_LIKE = 'DEL_LIKE';
-const LOADING = "LOADING"
 const GET_DETAIL = "GET_DETAIL"
 const CLEAN = "CLEAN"
 const DEL_FUND = "DEL_FUND"
@@ -28,10 +26,7 @@ const initialState = {
 
 // action creater
 const getFunding = createAction(GET_FUND, (fund_list, totalPages) => ({ fund_list, totalPages }));
-const addFunding = createAction(ADD_FUND, (fund_add) => ({ fund_add }));
 const addLike = createAction(ADD_LIKE, (fundHeartBool, fundHeartCnt, successFunding) => ({ fundHeartBool, fundHeartCnt, successFunding }))
-const delLike = createAction(DEL_LIKE, (fundHeartBool, fundId) => ({ fundHeartBool, fundId }))
-const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 const getDetail = createAction(GET_DETAIL, (fund_detail) => ({ fund_detail }));
 const clean = createAction(CLEAN, () => ({}));
 const delFund = createAction(DEL_FUND, (fundId) => ({fundId}));

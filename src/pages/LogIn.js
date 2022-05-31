@@ -11,9 +11,24 @@ const Login = () => {
   const [email, setId] = useState("");
   const [password, setPwd] = useState("");
 
+  // 엔터키 키보드 이벤트
+  const handleEvent = (e) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
+    if (e.key !== "Enter") {
+      return;
+    }
+    login();  
+  };
+
   const login = () => {
     dispatch(userActions.loginAC(email, password));
   };
+
+  const kakaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  }
 
   // 카카오 로그인
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
@@ -46,6 +61,7 @@ const Login = () => {
                     maxLength="25"
                     value={password}
                     type="password"
+                    onKeyDown={handleEvent}
                   ></input>
                 </div>
               </LoginBox>
@@ -59,24 +75,11 @@ const Login = () => {
               </button>
             </div>
             <hr/>
-            {/* <button
-              id="kakaobtn"
-              onClick={() => {
-                window.open(KAKAO_AUTH_URL);
-              }}
-              type="button"
-            >
-              카카오로 로그인
-            </button> */}
-
-            <img
+             <img
               src={Kakao}
               alt="kakao"
-              onClick={() => {
-                window.open(KAKAO_AUTH_URL);
-              }}
+              onClick={kakaoLogin}
             />
-
             <button
               id="signupbtn"
               onClick={() => {

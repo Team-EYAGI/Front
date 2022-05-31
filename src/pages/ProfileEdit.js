@@ -1,12 +1,14 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 import styled from "styled-components";
-import { useBeforeunload } from "react-beforeunload";
-import { useDispatch, useSelector } from "react-redux";
-import { history } from "../redux/configureStore";
-import { actionCreators as profileActions } from "../redux/modules/mypage";
 import useSWR from "swr";
 import fetcher1 from "../shared/Fetcher1";
 import Spinner from '../elements/Spinner';
+import { useBeforeunload } from "react-beforeunload";
+
+import { useDispatch, useSelector } from "react-redux";
+import { history } from "../redux/configureStore";
+import { actionCreators as profileActions } from "../redux/modules/mypage";
+
 
 const ProfileEdit = (props) => {
   const dispatch = useDispatch();

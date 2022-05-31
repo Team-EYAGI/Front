@@ -1,7 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import axios from "axios";
-import { getToken } from "../../shared/Token";
 
 // 액션
 const ADD_SEARCH = "ADD_SEARCH";

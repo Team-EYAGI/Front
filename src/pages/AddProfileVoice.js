@@ -1,12 +1,13 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { history } from "../redux/configureStore";
-import { actionCreators as voiceActions } from "../redux/modules/mypage";
+import Swal from 'sweetalert2';
 import { useBeforeunload } from "react-beforeunload";
 import { BsXSquare } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
-import Swal from 'sweetalert2';
+
+import { useDispatch } from "react-redux";
+import { history } from "../redux/configureStore";
+import { actionCreators as voiceActions } from "../redux/modules/mypage";
 
 
 const AddProfileVoice = (props) => {

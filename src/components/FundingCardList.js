@@ -38,13 +38,9 @@ const AudioHeader = styled.div`
 
 const FundingInfo = styled.div`
   width: 1100px;
-  /* background-color: red; */
   margin: 0 auto;
-  /* position: relative; */
-  /* display: flex; */
-  /* align-items: center; */
+
   li {
-    /* background-color: green; */
     margin-bottom: 10px;
     padding: 0;
     display: flex;
