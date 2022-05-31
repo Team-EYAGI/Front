@@ -93,6 +93,14 @@
 <a href="https://github.com/yunju2" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Spring&message=권윤주 &color=08CE5D&style=for-the-badge&>"/></a>
 
  **[(Back-end github)](https://github.com/Team-EYAGI/BE)** 
+
+<br>
+
+#### `Designer`
+<a href="https://www.behance.net/lia_works" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Design&message=이아영 &color=F55C54&style=for-the-badge&>"/></a>
+<a href="https://seo-jyun-0731.tistory.com/ 
+https://blog.naver.com/seojyun0731" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Design&message=서지윤 &color=F55C54&style=for-the-badge&>"/></a>
+
 <br>
 
 
@@ -127,4 +135,10 @@
   </ul>
 </details>
 
+<br>
+
+## 아키텍처(Architecture)
+<p align="center">
+<img src="https://user-images.githubusercontent.com/61370487/171033795-ff2ec9f8-cbcc-4d7f-8c01-0b2360dc2dc4.png">
+</p>
 * * *
