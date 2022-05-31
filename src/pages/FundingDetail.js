@@ -1,27 +1,30 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
+import Swal from 'sweetalert2';
+import styled from "styled-components";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { useParams } from "react-router-dom";
+import { FcApproval } from "react-icons/fc";
+
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as getActions } from "../redux/modules/fund";
 import { history } from "../redux/configureStore";
-import { FcApproval } from "react-icons/fc";
-import Swal from 'sweetalert2';
-import styled from "styled-components";
+
+
 
 const FundingDetail = () => {
   const params = useParams();
   const fundId = params.fundingId;
   const dispatch = useDispatch();
-
-  const fundingDetail = useSelector((state) => state.fund.fund_detail);
-
-  const sellerId = fundingDetail.sellerId
   const username = localStorage.getItem("username");
   const is_login = localStorage.getItem("is_login");
 
+  // 펀딩 상세페이지 정보 가져오기
+  const fundingDetail = useSelector((state) => state.fund.fund_detail);
+  const sellerId = fundingDetail.sellerId
   const boolean = fundingDetail.myHeart === false ? false : true;
+
   const [fundHeartBool, setFundHeartBool] = useState(boolean);
 
   const addLike = () => {
@@ -103,7 +106,7 @@ const FundingDetail = () => {
                 volume={1}
                 showJumpControls={false}
                 ref={player}
-                // onPlay={(e) => console.log("onPlay")}
+              // onPlay={(e) => console.log("onPlay")}
               />
             </div>
           </ImgSt>
@@ -170,7 +173,7 @@ const FundingDetail = () => {
                 >
                   <AiOutlineHeart id="icon" size="40px" />
                   {fundingDetail.successFunding === true &&
-                    <span>success</span>                  
+                    <span>success</span>
                   }
                 </Like>
                 :
@@ -179,7 +182,7 @@ const FundingDetail = () => {
                 >
                   <AiFillHeart id="icon" size="40px" color="red" />
                   {fundingDetail.successFunding === true &&
-                    <span>success</span>                  
+                    <span>success</span>
                   }
                 </Like>
               }
@@ -199,7 +202,7 @@ const FundingDetail = () => {
               내 오디오 등록하기
             </button>
           )}
-          
+
           {fundingDetail.successFunding === true && (
             <button
               onClick={() => {

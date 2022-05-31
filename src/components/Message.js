@@ -1,12 +1,10 @@
 import React from 'react'
 import styled from 'styled-components';
-import { useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
-import { Grid, Text } from "../elements/Index";
+import { Text } from "../elements/Index";
 
 const Message = (props) => {
   const userId = localStorage.getItem("userId");
-  const user_info = useSelector((state) => state.user.user);
   // 메세지 타임
   let time = "";
   if (!(props.item.createdAt === null)) {

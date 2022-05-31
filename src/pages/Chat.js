@@ -1,12 +1,10 @@
 import React from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import ChatList from '../components/ChatList';
-import { getToken } from "../shared/Token";
 import { actionCreators as chatActions } from "../redux/modules/chat";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
 import { useDispatch, useSelector } from 'react-redux';
-import axios from "axios";
 import moment from "moment";
 import { useBeforeunload } from "react-beforeunload";
 import logo from '../src_assets/eyagiLogo1.png';
