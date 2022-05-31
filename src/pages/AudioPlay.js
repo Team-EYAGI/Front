@@ -17,20 +17,19 @@ import { history } from '../redux/configureStore';
 const AudioPlay = (props) => {
 
   const dispatch = useDispatch();
-
   const params = useParams();
-  const bookId = params.bookId
-  const audioBookId = params.audioBookId
-  const category = params.category
+  const bookId = params.bookId;
+  const audioBookId = params.audioBookId;
+  const category = params.category;
+  const authority = localStorage.getItem("seller");
+  const username = localStorage.getItem("username");
 
   // 오디오북 재생목록 불러오기
   const audioDetail = useSelector((state) => state.audio.audio_list);
   const followStatus = audioDetail.followStatus;
-  const audioBookDetail = audioDetail.audioBookDetail ? audioDetail.audioBookDetail : null;
-  const playList = audioDetail.audioBookDetail ? audioBookDetail.audioFileDtoList : null;
-  const sellerId = audioDetail.audioBookDetail ? audioDetail.audioBookDetail.sellerId : null;
-  const authority = localStorage.getItem("seller");
-  const username = localStorage.getItem("username");
+  const audioBookDetail = audioDetail?.audioBookDetail;
+  const playList = audioDetail?.audioBookDetail?.audioFileDtoList;
+  const sellerId = audioDetail?.audioBookDetail?.sellerId;
   const sellerName = audioBookDetail?.sellerName;
 
   // 오디오북 리뷰 불러오기
