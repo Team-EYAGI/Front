@@ -16,10 +16,6 @@ const SET_PREVIEW = "SET_PREVIEW";
 
 // 초기값
 const initialState = {
-  library_listenAudio: [],
-  library_likeBook: [],
-  library_registerAudioBook: [],
-  library_registerFunding: [],
   userImage: [],
   profile: [],
 };
@@ -76,6 +72,7 @@ const addLibraryAC = (bookId) => {
       })
   }
 }
+
 
 // 찜한 책 삭제
 const deleteLikeBookAC = (bookId) => {
