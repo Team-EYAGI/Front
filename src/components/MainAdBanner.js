@@ -38,13 +38,9 @@ const Slider = () => {
               onClick={() => {
                 if(item.category === 'novel') {
                   history.push(`/bookdetail/novel/302`)
-                } else if(item.category === 'event1') {
-                  window.open('https://forms.gle/WzzkXjWKnGXXgKix6')
-                } else if(item.category === 'event2') {
-                  window.open('https://forms.gle/2rjuVCkyRtyE17ND8')
                 }
               }}
-              className={(item.category === 'novel' || item.category === 'event1' || item.category === 'event2') ? 'click': ''}
+              className={(item.category === 'novel') ? 'click': ''}
               />
           </SwiperSlide>
         ))}
