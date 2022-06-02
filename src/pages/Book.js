@@ -56,7 +56,8 @@ const Book = () => {
 
   return (
     <React.Fragment>
-      <HeaderSt>
+     
+      <HeaderSt>      
         {category.map((item, idx) => (
           <GenreSt
             key={idx}
@@ -83,8 +84,12 @@ const Book = () => {
           >
             {item}
           </GenreSt>
-        ))}
+        ))}        
       </HeaderSt>
+      <BookInfo>
+        <li>▶&nbsp;&nbsp;원하는 도서가 없다면 1 : 1 문의 하기에서 도서를 요청해보세요!</li>
+      </BookInfo>
+      <br />
       <Wrap>
         {categoryName === "소설" ?
           <InfinityScroll
@@ -163,11 +168,26 @@ const HeaderSt = styled.div`
   margin: 0 auto;
 
   margin-top: 20px;
-  margin-bottom: 80px;
+  margin-bottom: 60px;
 
   display: flex;
   justify-content: center;
 `
+const BookInfo = styled.div`
+  width: 1100px;
+  margin: 0 auto;
+
+  li {
+    margin-bottom: 10px;
+    padding: 0;
+    display: flex;
+    color: #8e8e8e;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 18px;
+    letter-spacing: 0px;
+  }
+`;
 
 const GenreSt = styled.h3`
   width: 100px;
