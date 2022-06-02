@@ -41,10 +41,10 @@ const MyPage = () => {
   const handleClose2 = () => setOpen2(false);
 
   // 프로필 정보와 팔로잉, 팔로우 리스트 가져오기
-  const { data: profile, error : error1 } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles`, Token], fetcher1)
+  const { data: profile } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles`, Token], fetcher1)
   const sellerId = profile?.userId;
-  const { data: following, error : error2 } = useSWR([process.env.REACT_APP_BASE_URL + `/user/following?id=${sellerId}`, Token], fetcher1)
-  const { data: follower, error : error3 } = useSWR([process.env.REACT_APP_BASE_URL + `/user/follower?id=${sellerId}`, Token], fetcher1)
+  const { data: following } = useSWR([process.env.REACT_APP_BASE_URL + `/user/following?id=${sellerId}`, Token], fetcher1)
+  const { data: follower } = useSWR([process.env.REACT_APP_BASE_URL + `/user/follower?id=${sellerId}`, Token], fetcher1)
 
   // 권한이 없는 사용자는 마이페이지에 접근할 수 없음
   useEffect(() => {
@@ -215,14 +215,12 @@ const MyPage = () => {
                   style={{ textDecoration: (category === "myAudio" ? "underline" : null) }}
                   onClick={() => {
                     history.push(`/mypage/myAudio`)
-                    // dispatch(libraryActions.getRegisterAudioBookAC());
                   }}>업로드한 오디오북
                 </h3>
                 <h3
                   style={{ textDecoration: (category === "myFunding" ? "underline" : null) }}
                   onClick={() => {
                     history.push(`/mypage/myFunding`)
-                    // dispatch(libraryActions.getRegisterFundingAC());
                   }}>등록한 펀딩
                 </h3>
               </ListBox>
@@ -235,14 +233,12 @@ const MyPage = () => {
                 style={{ textDecoration: (category === "listen" ? "underline" : null) }}
                 onClick={() => {
                   history.push(`/mypage/listen`)
-                  // dispatch(libraryActions.getListenAudioAC());
                 }}>듣고 있는 오디오북
               </h3>
               <h3
                 style={{ textDecoration: (category === "likeBook" ? "underline" : null) }}
                 onClick={() => {
                   history.push(`/mypage/likeBook`)
-                  // dispatch(libraryActions.getLikeBookAC());
                 }}>찜한 책
               </h3>
             </ListBox>
@@ -490,7 +486,6 @@ const ProfileBox = styled.div`
       }
     }
   }
-
 
   h3 {
     width: 100%;
