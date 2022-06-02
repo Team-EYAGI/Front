@@ -78,6 +78,7 @@
 ## 👨‍💻👩‍💻 팀원 소개
 #### `Frontend`
  <a href="https://github.com/JIEUN24" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=React&message=최지은 &color=61dafb&style=for-the-badge&>"/></a>
+  <a href="https://choijying21.tistory.com/" target="_blank"><img height="40"  src="https://img.shields.io/static/v1?label=Tistory&message=Blog &color=D05943&style=for-the-badge&>"/></a>
 
  `메인페이지`  `마이페이지` `오디오북 관련 페이지` `책 관련 페이지` `크리에이터 페이지`  `검색 페이지` `무한스크롤` `페이지네이션` `오디오북 CRD` `오디오북 요청 CRUD` `후기 CRUD` `오디오플레이어 구현` `채팅` `TopScroll` `팔로우 기능 구현` `무중단 배포(배포 자동화)`
  <br />
