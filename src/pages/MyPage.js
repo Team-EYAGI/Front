@@ -43,8 +43,8 @@ const MyPage = () => {
   // 프로필 정보와 팔로잉, 팔로우 리스트 가져오기
   const { data: profile } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles`, Token], fetcher1)
   const sellerId = profile?.userId;
-  const { data: following } = useSWR([process.env.REACT_APP_BASE_URL + `/user/following?id=${sellerId}`, Token], fetcher1)
-  const { data: follower } = useSWR([process.env.REACT_APP_BASE_URL + `/user/follower?id=${sellerId}`, Token], fetcher1)
+  const { data: following } = useSWR([sellerId ? process.env.REACT_APP_BASE_URL + `/user/following?id=${sellerId}` : null, Token], fetcher1)
+  const { data: follower } = useSWR([sellerId ? process.env.REACT_APP_BASE_URL + `/user/follower?id=${sellerId}` : null, Token], fetcher1)
 
   // 권한이 없는 사용자는 마이페이지에 접근할 수 없음
   useEffect(() => {
