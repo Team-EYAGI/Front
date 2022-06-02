@@ -5,26 +5,33 @@ import fetcher1 from "../shared/Fetcher1";
 import Spinner from '../elements/Spinner';
 import MyPageAudioBook from '../components/MyPageAudioBook';
 import { useParams } from 'react-router-dom';
+import { getToken } from "../shared/Token";
 
 
-const MyPageList = ({ Token }) => {
+const MyPageList = () => {
   const params = useParams();
   const category = params.category;
   const authority = localStorage.getItem("seller");
+  let Token = getToken("Authorization");
 
 
-  const { data: audio } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles/library/audio`, Token], fetcher1)
-  const { data: likebook } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles/library/book`, Token], fetcher1)
+  const { data: audio } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles/library/audio`, Token], fetcher1, { refreshInterval: 1 })
+  const { data: likebook } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles/library/book`, Token], fetcher1, { refreshInterval: 1 })
   const { data: myAudio } = useSWR(authority === "ROLE_SELLER" ? [process.env.REACT_APP_BASE_URL + `/load/profiles/seller/audioBook`, Token] : null, fetcher1)
   const { data: myFunding } = useSWR(authority === "ROLE_SELLER" ? [process.env.REACT_APP_BASE_URL + `/load/profiles/seller/fund`, Token] : null, fetcher1)
+  
+  if(authority === "ROLE_SELLER") {
+    if (!audio || !likebook || !myAudio || !myFunding) {
+      return <Spinner />
+    };
+  }
 
-  if (!audio || !likebook || !myAudio || !myFunding) {
-    return <Spinner />
-  };
-
-console.log(audio)
-console.log(likebook)
-
+  if(authority === "ROLE_USER") {
+    if (!audio || !likebook) {
+      return <Spinner />
+    };
+  }
+  
   return (
     <React.Fragment>
       <div>
