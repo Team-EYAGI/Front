@@ -13,7 +13,7 @@ const BookCard = (props) => {
           }}>
           <ImageBox>
             <img
-              style={{ width: "100%" }}
+              style={{ width: "100%", height: "100%" }}
               src={props.item.bookImg}
               alt="책 이미지"
             />
