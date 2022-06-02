@@ -4,6 +4,7 @@ import useSWR from "swr";
 import fetcher1 from "../shared/Fetcher1";
 import Spinner from '../elements/Spinner';
 import { useBeforeunload } from "react-beforeunload";
+import { getToken } from "../shared/Token";
 
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configureStore";
@@ -12,12 +13,13 @@ import { actionCreators as profileActions } from "../redux/modules/mypage";
 
 const ProfileEdit = (props) => {
   const dispatch = useDispatch();
+  let Token = getToken("Authorization");
   
   // 새로고침 경고 알럿
   useBeforeunload((event) => event.preventDefault());
 
-  // 프로필 정보 가져오기
-  const { data, error } = useSWR(process.env.REACT_APP_BASE_URL + `/load/profiles` , fetcher1)
+  // 프로필 정보 가져오기1)
+  const { data, error } = useSWR([process.env.REACT_APP_BASE_URL + `/load/profiles`, Token], fetcher1)
   const preview = useSelector((state) => state.mypage.preview);
   const authority = localStorage.getItem("seller");
 
