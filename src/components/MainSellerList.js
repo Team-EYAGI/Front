@@ -28,7 +28,7 @@ const MainSellerList = () => {
           onClick={() => {
             history.push(`/sellerList`)
           }}
-        >더 보러가기</span>
+        >더 보기</span>
       </Wrap>
       <Bottom>
         {data.map((item, idx) => (
