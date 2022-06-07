@@ -12,7 +12,7 @@ const MainFundingList = () => {
   const { data, error } = useSWR(process.env.REACT_APP_BASE_URL + `/main/fund`, fetcher)
     
   if (error) {
-    return <div>ERROR...</div>
+    return <div>서비스 점검중</div>
   }
   if (!data) {
     return <Spinner/>

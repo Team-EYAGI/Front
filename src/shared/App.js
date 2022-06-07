@@ -18,31 +18,53 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SpeedDialOpen from '../elements/SpeedDial';
 import Spinner from '../elements/Spinner'
+import ReviewWirte from '../pages/ReviewWrite';
 import KakaoAuthHandler from '../pages/KakaoAuthHandler';
+import AudioWrite from '../pages/AudioWrite';
+import Book from '../pages/Book';
+import BookDetail from '../pages/BookDetail';
+import Funding from '../pages/Funding';
+import FundingDetail from '../pages/FundingDetail';
+import FundingWrite from '../pages/FundingWrite';
+import LogIn from '../pages/LogIn';
+import SignUp from '../pages/SignUp';
+import Main from '../pages/Main';
+import Loading from '../pages/Loading';
+import Request from '../pages/Request';
+import RequestWrite from '../pages/RequestWrite';
+import Search from '../pages/Search';
+import ProfileEdit from '../pages/ProfileEdit';
+import Chat from '../pages/Chat';
+import AdminChat from '../pages/AdminChat';
+import Admin from '../pages/Admin';
+import AddProfileVoice from '../pages/AddProfileVoice';
+import LoadingPage from '../pages/LoadingPage';
+import ServiceGuide from '../pages/ServiceGuide';
+import SellerList from '../pages/SellerList';
 
-// 레이지 로딩
-const AudioWrite = lazy(() => import('../pages/AudioWrite'));
-const Book = lazy(() => import('../pages/Book'));
-const BookDetail = lazy(() => import('../pages/BookDetail'));
-const Funding = lazy(() => import('../pages/Funding'));
-const FundingDetail = lazy(() => import('../pages/FundingDetail'));
-const FundingWrite = lazy(() => import('../pages/FundingWrite'));
-const LogIn = lazy(() => import('../pages/LogIn'));
-const SignUp = lazy(() => import('../pages/SignUp'));
-const Main = lazy(() => import('../pages/Main'));
-const Request = lazy(() => import('../pages/Request'));
-const RequestWrite = lazy(() => import('../pages/RequestWrite'));
-const Search = lazy(() => import('../pages/Search'));
-const ReviewWirte = lazy(() => import('../pages/ReviewWrite'));
-const ProfileEdit = lazy(() => import('../pages/ProfileEdit'));
-const Chat = lazy(() => import('../pages/Chat'));
-const Admin = lazy(() => import('../pages/Admin'));
-const AdminChat = lazy(() => import('../pages/AdminChat'));
-const AddProfileVoice = lazy(() => import('../pages/AddProfileVoice'));
-const Loading = lazy(() => import('../pages/Loading'));
-const LoadingPage = lazy(() => import('../pages/LoadingPage'));
-const ServiceGuide = lazy(() => import('../pages/ServiceGuide'));
-const SellerList = lazy(() => import('../pages/SellerList'));
+// // 레이지 로딩
+// const AudioWrite = lazy(() => import('../pages/AudioWrite'));
+// const Book = lazy(() => import('../pages/Book'));
+// const BookDetail = lazy(() => import('../pages/BookDetail'));
+// const Funding = lazy(() => import('../pages/Funding'));
+// const FundingDetail = lazy(() => import('../pages/FundingDetail'));
+// const FundingWrite = lazy(() => import('../pages/FundingWrite'));
+// const LogIn = lazy(() => import('../pages/LogIn'));
+// const SignUp = lazy(() => import('../pages/SignUp'));
+// const Main = lazy(() => import('../pages/Main'));
+// const Request = lazy(() => import('../pages/Request'));
+// const RequestWrite = lazy(() => import('../pages/RequestWrite'));
+// const Search = lazy(() => import('../pages/Search'));
+// const ReviewWirte = lazy(() => import('../pages/ReviewWrite'));
+// const ProfileEdit = lazy(() => import('../pages/ProfileEdit'));
+// const Chat = lazy(() => import('../pages/Chat'));
+// const Admin = lazy(() => import('../pages/Admin'));
+// const AdminChat = lazy(() => import('../pages/AdminChat'));
+// const AddProfileVoice = lazy(() => import('../pages/AddProfileVoice'));
+// const Loading = lazy(() => import('../pages/Loading'));
+// const LoadingPage = lazy(() => import('../pages/LoadingPage'));
+// const ServiceGuide = lazy(() => import('../pages/ServiceGuide'));
+// const SellerList = lazy(() => import('../pages/SellerList'));
 
 function App() {
 
@@ -87,7 +109,7 @@ function App() {
         <ScrollToTop />
         <Header />
         <Wrap>
-          <Suspense fallback={<Spinner />}>
+          {/* <Suspense fallback={<Spinner />}> */}
             <Route path="/" exact component={Main} />
             <Route path="/login" exact component={LogIn} />
             <Route path="/signup" exact component={SignUp} />
@@ -128,7 +150,7 @@ function App() {
             <Route path="/search" exact component={Search}/>
             <Route path="/serviceGuide" exact component={ServiceGuide} />
             <Route path="/sellerList" exact component={SellerList} />
-          </Suspense>
+          {/* </Suspense> */}
         </Wrap>
         <Footer />
         <Icon>
