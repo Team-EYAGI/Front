@@ -24,6 +24,11 @@
 크리에이터(낭독자)로 전환 신청하여 자신의 목소리를 세상 밖에 들려주세요!
 <br />
 <br />
+<p align="center">
+<img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbZU1oq%2FbtrEtvBG5eP%2F13u83lHyLLNviri0xtBCK1%2Fimg.png" alt="pick-git-logo">
+</p>
+<br />
+<br />
 
 # 🛠 <strong>기술스택
 <br/>
